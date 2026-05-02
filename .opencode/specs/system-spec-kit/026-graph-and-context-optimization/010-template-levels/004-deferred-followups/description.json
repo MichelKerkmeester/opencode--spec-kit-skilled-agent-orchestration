@@ -1,14 +1,20 @@
 {
-  "specFolder": "004-deferred-followups",
-  "description": "deferred-followups",
+  "level": "3",
+  "specFolder": "system-spec-kit/026-graph-and-context-optimization/010-template-levels/004-deferred-followups",
+  "description": "Feature Specification: deferred-followups",
   "keywords": [
+    "feature",
+    "specification",
     "deferred-followups"
   ],
-  "lastUpdated": "2026-05-01T20:32:55.710Z",
+  "lastUpdated": "2026-05-02T10:39:48.815Z",
   "specId": "004",
   "folderSlug": "deferred-followups",
-  "parentChain": [],
+  "parentChain": [
+    "system-spec-kit",
+    "026-graph-and-context-optimization",
+    "010-template-levels"
+  ],
   "memorySequence": 0,
-  "memoryNameHistory": [],
-  "level": "3"
+  "memoryNameHistory": []
 }

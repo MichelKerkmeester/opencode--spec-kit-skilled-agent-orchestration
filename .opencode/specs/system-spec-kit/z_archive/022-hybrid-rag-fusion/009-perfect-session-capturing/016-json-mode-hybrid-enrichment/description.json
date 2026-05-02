@@ -1,16 +1,17 @@
 {
-  "specFolder": "system-spec-kit/022-hybrid-rag-fusion/009-perfect-session-capturing/016-json-mode-hybrid-enrichment",
+  "specFolder": "system-spec-kit/z_archive/022-hybrid-rag-fusion/009-perfect-session-capturing/016-json-mode-hybrid-enrichment",
   "description": "Feature Specification: 016-json-mode-hybrid-enrichment",
   "keywords": [
     "feature",
     "specification",
     "016-json-mode-hybrid-enrichment"
   ],
-  "lastUpdated": "2026-04-27T13:38:47.634Z",
+  "lastUpdated": "2026-05-02T10:39:49.214Z",
   "specId": "016",
   "folderSlug": "json-mode-hybrid-enrichment",
   "parentChain": [
     "system-spec-kit",
+    "z_archive",
     "022-hybrid-rag-fusion",
     "009-perfect-session-capturing"
   ],

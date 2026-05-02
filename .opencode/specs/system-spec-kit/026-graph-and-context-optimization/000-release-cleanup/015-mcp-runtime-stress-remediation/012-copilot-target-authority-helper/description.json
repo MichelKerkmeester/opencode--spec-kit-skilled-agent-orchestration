@@ -7,26 +7,26 @@
     "target authority preamble",
     "P0 cli-copilot remediation"
   ],
-  "specFolder": "system-spec-kit/026-graph-and-context-optimization/000-release-cleanup/005-review-remediation/015-mcp-runtime-stress-remediation/012-copilot-target-authority-helper",
-  "description": "Feature Specification: Copilot Target-Authority Helper — adds buildCopilotPromptArg to executor-config.ts and wires it into both _auto.yaml deep-loop dispatch sites so cli-copilot dispatches enforce the planner-first contract at the executor layer; recovered context cannot override workflow-resolved authority. Closes the v1.0.2 I1/cli-copilot Gate 3 bypass.",
+  "specFolder": "system-spec-kit/026-graph-and-context-optimization/000-release-cleanup/015-mcp-runtime-stress-remediation/012-copilot-target-authority-helper",
+  "description": "Feature Specification: Copilot Target-Authority Helper — close P0 cli-copilot Gate 3 bypass",
   "keywords": [
     "feature",
     "specification",
-    "implementation",
-    "cli-copilot",
+    "copilot",
     "target-authority",
-    "gate-3",
-    "executor-config",
-    "deep-loop",
-    "planner-first",
-    "v1.0.2-remediation"
+    "helper",
+    "close",
+    "cli-copilot",
+    "gate",
+    "bypass"
   ],
-  "lastUpdated": "2026-04-27T20:00:00Z",
+  "lastUpdated": "2026-05-02T10:39:48.120Z",
   "specId": "012",
   "folderSlug": "copilot-target-authority-helper",
   "parentChain": [
     "system-spec-kit",
     "026-graph-and-context-optimization",
+    "000-release-cleanup",
     "015-mcp-runtime-stress-remediation"
   ],
   "memorySequence": 0,

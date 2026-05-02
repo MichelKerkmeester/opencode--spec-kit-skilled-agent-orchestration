@@ -30,21 +30,21 @@
     ".opencode/skill/system-spec-kit/SKILL.md"
   ],
   "specFolder": "skilled-agent-orchestration/058-spec-kit-ux-adoptions",
-  "description": "Implement 5 approved UX adoptions from packet 057 deep-research: gate copy, phase headers, taxonomy doc, template inventory, persona fixtures.",
+  "description": "Feature Specification: spec-kit UX adoptions from SPAR-Kit research",
   "keywords": [
+    "feature",
+    "specification",
     "spec-kit",
-    "ux",
-    "adoption",
-    "implementation",
-    "templates",
-    "taxonomy",
-    "personas",
-    "gate-copy"
+    "adoptions",
+    "spar-kit",
+    "research"
   ],
-  "lastUpdated": "2026-05-01T11:00:00Z",
+  "lastUpdated": "2026-05-02T10:39:47.790Z",
   "specId": "058",
   "folderSlug": "spec-kit-ux-adoptions",
   "parentChain": [
     "skilled-agent-orchestration"
-  ]
+  ],
+  "memorySequence": 0,
+  "memoryNameHistory": []
 }

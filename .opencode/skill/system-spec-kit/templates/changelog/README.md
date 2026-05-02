@@ -1,21 +1,136 @@
 ---
-title: "Nested Changelog Templates"
-description: "Canonical packet-local changelog templates for root specs and phase child folders. Distinct from sk-doc's global changelog template — these stay packet-local."
+title: "Packet Changelog Templates"
+description: "Packet-local changelog templates for root specs and phase child folders."
+trigger_phrases:
+  - "packet changelog templates"
+  - "nested changelog templates"
+  - "root phase changelog"
 ---
-# Nested Changelog Templates
 
-Canonical templates for packet-local changelogs generated inside spec folders.
+# Packet Changelog Templates
 
-## Files
+<!-- ANCHOR:table-of-contents -->
+## TABLE OF CONTENTS
 
-| Template | Use |
+- [1. OVERVIEW](#1--overview)
+- [2. DIRECTORY TREE](#2--directory-tree)
+- [3. KEY FILES](#3--key-files)
+- [4. BOUNDARIES AND FLOW](#4--boundaries-and-flow)
+- [5. ENTRYPOINTS](#5--entrypoints)
+- [6. VALIDATION](#6--validation)
+- [7. RELATED](#7--related)
+
+<!-- /ANCHOR:table-of-contents -->
+
+---
+
+<!-- ANCHOR:overview -->
+## 1. OVERVIEW
+
+`templates/changelog/` contains packet-local changelog templates generated inside spec folders. These templates summarize canonical packet docs and are separate from global release-note templates under `.opencode/changelog/`.
+
+Current state:
+
+- `root.md` renders changelogs for root spec folders.
+- `phase.md` renders changelogs for phase child folders.
+- Recovery still flows through `/spec_kit:resume` and canonical continuity docs.
+
+<!-- /ANCHOR:overview -->
+
+---
+
+<!-- ANCHOR:directory-tree -->
+## 2. DIRECTORY TREE
+
+```text
+changelog/
+├── README.md
+├── root.md    # Root packet changelog template
+└── phase.md   # Phase child changelog template
+```
+
+<!-- /ANCHOR:directory-tree -->
+
+---
+
+<!-- ANCHOR:key-files -->
+## 3. KEY FILES
+
+| File | Role |
 |---|---|
-| `root.md` | Root spec folder changelog written to `changelog/changelog-<packet>-root.md` |
-| `phase.md` | Phase child changelog written to the parent packet `changelog/` folder |
+| `root.md` | Template for `changelog/changelog-<packet>-root.md`. |
+| `phase.md` | Template for phase child changelogs in the parent packet `changelog/` folder. |
 
-## Notes
+<!-- /ANCHOR:key-files -->
 
-- These templates are separate from the global `.opencode/changelog/` release-note templates.
-- The generator script fills them from `spec.md`, `tasks.md`, `checklist.md`, `decision-record.md`, and `implementation-summary.md` when available.
-- Root changelogs may include a phase coverage rollup when direct child phase folders exist.
-- Changelogs summarize canonical packet docs; active recovery still flows through `/spec_kit:resume` and `handover.md -> _memory.continuity -> spec docs`.
+---
+
+<!-- ANCHOR:boundaries-and-flow -->
+## 4. BOUNDARIES AND FLOW
+
+Boundaries:
+
+- This directory owns packet-local changelog templates only.
+- It must not replace global release-note templates.
+- Generated changelogs summarize packet docs, not live worktree diffs.
+
+Generation flow:
+
+```text
+╭────────────────────╮
+│ canonical spec docs│
+╰─────────┬──────────╯
+          ▼
+┌────────────────────┐
+│ root.md or phase.md│
+└─────────┬──────────┘
+          ▼
+┌────────────────────┐
+│ changelog generator│
+└─────────┬──────────┘
+          ▼
+┌────────────────────┐
+│ packet changelog   │
+└────────────────────┘
+```
+
+<!-- /ANCHOR:boundaries-and-flow -->
+
+---
+
+<!-- ANCHOR:entrypoints -->
+## 5. ENTRYPOINTS
+
+| Entrypoint | Use |
+|---|---|
+| `root.md` | Root spec folder changelog generation. |
+| `phase.md` | Phase child changelog generation. |
+| Changelog generator script | Reads canonical packet docs and applies one template. |
+
+<!-- /ANCHOR:entrypoints -->
+
+---
+
+<!-- ANCHOR:validation -->
+## 6. VALIDATION
+
+Run from the repository root after template edits:
+
+```bash
+bash .opencode/skill/system-spec-kit/scripts/spec/validate.sh <spec-folder> --strict
+```
+
+Generated changelogs should reference available packet docs and avoid claiming task completion beyond those docs.
+
+<!-- /ANCHOR:validation -->
+
+---
+
+<!-- ANCHOR:related -->
+## 7. RELATED
+
+| Document | Role |
+|---|---|
+| [sk-doc changelog template](../../../sk-doc/assets/documentation/changelog_template.md) | Global changelog and release-note template. |
+
+<!-- /ANCHOR:related -->

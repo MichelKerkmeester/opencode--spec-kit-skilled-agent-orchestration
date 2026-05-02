@@ -1,10 +1,20 @@
 {
-  "specFolder": "system-spec-kit/026-graph-and-context-optimization/000-release-cleanup/005-review-remediation/016-automation-self-management-deep-research",
-  "description": "7-iter deep research producing an automation reality map for skill advisor, code graph, system-spec-kit, and memory/database subsystems. 4-class taxonomy: auto / half-automated / manual / aspirational.",
-  "keywords": ["automation", "self-management", "skill-advisor", "code-graph", "system-spec-kit", "memory", "deep-research", "reality-map"],
-  "lastUpdated": "2026-04-29T13:15:00.000Z",
-  "specId": "012",
+  "specFolder": "system-spec-kit/026-graph-and-context-optimization/000-release-cleanup/016-automation-self-management-deep-research",
+  "description": "Research Charter: Automation & Self-Management",
+  "keywords": [
+    "research",
+    "charter",
+    "automation",
+    "self-management"
+  ],
+  "lastUpdated": "2026-05-02T10:39:48.287Z",
+  "specId": "016",
   "folderSlug": "automation-self-management-deep-research",
-  "parentChain": ["system-spec-kit", "026-graph-and-context-optimization"],
-  "memorySequence": 1
+  "parentChain": [
+    "system-spec-kit",
+    "026-graph-and-context-optimization",
+    "000-release-cleanup"
+  ],
+  "memorySequence": 1,
+  "memoryNameHistory": []
 }

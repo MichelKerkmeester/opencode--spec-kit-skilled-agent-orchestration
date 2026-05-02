@@ -15,6 +15,7 @@ import {
   type EdgeDistribution,
 } from '../lib/edge-drift.js';
 import { getGraphFreshness, getGraphReadinessSnapshot } from '../lib/ensure-ready.js';
+import { resolveIndexScopePolicy } from '../lib/index-scope-policy.js';
 import { isRecord } from '../lib/query-result-adapter.js';
 import { buildReadinessBlock } from '../lib/readiness-contract.js';
 
@@ -166,6 +167,9 @@ export async function handleCodeGraphStatus(): Promise<{ content: Array<{ type: 
   // calling it earlier never causes side effects.
   const snapshot = getGraphReadinessSnapshot(process.cwd());
   const freshness = snapshot.freshness;
+  const activeScopePolicy = resolveIndexScopePolicy();
+  const storedScope = graphDb.getStoredCodeGraphScope();
+  const scopeMismatch = storedScope.fingerprint !== activeScopePolicy.fingerprint;
 
   // Stats is isolated so an unavailable DB never suppresses the readiness
   // snapshot. On failure we ship the snapshot + degraded envelope and
@@ -261,6 +265,17 @@ export async function handleCodeGraphStatus(): Promise<{ content: Array<{ type: 
             totalNodes: stats.totalNodes,
             totalEdges: stats.totalEdges,
             freshness,
+            activeScope: {
+              fingerprint: activeScopePolicy.fingerprint,
+              label: activeScopePolicy.label,
+              includeSkills: activeScopePolicy.includeSkills,
+              source: activeScopePolicy.source,
+            },
+            storedScope,
+            scopeMismatch,
+            excludedTrackedFiles: activeScopePolicy.includeSkills
+              ? 0
+              : graphDb.countTrackedSkillFiles(),
             readiness: readinessBlock,
             canonicalReadiness: readinessBlock.canonicalReadiness,
             trustState: readinessBlock.trustState,

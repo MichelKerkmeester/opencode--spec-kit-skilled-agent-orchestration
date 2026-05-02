@@ -1,11 +1,5 @@
 {
   "title": "Upgrade Safety Operability Deep Review",
-  "description": "Read-only release-readiness audit of install and upgrade safety, DB migrations, doctor MCP workflows, stress-test and matrix-runner relocations, hook-test reachability, environment default states, runtime config posture, and backwards-compatible strict validation.",
-  "specFolder": "specs/system-spec-kit/026-graph-and-context-optimization/000-release-cleanup/005-review-remediation/032-release-readiness-deep-review-program/010-upgrade-safety-operability",
-  "status": "complete",
-  "level": 2,
-  "importance": "important",
-  "contextType": "review",
   "trigger_phrases": [
     "045-010-upgrade-safety-operability",
     "upgrade safety audit",
@@ -13,6 +7,10 @@
     "install guide review",
     "doctor mcp install review"
   ],
+  "status": "complete",
+  "level": 2,
+  "importance": "important",
+  "contextType": "review",
   "key_files": [
     "review-report.md",
     "spec.md",
@@ -21,5 +19,26 @@
     "checklist.md",
     "implementation-summary.md"
   ],
-  "lastUpdated": "2026-04-29T23:15:00+02:00"
+  "specFolder": "system-spec-kit/026-graph-and-context-optimization/000-release-cleanup/032-release-readiness-deep-review-program/010-upgrade-safety-operability",
+  "description": "Feature Specification: Upgrade Safety Operability Deep Review",
+  "keywords": [
+    "feature",
+    "specification",
+    "upgrade",
+    "safety",
+    "operability",
+    "deep",
+    "review"
+  ],
+  "lastUpdated": "2026-05-02T10:39:48.575Z",
+  "specId": "010",
+  "folderSlug": "upgrade-safety-operability",
+  "parentChain": [
+    "system-spec-kit",
+    "026-graph-and-context-optimization",
+    "000-release-cleanup",
+    "032-release-readiness-deep-review-program"
+  ],
+  "memorySequence": 0,
+  "memoryNameHistory": []
 }

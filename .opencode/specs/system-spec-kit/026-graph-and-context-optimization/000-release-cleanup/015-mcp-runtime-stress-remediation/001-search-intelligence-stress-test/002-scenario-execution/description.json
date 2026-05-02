@@ -9,7 +9,7 @@
     "execution scaffold",
     "manual scoring workflow"
   ],
-  "specFolder": "system-spec-kit/026-graph-and-context-optimization/000-release-cleanup/005-review-remediation/015-mcp-runtime-stress-remediation/001-search-intelligence-stress-test/002-scenario-execution",
+  "specFolder": "system-spec-kit/026-graph-and-context-optimization/000-release-cleanup/015-mcp-runtime-stress-remediation/001-search-intelligence-stress-test/002-scenario-execution",
   "description": "Feature Specification: Scenario Execution Sub-Phase",
   "keywords": [
     "feature",
@@ -18,12 +18,13 @@
     "execution",
     "sub-phase"
   ],
-  "lastUpdated": "2026-04-27T14:15:10.459Z",
+  "lastUpdated": "2026-05-02T10:39:48.012Z",
   "specId": "002",
   "folderSlug": "scenario-execution",
   "parentChain": [
     "system-spec-kit",
     "026-graph-and-context-optimization",
+    "000-release-cleanup",
     "015-mcp-runtime-stress-remediation",
     "001-search-intelligence-stress-test"
   ],

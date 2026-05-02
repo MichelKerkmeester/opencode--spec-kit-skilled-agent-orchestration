@@ -2,6 +2,12 @@
 // MODULE: Index Scope Invariants
 // ───────────────────────────────────────────────────────────────
 
+import {
+  resolveIndexScopePolicy,
+  type IndexScopePolicy,
+  type ResolveIndexScopePolicyInput,
+} from '../../code_graph/lib/index-scope-policy.js';
+
 const SEGMENT_BOUNDARY = '(^|/)';
 const SEGMENT_END = '(/|$)';
 
@@ -39,12 +45,23 @@ export const EXCLUDED_FOR_CODE_GRAPH = [
   /(^|\/)mcp-coco-index\/mcp_server(\/|$)/i,
 ] as const;
 
+const EXCLUDED_SKILL_INTERNALS_FOR_CODE_GRAPH = [
+  /(^|\/)\.opencode\/skill(\/|$)/i,
+] as const;
+
 export function shouldIndexForMemory(absolutePath: string): boolean {
   return !matchesAnyPattern(absolutePath, EXCLUDED_FOR_MEMORY);
 }
 
-export function shouldIndexForCodeGraph(absolutePath: string): boolean {
-  return !matchesAnyPattern(absolutePath, EXCLUDED_FOR_CODE_GRAPH);
+export function shouldIndexForCodeGraph(
+  absolutePath: string,
+  policyInput?: IndexScopePolicy | ResolveIndexScopePolicyInput,
+): boolean {
+  if (matchesAnyPattern(absolutePath, EXCLUDED_FOR_CODE_GRAPH)) {
+    return false;
+  }
+  const policy = resolveIndexScopePolicy(policyInput);
+  return policy.includeSkills || !matchesAnyPattern(absolutePath, EXCLUDED_SKILL_INTERNALS_FOR_CODE_GRAPH);
 }
 
 export function isConstitutionalPath(absolutePath: string): boolean {

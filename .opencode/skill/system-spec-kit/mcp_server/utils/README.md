@@ -1,6 +1,6 @@
 ---
 title: "MCP Server Utilities"
-description: "Shared validators, JSON helpers, batch processing helpers, DB utility functions, and tool input schema validation."
+description: "Shared validators, JSON helpers, batch processors, DB guards and tool input schema checks."
 trigger_phrases:
   - "MCP utilities"
   - "input validation"
@@ -8,67 +8,120 @@ trigger_phrases:
   - "tool schema validation"
 ---
 
-
 # MCP Server Utilities
+
+> Shared validation, JSON, batch, database guard and tool schema helpers for MCP server code.
 
 <!-- ANCHOR:table-of-contents -->
 ## TABLE OF CONTENTS
 
-- [1. OVERVIEW](#1-overview)
-- [2. IMPLEMENTED STATE](#2-implemented-state)
-- [3. HARDENING NOTES](#3-hardening-notes)
-- [4. RELATED](#4-related)
+- [1. OVERVIEW](#1--overview)
+- [2. SURFACE](#2--surface)
+- [3. EXPORTS](#3--exports)
+- [4. ALLOWED IMPORTS](#4--allowed-imports)
+- [5. KEY FILES](#5--key-files)
+- [6. BOUNDARIES](#6--boundaries)
+- [7. ENTRYPOINTS](#7--entrypoints)
+- [8. VALIDATION](#8--validation)
+- [9. RELATED](#9--related)
 
 <!-- /ANCHOR:table-of-contents -->
 <!-- ANCHOR:overview -->
 ## 1. OVERVIEW
 
-This section provides an overview of the MCP Server Utilities directory.
+`mcp_server/utils/` contains small shared helpers used by handlers, tools and support modules. Keep this folder focused on pure validation, JSON handling, retry loops and error conversion.
 
-`utils/` provides reusable helpers used by handlers and core modules.
-In the Gate E model, those handlers support `/spec_kit:resume` and the packet continuity chain `handover.md` -> `_memory.continuity` -> spec docs; generated memory artifacts remain supporting only.
+Runtime features should live in their owning handler, tool, search, storage, or library folder. Add utilities here only when at least two MCP server surfaces share the same behavior.
 
-- `validators.ts`: query and input-length validation, file-path validator factory.
-- `json-helpers.ts`: safe parse/stringify helpers.
-- `batch-processor.ts`: retry-aware batch and sequential processors.
-- `db-helpers.ts`: DB guard and error-message helpers.
-- `tool-input-schema.ts`: runtime validation of tool arguments against MCP input schemas (required fields, types, enums, constraints).
-- `index.ts`: barrel exports.
+Use this folder for stable helper contracts that reduce repeated guard code. Prefer local helpers inside a feature folder when the behavior has one owner or depends on feature-specific state.
 
 <!-- /ANCHOR:overview -->
-<!-- ANCHOR:implemented-state -->
-## 2. IMPLEMENTED STATE
+<!-- ANCHOR:surface -->
+## 2. SURFACE
 
+| Surface | Purpose |
+|---|---|
+| Validators | Query length checks, input length checks and allowed-path validator creation. |
+| JSON helpers | Safe parse, typed parse and stringify wrappers. |
+| Batch processing | Retry-aware item processing, batch loops and sequential processing. |
+| DB helpers | Database presence checks and error-message normalization. |
+| Tool input schema | Runtime checks for required tool arguments, types, enums and constraints. |
 
-Primary exports are camelCase (with TypeScript-first signatures):
-- `validateQuery`, `validateInputLengths`, `createFilePathValidator`, `getDefaultAllowedPaths`
-- `safeJsonParse`, `safeJsonStringify`, `safeJsonParseTyped`
-- `processWithRetry`, `processBatches`, `processSequentially`
-- `requireDb`, `toErrorMessage`
-- `validateToolInputSchema`
+<!-- /ANCHOR:surface -->
+<!-- ANCHOR:exports -->
+## 3. EXPORTS
 
-Security and reliability behavior:
-- Input limits align with core constants (`MAX_QUERY_LENGTH`, `INPUT_LIMITS`).
-- Path validation aligns with centralized allowed-path policy.
-- Batch processing includes bounded retry behavior for transient failures.
+`index.ts` exports:
 
+- Types: `InputLimits`, `ValidatableArgs`, `SharedValidateFilePath`, `ExpectedJsonType`, `RetryOptions`, `RetryDefaults`, `RetryErrorResult`, `ItemProcessor`
+- Constants: `INPUT_LIMITS`, `MAX_QUERY_LENGTH`, `BATCH_SIZE`, `BATCH_DELAY_MS`, `DEFAULT_RETRY_OPTIONS`
+- Functions: `validateQuery`, `validateInputLengths`, `createFilePathValidator`, `getDefaultAllowedPaths`, `safeJsonParse`, `safeJsonStringify`, `safeJsonParseTyped`, `processWithRetry`, `processBatches`, `processSequentially`, `requireDb`, `toErrorMessage`, `validateToolInputSchema`
 
-<!-- /ANCHOR:implemented-state -->
-<!-- ANCHOR:hardening-notes -->
-## 3. HARDENING NOTES
+<!-- /ANCHOR:exports -->
+<!-- ANCHOR:allowed-imports -->
+## 4. ALLOWED IMPORTS
 
+| Import | Rule |
+|---|---|
+| Shared MCP constants | Allowed for input limits and path policy. |
+| Local utility modules | Allowed through direct imports or `index.ts`. |
+| Database types | Allowed only for guard helpers that do not own queries. |
+| Feature handlers | Do not import handlers from this folder. |
+| Search and storage flows | Do not place feature orchestration in utilities. |
 
-- Utility APIs are now aligned with current camelCase usage across handlers.
-- Shared DB error conversion reduces inconsistent thrown-error formatting.
-- Validation helpers are part of query/input hardening used across the retrieval pipeline.
+<!-- /ANCHOR:allowed-imports -->
+<!-- ANCHOR:key-files -->
+## 5. KEY FILES
 
+| File | Responsibility |
+|---|---|
+| `validators.ts` | Query, input-length and file-path validation helpers. |
+| `json-helpers.ts` | Safe JSON parse and stringify helpers. |
+| `batch-processor.ts` | Retry and batch execution helpers. |
+| `db-helpers.ts` | DB guard and error-message helpers. |
+| `tool-input-schema.ts` | Runtime schema checks for MCP tool input. |
+| `index.ts` | Public barrel for utility imports. |
 
-<!-- /ANCHOR:hardening-notes -->
+<!-- /ANCHOR:key-files -->
+<!-- ANCHOR:boundaries -->
+## 6. BOUNDARIES
+
+| Boundary | Rule |
+|---|---|
+| Shared helpers | Keep utilities small, deterministic and reused by more than one caller. |
+| Feature logic | Keep tool orchestration, storage queries and search ranking outside this folder. |
+| Input handling | Validate limits, schemas and paths before handlers perform work. |
+| Error handling | Convert unknown errors to safe messages without hiding caller context. |
+
+<!-- /ANCHOR:boundaries -->
+<!-- ANCHOR:entrypoints -->
+## 7. ENTRYPOINTS
+
+- Import from `index.ts` for shared utility access from MCP server code.
+- Use `validateToolInputSchema()` before invoking tool handlers with dynamic arguments.
+- Use `createFilePathValidator()` when a handler needs workspace-safe path checks.
+- Use `processBatches()` or `processSequentially()` for bounded item processing with retry behavior.
+
+<!-- /ANCHOR:entrypoints -->
+<!-- ANCHOR:validation -->
+## 8. VALIDATION
+
+Run from the repository root:
+
+```bash
+npm test -- --run .opencode/skill/system-spec-kit/mcp_server/tests/review-fixes.vitest.ts
+python3 .opencode/skill/sk-doc/scripts/validate_document.py .opencode/skill/system-spec-kit/mcp_server/utils/README.md
+```
+
+Expected result: utility-related tests pass and README validation exits `0` with no HVR issues.
+
+<!-- /ANCHOR:validation -->
 <!-- ANCHOR:related -->
-## 4. RELATED
+## 9. RELATED
 
+- [MCP server core](../core/README.md)
+- [MCP server handlers](../handlers/README.md)
+- [MCP server schemas](../schemas/README.md)
+- [MCP server tests](../tests/README.md)
 
-- `../core/README.md`
-- `../handlers/README.md`
-- `../formatters/README.md`
 <!-- /ANCHOR:related -->

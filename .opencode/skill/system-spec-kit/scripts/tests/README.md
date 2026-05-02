@@ -1,171 +1,138 @@
 ---
-title: "System Spec Kit Test Suite"
-description: "Current test inventory for shell scripts, TypeScript modules, and integration workflows."
+title: "Script Tests"
+description: "Test entrypoints and fixtures for system-spec-kit shell scripts, TypeScript modules and integration workflows."
 trigger_phrases:
   - "spec kit tests"
   - "test validation"
   - "upgrade-level tests"
 ---
 
+<!-- markdownlint-disable MD025 -->
 
-# System Spec Kit Test Suite
+# Script Tests
 
 <!-- ANCHOR:table-of-contents -->
 ## TABLE OF CONTENTS
 
 - [1. OVERVIEW](#1-overview)
-- [2. CURRENT INVENTORY](#2-current-inventory)
-- [3. RECOMMENDED RUN ORDER](#3-recommended-run-order)
-- [4. FOCUS AREAS](#4-focus-areas)
+- [2. PACKAGE TOPOLOGY](#2-package-topology)
+- [3. FIXTURE BOUNDARIES](#3-fixture-boundaries)
+- [4. ENTRYPOINTS](#4-entrypoints)
+- [5. VALIDATION](#5-validation)
+- [6. RELATED](#6-related)
 
 <!-- /ANCHOR:table-of-contents -->
+
+---
+
 <!-- ANCHOR:overview -->
 ## 1. OVERVIEW
 
-The `tests/` directory validates script behavior, TypeScript module contracts, end-to-end flows, and targeted Vitest regressions for import-policy rules, task enrichment, rendered-memory fixture guardrails, and phase/alignment workflows. Current footprint: 442 files when traversing the linked `test-fixtures/` corpus (160 physical files rooted under `tests/` itself), including 44 top-level `*.vitest.ts` suites.
+`scripts/tests/` validates script behavior across shell workflows, JavaScript
+smoke tests, Python checks and Vitest regression suites. It covers validation
+orchestration, memory pipeline seams, phase workflows, import policy, template
+rendering and utility contracts.
 
-These tests now assume the Gate E continuity contract: `/spec_kit:resume` is the recovery surface, packet context is rebuilt from `handover.md` -> `_memory.continuity` -> spec docs, and generated memory artifacts remain supporting only.
+Tests assume the resume contract where packet context is recovered from
+`handover.md -> _memory.continuity -> spec docs`; generated memory artifacts
+remain supporting fixtures or outputs.
 
 <!-- /ANCHOR:overview -->
-<!-- ANCHOR:current-inventory -->
-## 2. CURRENT INVENTORY
 
+---
 
-JavaScript tests:
-- `test-alignment-validator.js`
-- `test-ast-parser.js`
-- `test-bug-fixes.js`
-- `test-bug-regressions.js`
-- `test-cleanup-orphaned-vectors.js`
-- `test-embeddings-behavioral.js`
-- `test-embeddings-factory.js`
-- `test-export-contracts.js`
-- `test-extractors-loaders.js`
-- `test-five-checks.js`
-- `test-folder-detector-functional.js`
-- `test-frontmatter-backfill.js`
-- `test-memory-quality-lane.js` - Tests memory quality validation lane
-- `test-naming-migration.js`
-- `test-phase-command-workflows.js`
-- `test-phase-system.js`
-- `test-phase-validation.js`
-- `test-retry-manager-behavioral.js`
-- `test-scripts-modules.js`
-- `test-subfolder-resolution.js`
-- `test-template-comprehensive.js`
-- `test-template-system.js`
-- `test-utils.js`
-- `test-validation-system.js`
+<!-- ANCHOR:package-topology -->
+## 2. PACKAGE TOPOLOGY
 
-Shell tests:
-- `test-phase-system.sh`
-- `test-upgrade-level.sh`
-- `test-validation.sh`
-- `test-validation-extended.sh`
-
-Python tests:
-- `test_dual_threshold.py`
-
-Vitest regression suites (44 total), grouped by category:
-- Pipeline and workflow:
-  - `collect-session-data.vitest.ts`
-  - `generate-context-cli-authority.vitest.ts`
-  - `test-integration.vitest.ts`
-  - `workflow-e2e.vitest.ts`
-  - `workflow-warning.vitest.ts`
-- Memory and context:
-  - `description-enrichment.vitest.ts`
-  - `memory-indexer-weighting.vitest.ts`
-  - `memory-learn-command-docs.vitest.ts`
-  - `memory-pipeline-regressions.vitest.ts`
-  - `memory-render-fixture.vitest.ts`
-  - `memory-sufficiency.vitest.ts`
-  - `memory-template-contract.vitest.ts`
-  - `post-save-review.vitest.ts`
-  - `runtime-memory-inputs.vitest.ts`
-  - `session-enrichment.vitest.ts`
-  - `task-enrichment.vitest.ts`
-  - `validate-memory-quality.vitest.ts`
-- Validation and quality:
-  - `decision-confidence.vitest.ts`
-  - `progressive-validation.vitest.ts`
-  - `quality-scorer-calibration.vitest.ts`
-  - `semantic-signal-golden.vitest.ts`
-  - `validation-rule-metadata.vitest.ts`
-  - `validation-v13-v14-v12.vitest.ts`
-- Normalization and filtering:
-  - `auto-detection-fixes.vitest.ts`
-  - `contamination-filter.vitest.ts`
-  - `content-filter-parity.vitest.ts`
-  - `input-normalizer-unit.vitest.ts`
-  - `slug-uniqueness.vitest.ts`
-  - `spec-affinity.vitest.ts`
-  - `trigger-phrase-filter.vitest.ts`
-- Import policy and boundaries:
-  - `architecture-boundary-enforcement.vitest.ts`
-  - `import-policy-rules.vitest.ts`
-  - `tool-sanitizer.vitest.ts`
-- Templates and docs:
-  - `ascii-boxes.vitest.ts`
-  - `outsourced-agent-handback-docs.vitest.ts`
-  - `template-mustache-sections.vitest.ts`
-  - `template-structure.vitest.ts`
-- Phase and project classification:
-  - `phase-classification.vitest.ts`
-  - `project-phase-e2e.vitest.ts`
-- Phase 016 and alignment fixtures:
-  - `alignment-drift-fixture-preservation.vitest.ts`
-  - `tree-thinning.vitest.ts`
-- Utilities and identity:
-  - `backfill-frontmatter.vitest.ts`
-  - `utils-regressions.vitest.ts`
-  - `workspace-identity.vitest.ts`
-
-Fixtures and cache:
-- `fixtures/` - 80 fixture files for phase-system and validation workflows
-- `test-fixtures/` - symlink to `../test-fixtures` with 282 fixture files
-- Generated JS artifacts:
-  - `progressive-validation.vitest.js`
-  - `progressive-validation.vitest.js.map`
-  - `progressive-validation.vitest.d.ts.map`
-  - `tree-thinning.vitest.js`
-  - `tree-thinning.vitest.js.map`
-  - `tree-thinning.vitest.d.ts.map`
-- `.pytest_cache/`
-
-
-<!-- /ANCHOR:current-inventory -->
-<!-- ANCHOR:recommended-run-order -->
-## 3. RECOMMENDED RUN ORDER
-
-
-```bash
-cd .opencode/skill/system-spec-kit/scripts
-npm run build
-
-cd tests
-node test-scripts-modules.js
-bash test-phase-system.sh
-node test-phase-validation.js
-node test-extractors-loaders.js
-npx vitest run tests/test-integration.vitest.ts
-bash test-upgrade-level.sh
-bash test-validation.sh
-python3 test_dual_threshold.py
+```text
+scripts/tests/
++-- test-*.js                 # Node smoke and integration tests
++-- test-*.sh                 # Shell validation and phase workflow tests
++-- test_dual_threshold.py    # Python threshold check
++-- *.vitest.ts               # TypeScript regression suites
++-- fixtures/                 # Test-local fixtures
++-- test-fixtures -> ../test-fixtures
+`-- README.md
 ```
 
+Suite groups:
 
-<!-- /ANCHOR:recommended-run-order -->
-<!-- ANCHOR:focus-areas -->
-## 4. FOCUS AREAS
+| Group | Coverage |
+| --- | --- |
+| Shell tests | Spec validation, phase workflow and upgrade-level behavior |
+| Node tests | Script modules, extractors, loaders, templates and regressions |
+| Vitest suites | Memory, validation, import policy and templates |
+| Python tests | Dual-threshold decision behavior |
 
+<!-- /ANCHOR:package-topology -->
 
-- Upgrade path coverage for `spec/upgrade-level.sh` and placeholder handling.
-- Subfolder resolution coverage for memory save and folder matching behavior.
-- Validation regression coverage for shell rule orchestration.
-- Import-policy coverage for regex and AST enforcement paths.
-- Task enrichment and rendered-memory fixture coverage for hardened naming fallback behavior.
-- Runtime memory-input coverage for explicit JSON-mode failures and structured next-step persistence.
-- Stateless enrichment coverage for spec-folder parsing, git-derived file scoping, and hyphenated-spec relevance filtering.
-- Direct CLI authority coverage for explicit spec-folder saves through the real `generate-context -> runWorkflow` seam.
-<!-- /ANCHOR:focus-areas -->
+---
+
+<!-- ANCHOR:fixture-boundaries -->
+## 3. FIXTURE BOUNDARIES
+
+Allowed fixture content:
+
+- `fixtures/` for test-local inputs and expected outputs.
+- `test-fixtures` symlink for shared spec folder validation cases.
+- Generated JS artifacts only when intentionally retained.
+
+Not owned here:
+
+- Validation scenario definitions live in `../test-fixtures/`.
+- Production templates live under `../../templates/`.
+- MCP server fixture JSON lives under `../../mcp_server/tests/fixtures/`.
+
+<!-- /ANCHOR:fixture-boundaries -->
+
+---
+
+<!-- ANCHOR:entrypoints -->
+## 4. ENTRYPOINTS
+
+Run from the repository root unless a command changes into `scripts/` explicitly:
+
+```bash
+npm --prefix .opencode/skill/system-spec-kit/scripts run build
+node .opencode/skill/system-spec-kit/scripts/tests/test-scripts-modules.js
+bash .opencode/skill/system-spec-kit/scripts/tests/test-phase-system.sh
+bash .opencode/skill/system-spec-kit/scripts/tests/test-validation.sh
+npx --prefix .opencode/skill/system-spec-kit/scripts vitest run \
+  tests/test-integration.vitest.ts
+python3 .opencode/skill/system-spec-kit/scripts/tests/test_dual_threshold.py
+```
+
+<!-- /ANCHOR:entrypoints -->
+
+---
+
+<!-- ANCHOR:validation -->
+## 5. VALIDATION
+
+Recommended targeted order after script changes:
+
+```bash
+npm --prefix .opencode/skill/system-spec-kit/scripts run build
+node .opencode/skill/system-spec-kit/scripts/tests/test-scripts-modules.js
+bash .opencode/skill/system-spec-kit/scripts/tests/test-phase-system.sh
+bash .opencode/skill/system-spec-kit/scripts/tests/test-validation.sh
+npx --prefix .opencode/skill/system-spec-kit/scripts vitest run \
+  tests/test-integration.vitest.ts
+```
+
+Use narrower Vitest files for focused changes, then run the shell validation
+suite when spec folder behavior changes.
+
+<!-- /ANCHOR:validation -->
+
+---
+
+<!-- ANCHOR:related -->
+## 6. RELATED
+
+- [`../README.md`](../README.md)
+- [`../test-fixtures/README.md`](../test-fixtures/README.md)
+- [`../spec/README.md`](../spec/README.md)
+- [`../utils/README.md`](../utils/README.md)
+
+<!-- /ANCHOR:related -->

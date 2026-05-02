@@ -569,6 +569,7 @@ const codeGraphScan: ToolDefinition = {
       includeGlobs: { type: 'array', items: { type: 'string' }, description: 'Glob patterns for files to include' },
       excludeGlobs: { type: 'array', items: { type: 'string' }, description: 'Additional glob patterns to exclude' },
       incremental: { type: 'boolean', default: true, description: 'Skip unchanged files (default: true)' },
+      includeSkills: { type: 'boolean', default: false, description: 'Include .opencode/skill files in this scan; default false keeps end-user code scope' },
       verify: { type: 'boolean', default: false, description: 'Run the gold-query verification battery after an explicit full scan (default: false)' },
       persistBaseline: { type: 'boolean', default: false, description: 'Persist the current edge-distribution baseline after a full scan even when one already exists' },
     },

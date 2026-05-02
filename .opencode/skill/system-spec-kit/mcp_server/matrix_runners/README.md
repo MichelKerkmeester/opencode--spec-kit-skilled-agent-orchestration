@@ -14,11 +14,13 @@ importance_tier: "normal"
 ## TABLE OF CONTENTS
 
 - [1. OVERVIEW](#1--overview)
-- [2. QUICK START](#2--quick-start)
-- [3. MANIFEST FORMAT](#3--manifest-format)
-- [4. ADDING CELLS](#4--adding-cells)
-- [5. ADAPTERS](#5--adapters)
-- [6. VERIFICATION](#6--verification)
+- [2. ARCHITECTURE](#2--architecture)
+- [3. DIRECTORY TREE](#3--directory-tree)
+- [4. KEY FILES](#4--key-files)
+- [5. BOUNDARIES AND FLOW](#5--boundaries-and-flow)
+- [6. ENTRYPOINTS](#6--entrypoints)
+- [7. VALIDATION](#7--validation)
+- [8. RELATED](#8--related)
 
 <!-- /ANCHOR:table-of-contents -->
 
@@ -27,66 +29,60 @@ importance_tier: "normal"
 <!-- ANCHOR:overview -->
 ## 1. OVERVIEW
 
-`matrix_runners/` turns the F1-F14 x CLI-executor matrix into executable cells for the five external CLI executors: `cli-codex`, `cli-copilot`, `cli-gemini`, `cli-claude-code`, and `cli-opencode`.
+`matrix_runners/` turns the F1-F14 x CLI-executor matrix into executable cells for `cli-codex`, `cli-copilot`, `cli-gemini`, `cli-claude-code`, and `cli-opencode`.
 
-It does not run native or inline cells. Those surfaces are covered by focused local runners.
+Current state:
 
-### Architecture Diagram
+- `run-matrix.ts` parses the manifest, filters cells, invokes adapters, and writes results.
+- `matrix-manifest.json` is the frozen cell list and expected-signal source.
+- Adapters return `PASS`, `FAIL`, `TIMEOUT_CELL`, `NA`, or `BLOCKED`.
+- Native and inline cells are covered by focused local runners, not this folder.
 
-```
-┌──────────────────────────────────────────────────────────────────────┐
-│                   MATRIX RUNNER ARCHITECTURE                          │
-├──────────────────────────────────────────────────────────────────────┤
-│                                                                      │
-│  ┌─────────────────────────────────────────────────────────────────┐│
-│  │                  matrix-manifest.json                           ││
-│  │  F1-F14 × {cli-codex, cli-copilot, cli-gemini,                 ││
-│  │            cli-claude-code, cli-opencode}                       ││
-│  └───────────────────────────┬─────────────────────────────────────┘│
-│                              │                                       │
-│  ┌───────────────────────────▼─────────────────────────────────────┐│
-│  │                    run-matrix.ts                                ││
-│  │  ┌────────────────────────────────────────────────────────────┐││
-│  │  │ Parses manifest → filters cells → spawns per executor      │││
-│  │  │ Adapter resolves: PASS | FAIL | TIMEOUT | NA | BLOCKED     │││
-│  │  └────────────────────────────────────────────────────────────┘││
-│  └───────────────────────────┬─────────────────────────────────────┘│
-│                              │                                       │
-│  ┌───────────────────────────▼─────────────────────────────────────┐│
-│  │                    ADAPTERS (5 files)                            ││
-│  │  ┌──────────────┐ ┌──────────────┐ ┌──────────────┐           ││
-│  │  │ codex-       │ │ copilot-     │ │ gemini-      │           ││
-│  │  │ adapter.ts   │ │ adapter.ts   │ │ adapter.ts   │           ││
-│  │  │ spawn codex  │ │ spawn copilot│ │ spawn gemini │           ││
-│  │  └──────────────┘ └──────────────┘ └──────────────┘           ││
-│  │  ┌──────────────┐ ┌──────────────┐                              ││
-│  │  │ claude-code- │ │ opencode-    │                              ││
-│  │  │ adapter.ts   │ │ adapter.ts   │                              ││
-│  │  │ spawn claude │ │ spawn opencd │                              ││
-│  │  └──────────────┘ └──────────────┘                              ││
-│  └───────────────────────────┬─────────────────────────────────────┘│
-│                              │                                       │
-│  ┌───────────────────────────▼─────────────────────────────────────┐│
-│  │                    OUTPUT                                       ││
-│  │  ┌────────────────────┐ ┌──────────────────────────────────────┐││
-│  │  │ Per-cell JSONL     │ │ summary.tsv                          │││
-│  │  │ F1-cli-gemini.jsonl│ │ (aggregated PASS/FAIL/TIMEOUT/NA)   │││
-│  │  └────────────────────┘ └──────────────────────────────────────┘││
-│  └─────────────────────────────────────────────────────────────────┘│
-│                                                                      │
-│  Status codes: PASS = stdout match | FAIL = no match | TIMEOUT      │
-│                NA = not applicable | BLOCKED = spawn/permission err │
-│                                                                      │
-└──────────────────────────────────────────────────────────────────────┘
+<!-- /ANCHOR:overview -->
+
+---
+
+<!-- ANCHOR:architecture -->
+## 2. ARCHITECTURE
+
+```text
+╭──────────────────────────────────────────────────────────────────╮
+│                         MATRIX RUNNERS                           │
+╰──────────────────────────────────────────────────────────────────╯
+
+┌────────────────────┐      ┌────────────────────┐      ┌────────────────────┐
+│ Operator or CI     │ ───▶ │ run-matrix.ts      │ ───▶ │ adapter-base.ts    │
+│ selects cells      │      │ filters manifest   │      │ shared spawn logic │
+└────────┬───────────┘      └─────────┬──────────┘      └─────────┬──────────┘
+         │                            │                           │
+         │                            ▼                           ▼
+         │                 ┌────────────────────┐       ┌────────────────────┐
+         └──────────────▶  │ matrix-manifest    │ ───▶  │ CLI adapters       │
+                           │ feature x executor │       │ codex, copilot,    │
+                           │ cells              │       │ gemini, claude, oc │
+                           └─────────┬──────────┘       └─────────┬──────────┘
+                                     │                            │
+                                     ▼                            ▼
+                           ┌────────────────────┐       ┌────────────────────┐
+                           │ templates/         │       │ JSONL and summary  │
+                           │ prompt payloads    │       │ TSV output         │
+                           └────────────────────┘       └────────────────────┘
+
+Dependency direction: runner ───▶ manifest and templates ───▶ adapters ───▶ CLI process.
 ```
 
-### Directory Tree
+<!-- /ANCHOR:architecture -->
 
-```
+---
+
+<!-- ANCHOR:directory-tree -->
+## 3. DIRECTORY TREE
+
+```text
 mcp_server/matrix_runners/
-├── run-matrix.ts                   # Main runner: parse manifest → filter → spawn → aggregate
-├── matrix-manifest.json            # Frozen cell list (F1-F14 x 5 executors)
-├── adapter-base.ts                 # Shared adapter logic (spawn, status codes, error handling)
+├── run-matrix.ts                   # Main runner for filter, spawn, and aggregation
+├── matrix-manifest.json            # Frozen F1-F14 x 5 executor cell list
+├── adapter-base.ts                 # Shared adapter logic and status mapping
 ├── codex-adapter.ts                # Codex CLI adapter
 ├── copilot-adapter.ts              # Copilot CLI adapter
 ├── gemini-adapter.ts               # Gemini CLI adapter
@@ -95,10 +91,84 @@ mcp_server/matrix_runners/
 ├── templates/                      # Prompt templates per cell
 └── README.md
 ```
-<!-- /ANCHOR:overview -->
 
-<!-- ANCHOR:quick-start -->
-## 2. QUICK START
+<!-- /ANCHOR:directory-tree -->
+
+---
+
+<!-- ANCHOR:key-files -->
+## 4. KEY FILES
+
+| File | Responsibility |
+|---|---|
+| `run-matrix.ts` | Parses flags, reads the manifest, dispatches cells, and writes output files. |
+| `matrix-manifest.json` | Defines feature ID, executor, applicability, prompt template, expected signal, and timeout. |
+| `adapter-base.ts` | Holds shared spawn behavior, timeout handling, and status mapping. |
+| `*-adapter.ts` | Maps one executor to its CLI argv and stdout matching contract. |
+| `templates/` | Stores prompt payloads referenced by manifest cells. |
+
+<!-- /ANCHOR:key-files -->
+
+---
+
+<!-- ANCHOR:boundaries-flow -->
+## 5. BOUNDARIES AND FLOW
+
+| Boundary | Rule |
+|---|---|
+| Cell source | Add matrix coverage through `matrix-manifest.json`, not hard-coded runner branches. |
+| Adapter scope | Change an adapter only when an executor argv or output contract changes. |
+| Applicability | Use `applicable: false` for known `NA` cells before spawning a CLI. |
+| Output | Write one JSONL file per cell plus `summary.tsv` in the selected output directory. |
+
+Main flow:
+
+```text
+╭──────────────────────────────────────────╮
+│ Operator passes output, filter, executor │
+╰──────────────────────────────────────────╯
+                  │
+                  ▼
+┌──────────────────────────────────────────┐
+│ run-matrix.ts loads matrix-manifest.json │
+└──────────────────────────────────────────┘
+                  │
+                  ▼
+┌──────────────────────────────────────────┐
+│ Runner resolves template and adapter     │
+└──────────────────────────────────────────┘
+                  │
+                  ▼
+┌──────────────────────────────────────────┐
+│ Adapter spawns executor or returns NA    │
+└──────────────────────────────────────────┘
+                  │
+                  ▼
+┌──────────────────────────────────────────┐
+│ Status maps to PASS, FAIL, TIMEOUT, NA   │
+└──────────────────────────────────────────┘
+                  │
+                  ▼
+╭──────────────────────────────────────────╮
+│ JSONL cell output and summary.tsv        │
+╰──────────────────────────────────────────╯
+```
+
+<!-- /ANCHOR:boundaries-flow -->
+
+---
+
+<!-- ANCHOR:entrypoints -->
+## 6. ENTRYPOINTS
+
+| Entrypoint | Type | Purpose |
+|---|---|---|
+| `run-matrix.ts` | CLI module | Runs selected matrix cells and writes results. |
+| `matrix-manifest.json` | Data file | Defines available cells and expected signals. |
+| `adapter-base.ts` | Module | Centralizes shared adapter execution behavior. |
+| `templates/` | Prompt assets | Provides reusable prompts for manifest cells. |
+
+Example:
 
 ```bash
 cd .opencode/skill/system-spec-kit
@@ -108,62 +178,30 @@ npx tsx mcp_server/matrix_runners/run-matrix.ts \
   --executors cli-gemini,cli-claude-code
 ```
 
-The runner writes one JSONL file per cell plus `summary.tsv`:
+<!-- /ANCHOR:entrypoints -->
 
-```text
-/tmp/spec-kit-matrix/
-├── F1-cli-gemini.jsonl
-├── F1-cli-claude-code.jsonl
-└── summary.tsv
-```
-<!-- /ANCHOR:quick-start -->
+---
 
-<!-- ANCHOR:manifest-format -->
-## 3. MANIFEST FORMAT
+<!-- ANCHOR:validation -->
+## 7. VALIDATION
 
-`matrix-manifest.json` is the frozen cell list. Each cell has:
-
-| Field | Purpose |
-|-------|---------|
-| `featureId` | `F1` through `F14` |
-| `featureName` | Human-readable feature surface |
-| `executor` | One of the five CLI executors |
-| `applicable` | `false` produces `NA` without invoking a CLI |
-| `promptTemplate` | Relative template path under `matrix_runners/` or inline prompt text |
-| `expectedSignal` | Substring or JavaScript regex used to mark stdout as `PASS` |
-| `timeoutSeconds` | Per-cell timeout, defaulting operationally to 300 seconds |
-
-`executorApplicabilityRules` records first-class exceptions, currently `F11` + `cli-gemini` as `NA`.
-<!-- /ANCHOR:manifest-format -->
-
-<!-- ANCHOR:adding-cells -->
-## 4. ADDING CELLS
-
-1. Add a manifest row with the feature, executor, applicability, template, expected signal, and timeout.
-2. Add or update the referenced template under `templates/`.
-3. Keep the expected signal unique enough for stdout matching, for example `MATRIX_CELL_PASS F8`.
-4. Add adapter coverage only when the executor argv contract changes.
-<!-- /ANCHOR:adding-cells -->
-
-<!-- ANCHOR:adapters -->
-## 5. ADAPTERS
-
-Each adapter returns:
-
-```typescript
-type AdapterStatus = 'PASS' | 'FAIL' | 'TIMEOUT_CELL' | 'NA' | 'BLOCKED';
-```
-
-Spawn errors, including `EAGAIN`, `ENOSPC`, missing binaries, and permission failures, return `BLOCKED`. Timeout returns `TIMEOUT_CELL`. A zero exit without the expected stdout signal returns `FAIL`.
-<!-- /ANCHOR:adapters -->
-
-<!-- ANCHOR:verification -->
-## 6. VERIFICATION
-
-Use the targeted smoke suite. It mocks `spawn` and never invokes real CLIs:
+Run from `.opencode/skill/system-spec-kit/mcp_server` unless noted.
 
 ```bash
-cd .opencode/skill/system-spec-kit/mcp_server
 npx vitest run matrix-adapter
 ```
-<!-- /ANCHOR:verification -->
+
+Expected result: the smoke suite mocks `spawn` and exits with Vitest success without invoking real CLIs.
+
+<!-- /ANCHOR:validation -->
+
+---
+
+<!-- ANCHOR:related -->
+## 8. RELATED
+
+- [`../stress_test/README.md`](../stress_test/README.md)
+- [`../tools/README.md`](../tools/README.md)
+- [`../README.md`](../README.md)
+
+<!-- /ANCHOR:related -->

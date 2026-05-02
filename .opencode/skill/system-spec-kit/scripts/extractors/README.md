@@ -7,72 +7,92 @@ trigger_phrases:
   - "decision extraction"
 ---
 
-
 # Data Extractors
 
 <!-- ANCHOR:table-of-contents -->
 ## TABLE OF CONTENTS
 
 - [1. OVERVIEW](#1-overview)
-- [2. CURRENT INVENTORY](#2-current-inventory)
-- [3. ROLE IN PIPELINE](#3-role-in-pipeline)
-- [4. NOTES](#4-notes)
-- [5. QUICK IMPORT CHECK](#5-quick-import-check)
+- [2. SCRIPT IO](#2-script-io)
+- [3. ENTRYPOINTS](#3-entrypoints)
+- [4. VALIDATION FROM REPO ROOT](#4-validation-from-repo-root)
+- [5. KEY FILES](#5-key-files)
+- [6. BOUNDARIES](#6-boundaries)
+- [7. RELATED](#7-related)
 
 <!-- /ANCHOR:table-of-contents -->
 <!-- ANCHOR:overview -->
 ## 1. OVERVIEW
 
-The `extractors/` directory converts collected session input into structured data used by templates and indexing.
-That extracted data supports generated artifacts and search enrichment; canonical continuity for active packet work is still resumed via `/spec_kit:resume` from `handover.md -> _memory.continuity -> spec docs`.
+`scripts/extractors/` converts normalized session input into structured conversation, decision, file, implementation, git, and spec-folder data used by template rendering and indexing workflows.
 
 <!-- /ANCHOR:overview -->
-<!-- ANCHOR:current-inventory -->
-## 2. CURRENT INVENTORY
+<!-- ANCHOR:script-io -->
+## 2. SCRIPT IO
 
-Current source inventory: 12 TypeScript modules plus `index.ts` barrel export.
+| Flow | Input | Output |
+| --- | --- | --- |
+| Session collection | Normalized loader data plus optional runtime context | Aggregated session data for rendering |
+| Content extraction | Conversation, file, decision, diagram, and implementation inputs | Typed facts and summaries |
+| Enrichment | Git and spec-folder context | Additional context for generated artifacts |
+| Quality scoring | Extracted data | Quality score and validation signals |
 
-- `collect-session-data.ts` - Orchestrates session data collection across observations, files, decisions, and context
-- `contamination-filter.ts` - Filters contamination from extraction pipeline outputs
-- `conversation-extractor.ts`
-- `decision-extractor.ts`
-- `diagram-extractor.ts`
-- `file-extractor.ts`
-- `git-context-extractor.ts` - Mines git history for captured-session enrichment (spec 013)
-- `implementation-guide-extractor.ts`
-- `quality-scorer.ts` - Scores extraction quality for validation
-- `session-activity-signal.ts` - Detects session activity signals for capture gating (re-exported from barrel)
-- `session-extractor.ts`
-- `spec-folder-extractor.ts` - Parses spec folder docs for captured-session enrichment (spec 013)
-- `index.ts`
+<!-- /ANCHOR:script-io -->
+<!-- ANCHOR:entrypoints -->
+## 3. ENTRYPOINTS
 
+- `collectSessionData()` coordinates loader output, extraction modules, enrichment, and scoring.
+- `extractConversationData()`, `extractDecisionData()`, `extractFileData()`, and `extractSessionData()` provide focused extraction surfaces.
+- `extractGitContext()` and `extractSpecFolderContext()` enrich captured-session data.
+- `scoreExtractionQuality()` evaluates extracted data before downstream rendering.
+- `index.ts` re-exports the extractor surface used by compiled scripts.
 
-<!-- /ANCHOR:current-inventory -->
-<!-- ANCHOR:role-in-pipeline -->
-## 3. ROLE IN PIPELINE
+<!-- /ANCHOR:entrypoints -->
+<!-- ANCHOR:validation-from-repo-root -->
+## 4. VALIDATION FROM REPO ROOT
 
-
-- Input: normalized data from `loaders/data-loader.ts`
-- Processing: extraction and enrichment across conversation, files, decisions, and session context
-- Output: structured objects consumed by `renderers/template-renderer.ts` and core workflow/indexing layers
-
-
-<!-- /ANCHOR:role-in-pipeline -->
-<!-- ANCHOR:notes -->
-## 4. NOTES
-
-
-- Decision tree generation logic is provided by `lib/decision-tree-generator.ts` and used by extractor flow.
-- Runtime imports use compiled files under `dist/extractors/`.
-- The extractor barrel now re-exports the captured-session enrichment helpers `extractSpecFolderContext()` and `extractGitContext()` alongside the existing extraction surface.
-
-
-<!-- /ANCHOR:notes -->
-<!-- ANCHOR:quick-import-check -->
-## 5. QUICK IMPORT CHECK
-
+Run extractor validation from the repository root:
 
 ```bash
-node -e "const e=require('./.opencode/skill/system-spec-kit/scripts/dist/extractors'); console.log(Object.keys(e))"
+npm --prefix .opencode/skill/system-spec-kit/scripts run build
+node -e "const extractors=require('./.opencode/skill/system-spec-kit/scripts/dist/extractors'); console.log(Object.keys(extractors).sort())"
+python3 .opencode/skill/sk-code-opencode/scripts/verify_alignment_drift.py --root .opencode/skill/system-spec-kit/scripts/extractors
 ```
-<!-- /ANCHOR:quick-import-check -->
+
+<!-- /ANCHOR:validation-from-repo-root -->
+<!-- ANCHOR:key-files -->
+## 5. KEY FILES
+
+| File | Purpose |
+| --- | --- |
+| `collect-session-data.ts` | Coordinates extraction across observations, files, decisions, and context |
+| `contamination-filter.ts` | Removes contamination from extraction outputs before use |
+| `conversation-extractor.ts` | Extracts conversation-level facts and summaries |
+| `decision-extractor.ts` | Extracts decisions and decision metadata |
+| `diagram-extractor.ts` | Extracts diagram-ready content |
+| `file-extractor.ts` | Extracts changed-file context |
+| `git-context-extractor.ts` | Enriches captured sessions with git context |
+| `implementation-guide-extractor.ts` | Extracts implementation guidance from source data |
+| `quality-scorer.ts` | Scores extraction quality and validation signals |
+| `session-activity-signal.ts` | Detects session activity signals for capture gating |
+| `session-extractor.ts` | Extracts session-level facts and metadata |
+| `spec-folder-extractor.ts` | Reads spec-folder context for capture enrichment |
+| `index.ts` | Barrel export for extractor modules |
+
+<!-- /ANCHOR:key-files -->
+<!-- ANCHOR:boundaries -->
+## 6. BOUNDARIES
+
+- Extractors consume normalized data; source selection and path validation belong to loaders.
+- Extractors do not render markdown, write files, or persist index rows.
+- Runtime imports should use compiled modules under `scripts/dist/extractors/`.
+
+<!-- /ANCHOR:boundaries -->
+<!-- ANCHOR:related -->
+## 7. RELATED
+
+- `../loaders/README.md`
+- `../renderers/README.md`
+- `../utils/README.md`
+
+<!-- /ANCHOR:related -->

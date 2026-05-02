@@ -1,29 +1,28 @@
 ---
 title: "Code Graph Subsystem"
-description: "Structural code graph indexer, query handlers, scan-scope defaults, and context-surface contracts for the Spec Kit Memory MCP server."
+description: "Structural code graph package for scan, query, status, context and CocoIndex bridge MCP tools."
 trigger_phrases:
   - "code graph subsystem"
   - "code graph indexer"
-  - "structural indexer"
-  - "code graph scan defaults"
-  - "code graph surfaces"
   - "code graph readme"
+  - "structural graph tools"
 ---
 
 # Code Graph Subsystem
 
-> Structural code graph for the Spec Kit Memory MCP server. Indexes functions, classes, imports, and call edges into SQLite for `code_graph_*` MCP tools and OpenCode plugin context surfaces.
-
----
-
 <!-- ANCHOR:table-of-contents -->
 ## TABLE OF CONTENTS
 
-- [1. OVERVIEW](#1-overview)
-- [2. STRUCTURE](#2-structure)
-- [3. CONTEXT SURFACES](#3-context-surfaces)
-- [4. SCAN DEFAULTS](#4-scan-defaults)
-- [5. RELATED DOCUMENTS](#5-related-documents)
+- [1. OVERVIEW](#1--overview)
+- [2. ARCHITECTURE](#2--architecture)
+- [3. PACKAGE TOPOLOGY](#3--package-topology)
+- [4. DIRECTORY TREE](#4--directory-tree)
+- [5. KEY FILES](#5--key-files)
+- [6. BOUNDARIES AND FLOW](#6--boundaries-and-flow)
+- [7. ENTRYPOINTS](#7--entrypoints)
+- [8. SCAN SCOPE](#8--scan-scope)
+- [9. VALIDATION](#9--validation)
+- [10. RELATED](#10--related)
 
 <!-- /ANCHOR:table-of-contents -->
 
@@ -32,294 +31,278 @@ trigger_phrases:
 <!-- ANCHOR:overview -->
 ## 1. OVERVIEW
 
-This folder contains the structural code graph subsystem. It walks a workspace, parses source files via tree-sitter or the shipped regex fallback, and persists nodes (functions, classes, modules) and edges (calls, imports, contains, type_of) into a SQLite database. The graph backs `code_graph_scan`, `code_graph_query`, `code_graph_status`, `code_graph_context`, `code_graph_verify`, `detect_changes`, and the `ccc_*` MCP bridge tools, and feeds the structural-context payload consumed by both MCP `session_bootstrap` and the OpenCode `compact-code-graph` plugin.
+`code_graph/` owns the structural graph package inside the Spec Kit Memory MCP server. It scans source files, persists file-symbol-edge records in SQLite, exposes graph MCP tools and bridges selected CocoIndex Code operations through `ccc_*` handlers.
 
-### Subsystem Statistics (current schema)
+Current state:
 
-| Aspect | Value | Notes |
-|---|---|---|
-| Schema version | 3 | See `lib/code-graph-db.ts` |
-| Node kinds | class, enum, export, function, import, interface, method, module, parameter, type_alias, variable | 11 kinds |
-| Edge types | CALLS, CONTAINS, DECORATES, EXPORTS, EXTENDS, IMPLEMENTS, IMPORTS, OVERRIDES, TESTED_BY, TYPE_OF | 10 edge types |
-| Default scan extensions | `.ts`, `.tsx`, `.js`, `.jsx`, `.py`, `.sh` | See `lib/indexer-types.ts` |
-| Default scan excludes | `node_modules`, `dist`, `.git`, `vendor`, `z_future`, `z_archive`, `mcp-coco-index/mcp_server` | Plus `.gitignore` awareness |
-| Database file | `database/code-graph.sqlite` (sibling to MCP server) | Backed by better-sqlite3 |
-
-### Key Capabilities
-
-| Capability | Description |
-|---|---|
-| **Dual parser backends** | Tree-sitter by default plus `SPECKIT_PARSER=regex` fallback via `lib/tree-sitter-parser.ts` and `lib/structural-indexer.ts` |
-| **Incremental scan** | Skip unchanged files via mtime + content-hash check (`lib/structural-indexer.ts`); explicit full scans pass `IndexFilesOptions { skipFreshFiles: false }` |
-| **`.gitignore` awareness** | Walks honor `.gitignore` patterns via the `ignore` package, with per-directory caching |
-| **Stale-graph highlights** | Structural snapshots compute top-called function highlights even when graph status is `stale` |
-| **Working set tracking** | Recently-touched file tracking for fresh-context retrieval (`lib/working-set-tracker.ts`) |
-| **Budget allocation** | Token budget enforcement on context payloads (`lib/budget-allocator.ts`) |
-| **Readiness contract** | `canonicalReadiness` probing (`ready` / `stale` / `missing`) and `trustState` probing (`live` / `stale` / `absent` / `unavailable`) via `lib/readiness-contract.ts` |
-| **Status diagnostics** | `code_graph_status` returns readiness, parse-health, and `graphQualitySummary` for operator-visible health checks |
-| **Blocked read contract** | `code_graph_context` returns a structured `status:"blocked"` payload when a broader full scan is required before graph answers can be trusted |
-| **Startup transport metadata** | `buildStartupBrief()` carries `graphQualitySummary` plus shared-payload provenance for hook/runtime startup surfaces |
-| **Staged persistence** | Shared `persistIndexedFileResult()` keeps files stale until nodes and edges land (`lib/ensure-ready.ts`) |
-
-### Architecture Diagram
-
-```
-┌──────────────────────────────────────────────────────────────────────┐
-│                CODE GRAPH SUBSYSTEM ARCHITECTURE                      │
-├──────────────────────────────────────────────────────────────────────┤
-│                                                                      │
-│  ┌─────────────────────────────────────────────────────────────────┐│
-│  │                  CALLERS / CONSUMERS                             ││
-│  │  ┌──────────────────────┐  ┌────────────────────────────────┐   ││
-│  │  │ MCP tools            │  │ Plugin surfaces                │   ││
-│  │  │ code_graph_* + ccc_* │  │ session_bootstrap (startup)    │   ││
-│  │  │                      │  │ compact-code-graph (compaction)│   ││
-│  │  └──────────────────────┘  └────────────────────────────────┘   ││
-│  └──────────────────────────┬───────────────────────────────────────┘│
-│                             │                                        │
-│  ┌──────────────────────────▼───────────────────────────────────────┐│
-│  │                   HANDLERS (9 tools)                             ││
-│  │  ┌──────────┐ ┌──────────┐ ┌──────────┐ ┌──────────────────┐    ││
-│  │  │ scan     │ │ query    │ │ status   │ │ context          │    ││
-│  │  │ verify   │ │ detect   │ │ ccc-     │ │ ccc-             │    ││
-│  │  │          │ │ changes  │ │ status   │ │ reindex/feedback │    ││
-│  │  └──────────┘ └──────────┘ └──────────┘ └──────────────────┘    ││
-│  └──────────────────────────┬───────────────────────────────────────┘│
-│                             │                                        │
-│  ┌──────────────────────────▼───────────────────────────────────────┐│
-│  │                      CORE LIBRARY                                ││
-│  │  ┌──────────────────────────────────────────────────────────────┐││
-│  │  │ INDEXER: tree-sitter WASM (default) + regex fallback         │││
-│  │  │  structural-indexer.ts, tree-sitter-parser.ts                │││
-│  │  │                                                              │││
-│  │  │ DATABASE: SQLite (better-sqlite3)                            │││
-│  │  │  code-graph-db.ts → code_files, code_nodes, code_edges       │││
-│  │  │  Schema v3: 11 node kinds, 10 edge types                     │││
-│  │  │                                                              │││
-│  │  │ CONTEXT: LLM-oriented graph neighborhoods                    │││
-│  │  │  code-graph-context.ts: neighborhood / outline / impact      │││
-│  │  │  seed-resolver.ts: CocoIndex file:line → graph node          │││
-│  │  │                                                              │││
-│  │  │ UTILITY: readiness-contract, budget-allocator                │││
-│  │  │  working-set-tracker, runtime-detection, compact-merger      │││
-│  │  └──────────────────────────────────────────────────────────────┘││
-│  └──────────────────────────────────────────────────────────────────┘│
-│                                                                      │
-│  Scan: incremental (mtime + hash) | 6 file extensions               │
-│  Excludes: node_modules, dist, .git, z_future, z_archive, .gitignore │
-│  Database: database/code-graph.sqlite                                │
-│                                                                      │
-└──────────────────────────────────────────────────────────────────────┘
-```
+- Graph reads expose readiness, trust and graph-quality metadata so callers can detect stale or missing indexes.
+- Context reads can return blocked payloads when a full scan is required before graph answers are safe.
+- Startup and compaction surfaces reuse the same graph summary payloads produced by the library.
+- Default scans target end-user repository code. Files under `.opencode/skill/**` are skipped unless a maintainer opts in.
 
 <!-- /ANCHOR:overview -->
 
 ---
 
-<!-- ANCHOR:structure -->
-## 2. STRUCTURE
+<!-- ANCHOR:architecture -->
+## 2. ARCHITECTURE
 
+```text
+╭────────────────────────────────────────────────────────────╮
+│                    CODE GRAPH SUBSYSTEM                    │
+╰────────────────────────────────────────────────────────────╯
+
+┌──────────────────┐      ┌──────────────────┐
+│ MCP callers      │ ───▶ │ handlers/        │
+│ code_graph_*     │      │ request adapters │
+│ ccc_*            │      └────────┬─────────┘
+└──────────────────┘               │
+                                    ▼
+┌──────────────────┐      ┌──────────────────┐
+│ tools/           │ ◀─── │ lib/             │
+│ registry surface │      │ graph engine     │
+└──────────────────┘      └────────┬─────────┘
+                                    │
+                                    ▼
+┌──────────────────┐      ┌──────────────────┐
+│ database/        │      │ CocoIndex Code   │
+│ code-graph.sqlite│      │ bridge commands  │
+└──────────────────┘      └──────────────────┘
+
+Dependency direction:
+tools registry → handlers → lib → database or external bridge
+startup surfaces → lib startup summary helpers
 ```
+
+<!-- /ANCHOR:architecture -->
+
+---
+
+<!-- ANCHOR:package-topology -->
+## 3. PACKAGE TOPOLOGY
+
+```text
 code_graph/
-├── README.md                       # This file
-├── lib/                            # Core implementation
-│   ├── README.md                   # Library overview
-│   ├── code-graph-db.ts            # SQLite schema, getStats(), highlight queries
-│   ├── code-graph-context.ts       # Context payload assembly
-│   ├── structural-indexer.ts       # Directory walk + parse + persist
-│   ├── tree-sitter-parser.ts       # Language detection + AST extraction
-│   ├── indexer-types.ts            # DEFAULT_EXCLUDE_PATHS, file-type filters
-│   ├── compact-merger.ts           # Token-bounded compaction
-│   ├── budget-allocator.ts         # Context size budgets
-│   ├── ensure-ready.ts             # Readiness probe + lazy refresh
-│   ├── readiness-contract.ts       # Trust state taxonomy
-│   ├── ops-hardening.ts            # Query timeout + retry guards
-│   ├── query-intent-classifier.ts  # Intent routing for queries
-│   ├── runtime-detection.ts        # Runtime context detection
-│   ├── seed-resolver.ts            # Seed-node resolution for traversal
-│   ├── startup-brief.ts            # Full-payload session startup brief
-│   ├── working-set-tracker.ts      # Recently-touched files
-│   └── index.ts                    # Library entry point
-├── handlers/                       # MCP tool handlers
-│   ├── README.md                   # Handler overview
-│   ├── scan.ts                     # code_graph_scan
-│   ├── query.ts                    # code_graph_query
-│   ├── status.ts                   # code_graph_status
-│   ├── context.ts                  # code_graph_context
-│   ├── verify.ts                   # code_graph_verify
-│   ├── detect-changes.ts           # detect_changes
-│   ├── ccc-status.ts               # CocoIndex status bridge
-│   ├── ccc-reindex.ts              # CocoIndex reindex bridge
-│   ├── ccc-feedback.ts             # CocoIndex feedback bridge
-│   └── index.ts                    # Handler registry
-├── tests/                          # vitest suites
-│   ├── code-graph-indexer.vitest.ts
-│   ├── code-graph-scan.vitest.ts
-│   ├── code-graph-context-handler.vitest.ts
-│   ├── code-graph-query-handler.vitest.ts
-│   ├── code-graph-ops-hardening.vitest.ts
-│   ├── code-graph-seed-resolver.vitest.ts
-│   └── code-graph-siblings-readiness.vitest.ts
-└── tools/                          # Auxiliary tooling
-    ├── code-graph-tools.ts
-    └── index.ts
+├── README.md                  │ Package overview
+├── handlers/                  │ MCP tool handlers
+├── lib/                       │ Indexer, DB, readiness and context logic
+├── tools/                     │ Tool registration and dispatcher wiring
+├── tests/                     │ Vitest coverage for graph behavior
+├── feature_catalog/           │ Current feature inventory
+└── manual_testing_playbook/   │ Manual validation scenarios
 ```
 
-### Key Files
+Allowed dependency direction:
 
-| File | Purpose |
-|---|---|
-| `lib/structural-indexer.ts` | Directory walk, file parsing, DB persistence, gitignore filtering |
-| `lib/indexer-types.ts` | `DEFAULT_EXCLUDE_PATHS` constant, scan-config types |
-| `lib/code-graph-db.ts` | SQLite schema (`schemaVersion: 3`), `getStats()`, `getStartupHighlights()` SQL |
-| `lib/tree-sitter-parser.ts` | Language detection, AST traversal, node/edge extraction |
-| `handlers/scan.ts` | `code_graph_scan` MCP handler — entry point for fresh + incremental scans |
-| `handlers/status.ts` | `code_graph_status` MCP handler — totals, freshness, parseHealth |
-| `handlers/context.ts` | `code_graph_context` MCP handler — context-window-bounded retrieval |
-| `handlers/query.ts` | `code_graph_query` MCP handler — graph traversal queries |
-| `handlers/verify.ts` | `code_graph_verify` MCP handler — graph verification checks |
-| `handlers/detect-changes.ts` | `detect_changes` MCP handler — stale-safe unified-diff preflight |
+```text
+tools/ → handlers/ → lib/
+handlers/ → shared MCP schemas and result types
+lib/ → database files and external parser or bridge adapters
+tests/ → public handlers and library entrypoints
+```
 
-Shared regression coverage for the migrated runtime also lives in the parent `mcp_server/tests/` suite. Current examples include `tests/tree-sitter-parser.vitest.ts`, `tests/structural-contract.vitest.ts`, and `tests/ensure-ready.vitest.ts`.
+Disallowed dependency direction:
 
-<!-- /ANCHOR:structure -->
+```text
+lib/ → handlers/
+database layer → MCP transport modules
+feature catalog or playbook docs → runtime imports
+```
 
----
-
-<!-- ANCHOR:context-surfaces -->
-## 3. CONTEXT SURFACES
-
-The subsystem exposes four operator-visible contract families: `code_graph_status`, `code_graph_context`, `code_graph_query`, and startup/compaction payloads. They share the readiness vocabulary (`readiness`, `canonicalReadiness`, `trustState`) and surface graph-quality and structured transport metadata. Both `code_graph_context` and `code_graph_query` enforce the same explicit blocked/degraded contract when readiness requires a suppressed `full_scan`, and `code_graph_query` additionally carries CALLS ambiguity resolution metadata.
-
-### Status and Readiness Surfaces
-
-| Surface | Status shape | Key fields | Notes |
-|---|---|---|---|
-| **`code_graph_status`** | `status: "ok"` | `freshness`, `readiness`, `canonicalReadiness`, `trustState`, `parseHealth`, `graphQualitySummary` | Primary operator health probe; keeps counts plus parser/enrichment quality in one response |
-| **`code_graph_context` (success path)** | `status: "ok"` | `readiness`, `canonicalReadiness`, `trustState`, `lastPersistedAt`, `anchors`, `graphContext`, `textBrief`, `metadata`, `graphMetadata` | Context reads always echo readiness so callers can judge freshness and detector provenance alongside the returned neighborhood |
-| **`code_graph_context` (blocked path)** | `status: "blocked"` | `blocked`, `degraded`, `graphAnswersOmitted`, `requiredAction`, `blockReason`, `fallbackDecision`, `readiness`, `canonicalReadiness`, `trustState`, `lastPersistedAt` | Returned when readiness requires a full scan and inline full scans are disallowed; callers should run `code_graph_scan` before retrying or follow `fallbackDecision.nextTool` |
-| **`code_graph_query` (success path)** | `status: "ok"` | `readiness`, `canonicalReadiness`, `trustState`, operation results, ambiguity / selected-candidate metadata | CALLS queries on ambiguous `handle*` subjects prefer callable implementation nodes over wrapper-shadow candidates; metadata records the chosen candidate and other candidates considered |
-| **`code_graph_query` (blocked path)** | `status: "blocked"` | Same shape as the `code_graph_context` blocked payload (`blocked`, `degraded`, `graphAnswersOmitted`, `requiredAction`, `blockReason`, optional `fallbackDecision`, readiness + trust) | Query reads mirror the context read contract instead of silently returning empty results when readiness requires a suppressed `full_scan`; `fallbackDecision` gives the recovery path when available |
-
-Status degraded payloads also surface `fallbackDecision` when stats or status-path recovery is needed, for example `{ nextTool: "rg", reason: "stats_unavailable" }`.
-
-### Structured Context Metadata
-
-`code_graph_context` success payloads carry structured metadata instead of a text-only readiness hint.
-
-| Field group | Contents | Why it matters |
-|---|---|---|
-| `metadata.partialOutput` | `isPartial`, `reasons`, `omittedSections`, `omittedAnchors`, `truncatedText` | Explains whether deadline or budget pressure trimmed the response |
-| `metadata.deadlineMs` | Effective per-call deadline (ms) | Makes the bounded-work deadline explicit so callers can correlate `partialOutput.reasons` with the budget that produced them |
-| `metadata.freshness` | `lastScanAt`, `staleness` | Separates context freshness from the higher-level readiness block |
-| `graphMetadata` | `detectorProvenance` | Makes parser/detector provenance visible to downstream callers without re-querying status |
-| `anchors[*]` | `source`, `provider`, `score`, `snippet`, `range` | Preserves seed provenance so CocoIndex/manual/graph-sourced anchors stay traceable |
-
-### Startup and Compaction Payloads
-
-The structural snapshot reaches startup and compaction consumers through shared startup payloads.
-
-| Surface | Includes summary | Includes highlights | Structured metadata | Typical caller |
-|---|---|---|---|---|
-| **MCP `session_bootstrap` / `startup-brief`** | Yes | Yes | `graphSummary`, `graphQualitySummary`, `graphState`, `sharedPayload`, `sharedPayloadTransport` | MCP clients calling the startup or bootstrap surface directly |
-| **Runtime startup hooks** (Claude/Gemini/Copilot `session-prime.ts`, Codex `session-start.ts`) | Yes | Yes | Same `graphQualitySummary` + `sharedPayloadTransport` envelope delivered through the hook-specific transport for each runtime | All four supported runtimes transport the same compact startup payload; `session_bootstrap()` remains available as a manual recovery path rather than a Codex-only substitute |
-| **OpenCode plugin compact-code-graph `--minimal` resume** | Yes | Yes (including stale graphs) | Reuses the shared snapshot payload while keeping `RESUME_MODE = 'minimal'` for token economy | OpenCode TUI session compaction |
-
-`buildStartupBrief()` returns both human-readable and transport-friendly shapes:
-
-| Field | Shape | Notes |
-|---|---|---|
-| `graphQualitySummary` | `detectorProvenanceSummary`, `graphEdgeEnrichmentSummary` | Mirrors the quality summary emitted by `code_graph_status` |
-| `sharedPayload` | shared envelope with `kind`, `summary`, `sections`, `provenance` | Canonical structured context for hook-capable runtimes |
-| `sharedPayloadTransport` | compact JSON with `kind`, `summary`, `provenance`, `sectionKeys` | Lightweight startup digest for transports that do not need full section bodies |
-| `provenance` | `producer`, `sourceSurface`, `trustState`, `generatedAt`, `lastUpdated`, `sourceRefs` | Preserves startup-quality/source metadata across runtime boundaries |
-
-### Surface Citations
-
-| Aspect | Source | Notes |
-|---|---|---|
-| Status quality summary | `handlers/status.ts` | `code_graph_status` includes `parseHealth` and `graphQualitySummary` in the public payload |
-| Blocked read contract | `handlers/context.ts` | `status:"blocked"` payload names `requiredAction`, `graphAnswersOmitted`, readiness, and persisted timestamp |
-| Partial-output metadata | `lib/code-graph-context.ts` | `metadata.partialOutput` tracks deadline/budget truncation with omitted section/anchor counts |
-| Startup quality + transport | `lib/startup-brief.ts` | `buildStartupBrief()` returns `graphQualitySummary`, `sharedPayload`, and `sharedPayloadTransport` |
-| Shared payload provenance | `mcp_server/lib/context/shared-payload.ts` | Startup transport provenance carries producer/source/trust/timestamp/source-ref metadata |
-| Highlights SQL | `lib/code-graph-db.ts` | `getStartupHighlights()` aggregate query still powers stale-or-ready startup highlights |
-| Default scan excludes | `lib/indexer-types.ts` | `DEFAULT_EXCLUDE_PATHS` |
-| `.gitignore` filtering | `lib/structural-indexer.ts` | `ignore` package, per-directory cache |
-| Compact plugin resume mode | `.opencode/plugins/spec-kit-compact-code-graph.js` | `RESUME_MODE = 'minimal'` is intentional, kept for token economy |
-
-The OpenCode plugin keeps `RESUME_MODE = 'minimal'` deliberately. Enrichment lives in the shared snapshot payload itself rather than in the plugin's mode.
-
-<!-- /ANCHOR:context-surfaces -->
+<!-- /ANCHOR:package-topology -->
 
 ---
 
-<!-- ANCHOR:scan-defaults -->
-## 4. SCAN DEFAULTS
+<!-- ANCHOR:directory-tree -->
+## 4. DIRECTORY TREE
 
-`code_graph_scan` walks from a configurable `rootDir` (defaults to `process.cwd()`). The walk applies three filter layers in this order:
+```text
+code_graph/
+├── README.md
+├── handlers/
+│   ├── README.md
+│   ├── scan.ts
+│   ├── query.ts
+│   ├── status.ts
+│   ├── context.ts
+│   ├── verify.ts
+│   ├── detect-changes.ts
+│   ├── ccc-status.ts
+│   ├── ccc-reindex.ts
+│   └── ccc-feedback.ts
+├── lib/
+│   ├── README.md
+│   ├── structural-indexer.ts
+│   ├── tree-sitter-parser.ts
+│   ├── code-graph-db.ts
+│   ├── code-graph-context.ts
+│   ├── seed-resolver.ts
+│   └── readiness-contract.ts
+├── tools/
+│   ├── code-graph-tools.ts
+│   └── index.ts
+├── tests/
+├── feature_catalog/
+└── manual_testing_playbook/
+```
 
-1. **Default include glob** — file extensions: `.ts`, `.tsx`, `.js`, `.jsx`, `.py`, `.sh`
-2. **Default exclude paths** — `node_modules`, `dist`, `.git`, `vendor`, `z_future`, `z_archive`, `mcp-coco-index/mcp_server`
-3. **`.gitignore` patterns** — read per-directory, parsed via the `ignore` package, cached during recursion
+<!-- /ANCHOR:directory-tree -->
 
-User overrides via `excludeGlobs` and `includeGlobs` are additive on top of the defaults. The `incremental` flag (default `true`) skips files whose `(mtime, content-hash)` pair is unchanged since the last scan. The scan handler passes the effective mode into `indexFiles(config, { skipFreshFiles })`: incremental scans use `skipFreshFiles: true`, while caller-requested full scans and git-triggered full reindexes use `skipFreshFiles: false`.
+---
 
-### Scan Behavior Reference
+<!-- ANCHOR:key-files -->
+## 5. KEY FILES
 
-| Parameter | Default | Effect |
-|---|---|---|
-| `rootDir` | `process.cwd()` | Walk root |
-| `incremental` | `true` | Skip unchanged files |
-| `excludeGlobs` | `[]` | Added to `DEFAULT_EXCLUDE_PATHS` |
-| `includeGlobs` | `[]` | Added to default file-extension filter |
-
-### Scan Response Fields
-
-| Field | Meaning |
+| File | Responsibility |
 |---|---|
-| `fullReindexTriggered` | `true` only when an incremental scan was forced into full mode because Git HEAD changed. |
-| `fullScanRequested` | `true` when the caller explicitly passed `incremental:false`. |
-| `effectiveIncremental` | Final mode used for cleanup and stale-file skipping after caller intent and Git HEAD checks. |
+| `handlers/scan.ts` | MCP scan entrypoint for incremental and full graph indexing. |
+| `handlers/query.ts` | Structural relationship reads such as outlines, calls, imports and blast radius. |
+| `handlers/status.ts` | Freshness, readiness, parse-health and graph-quality reporting. |
+| `handlers/context.ts` | Compact graph neighborhoods for LLM context windows. |
+| `handlers/detect-changes.ts` | Unified-diff to affected-symbol preflight. |
+| `lib/structural-indexer.ts` | Workspace walk, parse and persistence pipeline. |
+| `lib/code-graph-db.ts` | SQLite schema, graph storage and startup highlights. |
+| `lib/code-graph-context.ts` | Context assembly with budget and partial-output metadata. |
+| `lib/readiness-contract.ts` | Readiness and trust-state vocabulary used by public payloads. |
+| `tools/code-graph-tools.ts` | MCP tool registration and dispatch mapping. |
 
-### Indexer Options
+<!-- /ANCHOR:key-files -->
 
-`indexFiles(config, options?)` accepts `IndexFilesOptions { skipFreshFiles?: boolean }`. The default is `true` to preserve stale-only incremental behavior for existing callers. Pass `skipFreshFiles:false` only when the caller intentionally wants every post-exclude candidate parsed. Before returning, the indexer deduplicates retained node IDs across the current batch, drops edges whose source nodes were removed by that dedup sweep, and then adds cross-file `TESTED_BY` edges from the retained test nodes.
+---
 
-### Pruning the Existing Graph
+<!-- ANCHOR:boundaries-flow -->
+## 6. BOUNDARIES AND FLOW
 
-After updating excludes (e.g., adding `z_future`), the existing DB still holds nodes from previously-indexed paths. To prune:
+| Boundary | Rule |
+|---|---|
+| Imports | Runtime code flows from `tools/` into `handlers/`, then into `lib/`. |
+| Exports | Public MCP tool behavior is exposed through the tool registry, not by importing handlers directly from outside the package. |
+| Ownership | This package owns graph indexing and graph context. Memory continuity remains owned by the memory and spec-document surfaces. |
+
+Main flow:
+
+```text
+╭──────────────────────────────────────────╮
+│ MCP client or runtime startup surface     │
+╰──────────────────────────────────────────╯
+                   │
+                   ▼
+┌──────────────────────────────────────────┐
+│ tools registry dispatches requested tool  │
+└──────────────────────────────────────────┘
+                   │
+                   ▼
+┌──────────────────────────────────────────┐
+│ handler adapts args and readiness checks  │
+└──────────────────────────────────────────┘
+                   │
+                   ▼
+┌──────────────────────────────────────────┐
+│ lib reads or updates SQLite graph state   │
+└──────────────────────────────────────────┘
+                   │
+                   ▼
+╭──────────────────────────────────────────╮
+│ structured payload returns to caller      │
+╰──────────────────────────────────────────╯
+```
+
+<!-- /ANCHOR:boundaries-flow -->
+
+---
+
+<!-- ANCHOR:entrypoints -->
+## 7. ENTRYPOINTS
+
+| Entrypoint | Type | Purpose |
+|---|---|---|
+| `tools/code-graph-tools.ts` | Module | Registers public MCP tool dispatchers. |
+| `handlers/index.ts` | Module | Re-exports handler functions. |
+| `lib/index.ts` | Module | Re-exports library functions and types. |
+| `code_graph_scan` | MCP tool | Builds or refreshes graph state. |
+| `code_graph_query` | MCP tool | Reads structural relationships. |
+| `code_graph_status` | MCP tool | Reports graph health. |
+| `code_graph_context` | MCP tool | Returns compact graph context. |
+| `detect_changes` | MCP tool | Maps a diff to affected graph symbols. |
+| `ccc_*` | MCP tools | Bridge CocoIndex Code status, indexing and feedback. |
+
+<!-- /ANCHOR:entrypoints -->
+
+---
+
+<!-- ANCHOR:scan-scope -->
+## 8. SCAN SCOPE
+
+`code_graph_scan` excludes generated, vendored and internal-heavy paths by default:
+
+```text
+node_modules
+dist
+.git
+vendor
+external
+z_future
+z_archive
+mcp-coco-index/mcp_server
+.opencode/skill/**
+```
+
+Maintainers working on Spec Kit internals can include skill files in two ways:
 
 ```bash
-# Force a full re-evaluation with the new excludes
-code_graph_scan({ rootDir: '<repo-root>', incremental: false })
+SPECKIT_CODE_GRAPH_INDEX_SKILLS=true
 ```
 
-The DB file size does not shrink automatically. Run `VACUUM` on the SQLite file if size matters.
+or for one scan:
 
-<!-- /ANCHOR:scan-defaults -->
+```json
+{ "incremental": false, "includeSkills": true }
+```
+
+### Precedence
+
+When both are present, `includeSkills` on the scan call takes precedence over `SPECKIT_CODE_GRAPH_INDEX_SKILLS`. Use the env var for a process-wide default; use the per-call arg for one-off overrides.
+
+### Symlink Semantics
+
+`rootDir` is canonicalized via realpath before the default skill-exclusion guard runs. Symlinked roots that resolve into `.opencode/skill/**` are still excluded from default scans.
+
+`mcp-coco-index/mcp_server` stays excluded even when skill indexing is enabled.
+
+Existing databases record the active scan scope in `code_graph_metadata`. If the stored scope differs from the current scope, read paths return the existing blocked payload with `requiredAction:"code_graph_scan"`. Run an explicit full scan to prune old rows:
+
+```json
+{ "incremental": false }
+```
+
+Full scans delete out-of-scope graph rows from SQLite. They do not archive derived graph data.
+
+<!-- /ANCHOR:scan-scope -->
 
 ---
 
-<!-- ANCHOR:related-documents -->
-## 5. RELATED DOCUMENTS
+<!-- ANCHOR:validation -->
+## 9. VALIDATION
 
-### Internal Documentation
+Run from the repository root.
 
-| Document | Purpose |
-|---|---|
-| [lib/README.md](./lib/README.md) | Core library overview |
-| [handlers/README.md](./handlers/README.md) | MCP tool handler overview |
-| [feature_catalog/feature_catalog.md](./feature_catalog/feature_catalog.md) | Runtime feature catalog for code_graph read paths, operator tools, CCC bridges, and doctor integration |
-| [manual_testing_playbook/manual_testing_playbook.md](./manual_testing_playbook/manual_testing_playbook.md) | Runtime manual testing playbook for code_graph readiness, scans, coverage graph, CCC, and doctor scenarios |
-| [Spec Kit Memory MCP Server README](../README.md) | Parent MCP server documentation |
+```bash
+npm test -- --run code-graph
+```
 
-### External Resources
+Expected result: code graph handler, library and integration suites pass.
 
-| Resource | Description |
-|---|---|
-| [tree-sitter](https://tree-sitter.github.io/tree-sitter/) | Parser generator backing `lib/tree-sitter-parser.ts` |
-| [better-sqlite3](https://github.com/WiseLibs/better-sqlite3) | Synchronous SQLite binding used by `lib/code-graph-db.ts` |
-| [ignore (npm)](https://github.com/kaelzhang/node-ignore) | `.gitignore` parser used by `lib/structural-indexer.ts` |
+<!-- /ANCHOR:validation -->
 
-<!-- /ANCHOR:related-documents -->
+---
+
+<!-- ANCHOR:related -->
+## 10. RELATED
+
+- [Code Graph Library](./lib/README.md)
+- [Code Graph Handlers](./handlers/README.md)
+- [Feature Catalog](./feature_catalog/feature_catalog.md)
+- [Manual Testing Playbook](./manual_testing_playbook/manual_testing_playbook.md)
+- [MCP Server](../README.md)
+
+<!-- /ANCHOR:related -->

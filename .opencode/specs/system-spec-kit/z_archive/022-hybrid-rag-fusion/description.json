@@ -1,5 +1,5 @@
 {
-  "specFolder": "system-spec-kit/022-hybrid-rag-fusion",
+  "specFolder": "system-spec-kit/z_archive/022-hybrid-rag-fusion",
   "description": "Feature Specification: Hybrid RAG Fusion",
   "keywords": [
     "feature",
@@ -8,11 +8,12 @@
     "rag",
     "fusion"
   ],
-  "lastUpdated": "2026-04-24T15:43:16.931Z",
+  "lastUpdated": "2026-05-02T10:39:49.130Z",
   "specId": "022",
   "folderSlug": "hybrid-rag-fusion",
   "parentChain": [
-    "system-spec-kit"
+    "system-spec-kit",
+    "z_archive"
   ],
   "memorySequence": 0,
   "memoryNameHistory": []

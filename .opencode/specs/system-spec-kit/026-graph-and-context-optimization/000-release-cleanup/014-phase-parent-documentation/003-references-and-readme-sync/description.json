@@ -1,26 +1,21 @@
 {
-  "specFolder": "system-spec-kit/026-graph-and-context-optimization/000-release-cleanup/005-review-remediation/014-phase-parent-documentation/003-references-and-readme-sync",
-  "description": "Phase 3 of the phase-parent-documentation packet. Doc-only sync of 13 reference docs, READMEs, command docs, and assets to align with the shipped phase-parent lean-trio policy. Three sub-phases: Critical contradictions (5 files), Medium clarity gaps (5 files), Low minor clarifications (2 files) plus verification.",
+  "specFolder": "system-spec-kit/026-graph-and-context-optimization/000-release-cleanup/014-phase-parent-documentation/003-references-and-readme-sync",
+  "description": "Feature Specification: References and READMEs Lean-Trio Sync",
   "keywords": [
-    "phase",
-    "parent",
-    "doc",
-    "sync",
+    "feature",
+    "specification",
     "references",
-    "readme",
-    "lean",
-    "trio",
-    "validation_rules",
-    "phase_definitions",
-    "save_workflow",
-    "PHASE_PARENT_CONTENT"
+    "readmes",
+    "lean-trio",
+    "sync"
   ],
-  "lastUpdated": "2026-04-27T13:09:50.958Z",
+  "lastUpdated": "2026-05-02T10:39:47.975Z",
   "specId": "003",
   "folderSlug": "references-and-readme-sync",
   "parentChain": [
     "system-spec-kit",
     "026-graph-and-context-optimization",
+    "000-release-cleanup",
     "014-phase-parent-documentation"
   ],
   "memorySequence": 5,

@@ -1,5 +1,5 @@
 {
-  "specFolder": "026-graph-and-context-optimization/010-template-levels/001-template-consolidation-investigation",
+  "specFolder": "system-spec-kit/026-graph-and-context-optimization/010-template-levels/001-template-consolidation-investigation",
   "description": "Feature Specification: Template System Consolidation — Levels and Addendum to Generator",
   "keywords": [
     "feature",
@@ -11,11 +11,13 @@
     "addendum",
     "generator"
   ],
-  "lastUpdated": "2026-05-01T07:49:26.540Z",
-  "specId": "010",
-  "folderSlug": "template-levels",
+  "lastUpdated": "2026-05-02T10:39:48.782Z",
+  "specId": "001",
+  "folderSlug": "template-consolidation-investigation",
   "parentChain": [
-    "026-graph-and-context-optimization"
+    "system-spec-kit",
+    "026-graph-and-context-optimization",
+    "010-template-levels"
   ],
   "memorySequence": 0,
   "memoryNameHistory": []

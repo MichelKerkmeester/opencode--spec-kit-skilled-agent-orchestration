@@ -1,156 +1,214 @@
 ---
-title: "Chunking"
-description: "Anchor-aware chunking and quality-based thinning for large markdown documents. Splits content at ANCHOR tag boundaries or markdown structure, then scores and filters chunks before indexing."
+title: "Chunking: Markdown Splitting"
+description: "Anchor-aware markdown splitting and quality thinning for large indexed documents."
 trigger_phrases:
   - "anchor chunking"
   - "chunk thinning"
   - "large file splitting"
-  - "chunking threshold"
 ---
 
-# Chunking
+# Chunking: Markdown Splitting
 
-> Anchor-aware chunking and quality-based thinning for large markdown documents. Splits content at ANCHOR tag boundaries or markdown structure, then scores and filters chunks before indexing.
-
----
-
-## TABLE OF CONTENTS
 <!-- ANCHOR:table-of-contents -->
+## TABLE OF CONTENTS
 
-- [1. OVERVIEW](#1-overview)
-- [2. STRUCTURE](#2-structure)
-- [3. KEY CONCEPTS](#3-key-concepts)
-- [4. RELATED DOCUMENTS](#4-related-documents)
+- [1. OVERVIEW](#1--overview)
+- [2. ARCHITECTURE](#2--architecture)
+- [3. PACKAGE TOPOLOGY](#3--package-topology)
+- [4. DIRECTORY TREE](#4--directory-tree)
+- [5. KEY FILES](#5--key-files)
+- [6. BOUNDARIES AND FLOW](#6--boundaries-and-flow)
+- [7. ENTRYPOINTS](#7--entrypoints)
+- [8. VALIDATION](#8--validation)
+- [9. RELATED](#9--related)
 
 <!-- /ANCHOR:table-of-contents -->
 
 ---
 
-## 1. OVERVIEW
 <!-- ANCHOR:overview -->
+## 1. OVERVIEW
 
-The chunking module splits large markdown documents into smaller pieces suitable for embedding and indexing. It works in two stages: first chunking (splitting), then thinning (filtering).
+`chunking/` owns large-markdown splitting before indexing. It keeps source sections near their anchors when possible, then filters weak chunks before they enter embedding and search paths.
 
-Gate E alignment: chunking is a storage and retrieval optimization only. Canonical continuity still lives in spec documents first, with `_memory.continuity` as supporting structured state.
+Current state:
 
-### What It Does
-
-- **Anchor chunking** detects `<!-- ANCHOR:id -->` / `<!-- /ANCHOR:id -->` tag pairs in content and groups anchor sections into chunks that stay under a target size. When no anchors are present, it falls back to structure-aware markdown splitting on H1/H2 headings.
-- **Chunk thinning** scores each chunk on anchor presence (60% weight) and content density (40% weight), then drops chunks below a quality threshold. At least one chunk is always retained.
-
-### Design Decisions
-
-| Decision | Rationale |
-|----------|-----------|
-| Anchor-first, structure-fallback | ANCHOR tags provide precise author-defined boundaries. Heading-based splitting is a reasonable fallback for untagged content. |
-| 4,000-char target, 12,000-char max | Target of ~1,000 tokens (at 4 chars/token) fits embedding model budgets. Hard cap prevents single chunks from exceeding token limits. |
-| 50,000-char chunking threshold | Files below this size are indexed as a single unit. Only large files incur the overhead of multi-chunk processing. |
-| Minimum 1 chunk retained | Thinning never produces an empty result set, even when all chunks score below threshold. |
-| Anchor weight 0.6 vs density 0.4 | Author-placed anchors are a stronger quality signal than computed density metrics. |
+- Files below the chunking threshold stay as one unit.
+- Anchor tags define the preferred split boundaries.
+- Heading-based splitting handles markdown files without enough anchor tags.
+- Thinning keeps at least one chunk so indexing never receives an empty set.
 
 <!-- /ANCHOR:overview -->
 
 ---
 
-## 2. STRUCTURE
-<!-- ANCHOR:structure -->
+<!-- ANCHOR:architecture -->
+## 2. ARCHITECTURE
 
+```text
+╭──────────────────────────────────────────────────────────────────╮
+│                         CHUNKING                                 │
+╰──────────────────────────────────────────────────────────────────╯
+
+┌────────────────┐      ┌───────────────────┐      ┌───────────────────┐
+│ Markdown input │ ───▶ │ anchor-chunker    │ ───▶ │ AnchorChunk[]     │
+└────────────────┘      └─────────┬─────────┘      └─────────┬─────────┘
+                                  │                          │
+                                  ▼                          ▼
+                        ┌───────────────────┐      ┌───────────────────┐
+                        │ Structure fallback│      │ chunk-thinning    │
+                        └───────────────────┘      └─────────┬─────────┘
+                                                             │
+                                                             ▼
+                                                   ┌───────────────────┐
+                                                   │ Retained chunks   │
+                                                   └───────────────────┘
+
+Dependency direction: indexing callers ───▶ chunking helpers ───▶ chunk data
 ```
+
+<!-- /ANCHOR:architecture -->
+
+---
+
+<!-- ANCHOR:package-topology -->
+## 3. PACKAGE TOPOLOGY
+
+```text
 chunking/
-  anchor-chunker.ts    # Two-strategy file chunking (anchor-based + structure-based fallback)
-  chunk-thinning.ts    # Quality scoring and threshold-based chunk filtering
-  README.md            # This file
++-- anchor-chunker.ts  # Chunk creation and fallback splitting
++-- chunk-thinning.ts  # Chunk quality scoring and filtering
+`-- README.md          # Local developer orientation
+
+Allowed direction:
+indexing callers → chunking/*.ts
+chunking/*.ts → local constants and exported chunk types
+
+Disallowed direction:
+chunking/*.ts → embedding provider calls
+chunking/*.ts → memory database writes
+chunking/*.ts → generated dist files
 ```
 
-### Key Files
-
-| File | Purpose |
-|------|---------|
-| `anchor-chunker.ts` | Extracts anchor sections from content via regex, groups them into target-sized chunks, and falls back to H1/H2 heading-based splitting when fewer than 2 anchors are found. Exports the `AnchorChunk` and `ChunkingResult` types used by downstream consumers. |
-| `chunk-thinning.ts` | Scores chunks using a weighted composite of anchor presence and content density, then applies a configurable threshold (default 0.3) to filter low-quality chunks before indexing. Always retains at least one chunk. |
-
-### Exported Symbols
-
-| Symbol | File | Kind | Description |
-|--------|------|------|-------------|
-| `AnchorChunk` | anchor-chunker.ts | Interface | Shape for a single chunk (content, anchorIds, label, charCount) |
-| `ChunkingResult` | anchor-chunker.ts | Interface | Strategy used, chunk array and parent summary |
-| `chunkLargeFile` | anchor-chunker.ts | Function | Main entry point: returns `ChunkingResult` with anchor or structure strategy |
-| `needsChunking` | anchor-chunker.ts | Function | Returns true if content exceeds `CHUNKING_THRESHOLD` |
-| `CHUNKING_THRESHOLD` | anchor-chunker.ts | Constant | 50,000 characters (exported for external checks) |
-| `ChunkScore` | chunk-thinning.ts | Interface | Per-chunk score breakdown (composite, anchor, density, retained flag) |
-| `ThinningResult` | chunk-thinning.ts | Interface | Original, retained and dropped chunk arrays with scores |
-| `scoreChunk` | chunk-thinning.ts | Function | Computes composite quality score for a single chunk |
-| `thinChunks` | chunk-thinning.ts | Function | Applies threshold filtering to a chunk array |
-| `DEFAULT_THINNING_THRESHOLD` | chunk-thinning.ts | Constant | 0.3 (exported for configuration) |
-| `ANCHOR_WEIGHT` | chunk-thinning.ts | Constant | 0.6 |
-| `DENSITY_WEIGHT` | chunk-thinning.ts | Constant | 0.4 |
-
-<!-- /ANCHOR:structure -->
+<!-- /ANCHOR:package-topology -->
 
 ---
 
-## 3. KEY CONCEPTS
-<!-- ANCHOR:key-concepts -->
+<!-- ANCHOR:directory-tree -->
+## 4. DIRECTORY TREE
 
-### Chunking Pipeline
-
-```
-Content in
-  -> needsChunking() check (>50,000 chars?)
-    -> chunkLargeFile()
-      -> Try anchor extraction (>= 2 anchors?)
-        -> YES: chunkByAnchors() -> AnchorChunk[]
-        -> NO:  chunkByStructure() (H1/H2 split) -> AnchorChunk[]
-    -> thinChunks()
-      -> Score each chunk (anchor presence + density)
-      -> Drop chunks below threshold
-      -> Return retained chunks for indexing
+```text
+chunking/
+├── anchor-chunker.ts
+├── chunk-thinning.ts
+└── README.md
 ```
 
-### Size Constants
-
-| Constant | Value | Purpose |
-|----------|-------|---------|
-| `CHUNKING_THRESHOLD` | 50,000 chars | Minimum file size to trigger chunking |
-| `TARGET_CHUNK_CHARS` | 4,000 chars | Target chunk size (~1,000 tokens) |
-| `MAX_CHUNK_CHARS` | 12,000 chars | Hard cap per chunk |
-| `PARENT_SUMMARY_LENGTH` | 500 chars | BM25 fallback summary extracted from file start |
-
-### Thinning Score Composition
-
-| Factor | Weight | Score Range | Logic |
-|--------|--------|-------------|-------|
-| Anchor presence | 0.6 | 0 or 1 | 1.0 if chunk contains anchor IDs, 0.0 otherwise |
-| Content density | 0.4 | 0 to 1 | Ratio of meaningful chars to total chars, with length penalty for very short chunks (<100 chars) and structure bonus for headings, code blocks and list items |
-
-Default threshold: chunks with composite score below 0.3 are dropped.
-
-<!-- /ANCHOR:key-concepts -->
+<!-- /ANCHOR:directory-tree -->
 
 ---
 
-## 4. RELATED DOCUMENTS
+<!-- ANCHOR:key-files -->
+## 5. KEY FILES
+
+| File | Role |
+|---|---|
+| `anchor-chunker.ts` | Detects anchor sections, groups them into size-bounded chunks and falls back to H1 or H2 splitting when anchors are sparse. |
+| `chunk-thinning.ts` | Scores chunks by anchor presence and content density, then drops chunks below the configured threshold while retaining at least one. |
+
+Important constants:
+
+| Constant | File | Value |
+|---|---|---|
+| `CHUNKING_THRESHOLD` | `anchor-chunker.ts` | `50000` characters. |
+| `DEFAULT_THINNING_THRESHOLD` | `chunk-thinning.ts` | `0.3`. |
+| `ANCHOR_WEIGHT` | `chunk-thinning.ts` | `0.6`. |
+| `DENSITY_WEIGHT` | `chunk-thinning.ts` | `0.4`. |
+
+<!-- /ANCHOR:key-files -->
+
+---
+
+<!-- ANCHOR:boundaries-and-flow -->
+## 6. BOUNDARIES AND FLOW
+
+Boundaries:
+
+- Own content splitting, chunk metadata and quality thinning.
+- Do not own embeddings, search ranking, storage schema or memory-save routing.
+- Preserve anchor IDs when anchor tags are present.
+- Keep chunking deterministic for the same input text and options.
+
+Main flow:
+
+```text
+╭──────────────────────────────────────────╮
+│ Markdown content                         │
+╰──────────────────────────────────────────╯
+                  │
+                  ▼
+┌──────────────────────────────────────────┐
+│ needsChunking checks content length      │
+└──────────────────────────────────────────┘
+                  │
+                  ▼
+┌──────────────────────────────────────────┐
+│ chunkLargeFile selects anchor or heading │
+└──────────────────────────────────────────┘
+                  │
+                  ▼
+┌──────────────────────────────────────────┐
+│ thinChunks scores and filters chunks     │
+└──────────────────────────────────────────┘
+                  │
+                  ▼
+╭──────────────────────────────────────────╮
+│ Indexing receives retained chunks        │
+╰──────────────────────────────────────────╯
+```
+
+<!-- /ANCHOR:boundaries-and-flow -->
+
+---
+
+<!-- ANCHOR:entrypoints -->
+## 7. ENTRYPOINTS
+
+| Entrypoint | File | Used For |
+|---|---|---|
+| `needsChunking(content)` | `anchor-chunker.ts` | Check whether a file crosses the chunking threshold. |
+| `chunkLargeFile(content)` | `anchor-chunker.ts` | Split content into an `AnchorChunk[]` plus parent summary metadata. |
+| `scoreChunk(chunk)` | `chunk-thinning.ts` | Compute quality scores for one chunk. |
+| `thinChunks(chunks)` | `chunk-thinning.ts` | Filter weak chunks before indexing. |
+
+Exported types include `AnchorChunk`, `ChunkingResult`, `ChunkScore` and `ThinningResult`.
+
+<!-- /ANCHOR:entrypoints -->
+
+---
+
+<!-- ANCHOR:validation -->
+## 8. VALIDATION
+
+Run from the repository root:
+
+```bash
+pnpm --dir .opencode/skill/system-spec-kit typecheck
+python3 .opencode/skill/sk-doc/scripts/validate_document.py .opencode/skill/system-spec-kit/mcp_server/lib/chunking/README.md
+```
+
+<!-- /ANCHOR:validation -->
+
+---
+
 <!-- ANCHOR:related -->
+## 9. RELATED
 
-### Internal Documentation
-
-| Document | Purpose |
-|----------|---------|
-| [../search/README.md](../search/README.md) | Search pipeline that indexes chunked content |
-| [../storage/README.md](../storage/README.md) | Database schema for chunk storage |
-| [../scoring/README.md](../scoring/README.md) | Scoring layer that ranks retrieved chunks |
-
-### Parent Module
-
-| Resource | Description |
-|----------|-------------|
-| [../README.md](../README.md) | Library module overview |
-| [../../../SKILL.md](../../../SKILL.md) | System Spec Kit skill documentation |
+| Resource | Relationship |
+|---|---|
+| [../search/README.md](../search/README.md) | Search indexing path that consumes retained chunks. |
+| [../storage/README.md](../storage/README.md) | Storage layer for chunk rows and parent records. |
+| [../scoring/README.md](../scoring/README.md) | Ranking layer that handles retrieved chunks. |
+| [../README.md](../README.md) | Parent library map. |
 
 <!-- /ANCHOR:related -->
-
----
-
-**Version**: 1.0.0
-**Last Updated**: 2026-03-08

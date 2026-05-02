@@ -1,86 +1,155 @@
 ---
 title: "MCP Server Database Storage"
-description: "Runtime SQLite storage for memory, structural code graph, vectors, FTS, and coordination files."
+description: "Runtime database directory for memory, code graph, evaluation and state marker files."
 trigger_phrases:
   - "database"
-  - "sqlite"
-  - "vector embeddings"
+  - "sqlite storage"
+  - "database directory"
 ---
-
 
 # MCP Server Database Storage
 
 <!-- ANCHOR:table-of-contents -->
 ## TABLE OF CONTENTS
 
-- [1. OVERVIEW](#1-overview)
-- [2. IMPLEMENTED STATE](#2-implemented-state)
-- [3. HARDENING NOTES](#3-hardening-notes)
-- [4. OPERATIONAL NOTES](#4-operational-notes)
-- [5. RELATED](#5-related)
+- [1. OVERVIEW](#1--overview)
+- [2. ARCHITECTURE](#2--architecture)
+- [3. PACKAGE TOPOLOGY](#3--package-topology)
+- [4. DIRECTORY TREE](#4--directory-tree)
+- [5. KEY FILES](#5--key-files)
+- [6. BOUNDARIES AND FLOW](#6--boundaries-and-flow)
+- [7. VALIDATION](#7--validation)
+- [8. RELATED](#8--related)
 
 <!-- /ANCHOR:table-of-contents -->
+
+---
+
 <!-- ANCHOR:overview -->
 ## 1. OVERVIEW
 
-This section provides an overview of the MCP Server Database Storage directory.
+`mcp_server/database/` is the default runtime storage directory for MCP server SQLite files. It is a data directory, not a TypeScript source module folder.
 
-`database/` is the canonical runtime persistence location for the default MCP server configuration in this repository.
+Current responsibilities:
 
-The MCP server resolves its default database directory through `shared/paths.ts` and `core/config.ts`, which point to `mcp_server/database/` unless `MEMORY_DB_PATH`, `SPEC_KIT_DB_DIR`, or `SPECKIT_DB_DIR` override it at runtime.
+- Store local memory index, vector, FTS and checkpoint data at runtime.
+- Store structural code graph and evaluation databases when the default path is active.
+- Provide marker files used by runtime state checks.
 
-- Tracked in repo (source view): `.db-updated`, `.gitkeep`, `README.md`.
-- Runtime-generated (canonical): `database/context-index.sqlite`, `database/code-graph.sqlite`, and their WAL sidecars (`-wal`, `-shm`).
-- Embedding-profile database: `context-index__voyage__voyage-4__1024.sqlite` (and `-wal`, `-shm` sidecars) — profile-specific vector store.
-- Evaluation database: `speckit-eval.db` (and `-wal`, `-shm` sidecars) — stores ablation/baseline evaluation results.
+The default path is resolved through shared path and config helpers. Runtime variables such as `MEMORY_DB_PATH`, `SPEC_KIT_DB_DIR` and `SPECKIT_DB_DIR` can point storage elsewhere.
 
 <!-- /ANCHOR:overview -->
-<!-- ANCHOR:implemented-state -->
-## 2. IMPLEMENTED STATE
 
+---
 
-- Primary table set includes `memory_index`, `vec_memories`, `memory_fts`, `checkpoints`, and `config`.
-- Structural code-graph persistence lives in the separate `code-graph.sqlite` database with `code_files`, `code_nodes`, `code_edges`, and `code_graph_metadata`.
-- Document-type indexing alignment:
-  - `memory_index.document_type` and `memory_index.spec_level` are part of schema v13.
-  - Spec document indexing is first-class (not memory-only).
-  - Anchor-based retrieval applies to indexed spec docs.
-- `.db-updated` is used by `core/db-state.ts` to detect external writes and reinitialize connections.
-- Code-graph metadata stores freshness-relevant values such as `last_git_head`.
+<!-- ANCHOR:architecture -->
+## 2. ARCHITECTURE
 
+```text
+MCP server runtime
+        │
+        ▼
+shared path and config helpers
+        │
+        ▼
+mcp_server/database/
+        │
+        +--> state marker files
+        +--> generated SQLite databases
+        `--> generated SQLite sidecar files
+```
 
-<!-- /ANCHOR:implemented-state -->
-<!-- ANCHOR:hardening-notes -->
-## 3. HARDENING NOTES
+<!-- /ANCHOR:architecture -->
 
+---
 
-- Reinit safety is handled in `core/db-state.ts` (mutex + dependency rebind).
-- Rate-limit timestamp is persisted in DB `config` table (`last_index_scan`).
-- Document metadata remains preserved across update/reinforce/index paths (document-type indexing hardening).
+<!-- ANCHOR:package-topology -->
+## 3. PACKAGE TOPOLOGY
 
+```text
+database/
++-- README.md       # Directory guide
++-- .gitkeep        # Keeps the runtime directory present in clean checkouts
+`-- .db-updated     # Runtime update marker
+```
 
-<!-- /ANCHOR:hardening-notes -->
-<!-- ANCHOR:operational-notes -->
-## 4. OPERATIONAL NOTES
+Generated database files are runtime artifacts. They are not source modules and should not be listed as key source files.
 
+<!-- /ANCHOR:package-topology -->
 
-- Database files are intentionally not committed; only control files are tracked.
-- Primary memory index: `database/context-index.sqlite`.
-- Structural code-graph index: `database/code-graph.sqlite`.
-- Embedding-profile database: `context-index__voyage__voyage-4__1024.sqlite` stores profile-specific vectors (naming convention: `context-index__<provider>__<model>__<dims>.sqlite`).
-- Evaluation database: `speckit-eval.db` stores ablation and baseline evaluation results from `scripts/evals/`.
-- Use MCP tools (`memory_stats`, `memory_health`, `memory_index_scan`) for normal operations.
-- Structural reads (`code_graph_query`, `code_graph_context`) can perform bounded inline selective refresh against `code-graph.sqlite` when the stale set is small enough.
-- Empty or broadly stale structural states still require explicit `code_graph_scan` to rebuild the graph database.
-- For reindex operations, see the canonical runbook at [`scripts/memory/README.md`](../../scripts/memory/README.md).
+---
 
+<!-- ANCHOR:directory-tree -->
+## 4. DIRECTORY TREE
 
-<!-- /ANCHOR:operational-notes -->
+```text
+database/
++-- README.md
++-- .gitkeep
++-- .db-updated
++-- *.sqlite        # Generated runtime databases
++-- *.db            # Generated runtime databases
++-- *-wal           # Generated SQLite write-ahead logs
+`-- *-shm           # Generated SQLite shared-memory files
+```
+
+<!-- /ANCHOR:directory-tree -->
+
+---
+
+<!-- ANCHOR:key-files -->
+## 5. KEY FILES
+
+| File | Responsibility |
+|---|---|
+| `README.md` | Explains the database directory contract. |
+| `.gitkeep` | Keeps the directory available before runtime files exist. |
+| `.db-updated` | Stores the last database update timestamp for runtime refresh checks. |
+
+Runtime artifacts include `context-index*.sqlite`, `code-graph.sqlite`, `speckit-eval.db`, `*-wal` and `*-shm` files. Treat them as generated data, not source files.
+
+<!-- /ANCHOR:key-files -->
+
+---
+
+<!-- ANCHOR:boundaries-and-flow -->
+## 6. BOUNDARIES AND FLOW
+
+This directory owns storage location only. Schema creation, migrations, indexing, code graph scans and health checks live in MCP server code and scripts outside this folder.
+
+Main flow:
+
+```text
+runtime config -> database path resolution -> SQLite read or write -> .db-updated marker refresh -> health or search tools observe state
+```
+
+Do not commit generated SQLite databases or sidecar files unless a test fixture path explicitly requires one outside this runtime directory.
+
+<!-- /ANCHOR:boundaries-and-flow -->
+
+---
+
+<!-- ANCHOR:validation -->
+## 7. VALIDATION
+
+Run from the repository root:
+
+```bash
+python3 .opencode/skill/sk-doc/scripts/validate_document.py .opencode/skill/system-spec-kit/mcp_server/database/README.md
+```
+
+Use MCP memory and code graph health tools to validate live database state.
+
+<!-- /ANCHOR:validation -->
+
+---
+
 <!-- ANCHOR:related -->
-## 5. RELATED
-
+## 8. RELATED
 
 - `../core/README.md`
 - `../handlers/README.md`
 - `../../references/memory/memory_system.md`
+- `../../scripts/memory/README.md`
+
 <!-- /ANCHOR:related -->

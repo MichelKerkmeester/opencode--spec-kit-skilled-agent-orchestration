@@ -1,6 +1,6 @@
 ---
 title: "KPI Scripts"
-description: "Shell-based quality KPI reporter that scans generated continuity support artifacts for placeholders, fallback content, AI contamination and missing trigger phrases."
+description: "Quality KPI reporter for generated continuity support artifacts under spec memory folders."
 trigger_phrases:
   - "quality kpi"
   - "memory quality rates"
@@ -8,92 +8,111 @@ trigger_phrases:
   - "contamination check"
 ---
 
+<!-- markdownlint-disable MD025 -->
+
 # KPI Scripts
 
-> Quality metrics reporter for generated spec-kit continuity support artifacts.
-
----
-
-## TABLE OF CONTENTS
 <!-- ANCHOR:table-of-contents -->
+## TABLE OF CONTENTS
 
 - [1. OVERVIEW](#1-overview)
-- [2. STRUCTURE](#2-structure)
-- [3. USAGE](#3-usage)
-- [4. METRICS](#4-metrics)
-- [5. RELATED DOCUMENTS](#5-related-documents)
+- [2. PACKAGE TOPOLOGY](#2-package-topology)
+- [3. ENTRYPOINTS](#3-entrypoints)
+- [4. VALIDATION](#4-validation)
+- [5. RELATED](#5-related)
 
 <!-- /ANCHOR:table-of-contents -->
+
 ---
 
-## 1. OVERVIEW
 <!-- ANCHOR:overview -->
+## 1. OVERVIEW
 
-The `kpi/` directory contains shell scripts that compute quality health metrics across generated continuity support artifacts in the specs tree. The primary script, `quality-kpi.sh`, walks all `.md` files inside `memory/` subdirectories and reports defect rates as JSON plus a one-line stderr summary.
-Those scans measure supporting generated artifacts only; canonical packet continuity is still recovered through `/spec_kit:resume` and `handover.md -> _memory.continuity -> spec docs`.
+`scripts/kpi/` reports defect rates for generated continuity support
+artifacts. It scans markdown under spec `memory/` directories and emits JSON
+metrics plus a concise stderr summary.
 
-The script uses an embedded Node.js inline program to perform file scanning, regex matching and rate computation. It exits `0` on success regardless of defect rates (the caller decides thresholds).
+Boundary:
+
+- Resume source of truth remains
+  `handover.md -> _memory.continuity -> spec docs`.
+- Generated memory artifacts are supporting evidence only.
+- Defect rates are reported, not enforced; callers decide thresholds.
 
 <!-- /ANCHOR:overview -->
+
 ---
 
-## 2. STRUCTURE
-<!-- ANCHOR:structure -->
+<!-- ANCHOR:package-topology -->
+## 2. PACKAGE TOPOLOGY
 
-| File | Type | Description |
-| --- | --- | --- |
-| `quality-kpi.sh` | Bash + inline Node | Scans memory markdown files and outputs quality defect rates as JSON |
-
-<!-- /ANCHOR:structure -->
----
-
-## 3. USAGE
-<!-- ANCHOR:usage -->
-
-### Scan All Active Specs
-
-```bash
-.opencode/skill/system-spec-kit/scripts/kpi/quality-kpi.sh
+```text
+scripts/kpi/
++-- quality-kpi.sh  # Shell wrapper with inline Node.js scanner
+`-- README.md
 ```
 
-### Scan a Specific Spec Folder
+Flow:
 
-```bash
-.opencode/skill/system-spec-kit/scripts/kpi/quality-kpi.sh "system-spec-kit/022-hybrid-rag-fusion"
+```text
+quality-kpi.sh -> .opencode/specs/**/memory/*.md -> JSON rates + summary
 ```
 
-The argument is a relative path under `.opencode/specs/`.
+Metrics:
 
-### Output
-
-- **stdout** -- JSON object with timestamps, scope, file counts, rates and raw counts.
-- **stderr** -- One-line summary: `KPI Summary: files=N, placeholder=N%, fallback=N%, contamination=N%, empty_trigger=N%`
-
-<!-- /ANCHOR:usage -->
----
-
-## 4. METRICS
-<!-- ANCHOR:metrics -->
-
-The script checks every spec-doc record markdown file for four defect classes:
-
-| Metric | Detection Rule |
+| Metric | Flags |
 | --- | --- |
-| Placeholder rate | Contains `[TBD]`, `[Not assessed]` or `[N/A]` |
-| Fallback rate | Contains phrases like "No specific decisions were made" |
-| Contamination rate | Contains AI chain-of-thought leaks such as "Let me analyze" or "I'll execute this step by step" |
-| Empty trigger phrases rate | YAML frontmatter block has zero `trigger_phrases` entries |
+| Placeholder rate | `[TBD]`, `[Not assessed]`, `[N/A]` |
+| Fallback rate | Generic fallback phrases in generated content |
+| Contamination rate | AI process leakage such as "Let me analyze" |
+| Empty trigger phrase rate | Frontmatter with no `trigger_phrases` entries |
 
-Each rate is expressed as a percentage of total scanned files. Directories named `z_archive`, `.git` and `node_modules` are excluded from the scan.
+<!-- /ANCHOR:package-topology -->
 
-<!-- /ANCHOR:metrics -->
 ---
 
-## 5. RELATED DOCUMENTS
-<!-- ANCHOR:related-documents -->
+<!-- ANCHOR:entrypoints -->
+## 3. ENTRYPOINTS
 
-- `.opencode/skill/system-spec-kit/scripts/README.md` -- Parent scripts directory overview
-- `.opencode/skill/system-spec-kit/scripts/memory/README.md` -- Memory pipeline CLIs
-- `.opencode/skill/system-spec-kit/scripts/evals/README.md` -- Evaluation and audit scripts
+Run from the repository root:
 
-<!-- /ANCHOR:related-documents -->
+```bash
+bash .opencode/skill/system-spec-kit/scripts/kpi/quality-kpi.sh
+bash .opencode/skill/system-spec-kit/scripts/kpi/quality-kpi.sh \
+  "system-spec-kit/022-hybrid-rag-fusion"
+```
+
+The optional argument is a spec-folder path relative to `.opencode/specs/`.
+
+<!-- /ANCHOR:entrypoints -->
+
+---
+
+<!-- ANCHOR:validation -->
+## 4. VALIDATION
+
+Use repository-root commands:
+
+```bash
+bash .opencode/skill/system-spec-kit/scripts/kpi/quality-kpi.sh >/tmp/spec-kit-kpi.json
+node -e "const fs=require('fs'); \
+JSON.parse(fs.readFileSync('/tmp/spec-kit-kpi.json','utf8')); \
+console.log('valid json')"
+```
+
+Expected behavior: the first command exits `0`, writes JSON to stdout and
+prints a `KPI Summary:` line to stderr.
+
+<!-- /ANCHOR:validation -->
+
+---
+
+<!-- ANCHOR:related -->
+## 5. RELATED
+
+- [`../README.md`](../README.md)
+- [`../memory/README.md`](../memory/README.md)
+- [`../evals/README.md`](../evals/README.md)
+- [`../tests/README.md`](../tests/README.md)
+
+<!-- /ANCHOR:related -->

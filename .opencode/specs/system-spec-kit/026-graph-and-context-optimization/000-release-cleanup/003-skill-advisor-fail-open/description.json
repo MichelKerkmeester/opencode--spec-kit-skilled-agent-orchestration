@@ -1,15 +1,21 @@
 {
-  "specFolder": "system-spec-kit/026-graph-and-context-optimization/000-release-cleanup/005-review-remediation/003-skill-advisor-fail-open",
-  "description": "Completed release remediation for 008/008 skill-advisor deep-review findings: unavailable fail-open, trusted skill_graph_scan gate, regression coverage, corruption recovery, rebuild serialization, diagnostic redaction, docs, ADRs, and pattern consolidation.",
-  "keywords": ["skill-advisor", "fail-open", "advisor-recommend", "P1", "review", "remediation", "trusted-caller", "complete"],
-  "lastUpdated": "2026-04-28T16:13:26.000Z",
+  "specFolder": "system-spec-kit/026-graph-and-context-optimization/000-release-cleanup/003-skill-advisor-fail-open",
+  "description": "Feature Specification: Skill-Advisor Release Remediation",
+  "keywords": [
+    "feature",
+    "specification",
+    "skill-advisor",
+    "release",
+    "remediation"
+  ],
+  "lastUpdated": "2026-05-02T10:39:47.867Z",
   "specId": "003",
   "folderSlug": "skill-advisor-fail-open",
   "parentChain": [
     "system-spec-kit",
     "026-graph-and-context-optimization",
-    "000-release-cleanup",
-    "005-review-remediation"
+    "000-release-cleanup"
   ],
-  "memorySequence": 1
+  "memorySequence": 1,
+  "memoryNameHistory": []
 }

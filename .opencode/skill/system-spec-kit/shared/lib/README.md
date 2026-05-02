@@ -1,6 +1,6 @@
 ---
 title: "Lib"
-description: "Shared library utilities for the spec-kit retrieval pipeline, including AST-aware markdown chunking that preserves code blocks and tables as atomic units."
+description: "Shared library utilities for structure-aware markdown chunking used by retrieval indexing and embedding pipelines."
 trigger_phrases:
   - "markdown chunker"
   - "structure aware chunker"
@@ -11,18 +11,19 @@ trigger_phrases:
 
 # Lib
 
-> Shared library utilities for the retrieval pipeline. Currently contains the structure-aware markdown chunker that splits documents into semantically coherent segments while preserving code blocks and tables as atomic units.
+> Shared library utilities for retrieval support code. The current package exposes a structure-aware markdown chunker that keeps code blocks, tables and headings intact before embedding.
 
 ---
 
 <!-- ANCHOR:table-of-contents -->
 ## TABLE OF CONTENTS
 
-- [1. OVERVIEW](#1-overview)
-- [2. STRUCTURE](#2-structure)
-- [3. KEY EXPORTS](#3-key-exports)
-- [4. CHUNKING BEHAVIOR](#4-chunking-behavior)
-- [5. RELATED DOCUMENTS](#5-related-documents)
+- [1. OVERVIEW](#1--overview)
+- [2. STRUCTURE](#2--structure)
+- [3. STABLE API](#3--stable-api)
+- [4. BOUNDARIES](#4--boundaries)
+- [5. VALIDATION](#5--validation)
+- [6. RELATED DOCUMENTS](#6--related-documents)
 
 <!-- /ANCHOR:table-of-contents -->
 
@@ -31,10 +32,9 @@ trigger_phrases:
 <!-- ANCHOR:overview -->
 ## 1. OVERVIEW
 
-The `lib/` folder holds general-purpose utilities shared across the spec-kit codebase. The primary module is the **structure-aware chunker**, which converts raw markdown into sized segments suitable for embedding and retrieval.
-Those chunks support retrieval over packet materials; canonical continuity itself still resumes through `/spec_kit:resume` and `handover.md -> _memory.continuity -> spec docs`.
+The `lib/` package holds general-purpose helpers that are shared by retrieval and indexing code but do not fit a narrower package. Its current module, `structure-aware-chunker.ts`, converts raw markdown into semantic chunks with an approximate token budget.
 
-Unlike naive text splitters that break on character count alone, this chunker parses markdown structure first. It detects fenced code blocks, GFM tables and ATX headings, then groups related content while respecting a configurable token budget (default 500 tokens at ~4 chars per token).
+The chunker parses structure before sizing content. It treats fenced code blocks and GFM tables as atomic, starts new chunks at headings and combines text until the next block would exceed the configured limit.
 
 <!-- /ANCHOR:overview -->
 
@@ -43,72 +43,78 @@ Unlike naive text splitters that break on character count alone, this chunker pa
 <!-- ANCHOR:structure -->
 ## 2. STRUCTURE
 
-```
+```text
 lib/
-├── README.md                      # This file
-└── structure-aware-chunker.ts     # AST-aware markdown chunking
+├── README.md
+└── structure-aware-chunker.ts
 ```
 
-| File                          | LOC  | Description                                                     |
-| ----------------------------- | ---- | --------------------------------------------------------------- |
-| `structure-aware-chunker.ts`  | 222  | Block splitter and token-budget chunker for markdown documents   |
+| File | Purpose |
+| ---- | ------- |
+| `structure-aware-chunker.ts` | Splits markdown into typed blocks and token-sized chunks |
 
 <!-- /ANCHOR:structure -->
 
 ---
 
-<!-- ANCHOR:key-exports -->
-## 3. KEY EXPORTS
+<!-- ANCHOR:stable-api -->
+## 3. STABLE API
 
-### Functions
+| Export | Kind | Purpose |
+| ------ | ---- | ------- |
+| `chunkMarkdown` | Function | Convert markdown into `Chunk[]` with default or custom token budget |
+| `splitIntoBlocks` | Function | Split markdown into code, table, heading and text blocks |
+| `Chunk` | Interface | Output segment with content, type and token estimate |
+| `ChunkOptions` | Interface | Configuration object with optional `maxTokens` |
 
-| Export             | Signature                                            | Description                                            |
-| ------------------ | ---------------------------------------------------- | ------------------------------------------------------ |
-| `chunkMarkdown`    | `(markdown, options?) => Chunk[]`                    | Main entry: chunk markdown with token budget control   |
-| `chunkMarkdown`    | `(markdown, maxTokens?) => Chunk[]` (overload)       | Accepts maxTokens directly as a number                 |
-| `splitIntoBlocks`  | `(markdown) => Block[]`                              | Low-level block splitter: code, table, heading, text   |
+`chunkMarkdown` accepts either an options object or a direct `maxTokens` number. Keep this API stable because embedding and indexing paths depend on it for repeatable chunk sizes.
 
-### Interfaces
-
-| Export          | Description                                                        |
-| --------------- | ------------------------------------------------------------------ |
-| `Chunk`         | Output segment with content, type (text/code/table/heading/mixed) and tokenEstimate |
-| `ChunkOptions`  | Configuration object with optional `maxTokens` field               |
-
-### Constants (internal)
-
-| Name                 | Value | Description                                  |
-| -------------------- | ----- | -------------------------------------------- |
-| `DEFAULT_MAX_TOKENS` | 500   | Default token budget per chunk               |
-| `CHARS_PER_TOKEN`    | 4     | Character-to-token approximation ratio       |
-
-<!-- /ANCHOR:key-exports -->
+<!-- /ANCHOR:stable-api -->
 
 ---
 
-<!-- ANCHOR:chunking-behavior -->
-## 4. CHUNKING BEHAVIOR
+<!-- ANCHOR:boundaries -->
+## 4. BOUNDARIES
 
-The chunker applies these rules in order:
+Import direction should stay simple:
 
-1. **Fenced code blocks** are always emitted as a single atomic chunk, even when they exceed `maxTokens`. Splitting mid-block would corrupt syntax.
-2. **GFM tables** are always emitted as a single atomic chunk. A partial table row is meaningless.
-3. **Headings** start a new chunk so that heading text stays paired with the body content below it.
-4. **Text blocks** accumulate until the next block would push the token estimate over `maxTokens`, at which point the accumulator flushes and a new chunk begins.
-5. **Blank lines** are silently skipped to avoid noise blocks.
+- Retrieval, indexing and embedding code may import `chunkMarkdown` from this package.
+- This package should not import MCP endpoints, database adapters or spec workflow code.
+- Add new helpers here only when they are shared library code, not package-specific behavior.
+- Prefer a narrower package when a helper clearly belongs to `algorithms`, `embeddings`, `parsing`, `scoring` or `utils`.
 
-Block detection priority: code fence > table > heading > text.
+The chunker owns markdown block grouping only. It does not generate embeddings, rank results or decide which documents should be indexed.
 
-<!-- /ANCHOR:chunking-behavior -->
+<!-- /ANCHOR:boundaries -->
+
+---
+
+<!-- ANCHOR:validation -->
+## 5. VALIDATION
+
+Run chunking tests or TypeScript checks after behavior changes:
+
+```bash
+npm test -- --runInBand structure-aware-chunker
+npx tsc --noEmit
+python3 .opencode/skill/sk-doc/scripts/validate_document.py .opencode/skill/system-spec-kit/shared/lib/README.md
+```
+
+For README-only edits, `validate_document.py` is the required file-level check.
+
+<!-- /ANCHOR:validation -->
 
 ---
 
 <!-- ANCHOR:related -->
-## 5. RELATED DOCUMENTS
+## 6. RELATED DOCUMENTS
 
-- **Embeddings**: `../embeddings/` generates vectors from chunks produced by this module
-- **Algorithms**: `../algorithms/` fuses retrieval results built from chunked content
-- **Parsing**: `../parsing/` handles frontmatter and structural parsing upstream of chunking
+| Document | Purpose |
+| -------- | ------- |
+| [shared/README.md](../README.md) | Parent shared library overview |
+| [shared/embeddings/README.md](../embeddings/README.md) | Embedding pipeline that consumes markdown chunks |
+| [shared/algorithms/README.md](../algorithms/README.md) | Retrieval algorithms that rank chunk-backed results |
+| [shared/parsing/README.md](../parsing/README.md) | Frontmatter and document health parsing utilities |
 
 <!-- /ANCHOR:related -->
 

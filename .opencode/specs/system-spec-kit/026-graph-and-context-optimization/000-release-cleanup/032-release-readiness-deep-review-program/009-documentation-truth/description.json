@@ -1,17 +1,15 @@
 {
   "title": "Documentation Truth Deep Review",
-  "description": "Read-only release-readiness audit of evergreen documentation truth against live runtime sources, including tool counts, feature catalog coverage, manual playbook coverage, automation claims, security posture, evergreen references, and cross-reference health.",
-  "specFolder": "specs/system-spec-kit/026-graph-and-context-optimization/000-release-cleanup/005-review-remediation/032-release-readiness-deep-review-program/009-documentation-truth",
-  "status": "complete",
-  "level": 2,
-  "importance": "important",
-  "contextType": "review",
   "trigger_phrases": [
     "045-009-documentation-truth",
     "docs truth audit",
     "stale claims review",
     "evergreen rule self-check"
   ],
+  "status": "complete",
+  "level": 2,
+  "importance": "important",
+  "contextType": "review",
   "key_files": [
     "review-report.md",
     "spec.md",
@@ -20,5 +18,25 @@
     "checklist.md",
     "implementation-summary.md"
   ],
-  "lastUpdated": "2026-04-29T22:34:00+02:00"
+  "specFolder": "system-spec-kit/026-graph-and-context-optimization/000-release-cleanup/032-release-readiness-deep-review-program/009-documentation-truth",
+  "description": "Feature Specification: Documentation Truth Deep Review",
+  "keywords": [
+    "feature",
+    "specification",
+    "documentation",
+    "truth",
+    "deep",
+    "review"
+  ],
+  "lastUpdated": "2026-05-02T10:39:48.567Z",
+  "specId": "009",
+  "folderSlug": "documentation-truth",
+  "parentChain": [
+    "system-spec-kit",
+    "026-graph-and-context-optimization",
+    "000-release-cleanup",
+    "032-release-readiness-deep-review-program"
+  ],
+  "memorySequence": 0,
+  "memoryNameHistory": []
 }

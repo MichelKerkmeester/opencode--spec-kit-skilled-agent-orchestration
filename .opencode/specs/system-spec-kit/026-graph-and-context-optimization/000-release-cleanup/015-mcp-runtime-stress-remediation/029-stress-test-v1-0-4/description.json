@@ -1,10 +1,22 @@
 {
-  "specFolder": "system-spec-kit/026-graph-and-context-optimization/000-release-cleanup/005-review-remediation/015-mcp-runtime-stress-remediation/029-stress-test-v1-0-4",
-  "description": "Phase K v1.0.4 stress cycle on clean infrastructure (post today's gate removal + live handler test seam + harness telemetry export + degradedReadiness wiring). First apples-to-apples vs v1.0.2 baseline.",
-  "keywords": ["stress-test", "v1.0.4", "phase-K", "clean-infrastructure", "validation", "v1.0.2-comparison"],
-  "lastUpdated": "2026-04-29T12:25:00.000Z",
+  "specFolder": "system-spec-kit/026-graph-and-context-optimization/000-release-cleanup/015-mcp-runtime-stress-remediation/029-stress-test-v1-0-4",
+  "description": "Spec: v1.0.4 Stress Test on Clean Infrastructure",
+  "keywords": [
+    "spec",
+    "stress",
+    "test",
+    "clean",
+    "infrastructure"
+  ],
+  "lastUpdated": "2026-05-02T10:39:48.269Z",
   "specId": "029",
   "folderSlug": "stress-test-v1-0-4",
-  "parentChain": ["system-spec-kit", "026-graph-and-context-optimization", "015-mcp-runtime-stress-remediation"],
-  "memorySequence": 1
+  "parentChain": [
+    "system-spec-kit",
+    "026-graph-and-context-optimization",
+    "000-release-cleanup",
+    "015-mcp-runtime-stress-remediation"
+  ],
+  "memorySequence": 1,
+  "memoryNameHistory": []
 }

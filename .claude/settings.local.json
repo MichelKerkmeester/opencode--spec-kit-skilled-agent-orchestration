@@ -19,7 +19,9 @@
       "Bash(mv .agents/commands/improve/agent-improver.toml .agents/commands/improve/improve-agent.toml)",
       "Skill(cli-codex)",
       "Bash(codex exec *)",
-      "Bash(git *)"
+      "Bash(git *)",
+      "Bash(mkdir -p /tmp/dr-009)",
+      "Bash(rm -rf /tmp/dr-009/*)"
     ]
   },
   "hooks": {

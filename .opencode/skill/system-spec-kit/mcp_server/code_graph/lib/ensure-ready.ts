@@ -12,6 +12,7 @@ import { getDb, getLastGitHead, setLastGitHead, ensureFreshFiles } from './code-
 import { indexFiles } from './structural-indexer.js';
 import { getDefaultConfig } from './indexer-types.js';
 import type { IndexerConfig, ParseResult } from './indexer-types.js';
+import { resolveIndexScopePolicy } from './index-scope-policy.js';
 import { isRecord } from './query-result-adapter.js';
 import * as graphDb from './code-graph-db.js';
 
@@ -289,6 +290,19 @@ function detectState(rootDir: string): {
     return { freshness: 'empty', action: 'full_scan', staleFiles: [], deletedFiles: [], reason: 'graph is empty (0 nodes)' };
   }
 
+  const activeScope = resolveIndexScopePolicy();
+  const storedScope = graphDb.getStoredCodeGraphScope();
+  if (storedScope.fingerprint !== activeScope.fingerprint) {
+    const storedLabel = storedScope.label ?? 'unknown previous code graph scope';
+    return {
+      freshness: 'stale',
+      action: 'full_scan',
+      staleFiles: [],
+      deletedFiles: [],
+      reason: `code graph scope changed: stored=${storedLabel}; active=${activeScope.label}; run code_graph_scan with incremental:false`,
+    };
+  }
+
   // Condition (b): Git HEAD changed
   const currentHead = getCurrentGitHead(rootDir);
   const storedHead = getLastGitHead();
@@ -517,6 +531,7 @@ export async function ensureCodeGraphReady(rootDir: string, options: EnsureReady
     if (state.action === 'full_scan') {
       const config = getDefaultConfig(rootDir);
       await indexWithTimeout(config, AUTO_INDEX_TIMEOUT_MS);
+      graphDb.setCodeGraphScope(config.scopePolicy);
 
       // Update stored git HEAD after full scan
       const head = getCurrentGitHead(rootDir);
@@ -545,6 +560,7 @@ export async function ensureCodeGraphReady(rootDir: string, options: EnsureReady
       const lastSelfHealAt = new Date().toISOString();
       const config = getDefaultConfig(rootDir);
       await indexWithTimeout(config, AUTO_INDEX_TIMEOUT_MS, { specificFiles: state.staleFiles });
+      graphDb.setCodeGraphScope(config.scopePolicy);
 
       const head = getCurrentGitHead(rootDir);
       if (head) setLastGitHead(head);

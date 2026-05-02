@@ -8,13 +8,29 @@ trigger_phrases:
 
 # Hook Test Support
 
-## 1. OVERVIEW
+## 1. PURPOSE
 
-`test/hooks/` contains harness code used by hook-focused tests.
+`tests/_support/hooks/` contains small harness utilities for hook-focused tests. The helpers make replay tests deterministic by sandboxing filesystem writes and consuming checked-in hook fixtures.
+
+## 2. KEY FILES
 
 - `replay-harness.ts` - builds a sandbox, replays stop-hook fixtures, and asserts writes stay inside the sandbox.
 
-## 2. RELATED
+## 3. BOUNDARIES
 
-- `../../hooks/README.md`
-- `../../tests/fixtures/hooks/README.md`
+- Keep shared helpers test-only; production hook code belongs under `mcp_server/hooks/`.
+- Keep fixture data in `tests/fixtures/hooks/` rather than embedding large transcripts here.
+- Preserve sandbox cleanup so replay tests do not write outside temporary directories.
+
+## 4. VALIDATION
+
+Run focused hook tests from `mcp_server` after changing support helpers:
+
+```bash
+npx vitest run tests/hooks-runtime-detection.vitest.ts
+```
+
+## 5. RELATED
+
+- `../../../hooks/README.md`
+- `../../fixtures/hooks/README.md`

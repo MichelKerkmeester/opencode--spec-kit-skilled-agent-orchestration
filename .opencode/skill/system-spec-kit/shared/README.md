@@ -16,14 +16,14 @@ trigger_phrases:
 <!-- ANCHOR:table-of-contents -->
 ## TABLE OF CONTENTS
 
-- [1. OVERVIEW](#1-overview)
-- [2. QUICK START](#2-quick-start)
-- [3. STRUCTURE](#3-structure)
-- [4. FEATURES](#4-features)
-- [5. CONFIGURATION](#5-configuration)
-- [6. USAGE EXAMPLES](#6-usage-examples)
-- [7. TROUBLESHOOTING](#7-troubleshooting)
-- [8. RELATED DOCUMENTS](#8-related-documents)
+- [1. OVERVIEW](#1--overview)
+- [2. QUICK START](#2--quick-start)
+- [3. STRUCTURE](#3--structure)
+- [4. FEATURES](#4--features)
+- [5. CONFIGURATION](#5--configuration)
+- [6. USAGE EXAMPLES](#6--usage-examples)
+- [7. TROUBLESHOOTING](#7--troubleshooting)
+- [8. RELATED DOCUMENTS](#8--related-documents)
 
 <!-- /ANCHOR:table-of-contents -->
 
@@ -71,7 +71,7 @@ These modules support packet-doc-first continuity: `/spec_kit:resume` rebuilds a
 │    └─────────────┘                 │ from shared │               │
 │                                    └─────────────┘               │
 │                                                                  │
-│  Note: Source is TypeScript (.ts); compiled output is ESM (.js)  │
+│  Note: Source is TypeScript (.ts) and output is ESM (.js)         │
 │  in shared/dist via `tsc -b` with NodeNext module resolution.    │
 │                                                                  │
 └──────────────────────────────────────────────────────────────────┘
@@ -113,7 +113,7 @@ These modules support packet-doc-first continuity: `/spec_kit:resume` rebuilds a
 `shared/` is the canonical source for modules consumed by **both** `scripts/` and `mcp_server/`.
 
 - **Import convention**: Consumers should import via `@spec-kit/shared/*` path alias
-- **Stability**: Shared modules must be stable — breaking changes require coordination with both consumers
+- **Stability**: Shared modules must be stable because breaking changes require coordination with both consumers
 - **New modules**: Document purpose and consumer expectations before adding
 - **Ownership**: See [Architecture Boundaries](../ARCHITECTURE.md) for the full dependency matrix
 
@@ -126,12 +126,12 @@ These modules support packet-doc-first continuity: `/spec_kit:resume` rebuilds a
 
 ```typescript
 // From CLI scripts (scripts/*.ts)
-import { generateEmbedding } from '@spec-kit/shared/embeddings';
-import { extractTriggerPhrases } from '@spec-kit/shared/trigger-extractor';
+import { generateEmbedding } from '@spec-kit/shared/embeddings'
+import { extractTriggerPhrases } from '@spec-kit/shared/trigger-extractor'
 
 // From MCP server (mcp_server/*.ts)
-import { generateEmbedding } from '@spec-kit/shared/embeddings';
-import { extractTriggerPhrases } from '@spec-kit/shared/trigger-extractor';
+import { generateEmbedding } from '@spec-kit/shared/embeddings'
+import { extractTriggerPhrases } from '@spec-kit/shared/trigger-extractor'
 ```
 
 ### Verify Installation
@@ -150,16 +150,16 @@ ls .opencode/skill/system-spec-kit/shared/
 ### First Use
 
 ```typescript
-import { generateDocumentEmbedding, getProviderMetadata } from '@spec-kit/shared/embeddings';
+import { generateDocumentEmbedding, getProviderMetadata } from '@spec-kit/shared/embeddings'
 
 // Check active provider
-const meta: { provider: string; model: string; dim: number; healthy: boolean } = getProviderMetadata();
-console.log(`Provider: ${meta.provider}, Dimensions: ${meta.dim}`);
+const meta: { provider: string, model: string, dim: number, healthy: boolean } = getProviderMetadata()
+console.log(`Provider: ${meta.provider}, Dimensions: ${meta.dim}`)
 // Example: "Provider: voyage, Dimensions: 1024"
 
 // Generate an embedding
-const embedding: Float32Array = await generateDocumentEmbedding('How does authentication work?');
-console.log(`Embedding dimensions: ${embedding.length}`);
+const embedding: Float32Array = await generateDocumentEmbedding('How does authentication work?')
+console.log(`Embedding dimensions: ${embedding.length}`)
 ```
 
 <!-- /ANCHOR:quick-start -->
@@ -368,17 +368,17 @@ database/
 
 ```typescript
 // In scripts/memory/generate-context.ts or similar
-import { generateDocumentEmbedding, getEmbeddingDimension } from '@spec-kit/shared/embeddings';
-import { extractTriggerPhrases } from '@spec-kit/shared/trigger-extractor';
+import { generateDocumentEmbedding, getEmbeddingDimension } from '@spec-kit/shared/embeddings'
+import { extractTriggerPhrases } from '@spec-kit/shared/trigger-extractor'
 
 // Generate embedding for memory content
-const content: string = 'Decided to use Voyage API for embeddings due to quality';
-const embedding: Float32Array = await generateDocumentEmbedding(content);
-console.log(`Dimensions: ${embedding.length}`);
+const content: string = 'Decided to use Voyage API for embeddings due to quality'
+const embedding: Float32Array = await generateDocumentEmbedding(content)
+console.log(`Dimensions: ${embedding.length}`)
 
 // Extract trigger phrases
-const triggers: string[] = extractTriggerPhrases(content);
-console.log(`Triggers: ${triggers.join(', ')}`);
+const triggers: string[] = extractTriggerPhrases(content)
+console.log(`Triggers: ${triggers.join(', ')}`)
 // Output: "voyage api, embeddings, quality"
 ```
 
@@ -388,15 +388,15 @@ console.log(`Triggers: ${triggers.join(', ')}`);
 
 ```typescript
 // In mcp_server/context-server.ts
-import { generateQueryEmbedding, preWarmModel } from '@spec-kit/shared/embeddings';
-import { extractTriggerPhrases } from '@spec-kit/shared/trigger-extractor';
+import { generateQueryEmbedding, preWarmModel } from '@spec-kit/shared/embeddings'
+import { extractTriggerPhrases } from '@spec-kit/shared/trigger-extractor'
 
 // Pre-warm on startup
-await preWarmModel();
+await preWarmModel()
 
 // Search handler
 async function handleSearch(query: string): Promise<void> {
-  const queryEmbedding: Float32Array = await generateQueryEmbedding(query);
+  const queryEmbedding: Float32Array = await generateQueryEmbedding(query)
   // Use embedding for vector search...
 }
 ```
@@ -406,16 +406,16 @@ async function handleSearch(query: string): Promise<void> {
 ### Example 3: Get Provider Information
 
 ```typescript
-import { getProviderMetadata, getEmbeddingProfile } from '@spec-kit/shared/embeddings';
+import { getProviderMetadata, getEmbeddingProfile } from '@spec-kit/shared/embeddings'
 
 // Check current provider
-const meta = getProviderMetadata();
-console.log(meta);
+const meta = getProviderMetadata()
+console.log(meta)
 // { provider: 'voyage', model: 'voyage-code-2', dim: 1024, healthy: true }
 
 // Get database path for current profile
-const profile = getEmbeddingProfile();
-const dbPath: string = profile.getDatabasePath('/base/path');
+const profile = getEmbeddingProfile()
+const dbPath: string = profile.getDatabasePath('/base/path')
 // '/base/path/context-index__voyage__voyage-code-2__1024.sqlite'
 ```
 
@@ -424,10 +424,10 @@ const dbPath: string = profile.getDatabasePath('/base/path');
 ### Example 4: Trigger Extraction with Stats
 
 ```typescript
-import { extractTriggerPhrasesWithStats } from '@spec-kit/shared/trigger-extractor';
+import { extractTriggerPhrasesWithStats } from '@spec-kit/shared/trigger-extractor'
 
-const result = extractTriggerPhrasesWithStats(memoryContent);
-console.log(result);
+const result = extractTriggerPhrasesWithStats(memoryContent)
+console.log(result)
 // {
 //   phrases: ['memory search', 'trigger extraction', ...],
 //   stats: { inputLength: 5000, phraseCount: 15, extractionTimeMs: 42 },
@@ -471,8 +471,8 @@ console.log(result);
 **Solution**:
 ```typescript
 // Pre-warm on startup
-import { preWarmModel } from './embeddings';
-await preWarmModel();
+import { preWarmModel } from './embeddings'
+await preWarmModel()
 ```
 
 ---
@@ -500,7 +500,7 @@ rm .opencode/skill/system-spec-kit/mcp_server/database/context-index.sqlite
 **Solution**:
 ```typescript
 // Pre-warm at startup to download/load model
-await preWarmModel();
+await preWarmModel()
 ```
 
 ---
@@ -526,10 +526,13 @@ echo "EMBEDDINGS_PROVIDER: $EMBEDDINGS_PROVIDER"
 cd .opencode/skill/system-spec-kit/shared
 
 # Test embedding generation (runs compiled ESM .js output)
-node --input-type=module -e "const { generateDocumentEmbedding } = await import('./dist/embeddings.js'); const e = await generateDocumentEmbedding('test'); console.log('Dims:', e.length)"
+node --input-type=module -e "const { generateDocumentEmbedding } = await import('./dist/embeddings.js')
+const e = await generateDocumentEmbedding('test')
+console.log('Dims:', e.length)"
 
 # Test trigger extraction (runs compiled ESM .js output)
-node --input-type=module -e "const { extractTriggerPhrases } = await import('./dist/trigger-extractor.js'); console.log(extractTriggerPhrases('memory search trigger extraction'))"
+node --input-type=module -e "const { extractTriggerPhrases } = await import('./dist/trigger-extractor.js')
+console.log(extractTriggerPhrases('memory search trigger extraction'))"
 ```
 
 <!-- /ANCHOR:troubleshooting -->
@@ -558,7 +561,3 @@ node --input-type=module -e "const { extractTriggerPhrases } = await import('./d
 | [OpenAI Embeddings](https://platform.openai.com/docs/guides/embeddings)   | OpenAI embedding API docs          |
 
 <!-- /ANCHOR:related -->
-
----
-
-*Documentation version: 2.1 | Last updated: 2026-02-21 | Migrated to TypeScript*

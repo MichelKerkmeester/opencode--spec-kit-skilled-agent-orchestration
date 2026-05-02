@@ -490,6 +490,9 @@ const codeGraphScanSchema = getSchema({
   includeGlobs: optionalStringArray,
   excludeGlobs: optionalStringArray,
   incremental: z.boolean().optional(),
+  includeSkills: z.boolean().optional(),
+  verify: z.boolean().optional(),
+  persistBaseline: z.boolean().optional(),
 });
 
 const codeGraphQuerySchema = getSchema({
@@ -740,7 +743,7 @@ const ALLOWED_PARAMETERS: Record<string, string[]> = {
   memory_ingest_start: ['paths', 'specFolder', 'tenantId', 'userId', 'agentId', 'sessionId', 'provenanceSource', 'provenanceActor', 'governedAt', 'retentionPolicy', 'deleteAfter'],
   memory_ingest_status: ['jobId'],
   memory_ingest_cancel: ['jobId'],
-  code_graph_scan: ['rootDir', 'includeGlobs', 'excludeGlobs', 'incremental'],
+  code_graph_scan: ['rootDir', 'includeGlobs', 'excludeGlobs', 'incremental', 'includeSkills', 'verify', 'persistBaseline'],
   code_graph_query: ['operation', 'subject', 'subjects', 'unionMode', 'edgeType', 'limit', 'includeTransitive', 'maxDepth', 'minConfidence'],
   code_graph_status: [],
   code_graph_context: ['input', 'queryMode', 'subject', 'seeds', 'budgetTokens', 'profile', 'includeTrace'],

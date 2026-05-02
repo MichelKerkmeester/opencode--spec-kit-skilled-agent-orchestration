@@ -1,172 +1,164 @@
 ---
-title: "Types"
-description: "Shared session type definitions used across the Spec Kit scripts pipeline."
+title: "Type Definitions"
+description: "Shared TypeScript interfaces for Spec Kit script session payloads and generated context data."
 trigger_phrases:
   - "session types"
   - "type definitions"
   - "session data interface"
 ---
 
-# Types
+# Type Definitions
 
-> Shared session type definitions used across the Spec Kit scripts pipeline.
-
----
+> Shared TypeScript interfaces for script payloads, session extraction, decisions, conversations and diagrams.
 
 <!-- ANCHOR:table-of-contents -->
 ## TABLE OF CONTENTS
 
-- [1. OVERVIEW](#1-overview)
-- [2. STRUCTURE](#2-structure)
-- [3. TYPE ARCHITECTURE](#3-type-architecture)
-- [4. INTERFACES](#4-interfaces)
-- [5. ROOT TYPE: SESSIONDATA](#5-root-type-sessiondata)
-- [6. MIGRATION NOTES](#6-migration-notes)
-- [7. RELATED](#7-related)
-
----
+- [1. OVERVIEW](#1--overview)
+- [2. PACKAGE TOPOLOGY](#2--package-topology)
+- [3. KEY FILES](#3--key-files)
+- [4. ENTRYPOINTS](#4--entrypoints)
+- [5. BOUNDARIES](#5--boundaries)
+- [6. VALIDATION](#6--validation)
+- [7. RELATED](#7--related)
 
 <!-- /ANCHOR:table-of-contents -->
+
+---
 
 <!-- ANCHOR:overview -->
 ## 1. OVERVIEW
 
-**Shared session type definitions** used across the Spec Kit scripts pipeline. This module is the **canonical source of truth** for all session-related types, eliminating parallel type hierarchies that previously existed between `simulation-factory` and the extractors (resolves **TECH-DEBT P6-05**).
+`scripts/types/` contains shared TypeScript types used by extractors, renderers, simulation helpers and context-generation modules. The folder keeps data contracts in one source file so script modules can share session payload shapes without redefining them.
 
-For Gate E continuity, packet recovery still starts at `/spec_kit:resume` and follows `handover.md` -> `_memory.continuity` -> spec docs. Generated memory artifacts remain supporting only, even when these shared types model the save and resume payloads.
+Current state:
 
----
+- Source of truth is `session-types.ts`.
+- Runtime declarations are generated into `scripts/dist/types/` by the TypeScript build.
+- These definitions model script data only. They are not MCP server API contracts.
 
 <!-- /ANCHOR:overview -->
 
-<!-- ANCHOR:structure -->
-## 2. STRUCTURE
-
-```
-types/
-└── session-types.ts    # Canonical session interfaces across 4 sections
-```
-
-**Imports from:**
-- `../extractors/file-extractor` for `FileChange`, `ObservationDetailed`
-- `../extractors/session-extractor` for `ToolCounts`, `SpecFileEntry`
-
 ---
 
-<!-- /ANCHOR:structure -->
+<!-- ANCHOR:package-topology -->
+## 2. PACKAGE TOPOLOGY
 
-<!-- ANCHOR:type-architecture -->
-## 3. TYPE ARCHITECTURE
-
-```
-SessionData (root)
-├── FileChange[]              ← from file-extractor
-├── ObservationDetailed[]     ← from file-extractor
-├── OutcomeEntry[]
-├── SpecFileEntry[]           ← from session-extractor
-├── ToolCounts                ← from session-extractor
-└── FILE_PROGRESS[]
-
-DecisionData
-├── DecisionRecord[]
-│   └── DecisionOption[]
-
-ConversationData
-├── ConversationMessage[]
-│   └── ToolCallEntry[]
-└── ConversationPhase[]
-
-DiagramData
-├── DiagramOutput[]
-├── AutoDecisionTree[]
-├── DiagramTypeCount[]
-└── PatternSummaryEntry[]
+```text
+scripts/types/
++-- session-types.ts      # Shared session, decision, conversation and diagram interfaces
+`-- README.md
 ```
 
----
+Generated output:
 
-<!-- /ANCHOR:type-architecture -->
+```text
+scripts/dist/types/
++-- session-types.js
++-- session-types.d.ts
+`-- session-types.js.map
+```
 
-<!-- ANCHOR:interfaces -->
-## 4. INTERFACES
+Allowed direction:
 
-### Section 1: Decision Types
+- Script source modules may import from `scripts/types/session-types.ts`.
+- Extractors may provide imported field types used by `SessionData`.
+- Build output may be inspected by runtime smoke tests.
 
-| Interface | Fields | Purpose |
-|-----------|--------|---------|
-| `DecisionOption` | `OPTION_NUMBER`, `LABEL`, `DESCRIPTION`, `PROS`, `CONS` | Single option within a decision |
-| `DecisionRecord` | `TITLE`, `CONTEXT`, `CHOSEN`, `RATIONALE`, `CONFIDENCE`, `EVIDENCE`, `CAVEATS`, `FOLLOWUP` + 18 total | Complete decision with rationale, evidence and follow-up items |
-| `DecisionData` | `DECISIONS`, `DECISION_COUNT`, confidence breakdowns | Aggregate container with confidence-level counts |
+Disallowed direction:
 
-### Section 2: Phase / Conversation Types
+- Source modules should not import from `scripts/dist/types/`.
+- Type files should not contain runtime behavior.
+- MCP server public API types should not be defined here.
 
-| Interface | Fields | Purpose |
-|-----------|--------|---------|
-| `PhaseEntry` | `PHASE_NAME`, `DURATION`, `ACTIVITIES?` | Shared by diagram + conversation extractors |
-| `ToolCallEntry` | `TOOL_NAME`, `DESCRIPTION`, `RESULT_PREVIEW` | Tool invocation within a message |
-| `ConversationMessage` | `TIMESTAMP`, `ROLE`, `CONTENT`, `TOOL_CALLS` | Single user or assistant message |
-| `ConversationPhase` | `PHASE_NAME`, `DURATION` | Named phase within a conversation |
-| `ConversationData` | `MESSAGES`, `PHASES`, `DURATION`, `FLOW_PATTERN`, `TOOL_COUNT` | Full conversation structure |
-
-### Section 3: Diagram Types
-
-| Interface | Fields | Purpose |
-|-----------|--------|---------|
-| `DiagramOutput` | `TITLE`, `DIAGRAM_TYPE`, `PATTERN_NAME`, `ASCII_ART`, `RELATED_FILES` | Single diagram with ASCII art content |
-| `AutoDecisionTree` | `INDEX`, `DECISION_TITLE`, `DECISION_TREE` | Auto-generated decision tree visualization |
-| `DiagramTypeCount` | `TYPE`, `COUNT` | Diagram type frequency |
-| `PatternSummaryEntry` | `PATTERN_NAME`, `COUNT` | Pattern usage summary |
-| `DiagramData` | `DIAGRAMS`, `AUTO_DECISION_TREES`, `DIAGRAM_TYPES`, `PATTERN_SUMMARY` | Aggregate diagram container |
-
-### Section 4: Session Types
-
-| Interface | Fields | Purpose |
-|-----------|--------|---------|
-| `OutcomeEntry` | `OUTCOME`, `TYPE?` | Single session outcome |
-| `SessionData` | 35+ fields | **Root type**: complete AI coding session context |
+<!-- /ANCHOR:package-topology -->
 
 ---
 
-<!-- /ANCHOR:interfaces -->
+<!-- ANCHOR:key-files -->
+## 3. KEY FILES
 
-<!-- ANCHOR:session-data -->
-## 5. ROOT TYPE: SESSIONDATA
+| File | Responsibility |
+|---|---|
+| `session-types.ts` | Defines decision, conversation, diagram and session payload interfaces. |
+| `../extractors/file-extractor.ts` | Provides file-change and observation types consumed by session types. |
+| `../extractors/session-extractor.ts` | Provides tool-count and spec-file entry types consumed by session types. |
 
-`SessionData` is the top-level type representing a complete session. Key field groups:
+Primary type groups:
 
-| Group | Fields |
-|-------|--------|
-| **Identity** | `TITLE`, `SESSION_ID`, `CHANNEL`, `SPEC_FOLDER` |
-| **Timing** | `DATE`, `TIME`, `DURATION`, `CREATED_AT_EPOCH`, `LAST_ACCESSED_EPOCH`, `EXPIRES_AT_EPOCH` |
-| **Content** | `SUMMARY`, `QUICK_SUMMARY`, `FILES`, `OUTCOMES`, `OBSERVATIONS`, `SPEC_FILES` |
-| **Metrics** | `FILE_COUNT`, `TOOL_COUNT`, `MESSAGE_COUNT`, `DECISION_COUNT`, `ACCESS_COUNT`, `TOOL_COUNTS` |
-| **Memory** | `IMPORTANCE_TIER`, `CONTEXT_TYPE`, `RELEVANCE_BOOST`, `LAST_SEARCH_QUERY` |
-| **State** | `PROJECT_PHASE`, `ACTIVE_FILE`, `LAST_ACTION`, `NEXT_ACTION`, `BLOCKERS`, `FILE_PROGRESS` |
+| Group | Purpose |
+|---|---|
+| `DecisionData` | Decision records, options, evidence and confidence fields. |
+| `ConversationData` | Messages, tool calls, phases and conversation flow metadata. |
+| `DiagramData` | Diagram output, decision trees and pattern summaries. |
+| `SessionData` | Root generated-context payload used by save and render workflows. |
 
----
-
-<!-- /ANCHOR:session-data -->
-
-<!-- ANCHOR:migration -->
-## 6. MIGRATION NOTES
-
-This module was created to resolve **TECH-DEBT P6-05**, where `simulation-factory` and the extractors each maintained their own copies of the same interfaces. All consumers now import from this single canonical source.
-
-**Before:** Types duplicated in `simulation-factory.ts` and extractor modules.
-**After:** Single source in `types/session-types.ts`, imported by all consumers.
+<!-- /ANCHOR:key-files -->
 
 ---
 
-<!-- /ANCHOR:migration -->
+<!-- ANCHOR:entrypoints -->
+## 4. ENTRYPOINTS
+
+This folder has no standalone CLI. Consumers import the types from source during TypeScript development or from generated declarations after build.
+
+Example source import:
+
+```typescript
+import type { SessionData } from '../types/session-types'
+```
+
+Example declaration check:
+
+```bash
+test -f .opencode/skill/system-spec-kit/scripts/dist/types/session-types.d.ts
+```
+
+<!-- /ANCHOR:entrypoints -->
+
+---
+
+<!-- ANCHOR:boundaries -->
+## 5. BOUNDARIES
+
+| Boundary | Rule |
+|---|---|
+| Ownership | This folder owns script payload interfaces only. |
+| Runtime | Keep runtime logic in extractors, renderers, core modules or libraries. |
+| Imports | Prefer type-only imports when consumers only need compile-time shapes. |
+| Public APIs | MCP server request and response contracts belong under `mcp_server/`. |
+
+<!-- /ANCHOR:boundaries -->
+
+---
+
+<!-- ANCHOR:validation -->
+## 6. VALIDATION
+
+Run the README validator after editing this file:
+
+```bash
+python3 .opencode/skill/sk-doc/scripts/validate_document.py .opencode/skill/system-spec-kit/scripts/types/README.md
+```
+
+Run the script build after changing type definitions:
+
+```bash
+npm --prefix .opencode/skill/system-spec-kit/scripts run build
+```
+
+Expected result: TypeScript compiles and emits declarations for `session-types.ts`.
+
+<!-- /ANCHOR:validation -->
+
+---
 
 <!-- ANCHOR:related -->
 ## 7. RELATED
 
-| Resource | Path |
-|----------|------|
-| File extractor (provides `FileChange`, `ObservationDetailed`) | `../extractors/file-extractor.ts` |
-| Session extractor (provides `ToolCounts`, `SpecFileEntry`) | `../extractors/session-extractor.ts` |
-| Simulation factory (primary consumer) | `../lib/simulation-factory.ts` |
-| Scripts README | `../README.md` |
+- [`../extractors/README.md`](../extractors/README.md)
+- [`../renderers/README.md`](../renderers/README.md)
+- [`../core/README.md`](../core/README.md)
+- [`../README.md`](../README.md)
 
 <!-- /ANCHOR:related -->

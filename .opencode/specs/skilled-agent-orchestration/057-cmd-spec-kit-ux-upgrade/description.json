@@ -27,23 +27,21 @@
     ".opencode/agent"
   ],
   "specFolder": "skilled-agent-orchestration/057-cmd-spec-kit-ux-upgrade",
-  "description": "Deep research: compare external SPAR-Kit project against internal system-spec-kit, surface adoptable UX/orchestration patterns. 10-iteration cli-codex gpt-5.5 high fast run.",
+  "description": "Feature Specification: spec-kit UX comparison vs external SPAR-Kit",
   "keywords": [
-    "research",
+    "feature",
+    "specification",
     "spec-kit",
-    "ux",
-    "spar-kit",
     "comparison",
-    "orchestration",
-    "improvements",
-    "templates",
-    "commands",
-    "agents"
+    "external",
+    "spar-kit"
   ],
-  "lastUpdated": "2026-05-01T07:30:00Z",
+  "lastUpdated": "2026-05-02T10:39:47.777Z",
   "specId": "057",
   "folderSlug": "cmd-spec-kit-ux-upgrade",
   "parentChain": [
     "skilled-agent-orchestration"
-  ]
+  ],
+  "memorySequence": 0,
+  "memoryNameHistory": []
 }

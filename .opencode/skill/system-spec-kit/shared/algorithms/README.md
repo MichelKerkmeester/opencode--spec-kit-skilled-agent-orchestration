@@ -1,29 +1,25 @@
 ---
 title: "Algorithms"
-description: "Retrieval fusion and diversity algorithms for hybrid RAG search, including Reciprocal Rank Fusion, adaptive weighted fusion and Maximal Marginal Relevance reranking."
+description: "Retrieval fusion and reranking algorithms for shared search pipelines."
 trigger_phrases:
   - "RRF fusion"
-  - "reciprocal rank fusion"
   - "adaptive fusion"
   - "MMR reranker"
-  - "maximal marginal relevance"
-  - "hybrid search fusion"
-  - "result fusion"
 ---
 
 # Algorithms
 
-> Retrieval fusion and diversity algorithms for the hybrid RAG pipeline. Combines ranked lists from multiple search channels (vector, keyword, BM25, graph) into a single scored result set with configurable weighting, convergence bonuses and diversity pruning.
-
----
-
 <!-- ANCHOR:table-of-contents -->
 ## TABLE OF CONTENTS
 
-- [1. OVERVIEW](#1-overview)
-- [2. STRUCTURE](#2-structure)
-- [3. KEY EXPORTS](#3-key-exports)
-- [4. RELATED DOCUMENTS](#4-related-documents)
+- [1. OVERVIEW](#1--overview)
+- [2. PACKAGE TOPOLOGY](#2--package-topology)
+- [3. KEY FILES](#3--key-files)
+- [4. STABLE API](#4--stable-api)
+- [5. BOUNDARIES](#5--boundaries)
+- [6. ENTRYPOINTS](#6--entrypoints)
+- [7. VALIDATION](#7--validation)
+- [8. RELATED](#8--related)
 
 <!-- /ANCHOR:table-of-contents -->
 
@@ -32,97 +28,148 @@ trigger_phrases:
 <!-- ANCHOR:overview -->
 ## 1. OVERVIEW
 
-This folder contains three core algorithms that power the retrieval fusion pipeline. They rank supporting retrieval candidates after the canonical packet continuity chain (`handover.md -> _memory.continuity -> spec docs`) has been established through `/spec_kit:resume`:
+`algorithms/` owns ranking logic used after retrieval candidates are available. The folder combines ranked lists, applies intent-aware weights and can rerank embedding-backed candidates for diversity.
 
-1. **RRF Fusion** (`rrf-fusion.ts`) -- Reciprocal Rank Fusion for combining ranked lists from different search channels. Supports two-list, multi-list and cross-variant fusion modes with optional score normalization and convergence bonuses for items that appear across multiple sources.
+Current state:
 
-2. **Adaptive Fusion** (`adaptive-fusion.ts`) -- Intent-aware weighted RRF fusion. Selects weight profiles (semantic, keyword, recency, graph) based on classified query intent (e.g., `fix_bug`, `find_decision`, `refactor`). Includes feature-flag gating, rollout targeting, document-type weight adjustments, degraded-mode fallback and dark-run comparison mode.
-
-3. **MMR Reranker** (`mmr-reranker.ts`) -- Maximal Marginal Relevance post-fusion diversity pass. Balances relevance against redundancy using cosine similarity on dense embeddings. Configurable lambda trade-off and candidate pool cap.
-
-The barrel file (`index.ts`) re-exports all public APIs from the three modules.
+- `rrf-fusion.ts` provides Reciprocal Rank Fusion helpers for two-list, multi-list and cross-query fusion.
+- `adaptive-fusion.ts` selects weighted fusion behavior from intent, document type and feature flags.
+- `mmr-reranker.ts` applies Maximal Marginal Relevance to reduce duplicate candidate content.
+- `index.ts` is the public barrel for algorithm consumers.
 
 <!-- /ANCHOR:overview -->
 
 ---
 
-<!-- ANCHOR:structure -->
-## 2. STRUCTURE
+<!-- ANCHOR:package-topology -->
+## 2. PACKAGE TOPOLOGY
 
 ```text
 algorithms/
-├── README.md              # This file
-├── index.ts               # Barrel re-exports for all algorithm modules
-├── adaptive-fusion.ts     # Intent-weighted adaptive RRF with feature flags
-├── mmr-reranker.ts        # Maximal Marginal Relevance diversity reranker
-└── rrf-fusion.ts          # Core Reciprocal Rank Fusion (two-list, multi, cross-variant)
++-- index.ts              # Public barrel exports
++-- rrf-fusion.ts         # Rank aggregation and score normalization
++-- adaptive-fusion.ts    # Intent-weighted fusion and fallback metadata
++-- mmr-reranker.ts       # Embedding similarity and diversity reranking
+`-- README.md
 ```
 
-| File                   | LOC  | Description                                                                 |
-| ---------------------- | ---- | --------------------------------------------------------------------------- |
-| `index.ts`             | 8    | Barrel file re-exporting `rrf-fusion`, `adaptive-fusion` and `mmr-reranker` |
-| `adaptive-fusion.ts`   | 426  | Weighted fusion with intent profiles, recency boost, dark-run diff mode     |
-| `mmr-reranker.ts`      | 153  | Cosine similarity computation and greedy MMR selection loop                 |
-| `rrf-fusion.ts`        | 491  | Two-list and multi-list RRF, cross-variant fusion, score normalization      |
+Allowed dependency direction:
 
-<!-- /ANCHOR:structure -->
+```text
+callers -> algorithms/index.ts
+algorithms/index.ts -> algorithm modules
+adaptive-fusion.ts -> rrf-fusion.ts
+algorithm modules -> shared types or local constants
+```
+
+Disallowed dependency direction:
+
+```text
+algorithm modules -> MCP tool handlers
+algorithm modules -> database adapters
+algorithm modules -> embedding providers
+rrf-fusion.ts -> adaptive-fusion.ts
+```
+
+<!-- /ANCHOR:package-topology -->
 
 ---
 
-<!-- ANCHOR:key-exports -->
-## 3. KEY EXPORTS
+<!-- ANCHOR:key-files -->
+## 3. KEY FILES
 
-### rrf-fusion.ts
+| File | Responsibility |
+|---|---|
+| `index.ts` | Re-exports public algorithm modules for package consumers. |
+| `rrf-fusion.ts` | Scores ranked retrieval lists with RRF, overlap bonuses and source tracking. |
+| `adaptive-fusion.ts` | Builds weighted fusion from query intent and runtime flags, with standard fallback. |
+| `mmr-reranker.ts` | Computes cosine similarity and selects diverse results from embedding candidates. |
 
-| Export                       | Kind       | Description                                                    |
-| ---------------------------- | ---------- | -------------------------------------------------------------- |
-| `fuseResults`                | Function   | Two-list RRF fusion with configurable k constant               |
-| `fuseResultsMulti`           | Function   | Multi-list weighted RRF with convergence bonus                 |
-| `fuseResultsCrossVariant`    | Function   | Cross-variant RRF for multi-query RAG pipelines                |
-| `fuseScoresAdvanced`         | Function   | Post-fusion term-match bonus augmentation                      |
-| `unifiedSearch`              | Function   | Async orchestrator running multiple search functions then fusing |
-| `normalizeRrfScores`         | Function   | Min-max normalization of RRF scores to [0,1]                   |
-| `isRrfEnabled`               | Function   | Feature-flag check (`SPECKIT_RRF` env var)                     |
-| `SOURCE_TYPES`               | Constant   | Canonical source labels (vector, fts, bm25, graph, keyword)    |
-| `DEFAULT_K`                  | Constant   | RRF smoothing constant (60)                                    |
-| `RrfItem`, `FusionResult`    | Type       | Core input/output types for the fusion pipeline                |
-| `RankedList`, `SearchFunction` | Type     | Multi-list and async search descriptors                        |
+<!-- /ANCHOR:key-files -->
 
-### adaptive-fusion.ts
+---
 
-| Export                       | Kind       | Description                                                    |
-| ---------------------------- | ---------- | -------------------------------------------------------------- |
-| `hybridAdaptiveFuse`         | Function   | Main entry point: flag-gated adaptive or standard fusion       |
-| `adaptiveFuse`               | Function   | Weighted RRF fusion with recency boost                         |
-| `standardFuse`               | Function   | Equal-weight deterministic RRF fallback                        |
-| `getAdaptiveWeights`         | Function   | Compute weights from intent and document type                  |
-| `isAdaptiveFusionEnabled`    | Function   | Feature-flag + rollout check                                   |
-| `INTENT_WEIGHT_PROFILES`     | Constant   | Per-intent weight profiles (understand, fix_bug, refactor etc) |
-| `FusionWeights`              | Interface  | Weight shape: semantic, keyword, recency, graph, causal bias   |
-| `AdaptiveFusionResult`       | Interface  | Fusion output with optional degraded-mode and dark-run data    |
+<!-- ANCHOR:stable-api -->
+## 4. STABLE API
 
-### mmr-reranker.ts
+| Export | File | Contract |
+|---|---|---|
+| `fuseResults(vectorResults, keywordResults, k)` | `rrf-fusion.ts` | Returns fused results with `rrfScore`, `sources`, `sourceScores` and convergence data. |
+| `fuseResultsMulti(rankedLists, options)` | `rrf-fusion.ts` | Fuses any number of ranked lists with optional source weights. |
+| `fuseResultsCrossVariant(variants, options)` | `rrf-fusion.ts` | Combines results from expanded query variants. |
+| `normalizeRrfScores(results)` | `rrf-fusion.ts` | Normalizes RRF scores to the `0` to `1` range. |
+| `hybridAdaptiveFuse(lists, options)` | `adaptive-fusion.ts` | Uses adaptive fusion when enabled, otherwise standard fusion. |
+| `adaptiveFuse(lists, options)` | `adaptive-fusion.ts` | Applies intent and document-type weights to ranked lists. |
+| `standardFuse(lists, options)` | `adaptive-fusion.ts` | Provides equal-weight deterministic fusion. |
+| `getAdaptiveWeights(intent, docType)` | `adaptive-fusion.ts` | Returns the active semantic, keyword, recency and graph weights. |
+| `applyMMR(candidates, config)` | `mmr-reranker.ts` | Selects diverse candidates by relevance and vector similarity. |
+| `computeCosine(a, b)` | `mmr-reranker.ts` | Computes cosine similarity and guards large vector length mismatches. |
 
-| Export                       | Kind       | Description                                                    |
-| ---------------------------- | ---------- | -------------------------------------------------------------- |
-| `applyMMR`                   | Function   | Greedy MMR selection balancing relevance vs diversity           |
-| `computeCosine`              | Function   | Cosine similarity between two embedding vectors                |
-| `MMRCandidate`               | Interface  | Input candidate with id, score and dense embedding             |
-| `MMRConfig`                  | Interface  | Config: lambda trade-off, result limit, max candidates         |
-| `DEFAULT_MAX_CANDIDATES`     | Constant   | Hard cap on input pool size (20)                               |
+Use `index.ts` for normal imports. Import a module directly only for tests or when a caller needs a module-specific type.
 
-<!-- /ANCHOR:key-exports -->
+<!-- /ANCHOR:stable-api -->
+
+---
+
+<!-- ANCHOR:boundaries -->
+## 5. BOUNDARIES
+
+| Boundary | Rule |
+|---|---|
+| Inputs | Accept candidate arrays, ranked lists, scores, embeddings and option objects only. |
+| Outputs | Return scored result arrays and metadata. Do not perform response formatting here. |
+| Feature flags | Read algorithm flags in the algorithm that owns the behavior. |
+| Storage | Do not open SQLite, file handles or network clients from this folder. |
+| Embeddings | Consume vectors supplied by callers. Do not generate embeddings here. |
+
+Main flow:
+
+```text
+retrieval channels
+  -> ranked lists
+  -> RRF or adaptive fusion
+  -> optional MMR rerank
+  -> scored candidates for response assembly
+```
+
+<!-- /ANCHOR:boundaries -->
+
+---
+
+<!-- ANCHOR:entrypoints -->
+## 6. ENTRYPOINTS
+
+| Entrypoint | Type | Purpose |
+|---|---|---|
+| `index.ts` | Module | Public import surface for algorithm consumers. |
+| `hybridAdaptiveFuse` | Function | Main adaptive fusion path for hybrid retrieval. |
+| `fuseResultsMulti` | Function | Main RRF path when callers already have ranked lists. |
+| `applyMMR` | Function | Optional diversity pass after fusion. |
+
+<!-- /ANCHOR:entrypoints -->
+
+---
+
+<!-- ANCHOR:validation -->
+## 7. VALIDATION
+
+Run from the repository root:
+
+```bash
+python3 .opencode/skill/sk-doc/scripts/validate_document.py .opencode/skill/system-spec-kit/shared/algorithms/README.md
+```
+
+Expected result: the validator exits with code `0`.
+
+<!-- /ANCHOR:validation -->
 
 ---
 
 <!-- ANCHOR:related -->
-## 4. RELATED DOCUMENTS
+## 8. RELATED
 
-- **Contracts**: `../contracts/retrieval-trace.ts` defines pipeline trace types and degraded-mode contracts
-- **Scoring**: `../scoring/` computes composite folder relevance scores
-- **Embeddings**: `../embeddings/` generates dense vectors consumed by MMR
-- **Consumers**: MCP server retrieval pipeline, `memory_search` and `memory_match_triggers` endpoints
+- [`../README.md`](../README.md)
+- [`../contracts/README.md`](../contracts/README.md)
+- [`../embeddings/README.md`](../embeddings/README.md)
 
 <!-- /ANCHOR:related -->
-
----

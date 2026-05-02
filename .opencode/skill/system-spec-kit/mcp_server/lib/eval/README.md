@@ -1,76 +1,129 @@
 ---
 title: "Evaluation Modules"
-description: "Evaluation, logging, baselines, quality proxies, ablation, and reporting for the spec-doc record retrieval pipeline."
+description: "Retrieval evaluation, baseline comparison, ground-truth handling, ablation runs, and reporting support for the Spec Kit MCP server."
 trigger_phrases:
   - "eval modules"
   - "ablation"
   - "eval logger"
   - "quality proxy"
+  - "ground truth"
 ---
 
 # Evaluation Modules
 
-<!-- ANCHOR:table-of-contents -->
-## TABLE OF CONTENTS
+`lib/eval/` contains measurement and analysis code for retrieval quality. Runtime callers use the fail-safe logger and pure scoring helpers. Maintenance callers use baseline, ablation, ground-truth, and dashboard utilities.
 
-- [1. OVERVIEW](#1-overview)
-- [2. STRUCTURE](#2-structure)
-- [3. IMPLEMENTED STATE](#3-implemented-state)
-- [4. RELATED](#4-related)
+## Table of Contents
 
-<!-- /ANCHOR:table-of-contents -->
-<!-- ANCHOR:overview -->
+- [1. OVERVIEW](#1--overview)
+- [2. TOPOLOGY](#2--topology)
+- [3. KEY FILES](#3--key-files)
+- [4. BOUNDARIES](#4--boundaries)
+- [5. ENTRYPOINTS](#5--entrypoints)
+- [6. VALIDATION](#6--validation)
+- [7. RELATED](#7--related)
+
 ## 1. OVERVIEW
 
-`lib/eval/` contains the measurement stack for retrieval quality, eval logging, baseline comparisons, and reporting. The directory currently has 14 TypeScript modules plus the static `data/ground-truth.json` fixture.
+This folder answers whether retrieval changes improve results, regress quality, or affect channel contribution. It does not own live retrieval. The live path may call into logging and pure metrics, while heavier eval work stays behind explicit tools, flags, or offline scripts.
 
-The current surface covers:
+Runtime role:
 
-- Eval database bootstrap and logging.
-- Metric computation and quality proxy scoring.
-- BM25 baselines, ablations, k-sensitivity, and state baselines.
-- Ground-truth generation plus feedback-based expansion.
-- Reporting dashboard and read-only comparison analysis.
+- Record query and result telemetry when eval logging is enabled.
+- Calculate pure metrics or quality proxy values without side effects.
+- Keep disabled paths safe for normal MCP requests.
 
-<!-- /ANCHOR:overview -->
-<!-- ANCHOR:structure -->
-## 2. STRUCTURE
+Maintenance role:
 
-| File | Purpose |
-|---|---|
-| `ablation-framework.ts` | Controlled channel ablation runs, formatting, and storage helpers |
-| `bm25-baseline.ts` | BM25-only baseline measurement and baseline metric persistence |
-| `edge-density.ts` | Graph edge-density measurement and reporting helpers |
-| `eval-db.ts` | Eval database bootstrap and schema management |
-| `eval-logger.ts` | Fail-safe query, channel, and final-result logging hooks |
-| `eval-metrics.ts` | MRR, NDCG, recall, precision, F1, MAP, hit-rate, inversion-rate, and constitutional metrics |
-| `eval-quality-proxy.ts` | Pure quality proxy formula for latency/result quality tradeoff scoring |
-| `ground-truth-data.ts` | Static typed ground-truth definitions |
-| `ground-truth-feedback.ts` | Selection-feedback capture and judge-agreement helpers |
-| `ground-truth-generator.ts` | Ground-truth dataset generation and diversity validation |
-| `k-value-analysis.ts` | RRF K-value sweep helpers |
-| `memory-state-baseline.ts` | Retrieval/isolation baseline snapshots against the active memory DB |
-| `reporting-dashboard.ts` | Sprint/channel aggregation and formatted dashboard output |
-| `shadow-scoring.ts` | Read-only comparison helpers and holdout analysis |
+- Compare BM25, memory-state, warm-start, and channel baselines.
+- Run ablation and K-value sensitivity checks.
+- Generate and expand ground-truth data.
+- Produce dashboard and shadow-score reports.
 
-<!-- /ANCHOR:structure -->
-<!-- ANCHOR:implemented-state -->
-## 3. IMPLEMENTED STATE
+## 2. TOPOLOGY
 
-- `eval-logger.ts` is intentionally fail-safe: when `SPECKIT_EVAL_LOGGING` is not exactly `true`, its public functions no-op instead of risking production retrieval paths.
-- `eval-quality-proxy.ts` is a pure calculation module with no DB writes, making it safe for inline quality scoring and tests.
-- `ablation-framework.ts` and the handler layer gate mutation-style ablation storage behind `SPECKIT_ABLATION=true`.
-- `reporting-dashboard.ts` is the current reporting surface for sprint/channel aggregation.
-- `shadow-scoring.ts` retains comparison and analysis helpers, but the legacy write path is retired; the module is now effectively read-only analysis support for supporting retrieval signals.
-- `ground-truth-feedback.ts` is the bridge between implicit user selections, stored labels, and judge-agreement analysis.
+```text
+┌────────────────────┐
+│ Retrieval handlers │
+└─────────┬──────────┘
+          ▼
+┌────────────────────┐      ┌────────────────────┐
+│ Fail-safe logging  │      │ Pure metric helpers│
+└─────────┬──────────┘      └─────────┬──────────┘
+          ▼                           ▼
+┌────────────────────┐      ┌────────────────────┐
+│ Eval SQLite tables │      │ Reports and scores │
+└─────────┬──────────┘      └─────────┬──────────┘
+          ▼                           ▼
+┌─────────────────────────────────────────────────┐
+│ Baselines, ablations, ground truth, dashboards  │
+└─────────────────────────────────────────────────┘
+```
 
-<!-- /ANCHOR:implemented-state -->
-<!-- ANCHOR:related -->
-## 4. RELATED
+## 3. KEY FILES
 
-- `../README.md`
-- `../search/README.md`
-- `../../api/README.md`
-- `../../tests/README.md`
+| File | Role |
+| --- | --- |
+| `eval-logger.ts` | Runtime logging hooks for query, channel, and final-result events. No-ops unless `SPECKIT_EVAL_LOGGING=true`. |
+| `eval-metrics.ts` | Pure ranking metrics such as MRR, NDCG, recall, precision, MAP, F1, and hit rate. |
+| `eval-quality-proxy.ts` | Pure score used for latency and result-quality tradeoff checks. |
+| `eval-db.ts` | Eval database bootstrap and schema ownership. |
+| `ablation-framework.ts` | Maintenance ablation runner, report formatter, and optional metric persistence. |
+| `k-value-analysis.ts` | RRF K-value sweep helpers. |
+| `bm25-baseline.ts` | BM25-only baseline measurement and storage helpers. |
+| `memory-state-baseline.ts` | Baseline snapshots against active memory-state retrieval. |
+| `warm-start-variant-runner.ts` | Warm-start comparison runner for retrieval variants. |
+| `ground-truth-data.ts` | Typed static ground-truth definitions. |
+| `ground-truth-generator.ts` | Ground-truth generation and diversity checks. |
+| `ground-truth-feedback.ts` | Selection-feedback capture and judge-agreement support. |
+| `edge-density.ts` | Graph edge-density measurement and reporting helpers. |
+| `reporting-dashboard.ts` | Sprint and channel reporting dashboard output. |
+| `shadow-scoring.ts` | Read-only comparison and holdout analysis helpers. |
 
-<!-- /ANCHOR:related -->
+## 4. BOUNDARIES
+
+Owns:
+
+- Eval schema setup and metric snapshots.
+- Ground-truth and channel-quality measurement.
+- Offline or flag-gated analysis flows.
+
+Does not own:
+
+- Live retrieval ranking decisions.
+- Memory document indexing.
+- Tool handler routing.
+- Test fixtures outside eval data.
+
+## 5. ENTRYPOINTS
+
+| Entrypoint | Caller | Notes |
+| --- | --- | --- |
+| `logQueryEvent()` and related logger calls | Runtime retrieval handlers | Safe when disabled. |
+| `calculateEvalMetrics()` | Tests and eval tools | Pure calculation surface. |
+| `calculateQualityProxy()` | Runtime and tests | No database writes. |
+| `runAblation()` | Maintenance tools | Storage requires `SPECKIT_ABLATION=true`. |
+| `generateGroundTruthDataset()` | Maintenance tools | Updates generated eval data. |
+| `generateReportingDashboard()` | Reporting tools | Reads stored eval metrics. |
+
+## 6. VALIDATION
+
+Run focused tests when changing this folder:
+
+```bash
+npm test -- mcp_server/tests/eval
+npm test -- mcp_server/tests/handlers/eval
+```
+
+Run document validation after README edits:
+
+```bash
+python3 .opencode/skill/sk-doc/scripts/validate_document.py .opencode/skill/system-spec-kit/mcp_server/lib/eval/README.md
+```
+
+## 7. RELATED
+
+- `../search/README.md` documents the live retrieval pipeline.
+- `../telemetry/README.md` documents retrieval observability.
+- `../../api/README.md` documents tool-facing handler surfaces.
+- `../../tests/README.md` documents MCP server test layout.

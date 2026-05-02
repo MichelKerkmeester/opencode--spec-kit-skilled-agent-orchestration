@@ -1,16 +1,17 @@
 {
-  "specFolder": "system-spec-kit/022-hybrid-rag-fusion/008-hydra-db-based-features",
+  "specFolder": "system-spec-kit/z_archive/022-hybrid-rag-fusion/008-hydra-db-based-features",
   "description": "Feature Specification: 008-hydra-db-based-features",
   "keywords": [
     "feature",
     "specification",
     "008-hydra-db-based-features"
   ],
-  "lastUpdated": "2026-04-27T13:35:50.897Z",
+  "lastUpdated": "2026-05-02T10:39:49.185Z",
   "specId": "008",
   "folderSlug": "hydra-db-based-features",
   "parentChain": [
     "system-spec-kit",
+    "z_archive",
     "022-hybrid-rag-fusion"
   ],
   "memorySequence": 11,

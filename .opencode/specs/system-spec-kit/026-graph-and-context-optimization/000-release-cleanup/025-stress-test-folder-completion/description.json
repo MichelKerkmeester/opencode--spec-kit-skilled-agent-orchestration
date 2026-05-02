@@ -14,7 +14,7 @@
       "system-spec-kit/026-graph-and-context-optimization/000-release-cleanup/005-review-remediation/024-followup-quality-pass/005-stress-test-folder-migration"
     ]
   },
-  "specFolder": "system-spec-kit/026-graph-and-context-optimization/000-release-cleanup/005-review-remediation/025-stress-test-folder-completion",
+  "specFolder": "system-spec-kit/026-graph-and-context-optimization/000-release-cleanup/025-stress-test-folder-completion",
   "description": "Feature Specification: Stress Test Folder Completion",
   "keywords": [
     "feature",
@@ -24,12 +24,13 @@
     "folder",
     "completion"
   ],
-  "lastUpdated": "2026-04-29T18:40:06.116Z",
-  "specId": "038",
+  "lastUpdated": "2026-05-02T10:39:48.420Z",
+  "specId": "025",
   "folderSlug": "stress-test-folder-completion",
   "parentChain": [
     "system-spec-kit",
-    "026-graph-and-context-optimization"
+    "026-graph-and-context-optimization",
+    "000-release-cleanup"
   ],
   "memorySequence": 1,
   "memoryNameHistory": [

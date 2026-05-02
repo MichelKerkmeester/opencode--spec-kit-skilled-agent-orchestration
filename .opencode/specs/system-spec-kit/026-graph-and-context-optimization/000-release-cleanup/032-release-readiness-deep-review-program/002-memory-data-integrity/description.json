@@ -1,18 +1,22 @@
 {
-  "specFolder": "specs/system-spec-kit/026-graph-and-context-optimization/000-release-cleanup/005-review-remediation/032-release-readiness-deep-review-program/002-memory-data-integrity",
-  "description": "Deep-review angle 2: memory subsystem data integrity - DB consistency, FTS/vector index sync, retention sweep correctness, race-condition resilience, governance enforcement, and health reporting for release readiness.",
+  "specFolder": "system-spec-kit/026-graph-and-context-optimization/000-release-cleanup/032-release-readiness-deep-review-program/002-memory-data-integrity",
+  "description": "Feature Specification: Memory Data Integrity Release-Readiness Audit",
   "keywords": [
-    "045-002-memory-data-integrity",
-    "memory data integrity",
-    "DB consistency audit",
-    "retention sweep correctness"
+    "feature",
+    "specification",
+    "memory",
+    "data",
+    "integrity",
+    "release-readiness",
+    "audit"
   ],
-  "lastUpdated": "2026-04-29T21:10:00.000Z",
+  "lastUpdated": "2026-05-02T10:39:48.500Z",
   "specId": "002",
   "folderSlug": "memory-data-integrity",
   "parentChain": [
     "system-spec-kit",
     "026-graph-and-context-optimization",
+    "000-release-cleanup",
     "032-release-readiness-deep-review-program"
   ],
   "memorySequence": 1,

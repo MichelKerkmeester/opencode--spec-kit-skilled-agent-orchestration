@@ -1,5 +1,5 @@
 {
-  "specFolder": "system-spec-kit/022-hybrid-rag-fusion/006-feature-catalog",
+  "specFolder": "system-spec-kit/z_archive/022-hybrid-rag-fusion/006-feature-catalog",
   "description": "Feature Catalog Comprehensive Audit & Remediation",
   "keywords": [
     "feature",
@@ -8,11 +8,12 @@
     "audit",
     "remediation"
   ],
-  "lastUpdated": "2026-04-24T15:56:55.210Z",
+  "lastUpdated": "2026-05-02T10:39:49.169Z",
   "specId": "006",
   "folderSlug": "feature-catalog",
   "parentChain": [
     "system-spec-kit",
+    "z_archive",
     "022-hybrid-rag-fusion"
   ],
   "memorySequence": 3,

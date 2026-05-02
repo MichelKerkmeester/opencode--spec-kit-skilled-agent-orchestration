@@ -13,44 +13,72 @@ trigger_phrases:
 ## TABLE OF CONTENTS
 
 - [1. OVERVIEW](#1-overview)
-- [2. STRUCTURE](#2-structure)
-- [3. IMPLEMENTED STATE](#3-implemented-state)
-- [4. RELATED](#4-related)
+- [2. PARSING AND SCRIPT IO](#2-parsing-and-script-io)
+- [3. ENTRYPOINTS](#3-entrypoints)
+- [4. VALIDATION FROM REPO ROOT](#4-validation-from-repo-root)
+- [5. KEY FILES](#5-key-files)
+- [6. BOUNDARIES](#6-boundaries)
+- [7. RELATED](#7-related)
 
 <!-- /ANCHOR:table-of-contents -->
 <!-- ANCHOR:overview -->
 ## 1. OVERVIEW
 
-`lib/parsing/` turns markdown files into structured inputs for save, search, and trigger flows. The directory contains three focused modules:
-
-- `memory-parser.ts` for metadata extraction and full file parsing.
-- `trigger-matcher.ts` for cached phrase matching against surfaced memories.
-- `content-normalizer.ts` for embedding/BM25-safe normalization.
-
-Gate E alignment: parsing now supports the canonical continuity stack directly. Resume-oriented flows should expect `handover.md`, `_memory.continuity`, and canonical spec documents to be the primary parsed surfaces.
+`mcp_server/lib/parsing/` converts markdown and metadata into structured inputs for memory save, search, trigger matching, and indexing flows.
 
 <!-- /ANCHOR:overview -->
-<!-- ANCHOR:structure -->
-## 2. STRUCTURE
+<!-- ANCHOR:parsing-and-script-io -->
+## 2. PARSING AND SCRIPT IO
+
+| Flow | Input | Output |
+| --- | --- | --- |
+| Memory file parsing | Markdown file path | Parsed title, trigger phrases, tier, context type, content hash, anchors, causal links, and document type |
+| Content normalization | Markdown content | Text suitable for embedding and BM25 tokenization |
+| Trigger matching | Prompt text and indexed trigger phrases | Ranked memory matches plus cache/debug metadata |
+
+<!-- /ANCHOR:parsing-and-script-io -->
+<!-- ANCHOR:entrypoints -->
+## 3. ENTRYPOINTS
+
+- `parseMemoryFile()` parses a markdown file into indexable metadata.
+- `readFileWithEncoding()` reads markdown with encoding handling for parser callers.
+- `normalizeContent()` prepares markdown text for retrieval indexes.
+- `matchTriggerPhrases()` matches prompt text against stored trigger phrases.
+- `extractAnchors()` and `validateAnchors()` expose anchor parsing and validation helpers.
+
+<!-- /ANCHOR:entrypoints -->
+<!-- ANCHOR:validation-from-repo-root -->
+## 4. VALIDATION FROM REPO ROOT
+
+Run parser and MCP validation from the repository root:
+
+```bash
+npm --prefix .opencode/skill/system-spec-kit/mcp_server run typecheck
+npm --prefix .opencode/skill/system-spec-kit/mcp_server test
+python3 .opencode/skill/sk-code-opencode/scripts/verify_alignment_drift.py --root .opencode/skill/system-spec-kit/mcp_server/lib/parsing
+```
+
+<!-- /ANCHOR:validation-from-repo-root -->
+<!-- ANCHOR:key-files -->
+## 5. KEY FILES
 
 | File | Purpose |
-|---|---|
-| `content-normalizer.ts` | Strips frontmatter, anchors, HTML comments, fences, tables, list syntax, and heading markers before embedding or BM25 work |
-| `memory-parser.ts` | Parses titles, trigger phrases, tiers, document type, causal links, anchors, and content hashes from markdown files |
-| `trigger-matcher.ts` | Fast cached trigger matching with Unicode normalization, stats, and debug hooks |
+| --- | --- |
+| `content-normalizer.ts` | Removes frontmatter, anchors, comments, fences, tables, lists, and heading markers before retrieval indexing |
+| `memory-parser.ts` | Extracts metadata, anchors, causal links, content hashes, and document type from markdown files |
+| `trigger-matcher.ts` | Performs cached phrase matching with normalized text and word-boundary-aware comparisons |
 
-<!-- /ANCHOR:structure -->
-<!-- ANCHOR:implemented-state -->
-## 3. IMPLEMENTED STATE
+<!-- /ANCHOR:key-files -->
+<!-- ANCHOR:boundaries -->
+## 6. BOUNDARIES
 
-- `memory-parser.ts` exports `parseMemoryFile()`, `readFileWithEncoding()`, `extractDocumentType()`, `extractSpecFolder()`, `extractTitle()`, `extractTriggerPhrases()`, `extractContextType()`, `extractImportanceTier()`, `computeContentHash()`, `extractCausalLinks()`, `hasCausalLinks()`, `isMemoryFile()`, `validateAnchors()`, and `extractAnchors()`. The retired legacy memory-file discovery surface (`findMemoryFiles()`, `MEMORY_FILE_PATTERN`) has been removed; spec-document and constitutional discovery now live in `handlers/memory-index-discovery.ts`.
-- Spec-document classification starts in the parser via `extractDocumentType()`, while spec-level detection now happens in discovery/indexing helpers instead of a parsing export.
-- `trigger-matcher.ts` owns the trigger cache, cache stats, memory lookups by phrase, and word-boundary-aware matching.
-- `content-normalizer.ts` is the shared normalization path for both embedding generation and BM25 token building.
+- Discovery of candidate files belongs in handlers and indexing helpers, not this directory.
+- Persistence, embeddings, BM25 storage, and graph writes are downstream responsibilities.
+- Parser helpers must stay deterministic and side-effect-light except for explicit file reads.
 
-<!-- /ANCHOR:implemented-state -->
+<!-- /ANCHOR:boundaries -->
 <!-- ANCHOR:related -->
-## 4. RELATED
+## 7. RELATED
 
 - `../search/README.md`
 - `../storage/README.md`

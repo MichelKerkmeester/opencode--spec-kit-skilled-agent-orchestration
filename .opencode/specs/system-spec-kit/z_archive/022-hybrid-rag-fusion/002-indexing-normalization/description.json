@@ -1,5 +1,5 @@
 {
-  "specFolder": "system-spec-kit/022-hybrid-rag-fusion/002-indexing-normalization",
+  "specFolder": "system-spec-kit/z_archive/022-hybrid-rag-fusion/002-indexing-normalization",
   "description": "Feature Specification: Indexing Normalization",
   "keywords": [
     "feature",
@@ -7,11 +7,12 @@
     "indexing",
     "normalization"
   ],
-  "lastUpdated": "2026-04-24T15:56:55.191Z",
+  "lastUpdated": "2026-05-02T10:39:49.158Z",
   "specId": "002",
   "folderSlug": "indexing-normalization",
   "parentChain": [
     "system-spec-kit",
+    "z_archive",
     "022-hybrid-rag-fusion"
   ],
   "memorySequence": 0,

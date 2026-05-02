@@ -1,6 +1,6 @@
 ---
 title: "Eval Scripts"
-description: "Evaluation and benchmarking runners for spec-kit memory system quality, performance, and correctness."
+description: "Evaluation, benchmark, calibration and architecture-boundary checks for Spec Kit memory quality."
 trigger_phrases:
   - "eval scripts"
   - "run benchmarks"
@@ -8,76 +8,168 @@ trigger_phrases:
   - "architecture boundaries"
 ---
 
-
 # Eval Scripts
 
-> Evaluation and benchmarking runners for spec-kit memory system.
+> CLI utilities for measuring memory quality, benchmark behavior and scripts-to-runtime boundaries.
 
 <!-- ANCHOR:table-of-contents -->
 ## TABLE OF CONTENTS
 
-- [1. OVERVIEW](#1-overview)
-- [2. IMPORT POLICY](#2-import-policy)
-- [3. SCRIPT INVENTORY](#3-script-inventory)
-- [4. REFERENCE](#4-reference)
+- [1. OVERVIEW](#1--overview)
+- [2. PACKAGE TOPOLOGY](#2--package-topology)
+- [3. KEY FILES](#3--key-files)
+- [4. COMMANDS](#4--commands)
+- [5. BOUNDARIES](#5--boundaries)
+- [6. VALIDATION](#6--validation)
+- [7. RELATED](#7--related)
 
 <!-- /ANCHOR:table-of-contents -->
+
+---
+
 <!-- ANCHOR:overview -->
 ## 1. OVERVIEW
 
-Scripts in this directory evaluate memory system quality, performance, and correctness. They run as CLI tools via `npx tsx`.
-Those evaluations now sit beside the Gate E continuity model where `/spec_kit:resume` restores packet context from `handover.md` -> `_memory.continuity` -> spec docs, with generated memory artifacts kept as supporting only.
+`scripts/evals/` contains evaluation runners and policy checks for Spec Kit memory behavior. The tools cover search baselines, channel ablation, performance checks, redaction calibration, import boundaries and evaluation dataset mapping.
+
+Current state:
+
+- TypeScript scripts run with `npx tsx` from the scripts workspace.
+- Import policy checks prefer public MCP server API modules over internal runtime paths.
+- Allowlisted exceptions are tracked in `import-policy-allowlist.json`.
 
 <!-- /ANCHOR:overview -->
-<!-- ANCHOR:import-policy -->
-## 2. IMPORT POLICY
 
-| Source | Status | Notes |
-|--------|--------|-------|
-| `../../mcp_server/api` | **Preferred** | Public boundary surface |
-| `../../mcp_server/api/*` | **Preferred** | Narrow public modules for specific workflows |
-| `../../shared/` | **Allowed** | Shared utilities |
-| `@spec-kit/mcp-server/{lib,core,handlers}*` | **Prohibited** | Internal runtime imports -- use api/ instead |
+---
 
-### Exception Process
+<!-- ANCHOR:package-topology -->
+## 2. PACKAGE TOPOLOGY
 
-If a script requires direct internal runtime access:
-1. Add an entry to `import-policy-allowlist.json` in this directory
-2. Include: file path, import, owner, reason, removeWhen, createdAt, lastReviewedAt, and expiresAt (required for wildcards)
-3. The import-policy checkers validate `lib`, `core`, `handlers`, and relative `../../mcp_server/*` runtime paths
+```text
+scripts/evals/
++-- check-allowlist-expiry.ts          # Import exception expiry checks
++-- check-architecture-boundaries.ts   # Architecture boundary checks
++-- check-handler-cycles-ast.ts        # Handler cycle detection
++-- check-no-mcp-lib-imports*.ts       # Internal runtime import checks
++-- import-policy-rules.ts             # Shared import policy rules
++-- map-ground-truth-ids.ts            # Evaluation ID mapping helper
++-- run-*.ts                           # Benchmark, ablation and calibration runners
++-- import-policy-allowlist.json       # Managed import exceptions
+`-- README.md
+```
 
-### Current Exceptions
+Allowed import surfaces:
 
-- `run-performance-benchmarks.ts` — allowlisted internal runtime imports for benchmark-specific metrics
+- `../../mcp_server/api`
+- `../../mcp_server/api/*`
+- `../../shared/`
 
-<!-- /ANCHOR:import-policy -->
-<!-- ANCHOR:script-inventory -->
-## 3. SCRIPT INVENTORY
+Restricted import surfaces:
 
-| Script | Purpose |
-|--------|---------|
-| `check-allowlist-expiry.ts` | Warn on near-expiry and fail on expired allowlist exceptions |
-| `check-architecture-boundaries.ts` | Enforce shared/ neutrality and mcp_server/scripts/ wrapper-only rules |
-| `check-handler-cycles-ast.ts` | Detect circular import/re-export dependencies in mcp_server/handlers via AST |
-| `check-no-mcp-lib-imports.ts` | Scan scripts/ for prohibited internal runtime imports against allowlist |
-| `check-no-mcp-lib-imports-ast.ts` | AST-based enforcement for prohibited internal runtime imports with transitive re-export traversal |
-| `collect-redaction-calibration-inputs.ts` | Collect input data for redaction calibration tuning |
-| `import-policy-rules.ts` | Shared detection rules for prohibited scripts-to-internal-runtime imports |
-| `map-ground-truth-ids.ts` | Map ground truth identifiers for evaluation datasets; rerun after DB rebuilds or eval DB swaps before comparing baselines or ablation deltas |
-| `run-ablation.ts` | Run channel ablation studies (disable channels to measure impact), warn on missing `groundTruthQueryIds`, and surface truncated investigation-only runs when token budget overflow prevents a reliable Recall@K result |
-| `run-bm25-baseline.ts` | Run BM25 baseline benchmarks for search comparison |
-| `run-performance-benchmarks.ts` | Run performance benchmarks across memory operations |
-| `run-phase2-closure-metrics.mjs` | Collect Phase 2 closure metrics for evaluation reporting |
-| `run-redaction-calibration.ts` | Calibrate redaction thresholds for sensitive content filtering |
+- `@spec-kit/mcp-server/lib*`
+- `@spec-kit/mcp-server/core*`
+- `@spec-kit/mcp-server/handlers*`
+- Relative imports into `../../mcp_server/{lib,core,handlers}`
 
-**Supporting data:**
+<!-- /ANCHOR:package-topology -->
 
-- `import-policy-allowlist.json` — Exception allowlist for prohibited import policy
+---
 
-<!-- /ANCHOR:script-inventory -->
-<!-- ANCHOR:reference -->
-## 4. REFERENCE
+<!-- ANCHOR:key-files -->
+## 3. KEY FILES
 
-- [Architecture Boundaries](../../ARCHITECTURE.md)
-- [Import Policy Allowlist](./import-policy-allowlist.json)
-<!-- /ANCHOR:reference -->
+| File | Responsibility |
+|---|---|
+| `run-ablation.ts` | Measures retrieval channel contribution and reports Recall@K impact. |
+| `run-bm25-baseline.ts` | Runs BM25 baseline comparisons for search behavior. |
+| `run-performance-benchmarks.ts` | Measures memory operation performance with allowlisted runtime access. |
+| `run-redaction-calibration.ts` | Calibrates sensitive-content redaction thresholds. |
+| `collect-redaction-calibration-inputs.ts` | Collects data used by redaction calibration runs. |
+| `map-ground-truth-ids.ts` | Maps ground-truth identifiers after evaluation database changes. |
+| `check-no-mcp-lib-imports-ast.ts` | Enforces restricted import policy with AST traversal. |
+| `check-architecture-boundaries.ts` | Checks shared neutrality and wrapper-only boundaries. |
+| `import-policy-allowlist.json` | Stores temporary approved exceptions with owner and expiry metadata. |
+
+<!-- /ANCHOR:key-files -->
+
+---
+
+<!-- ANCHOR:commands -->
+## 4. COMMANDS
+
+Run from `.opencode/skill/system-spec-kit/scripts` unless a command uses a repository-root path.
+
+```bash
+npx tsx evals/check-no-mcp-lib-imports-ast.ts
+```
+
+Expected result: exits zero when eval scripts avoid restricted runtime imports or use valid allowlist entries.
+
+```bash
+npx tsx evals/check-allowlist-expiry.ts
+```
+
+Expected result: warns on near-expiry exceptions and fails on expired exceptions.
+
+```bash
+npx tsx evals/run-bm25-baseline.ts
+```
+
+Expected result: prints BM25 baseline metrics for the configured evaluation data.
+
+```bash
+npx tsx evals/run-ablation.ts
+```
+
+Expected result: prints channel ablation results when evaluation prerequisites are available.
+
+<!-- /ANCHOR:commands -->
+
+---
+
+<!-- ANCHOR:boundaries -->
+## 5. BOUNDARIES
+
+| Boundary | Rule |
+|---|---|
+| Public API | Eval scripts should use MCP server API exports rather than internal runtime modules. |
+| Exceptions | Internal runtime access requires an allowlist entry with owner, reason and expiry. |
+| Data | Benchmark scripts may read evaluation databases and fixtures but should not rewrite production memory stores unless a command documents that behavior. |
+| Reporting | Evaluation output should state when prerequisites are missing or results are investigation-only. |
+
+<!-- /ANCHOR:boundaries -->
+
+---
+
+<!-- ANCHOR:validation -->
+## 6. VALIDATION
+
+Run the README validator after editing this file:
+
+```bash
+python3 .opencode/skill/sk-doc/scripts/validate_document.py .opencode/skill/system-spec-kit/scripts/evals/README.md
+```
+
+Run policy checks after changing eval scripts:
+
+```bash
+cd .opencode/skill/system-spec-kit/scripts
+npx tsx evals/check-no-mcp-lib-imports-ast.ts
+npx tsx evals/check-allowlist-expiry.ts
+```
+
+Expected result: both policy checks exit zero or report a documented exception that needs review.
+
+<!-- /ANCHOR:validation -->
+
+---
+
+<!-- ANCHOR:related -->
+## 7. RELATED
+
+- [`../README.md`](../README.md)
+- [`../core/README.md`](../core/README.md)
+- [`../../ARCHITECTURE.md`](../../ARCHITECTURE.md)
+- [`import-policy-allowlist.json`](./import-policy-allowlist.json)
+
+<!-- /ANCHOR:related -->

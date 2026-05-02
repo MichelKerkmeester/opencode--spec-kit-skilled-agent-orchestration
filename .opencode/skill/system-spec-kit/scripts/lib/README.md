@@ -7,150 +7,213 @@ trigger_phrases:
   - "shell common"
 ---
 
-
 # Scripts Library
 
 <!-- ANCHOR:table-of-contents -->
 ## TABLE OF CONTENTS
 
-- [1. OVERVIEW](#1-overview)
-- [2. CURRENT INVENTORY](#2-current-inventory)
-- [3. NOTES](#3-notes)
-- [4. QUICK VALIDATION](#4-quick-validation)
+- [1. OVERVIEW](#1--overview)
+- [2. ARCHITECTURE](#2--architecture)
+- [3. PACKAGE TOPOLOGY](#3--package-topology)
+- [4. KEY FILES](#4--key-files)
+- [5. BOUNDARIES AND FLOW](#5--boundaries-and-flow)
+- [6. ENTRYPOINTS](#6--entrypoints)
+- [7. VALIDATION](#7--validation)
+- [8. RELATED](#8--related)
 
 <!-- /ANCHOR:table-of-contents -->
+
+---
+
 <!-- ANCHOR:overview -->
 ## 1. OVERVIEW
 
-The `lib/` directory provides 20 reusable helper libraries: 17 TypeScript modules compiled to `dist/lib/` and 3 shell helper scripts used by system-spec-kit workflows.
-These helpers support capture, rendering, and indexing around the canonical recovery path `/spec_kit:resume` -> `handover.md -> _memory.continuity -> spec docs`.
+`scripts/lib/` contains shared helpers for the script package. TypeScript modules compile to `scripts/dist/lib/`, while shell helpers are sourced directly by shell entrypoints.
 
-### Architecture Diagram
+Current state:
 
-```
-┌──────────────────────────────────────────────────────────────────────┐
-│                   SCRIPTS LIB ARCHITECTURE                           │
-├──────────────────────────────────────────────────────────────────────┤
-│                                                                      │
-│  ┌─────────────────────────────────────────────────────────────────┐│
-│  │  CONSUMERS: scripts/spec/*.sh, scripts/memory/*.ts,             ││
-│  │  scripts/core/*.ts, scripts/evals/*.ts                          ││
-│  └───────────────────────────────┬─────────────────────────────────┘│
-│                                  │                                   │
-│  ┌───────────────────────────────▼─────────────────────────────────┐│
-│  │                     scripts/lib/                                ││
-│  │  ┌──────────────────────────┐  ┌──────────────────────────────┐││
-│  │  │   TypeScript Modules     │  │    Shell Helpers             │││
-│  │  │   (17 files → dist/lib)  │  │    (3 files)                 │││
-│  │  │ ┌──────────────────────┐ │  │ ┌──────────────────────────┐ │││
-│  │  │ │ Rendering / Output   │ │  │ │ git-branch.sh            │ │││
-│  │  │ │ ascii-boxes.ts       │ │  │ │ shell-common.sh          │ │││
-│  │  │ │ anchor-generator.ts  │ │  │ │ template-utils.sh        │ │││
-│  │  │ │ flowchart-gen.ts     │ │  │ └──────────────────────────┘ │││
-│  │  │ │ decision-tree-gen.ts │ │  └──────────────────────────────┘││
-│  │  │ └──────────────────────┘ │                                    ││
-│  │  │ ┌──────────────────────┐ │  ┌──────────────────────────────┐ ││
-│  │  │ │ Semantic Extraction  │ │  │   External Dependencies     │ ││
-│  │  │ │ trigger-extractor.ts │─┼──│ ┌──────────────────────────┐│ ││
-│  │  │ │ semantic-signal.ts   │ │  │ │@spec-kit/shared          ││ ││
-│  │  │ │ semantic-summary.ts  │ │  │ │  embeddings.ts           ││ ││
-│  │  │ │ topic-keywords.ts    │ │  │ └──────────────────────────┘│ ││
-│  │  │ └──────────────────────┘ │  └──────────────────────────────┘ ││
-│  │  │ ┌──────────────────────┐ │                                    ││
-│  │  │ │ Memory / Frontmatter │ │                                    ││
-│  │  │ │ memory-frontmatter.ts│ │                                    ││
-│  │  │ │ frontmatter-mig.ts   │ │                                    ││
-│  │  │ │ validate-mem-q.ts    │ │                                    ││
-│  │  │ │ content-filter.ts    │ │                                    ││
-│  │  │ └──────────────────────┘ │                                    ││
-│  │  │ ┌──────────────────────┐ │                                    ││
-│  │  │ │ Session / Activity   │ │                                    ││
-│  │  │ │ session-activity.ts  │ │                                    ││
-│  │  │ │ phase-classifier.ts  │ │                                    ││
-│  │  │ └──────────────────────┘ │                                    ││
-│  │  └──────────────────────────┘                                    ││
-│  └──────────────────────────────────────────────────────────────────┘│
-│                                                                      │
-│  Compile: `npm run build` → dist/lib/ (17 .js + .d.ts + .js.map)   │
-│                                                                      │
-└──────────────────────────────────────────────────────────────────────┘
-```
-
-### Directory Tree
-
-```
-scripts/lib/
-├── TypeScript modules (17 files)
-│   ├── anchor-generator.ts          # Stable anchor ID generation
-│   ├── ascii-boxes.ts               # Terminal-friendly box layouts
-│   ├── cli-capture-shared.ts        # CLI capture payload helpers
-│   ├── content-filter.ts            # Pre-processing content filter
-│   ├── decision-tree-generator.ts   # Decision tree structures
-│   ├── embeddings.ts                # Shared embedding wrapper
-│   ├── flowchart-generator.ts       # Flowchart output generation
-│   ├── frontmatter-migration.ts     # Safe frontmatter normalization
-│   ├── memory-frontmatter.ts        # Memory doc frontmatter handling
-│   ├── phase-classifier.ts          # Workflow phase classification
-│   ├── semantic-signal-extractor.ts # Semantic signal extraction
-│   ├── semantic-summarizer.ts       # Semantic content summarization
-│   ├── session-activity-signal.ts   # Session activity signals
-│   ├── simulation-factory.ts        # Simulation inputs and fixtures
-│   ├── topic-keywords.ts            # Lexical topic extraction
-│   ├── trigger-extractor.ts         # Trigger phrase extraction
-│   └── validate-memory-quality.ts   # Post-render quality validation
-├── Shell helpers (3 files)
-│   ├── git-branch.sh
-│   ├── shell-common.sh
-│   └── template-utils.sh
-└── README.md
-```
+- TypeScript modules cover rendering, semantic extraction, frontmatter, memory quality and activity signals.
+- Shell helpers centralize branch detection, template operations and shared validation utilities.
+- Runtime JavaScript output is generated from TypeScript sources and should not be edited by hand.
 
 <!-- /ANCHOR:overview -->
-<!-- ANCHOR:current-inventory -->
-## 2. CURRENT INVENTORY
 
+---
 
-TypeScript modules (17):
-- `anchor-generator.ts` - generates stable anchor identifiers for markdown content
-- `ascii-boxes.ts` - renders boxed ASCII layouts for terminal-friendly output
-- `cli-capture-shared.ts` - shares helpers for CLI capture payload handling
-- `content-filter.ts` - filters content before downstream processing or output
-- `decision-tree-generator.ts` - builds decision-tree structures for generated docs
-- `embeddings.ts` - exposes shared embedding-related helpers and wrappers
-- `flowchart-generator.ts` - generates flowchart-friendly output structures
-- `frontmatter-migration.ts` - helpers for safe markdown frontmatter normalization
-- `memory-frontmatter.ts` - shared helpers for memory document frontmatter handling
-- `phase-classifier.ts` - classifies captured data into workflow phases
-- `semantic-signal-extractor.ts` - extracts semantic signals for routing or scoring
-- `semantic-summarizer.ts` - summarizes semantic content for downstream workflows
-- `session-activity-signal.ts` - derives session activity signals from captured activity
-- `simulation-factory.ts` - builds simulation inputs and helper fixtures
-- `topic-keywords.ts` - shared lexical helpers for topic extraction
-- `trigger-extractor.ts` - extracts trigger phrases and activation cues
-- `validate-memory-quality.ts` - validates generated memory content quality
+<!-- ANCHOR:architecture -->
+## 2. ARCHITECTURE
 
-Shell helper libraries (3):
-- `git-branch.sh`
-- `shell-common.sh`
-- `template-utils.sh`
+```text
+╭──────────────────────────────────────────────────────────────╮
+│                       SCRIPTS LIBRARY                        │
+╰──────────────────────────────────────────────────────────────╯
 
+┌────────────────┐      ┌────────────────┐      ┌────────────────┐
+│ TS callers     │ ───▶ │ lib/*.ts       │ ───▶ │ dist/lib/*.js  │
+│ memory, core   │      │ source modules │      │ build output   │
+└────────────────┘      └───────┬────────┘      └────────────────┘
+                                │
+                                ▼
+                         ┌──────────────┐
+                         │ shared pkg   │
+                         │ imports      │
+                         └──────────────┘
 
-<!-- /ANCHOR:current-inventory -->
-<!-- ANCHOR:notes -->
-## 3. NOTES
+┌────────────────┐      ┌────────────────┐      ┌────────────────┐
+│ Shell callers  │ ───▶ │ lib/*.sh       │ ───▶ │ spec and rules │
+│ spec, rules    │      │ sourced funcs  │      │ workflows      │
+└────────────────┘      └────────────────┘      └────────────────┘
 
+Dependency direction: callers ───▶ lib source ───▶ shared package or shell primitives
+```
 
-- `embeddings.ts` and `trigger-extractor.ts` are wrapper/re-export style modules aligned with shared package behavior.
-- `shell-common.sh` and `template-utils.sh` are used by shell workflows such as validation and upgrade operations.
-- Runtime JavaScript output is under `dist/lib/` with 17 compiled `.js` modules plus matching `.d.ts` and `.js.map` files.
+<!-- /ANCHOR:architecture -->
 
+---
 
-<!-- /ANCHOR:notes -->
-<!-- ANCHOR:quick-validation -->
-## 4. QUICK VALIDATION
+<!-- ANCHOR:package-topology -->
+## 3. PACKAGE TOPOLOGY
 
+```text
+scripts/lib/
++-- anchor-generator.ts           # Stable markdown anchor generation
++-- ascii-boxes.ts                # Box drawing helpers for terminal output
++-- cli-capture-shared.ts         # CLI capture payload helpers
++-- content-filter.ts             # Content pre-processing helper
++-- decision-tree-generator.ts    # Decision tree structures
++-- embeddings.ts                 # Shared embedding wrapper
++-- flowchart-generator.ts        # Flowchart output generation
++-- frontmatter-migration.ts      # Frontmatter normalization helpers
++-- memory-frontmatter.ts         # Memory doc frontmatter handling
++-- phase-classifier.ts           # Workflow phase classification
++-- semantic-signal-extractor.ts  # Semantic signal extraction
++-- semantic-summarizer.ts        # Semantic content summarization
++-- session-activity-signal.ts    # Session activity signals
++-- simulation-factory.ts         # Simulation inputs and fixtures
++-- topic-keywords.ts             # Lexical topic extraction
++-- trigger-extractor.ts          # Trigger phrase extraction
++-- validate-memory-quality.ts    # Generated memory quality checks
++-- git-branch.sh                 # Git branch helper
++-- shell-common.sh               # Shared shell utility functions
++-- template-utils.sh             # Template rendering shell helpers
+`-- README.md
+```
+
+Allowed direction:
+
+- TypeScript callers may import `lib/*.ts` through package-local paths.
+- Shell scripts may source `*.sh` helpers from this folder.
+- Wrapper modules may delegate to `@spec-kit/shared` when the shared package owns the source behavior.
+
+Disallowed direction:
+
+- Library modules should not call CLI entrypoints.
+- Shell helpers should not mutate files without the caller passing an explicit target path.
+- Source files should not import generated `dist/` files.
+
+<!-- /ANCHOR:package-topology -->
+
+---
+
+<!-- ANCHOR:key-files -->
+## 4. KEY FILES
+
+| File | Role |
+|---|---|
+| `anchor-generator.ts` | Creates stable anchor IDs for markdown sections. |
+| `memory-frontmatter.ts` | Reads and writes memory frontmatter blocks. |
+| `semantic-signal-extractor.ts` | Extracts semantic signals for routing and scoring. |
+| `trigger-extractor.ts` | Extracts trigger phrases from document text. |
+| `validate-memory-quality.ts` | Checks generated memory content before save or index. |
+| `shell-common.sh` | Provides common shell functions for spec and rule scripts. |
+| `template-utils.sh` | Provides shell helpers for template-based writes. |
+
+<!-- /ANCHOR:key-files -->
+
+---
+
+<!-- ANCHOR:boundaries-and-flow -->
+## 5. BOUNDARIES AND FLOW
+
+TypeScript helper flow:
+
+```text
+╭──────────────────────────────╮
+│ TS script or module          │
+╰──────────────────────────────╯
+              │
+              ▼
+┌──────────────────────────────┐
+│ Import scripts/lib/*.ts      │
+└──────────────┬───────────────┘
+               ▼
+┌──────────────────────────────┐
+│ Run pure helper logic        │
+└──────────────┬───────────────┘
+               ▼
+┌──────────────────────────────┐
+│ Return data to caller        │
+└──────────────────────────────┘
+```
+
+Shell helper flow:
+
+```text
+╭──────────────────────────────╮
+│ spec or rules shell script   │
+╰──────────────────────────────╯
+              │
+              ▼
+┌──────────────────────────────┐
+│ Source scripts/lib/*.sh      │
+└──────────────┬───────────────┘
+               ▼
+┌──────────────────────────────┐
+│ Call helper with target path │
+└──────────────────────────────┘
+```
+
+<!-- /ANCHOR:boundaries-and-flow -->
+
+---
+
+<!-- ANCHOR:entrypoints -->
+## 6. ENTRYPOINTS
+
+This folder has no standalone CLI entrypoint. Consumers import or source specific helpers.
+
+Example import after build:
 
 ```bash
-node -e "const m=require('./.opencode/skill/system-spec-kit/scripts/dist/lib/anchor-generator'); console.log(typeof m.generateAnchorId)"
+node -e "import('./.opencode/skill/system-spec-kit/scripts/dist/lib/anchor-generator.js').then(m => console.log(typeof m.generateAnchorId))"
 ```
-<!-- /ANCHOR:quick-validation -->
+
+<!-- /ANCHOR:entrypoints -->
+
+---
+
+<!-- ANCHOR:validation -->
+## 7. VALIDATION
+
+Use repository-root commands:
+
+```bash
+npm --prefix .opencode/skill/system-spec-kit/scripts run build
+node -e "import('./.opencode/skill/system-spec-kit/scripts/dist/lib/anchor-generator.js').then(m => console.log(typeof m.generateAnchorId))"
+```
+
+Shell helper behavior is covered through the spec and rule validation scripts that source it.
+
+<!-- /ANCHOR:validation -->
+
+---
+
+<!-- ANCHOR:related -->
+## 8. RELATED
+
+- [`../README.md`](../README.md)
+- [`../spec/README.md`](../spec/README.md)
+- [`../rules/README.md`](../rules/README.md)
+- [`../../ARCHITECTURE.md`](../../ARCHITECTURE.md)
+
+<!-- /ANCHOR:related -->

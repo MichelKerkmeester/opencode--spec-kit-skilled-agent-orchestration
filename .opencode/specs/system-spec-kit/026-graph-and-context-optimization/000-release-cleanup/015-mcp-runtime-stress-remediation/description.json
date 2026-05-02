@@ -25,24 +25,23 @@
     "layout": "phase-root-children",
     "rationale": "Structural metadata only. See ./context-index.md for the carve-out + renumber narrative."
   },
-  "specFolder": "system-spec-kit/026-graph-and-context-optimization/000-release-cleanup/005-review-remediation/015-mcp-runtime-stress-remediation",
-  "description": "Feature Specification: MCP Runtime Stress-Test Remediation. Phase parent for the v1.0.1 stress-test cycle: rubric-driven sweep, deep research, contract fixes across memory_context / memory_search / code_graph_query / memory_causal_stats, gated by a daemon-rebuild protocol.",
+  "specFolder": "system-spec-kit/026-graph-and-context-optimization/000-release-cleanup/015-mcp-runtime-stress-remediation",
+  "description": "Feature Specification: MCP Runtime Stress-Test Remediation",
   "keywords": [
     "feature",
     "specification",
     "mcp",
     "runtime",
-    "stress",
-    "remediation",
-    "v1.0.1",
-    "rubric"
+    "stress-test",
+    "remediation"
   ],
-  "lastUpdated": "2026-04-28T08:05:00Z",
-  "specId": "011",
+  "lastUpdated": "2026-05-02T10:39:47.993Z",
+  "specId": "015",
   "folderSlug": "mcp-runtime-stress-remediation",
   "parentChain": [
     "system-spec-kit",
-    "026-graph-and-context-optimization"
+    "026-graph-and-context-optimization",
+    "000-release-cleanup"
   ],
   "memorySequence": 0,
   "memoryNameHistory": []

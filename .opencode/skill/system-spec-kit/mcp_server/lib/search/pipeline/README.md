@@ -1,119 +1,121 @@
 ---
-title: "Search Pipeline - 4-Stage Retrieval"
-description: "Four-stage retrieval pipeline: candidate generation, fusion, reranking and filtering."
+title: "Search Pipeline"
+description: "Four-stage retrieval pipeline for candidate generation, fusion, reranking, and filtering."
 trigger_phrases:
   - "search pipeline"
   - "retrieval pipeline"
-  - "4-stage pipeline"
   - "candidate generation"
   - "fusion scoring"
   - "reranking"
   - "stage 4 filter"
-  - "score invariant"
-  - "MPAB chunk collapse"
 ---
 
-# Search Pipeline - 4-Stage Retrieval
+# Search Pipeline
 
-A four-stage retrieval pipeline that takes a search query through candidate generation, score fusion, reranking and final filtering to produce ranked memory results.
+Four-stage retrieval pipeline behind `memory_search`. It turns a query and pipeline config into ranked memory results with metadata, annotations, and optional trace output.
 
----
+## TABLE OF CONTENTS
 
-## Table of Contents
-
-- [1. OVERVIEW](#1-overview)
-- [2. STRUCTURE](#2-structure)
-- [3. PIPELINE STAGES](#3-pipeline-stages)
-- [4. KEY INVARIANTS](#4-key-invariants)
-- [5. RELATED DOCUMENTS](#5-related-documents)
-
----
+- [1. OVERVIEW](#1--overview)
+- [2. STRUCTURE](#2--structure)
+- [3. FLOW](#3--flow)
+- [4. ALLOWED DEPENDENCY DIRECTION](#4--allowed-dependency-direction)
+- [5. STAGE RULES](#5--stage-rules)
+- [6. KEY INVARIANTS](#6--key-invariants)
+- [7. RELATED FILES](#7--related-files)
 
 ## 1. OVERVIEW
 
-The `pipeline/` directory implements the core retrieval pipeline behind `memory_search`. Each search request flows through four sequential stages, each with a defined I/O contract and clear responsibility boundary. The pipeline supports hybrid, vector and multi-concept search types with optional deep-mode query expansion, cross-encoder reranking, MMR diversity pruning and MPAB chunk-to-parent reassembly.
-
-Gate E alignment: pipeline ranking is not the source of continuity truth. Resume-oriented callers should anchor on `/spec_kit:resume` and the `handover.md -> _memory.continuity -> spec docs` chain before using pipeline-ranked evidence.
-
-The public API is a single function: `executePipeline(config)` exported from `index.ts`.
-
----
+Use this folder for retrieval flow changes that need a clear stage boundary. The public entry point is `executePipeline(config)` from `index.ts`.
 
 ## 2. STRUCTURE
 
-| File | Description |
-|------|-------------|
-| `index.ts` | Public barrel export. Re-exports `executePipeline` from the orchestrator and all pipeline type definitions from `types.ts`. |
-| `orchestrator.ts` | Wires the four stages together in sequence. Passes each stage's output as input to the next and assembles the final `PipelineResult` with per-stage metadata. |
-| `stage1-candidate-gen.ts` | Stage 1: Candidate Generation. Runs search channels (hybrid, vector, multi-concept), applies deep-mode query expansion (R6), embedding-based expansion (R12), summary embeddings (R8), constitutional memory injection, quality threshold filtering and tier/contextType filtering. |
-| `stage2-fusion.ts` | Stage 2: Fusion + Signal Integration. The single authoritative scoring point. Applies 9 signal steps in fixed order: session boost, causal boost, co-activation spreading, community co-retrieval, graph signals, FSRS testing effect, intent weights (non-hybrid only, G2 prevention), artifact routing, feedback signals, artifact limiting, anchor metadata and validation metadata scoring. |
-| `stage3-rerank.ts` | Stage 3: Rerank + Aggregate. Applies cross-encoder reranking (remote or local GGUF), MMR diversity pruning and MPAB chunk collapse with parent document reassembly from the database. |
-| `stage4-filter.ts` | Stage 4: Filter + Annotate. Removes results below minimum memory state priority, enforces per-tier limits, runs TRM evidence-gap detection and attaches annotation metadata. Enforces the score immutability invariant at runtime. |
-| `types.ts` | All pipeline data contracts: `PipelineRow`, `Stage4ReadonlyRow`, `PipelineConfig`, stage I/O interfaces (`Stage1Input`/`Output` through `Stage4Input`/`Output`), `PipelineResult`, `ScoreSnapshot` and the `resolveEffectiveScore()` shared score resolution function. Also provides `captureScoreSnapshot()` and `verifyScoreInvariant()` for Stage 4 defence-in-depth. |
+| File | Role |
+| --- | --- |
+| `index.ts` | Public barrel export for `executePipeline` and pipeline types. |
+| `orchestrator.ts` | Runs the four stages in order and assembles `PipelineResult`. |
+| `stage1-candidate-gen.ts` | Generates candidates from hybrid, vector, multi-concept, and expansion channels. |
+| `stage2-fusion.ts` | Applies score fusion and retrieval signals. |
+| `stage3-rerank.ts` | Applies cross-encoder reranking, MMR, and MPAB chunk collapse. |
+| `stage4-filter.ts` | Filters by state and tier, adds annotations, and checks score immutability. |
+| `types.ts` | Shared data contracts and score invariant helpers. |
 
----
-
-## 3. PIPELINE STAGES
+## 3. FLOW
 
 ```text
-Query + Config
-      |
-      v
-  Stage 1: Candidate Generation
-      |  search channels, constitutional injection, quality filter
-      v
-  Stage 2: Fusion + Signal Integration
-      |  session/causal/co-activation boosts, intent weights,
-      |  artifact routing, feedback signals, FSRS write-back
-      v
-  Stage 3: Rerank + Aggregate
-      |  cross-encoder reranking, MMR diversity, MPAB chunk collapse
-      v
-  Stage 4: Filter + Annotate
-      |  state filter, per-tier limits, TRM evidence gap, annotations
-      v
-  PipelineResult { results, metadata, annotations, trace }
+╭────────────────╮
+│ Query + config │
+╰───────┬────────╯
+        ▼
+┌────────────────────────┐
+│ Stage 1                │
+│ Candidate generation   │
+└───────────┬────────────┘
+            ▼
+┌────────────────────────┐
+│ Stage 2                │
+│ Fusion + signals       │
+└───────────┬────────────┘
+            ▼
+┌────────────────────────┐
+│ Stage 3                │
+│ Rerank + aggregate     │
+└───────────┬────────────┘
+            ▼
+┌────────────────────────┐
+│ Stage 4                │
+│ Filter + annotate      │
+└───────────┬────────────┘
+            ▼
+╭────────────────────────╮
+│ PipelineResult         │
+╰────────────────────────╯
 ```
 
-**Stage 1 - Candidate Generation** (`stage1-candidate-gen.ts`)
-- Runs one or more search channels based on `searchType` and `mode`.
-- Channels: hybrid (with optional deep-mode expansion), vector, multi-concept.
-- Optional R12 embedding expansion and R8 summary embedding channels.
-- Injects constitutional memories when absent and no tier filter is active.
-- Applies quality threshold and tier/contextType filters.
+## 4. ALLOWED DEPENDENCY DIRECTION
 
-**Stage 2 - Fusion + Signal Integration** (`stage2-fusion.ts`)
-- The only stage where scoring modifications happen (except Stage 3 reranking).
-- 9 signal steps applied in a fixed order that must not be reordered.
-- G2 prevention: intent weights are applied only for non-hybrid search types.
-- FSRS testing effect fires only when `trackAccess` is explicitly true.
+```text
+╭────────────────────╮
+│ MCP search tools   │
+╰─────────┬──────────╯
+          ▼
+┌────────────────────╮
+│ search/pipeline/   │
+└─────────┬──────────┘
+          ▼
+┌────────────────────╮
+│ Search channels,   │
+│ scoring, storage,  │
+│ graph, feedback    │
+└────────────────────┘
+```
 
-**Stage 3 - Rerank + Aggregate** (`stage3-rerank.ts`)
-- Cross-encoder reranking via remote API or local GGUF model.
-- MMR diversity pruning using per-intent lambda values.
-- MPAB chunk collapse: groups chunks by parent, elects best chunk, reassembles parent content from the database.
-- Preserves Stage 2 scores as `stage2Score` for auditability.
+Stages may depend on lower-level search channels and scoring helpers. Lower-level modules should not call back into pipeline stages or the orchestrator.
 
-**Stage 4 - Filter + Annotate** (`stage4-filter.ts`)
-- Memory state priority filtering, with the coldest retained-history rows treated as fallback evidence only.
-- Per-tier hard limits prevent any single tier from dominating results.
-- TRM evidence-gap detection (Z-score confidence check on score distribution).
-- Runtime score invariant verification via snapshot comparison.
+## 5. STAGE RULES
 
----
+| Stage | Rule |
+| --- | --- |
+| Stage 1 | Produce candidates and apply source-level filters only. |
+| Stage 2 | Own score fusion and retrieval-signal score changes. |
+| Stage 3 | Own reranking, diversity pruning, and chunk-to-parent aggregation. |
+| Stage 4 | Filter and annotate without changing score fields. |
 
-## 4. KEY INVARIANTS
+## 6. KEY INVARIANTS
 
-1. **Single Scoring Point.** All score modifications happen in Stage 2 (fusion) or Stage 3 (reranking). Stage 4 must not change any score field.
-2. **G2 Double-Weighting Guard.** Intent weights are applied only for non-hybrid search types. Hybrid search incorporates intent weighting during RRF/RSF fusion internally.
-3. **Stage 4 Score Immutability.** Enforced at compile time via `Stage4ReadonlyRow` readonly fields and at runtime via `captureScoreSnapshot()` / `verifyScoreInvariant()`.
-4. **Score Resolution Consistency.** All stages use the shared `resolveEffectiveScore()` function from `types.ts` with fallback chain: `intentAdjustedScore` > `rrfScore` > `score` > `similarity/100`, clamped to [0, 1].
+| Invariant | Enforcement |
+| --- | --- |
+| Single scoring point | Score changes happen in Stage 2 or Stage 3 only. |
+| Hybrid double-weight guard | Intent weights are skipped in Stage 2 for hybrid search. |
+| Stage 4 immutability | `Stage4ReadonlyRow`, snapshots, and runtime checks block score mutation. |
+| Score resolution | All stages use `resolveEffectiveScore()` from `types.ts`. |
 
----
+## 7. RELATED FILES
 
-## 5. RELATED DOCUMENTS
-
-- `mcp_server/lib/search/` - Parent search directory containing hybrid search, vector index, cross-encoder and other search modules consumed by the pipeline.
-- `mcp_server/lib/ops/` - Background operations (file watcher, job queue) that feed data into the search index.
-- `@spec-kit/shared/contracts/retrieval-trace.ts` - Trace contract used for pipeline observability.
-- `@spec-kit/shared/algorithms/mmr-reranker.ts` - MMR algorithm used by Stage 3.
+| Path | Why it matters |
+| --- | --- |
+| `../` | Parent search modules and channel implementations. |
+| `../../scoring/` | Score weights and fusion inputs. |
+| `../../graph/` | Graph signals consumed during retrieval. |
+| `../../feedback/` | Feedback signals used by fusion. |
+| `@spec-kit/shared/contracts/retrieval-trace.ts` | Trace output contract. |

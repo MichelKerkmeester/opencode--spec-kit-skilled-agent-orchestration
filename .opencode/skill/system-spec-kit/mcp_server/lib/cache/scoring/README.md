@@ -1,33 +1,73 @@
 ---
 title: "Cache Scoring"
-description: "This directory is empty. Scoring functions are in lib/scoring/."
+description: "Compatibility folder for cache scoring imports that points callers to canonical scoring modules."
 trigger_phrases:
   - "cache scoring"
   - "composite scoring re-export"
 ---
 
-
 # Cache Scoring
 
-<!-- ANCHOR:table-of-contents -->
+This folder is a compatibility boundary. Scoring logic lives in `lib/scoring/`, not under `lib/cache/scoring/`.
+
 ## TABLE OF CONTENTS
 
-- [1. OVERVIEW](#1-overview)
-- [2. RELATED DOCUMENTS](#2-related-documents)
+- [1. OVERVIEW](#1--overview)
+- [2. STRUCTURE](#2--structure)
+- [3. FLOW](#3--flow)
+- [4. ALLOWED DEPENDENCY DIRECTION](#4--allowed-dependency-direction)
+- [5. RELATED FILES](#5--related-files)
 
-<!-- /ANCHOR:table-of-contents -->
-<!-- ANCHOR:overview -->
 ## 1. OVERVIEW
 
-This directory is empty. Scoring functions are in `lib/scoring/`, where they support retrieval ranking around the canonical packet continuity path resumed via `/spec_kit:resume`.
+Use this README to route maintainers away from adding cache-local scoring logic. Cache code may consume scoring decisions, but the scoring modules own ranking formulas and weights.
 
-<!-- /ANCHOR:overview -->
-<!-- ANCHOR:related-documents -->
-## 2. RELATED DOCUMENTS
+## 2. STRUCTURE
 
-- `../../scoring/composite-scoring.ts` -- canonical source of all scoring logic
-- `../../scoring/folder-scoring.ts` -- recency decay used by composite scoring
-- `../../scoring/importance-tiers.ts` -- tier configuration consumed by importance scoring
-- `../../scoring/interference-scoring.ts` -- TM-01 interference penalty applied during post-processing
+| Path | Role |
+| --- | --- |
+| `./` | Empty compatibility folder. |
+| `../../scoring/` | Canonical scoring implementation. |
 
-<!-- /ANCHOR:related-documents -->
+## 3. FLOW
+
+```text
+╭──────────────╮
+│ Cache caller │
+╰──────┬───────╯
+       ▼
+┌──────────────────────┐
+│ Needs score context  │
+└──────────┬───────────┘
+           ▼
+┌──────────────────────┐
+│ Import lib/scoring/  │
+└──────────┬───────────┘
+           ▼
+╭──────────────────────╮
+│ Cache stores result  │
+╰──────────────────────╯
+```
+
+## 4. ALLOWED DEPENDENCY DIRECTION
+
+```text
+╭────────────────────╮
+│ cache/             │
+╰─────────┬──────────╯
+          ▼
+┌────────────────────╮
+│ scoring/           │
+└────────────────────┘
+```
+
+Cache code may import from `lib/scoring/`. Scoring code should not import from cache folders, because scoring must remain deterministic and independent of cache state.
+
+## 5. RELATED FILES
+
+| Path | Why it matters |
+| --- | --- |
+| `../../scoring/composite-scoring.ts` | Main composite scoring logic. |
+| `../../scoring/folder-scoring.ts` | Folder recency scoring. |
+| `../../scoring/importance-tiers.ts` | Tier weights and tier metadata. |
+| `../../scoring/interference-scoring.ts` | Interference penalty logic. |

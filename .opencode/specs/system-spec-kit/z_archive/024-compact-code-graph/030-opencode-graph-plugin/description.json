@@ -1,5 +1,5 @@
 {
-  "specFolder": "system-spec-kit/024-compact-code-graph/030-opencode-graph-plugin",
+  "specFolder": "system-spec-kit/z_archive/024-compact-code-graph/030-opencode-graph-plugin",
   "description": "Feature Specification: OpenCode Graph Plugin Phased Execution",
   "keywords": [
     "feature",
@@ -10,11 +10,12 @@
     "phased",
     "execution"
   ],
-  "lastUpdated": "2026-04-27T13:33:57.271Z",
+  "lastUpdated": "2026-05-02T10:39:49.296Z",
   "specId": "030",
   "folderSlug": "opencode-graph-plugin",
   "parentChain": [
     "system-spec-kit",
+    "z_archive",
     "024-compact-code-graph"
   ],
   "memorySequence": 1,

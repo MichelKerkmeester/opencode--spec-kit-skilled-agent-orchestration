@@ -258,6 +258,7 @@ the publication guard helpers used by the evaluation dashboard.
 | Variable | Default | Type | Description | Source |
 |----------|---------|------|-------------|--------|
 | `SPECKIT_GRAPH_UNIFIED` | `true` | boolean | Unified graph search integration. Graduated ON. Set `false` to disable all graph features. | `core/db-state.ts` |
+| `SPECKIT_CODE_GRAPH_INDEX_SKILLS` | `false` | boolean | Maintainer opt-in for structural code graph scans to include `.opencode/skill/**`. Set `true` before launch; default scans stay end-user scoped. Overridden by per-call `includeSkills` argument when provided. | `code_graph/lib/index-scope-policy.ts`, `code_graph/handlers/scan.ts` |
 | `SPECKIT_GRAPH_SIGNALS` | `true` | boolean | Graph momentum scoring and causal depth signals (N2a+N2b). Graduated ON. | `lib/search/search-flags.ts` |
 | `SPECKIT_GRAPH_WALK_ROLLOUT` | (derived) | string | Graph walk rollout state: `off`, `trace_only`, or `bounded_runtime`. Defaults to `bounded_runtime` when GRAPH_SIGNALS is ON. | `lib/search/search-flags.ts` |
 | `SPECKIT_GRAPH_WEIGHT_CAP` | `0.15` | number | Maximum graph contribution in Stage 2 scoring. | `lib/search/graph-calibration.ts` |

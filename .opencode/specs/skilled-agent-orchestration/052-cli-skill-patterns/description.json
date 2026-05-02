@@ -1,13 +1,20 @@
 {
-  "specFolder": "052-cli-skill-patterns",
-  "description": "cli-skill-patterns",
+  "specFolder": "skilled-agent-orchestration/052-cli-skill-patterns",
+  "description": "Feature Specification: cli-* skill consistency patterns",
   "keywords": [
-    "cli-skill-patterns"
+    "feature",
+    "specification",
+    "cli",
+    "skill",
+    "consistency",
+    "patterns"
   ],
-  "lastUpdated": "2026-04-29T12:04:01.248Z",
+  "lastUpdated": "2026-05-02T10:39:47.761Z",
   "specId": "052",
   "folderSlug": "cli-skill-patterns",
-  "parentChain": [],
+  "parentChain": [
+    "skilled-agent-orchestration"
+  ],
   "memorySequence": 0,
   "memoryNameHistory": []
 }

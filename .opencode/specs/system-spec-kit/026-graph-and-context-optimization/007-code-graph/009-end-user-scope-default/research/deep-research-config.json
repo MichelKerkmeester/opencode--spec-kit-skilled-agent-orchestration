@@ -1,0 +1,17 @@
+{
+  "version": 1,
+  "research_topic": "Investigate making end-user-repo-only the default for the code graph indexing surface, gating skill code indexing behind a new opt-in feature flag.",
+  "spec_folder": ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/007-code-graph/009-end-user-scope-default",
+  "max_iterations": 5,
+  "convergence_threshold": 0.05,
+  "execution_mode": "AUTONOMOUS",
+  "executor": {
+    "type": "cli-codex",
+    "model": "gpt-5.5",
+    "reasoningEffort": "high",
+    "serviceTier": "fast",
+    "timeoutSeconds": 1800
+  },
+  "resource_map": { "emit": true },
+  "started_at": "2026-05-02T11:15:00Z"
+}

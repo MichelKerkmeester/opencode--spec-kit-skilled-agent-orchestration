@@ -1,6 +1,6 @@
 ---
-title: "Ops - Background Operations"
-description: "File watcher and job queue for background indexing and ingestion operations."
+title: "Ops Background Operations"
+description: "File watcher and ingestion job queue for background indexing and maintenance operations."
 trigger_phrases:
   - "file watcher"
   - "job queue"
@@ -10,69 +10,104 @@ trigger_phrases:
   - "SQLITE_BUSY retry"
 ---
 
-# Ops - Background Operations
+# Ops Background Operations
 
-Background processing primitives for file-change detection and sequential job execution.
-
----
+`lib/ops/` contains background primitives for file-change indexing and queued ingestion. Runtime request handlers do not execute long-running work here directly. They start, inspect, or cancel jobs through handler surfaces.
 
 ## Table of Contents
 
-- [1. OVERVIEW](#1-overview)
-- [2. STRUCTURE](#2-structure)
-- [3. KEY CONCEPTS](#3-key-concepts)
-- [4. RELATED DOCUMENTS](#4-related-documents)
-
----
+- [1. OVERVIEW](#1--overview)
+- [2. TOPOLOGY](#2--topology)
+- [3. KEY FILES](#3--key-files)
+- [4. BOUNDARIES](#4--boundaries)
+- [5. ENTRYPOINTS](#5--entrypoints)
+- [6. VALIDATION](#6--validation)
+- [7. RELATED](#7--related)
 
 ## 1. OVERVIEW
 
-The `ops/` directory provides two background operation modules that keep the spec-doc record index current without blocking the main MCP request path:
+This folder keeps indexing work away from the main MCP request path. The watcher reacts to file changes. The queue processes explicit multi-file ingest jobs with a single worker.
 
-For Gate E, these background jobs support the canonical packet flow rather than defining it: `/spec_kit:resume` restores context through `handover.md` -> `_memory.continuity` -> spec docs, and generated memory artifacts remain supporting only.
+Runtime role:
 
-- **File Watcher** monitors spec folders for Markdown file changes and triggers debounced re-indexing with content-hash deduplication.
-- **Job Queue** manages multi-file ingestion as stateful jobs with a true sequential worker, crash recovery and continue-on-error behavior.
+- Start and stop watcher-backed background indexing when configured.
+- Enqueue, inspect, and cancel ingest jobs through handlers.
+- Report progress without blocking normal tool calls.
 
-Both modules include SQLITE_BUSY retry logic to handle concurrent database access gracefully.
+Maintenance role:
 
----
+- Recover incomplete jobs after process restart.
+- Retry transient SQLite busy errors.
+- Re-index changed spec docs with content-hash deduplication.
 
-## 2. STRUCTURE
+## 2. TOPOLOGY
 
-| File | Description |
-|------|-------------|
-| `file-watcher.ts` | Chokidar-based file watcher that detects add/change/unlink events on Markdown files, debounces them, compares content hashes to skip no-op writes and triggers re-indexing with bounded concurrency (max 2 parallel). Includes dotfile filtering, symlink-escape prevention and per-file AbortController cancellation. |
-| `job-queue.ts` | SQLite-backed ingestion job queue with a bounded lifecycle (`queued` > `parsing` > `embedding` > `indexing` > `complete`/`failed`/`cancelled`). Enforces valid state transitions, tracks per-file progress against the original submitted path list and caps stored errors at 50. Crash recovery resets incomplete jobs to `queued` on startup. |
+```text
+┌────────────────────┐       ┌────────────────────┐
+│ Markdown changes   │       │ Ingest tool call   │
+└─────────┬──────────┘       └─────────┬──────────┘
+          ▼                            ▼
+┌────────────────────┐       ┌────────────────────┐
+│ file-watcher.ts    │       │ job-queue.ts       │
+└─────────┬──────────┘       └─────────┬──────────┘
+          ▼                            ▼
+┌──────────────────────────────────────────────────┐
+│ Indexing, embedding, progress, retry, recovery   │
+└──────────────────────────────────────────────────┘
+```
 
----
+## 3. KEY FILES
 
-## 3. KEY CONCEPTS
+| File | Role |
+| --- | --- |
+| `file-watcher.ts` | Watches Markdown files, filters unsafe paths, debounces changes, compares content hashes, and triggers bounded re-indexing. |
+| `job-queue.ts` | SQLite-backed ingestion jobs with queued, parsing, embedding, indexing, complete, failed, and cancelled states. |
 
-**File Watcher**
-- Content-hash deduplication: SHA-256 hash comparison prevents re-indexing unchanged files.
-- Bounded concurrency: A semaphore limits parallel re-index operations to 2.
-- AbortController cancellation: A new change to the same file aborts any in-flight re-index for that path.
-- Containment check: Resolved real paths are validated against configured watch roots to prevent symlink escapes.
-- Reindex parity: watcher- and ingest-driven reindex paths use the normal synchronous embedding cache-miss path; they do not force deferred embeddings unless async mode was explicitly requested or provider generation fails.
+## 4. BOUNDARIES
 
-**Job Queue**
-- Lifecycle model: Six states with a strict transition map. Terminal states (`complete`, `failed`, `cancelled`) are immutable.
-- Sequential worker: Only one job processes at a time. Multiple `enqueueIngestJob` calls add to a pending queue drained by a single async worker.
-- Continue-on-error: Individual file failures are recorded but do not abort the entire job. A job is marked `failed` only when all files error.
-- Crash recovery: On init, incomplete jobs are reset to `queued` and re-enqueued for processing.
+Owns:
 
-**Exports**
+- Background job lifecycle state.
+- File watcher filtering and debounce behavior.
+- Sequential worker execution and crash recovery.
+- Retry handling for transient SQLite busy errors.
 
-| Module | Exported symbols |
-|--------|-----------------|
-| `file-watcher.ts` | `startFileWatcher()`, `WatcherConfig`, `FSWatcher`, `__testables` |
-| `job-queue.ts` | `initIngestJobQueue()`, `createIngestJob()`, `getIngestJob()`, `cancelIngestJob()`, `enqueueIngestJob()`, `resetIncompleteJobsToQueued()`, `getIngestProgressPercent()`, `IngestJob`, `IngestJobState`, `IngestJobError` |
+Does not own:
 
----
+- Search ranking.
+- Memory search APIs.
+- Embedding provider selection.
+- Spec folder continuity rules.
 
-## 4. RELATED DOCUMENTS
+## 5. ENTRYPOINTS
 
-- `mcp_server/lib/search/` - Search modules that consume the indexed data produced by these operations.
-- `mcp_server/utils/db-helpers.ts` - `requireDb()` used by the job queue for SQLite access.
-- `mcp_server/lib/ops/` tests - Unit tests covering watcher filters, state transitions and retry behavior.
+| Entrypoint | Caller | Notes |
+| --- | --- | --- |
+| `startFileWatcher()` | Server startup or maintenance setup | Returns a watcher handle for shutdown. |
+| `initIngestJobQueue()` | Server startup | Resets incomplete jobs and starts queue state. |
+| `createIngestJob()` | Ingest start handler | Persists the requested path list. |
+| `enqueueIngestJob()` | Ingest start handler | Adds work to the single async worker. |
+| `getIngestJob()` | Ingest status handler | Reads current state and progress. |
+| `cancelIngestJob()` | Ingest cancel handler | Moves eligible jobs to cancelled. |
+| `getIngestProgressPercent()` | Status surfaces | Computes progress from stored counts. |
+
+## 6. VALIDATION
+
+Run focused tests when changing this folder:
+
+```bash
+npm test -- mcp_server/tests/ops
+npm test -- mcp_server/tests/handlers/memory-ingest
+```
+
+Run document validation after README edits:
+
+```bash
+python3 .opencode/skill/sk-doc/scripts/validate_document.py .opencode/skill/system-spec-kit/mcp_server/lib/ops/README.md
+```
+
+## 7. RELATED
+
+- `../search/README.md` documents the retrieval path that consumes indexed data.
+- `../../utils/README.md` documents shared database helpers when present.
+- `../../tests/README.md` documents watcher and queue test layout.

@@ -1,20 +1,20 @@
 {
-  "specFolder": "system-spec-kit/026-graph-and-context-optimization/000-release-cleanup/005-review-remediation/024-followup-quality-pass/002-feature-catalog-trio",
-  "description": "Updates 3 feature catalogs (system-spec-kit, skill_advisor, code_graph) with new tools/handlers from packets 031-036. Doc-only; sk-doc template-aligned.",
+  "specFolder": "system-spec-kit/026-graph-and-context-optimization/000-release-cleanup/024-followup-quality-pass/002-feature-catalog-trio",
+  "description": "Feature Specification: 037/002 feature-catalog-trio",
   "keywords": [
-    "037-002-feature-catalog-trio",
-    "feature catalog updates",
-    "catalog refresh 031-036",
-    "system-spec-kit catalog",
-    "skill_advisor catalog",
-    "code_graph catalog"
+    "feature",
+    "specification",
+    "037",
+    "002",
+    "feature-catalog-trio"
   ],
-  "lastUpdated": "2026-04-29T18:38:43.277Z",
+  "lastUpdated": "2026-05-02T10:39:48.379Z",
   "specId": "002",
   "folderSlug": "feature-catalog-trio",
   "parentChain": [
     "system-spec-kit",
     "026-graph-and-context-optimization",
+    "000-release-cleanup",
     "024-followup-quality-pass"
   ],
   "memorySequence": 2,

@@ -1,29 +1,25 @@
 ---
-title: "Embeddings Factory"
-description: "Flexible embeddings system supporting multiple backends with strong fallback and per-profile databases."
+title: "Embeddings"
+description: "Provider selection, profile resolution and embedding provider construction for shared memory search code."
 trigger_phrases:
   - "embeddings factory"
   - "embedding provider selection"
-  - "multi-provider embeddings fallback"
+  - "embedding profile"
 ---
 
-# Embeddings Factory
-
-> Flexible embeddings system supporting multiple backends with strong fallback and per-profile databases.
-
----
+# Embeddings
 
 <!-- ANCHOR:table-of-contents -->
 ## TABLE OF CONTENTS
 
-- [1. OVERVIEW](#1-overview)
-- [2. QUICK START](#2-quick-start)
-- [3. STRUCTURE](#3-structure)
-- [4. FEATURES](#4-features)
-- [5. CONFIGURATION](#5-configuration)
-- [6. USAGE EXAMPLES](#6-usage-examples)
-- [7. TROUBLESHOOTING](#7-troubleshooting)
-- [8. RELATED DOCUMENTS](#8-related-documents)
+- [1. OVERVIEW](#1--overview)
+- [2. PACKAGE TOPOLOGY](#2--package-topology)
+- [3. KEY FILES](#3--key-files)
+- [4. STABLE API](#4--stable-api)
+- [5. BOUNDARIES](#5--boundaries)
+- [6. ENTRYPOINTS](#6--entrypoints)
+- [7. VALIDATION](#7--validation)
+- [8. RELATED](#8--related)
 
 <!-- /ANCHOR:table-of-contents -->
 
@@ -32,392 +28,160 @@ trigger_phrases:
 <!-- ANCHOR:overview -->
 ## 1. OVERVIEW
 
-### What is the Embeddings Factory?
+`embeddings/` owns provider selection and profile naming for embedding generation. It chooses an embedding provider from configuration, validates supported dimensions and returns provider instances that implement the shared `IEmbeddingProvider` contract.
 
-The Embeddings Factory is a multi-provider architecture for generating vector embeddings. It automatically selects the best available provider based on environment configuration, with strong fallback to ensure embedding generation never fails.
-Those embeddings support retrieval over packet materials and generated artifacts; canonical continuity itself is still resumed through `/spec_kit:resume` from `handover.md -> _memory.continuity -> spec docs`.
+Current state:
 
-### Key Statistics
-
-| Category | Value | Details |
-|----------|-------|---------|
-| Providers | 3 | Voyage, HF Local, OpenAI |
-| Default Model | auto-detected | `voyage-4` (1024) with `VOYAGE_API_KEY`, otherwise `text-embedding-3-small` (1536) with `OPENAI_API_KEY`, otherwise local `nomic-embed-text-v1.5` (768) |
-| Recommended | Voyage | Best retrieval quality (+8%) |
-
-### Key Features
-
-| Feature | Description |
-|---------|-------------|
-| **Multi-Provider** | Supports Voyage, OpenAI, and HuggingFace local |
-| **Auto-Detection** | Automatically selects provider based on available API keys |
-| **Per-Profile DBs** | Each provider/model combo uses its own SQLite database |
-| **Strong Fallback** | Degrades gracefully to local embeddings if cloud fails |
-
-### Requirements
-
-| Requirement | Minimum | Recommended |
-|-------------|---------|-------------|
-| Node.js | 18+ | 20+ |
-| @xenova/transformers | 2.0+ | Latest |
-
-### Provider Comparison
-
-| Feature | Voyage | HF Local | OpenAI |
-|---------|--------|----------|--------|
-| Cost | ~$0.06/1M | Free | ~$0.02/1M |
-| Quality | Best (+8%) | Good | Good |
-| Latency | Low | Medium | Low-Medium |
-| Privacy | Cloud | Local | Cloud |
-| Offline | No | Yes | No |
-| Setup | API key | Easy | API key |
-| Dimension | 1024 | 768 | 1536/3072 |
+- Supported provider names are `voyage`, `openai`, `hf-local` and `auto`.
+- `auto` chooses from available configuration, with local fallback when cloud providers are not usable.
+- Profiles derive provider, model, dimension, optional base URL and database filename.
+- Provider modules isolate external API and local model behavior from the factory.
 
 <!-- /ANCHOR:overview -->
 
 ---
 
-<!-- ANCHOR:quick-start -->
-## 2. QUICK START
+<!-- ANCHOR:package-topology -->
+## 2. PACKAGE TOPOLOGY
 
-### 30-Second Setup
-
-```bash
-# Without configuration: uses HF local (no API key needed)
-node context-server.ts
-
-# With Voyage (recommended): auto-detects the key
-export VOYAGE_API_KEY=pa-...
-node context-server.ts
-
-# With OpenAI: auto-detects the key
-export OPENAI_API_KEY=sk-...
-node context-server.ts
-```
-
-### Verify Installation
-
-```javascript
-const embeddings = require('./embeddings');
-const metadata = embeddings.getProviderMetadata();
-console.log(metadata);
-// Expected: { provider: 'voyage', model: 'voyage-4', dim: 1024, healthy: true }
-```
-
-### First Use
-
-```javascript
-const embeddings = require('./embeddings');
-
-// Generate an embedding
-const embedding = await embeddings.generateDocumentEmbedding('Hello world');
-console.log(`Dimensions: ${embedding.length}`);
-// Expected: Dimensions: 1024 (Voyage) or 768 (HF local)
-```
-
-<!-- /ANCHOR:quick-start -->
-
----
-
-<!-- ANCHOR:structure -->
-## 3. STRUCTURE
-
-```
+```text
 embeddings/
-├── profile.ts              # Defines EmbeddingProfile and slug management
-├── factory.ts              # Factory that selects the appropriate provider
-├── README.md               # This file
-└── providers/
-    ├── hf-local.ts         # HuggingFace local (fallback)
-    ├── voyage.ts           # Voyage AI (recommended)
-    ├── openai.ts           # OpenAI embeddings API
-    └── README.md           # Provider comparison and interface docs
++-- factory.ts              # Provider resolution, validation and construction
++-- profile.ts              # Profile slugs and database path derivation
++-- providers/
+|   +-- hf-local.ts         # Local HuggingFace provider
+|   +-- openai.ts           # OpenAI provider
+|   +-- voyage.ts           # Voyage provider
+|   `-- README.md           # Provider-level notes
+`-- README.md
 ```
 
-### Key Files
+Allowed dependency direction:
 
-| File | Purpose |
-|------|---------|
-| `factory.ts` | Provider selection logic and auto-detection |
-| `profile.ts` | Database path generation based on provider/model |
-| `providers/voyage.ts` | Voyage AI integration (recommended) |
-| `providers/hf-local.ts` | Local HuggingFace fallback |
+```text
+callers -> factory.ts
+factory.ts -> profile.ts
+factory.ts -> providers/*
+providers/* -> shared/types.ts
+profile.ts -> shared/types.ts
+```
 
-<!-- /ANCHOR:structure -->
+Disallowed dependency direction:
+
+```text
+providers/* -> factory.ts
+providers/* -> MCP handlers
+providers/* -> database adapters
+profile.ts -> providers/*
+```
+
+<!-- /ANCHOR:package-topology -->
 
 ---
 
-<!-- ANCHOR:features -->
-## 4. FEATURES
+<!-- ANCHOR:key-files -->
+## 3. KEY FILES
 
-### Per-Profile Databases
+| File | Responsibility |
+|---|---|
+| `factory.ts` | Resolves configured provider, validates API keys and creates `IEmbeddingProvider` instances. |
+| `profile.ts` | Creates profile slugs, parses slugs and maps profiles to SQLite database paths. |
+| `providers/hf-local.ts` | Implements local embedding generation. |
+| `providers/openai.ts` | Implements OpenAI embedding requests and model dimensions. |
+| `providers/voyage.ts` | Implements Voyage embedding requests, model dimensions and base URL resolution. |
+| `providers/README.md` | Documents provider-specific contracts and behavior. |
 
-Each unique combination of `{provider, model, dimension}` uses its own SQLite database:
-
-```
-database/
-├── context-index.sqlite                              # Legacy (hf-local + nomic + 768)
-├── context-index__openai__text-embedding-3-small__1536.sqlite
-├── context-index__openai__text-embedding-3-large__3072.sqlite
-└── context-index__voyage__voyage-4__1024.sqlite
-```
-
-**Benefits:**
-- No "dimension mismatch" errors
-- Changing providers doesn't require migration
-- Experiment without losing data
+<!-- /ANCHOR:key-files -->
 
 ---
 
-### Strong Fallback
+<!-- ANCHOR:stable-api -->
+## 4. STABLE API
 
-If a cloud provider fails during warmup or healthcheck (authentication or network issues), the system automatically degrades to HF local **before** indexing data, preventing dimension mixing.
+| Export | File | Contract |
+|---|---|---|
+| `SUPPORTED_PROVIDERS` | `factory.ts` | Lists accepted provider names, including `auto`. |
+| `VALID_PROVIDER_DIMENSIONS` | `factory.ts` | Maps provider and model names to supported vector dimensions. |
+| `validateConfiguredEmbeddingsProvider(value)` | `factory.ts` | Returns a valid provider name or `null`. |
+| `resolveProviderDimension(provider, model)` | `factory.ts` | Returns the dimension for a provider and model. |
+| `getStartupEmbeddingDimension()` | `factory.ts` | Returns the dimension selected for startup configuration. |
+| `getStartupEmbeddingProfile()` | `factory.ts` | Returns the startup `EmbeddingProfile`. |
+| `resolveStartupEmbeddingConfig(options)` | `factory.ts` | Resolves provider, profile info, dimension and validation result. |
+| `resolveProvider()` | `factory.ts` | Returns provider selection details and reason. |
+| `createEmbeddingsProvider(options)` | `factory.ts` | Creates the selected `IEmbeddingProvider`. |
+| `getProviderInfo()` | `factory.ts` | Returns current provider metadata and fallback metadata. |
+| `validateApiKey(options)` | `factory.ts` | Checks cloud provider credentials with timeout support. |
+| `createProfileSlug(provider, model, dim)` | `profile.ts` | Creates a filesystem-safe profile slug. |
+| `parseProfileSlug(slug)` | `profile.ts` | Parses a slug back into provider, model and dimension. |
+| `EmbeddingProfile` | `profile.ts` | Holds profile data and derives database paths. |
 
-```
-Cloud Provider → Health Check Failed → Fallback to HF Local → Continue
-```
+Keep this API provider-neutral. Provider-specific settings belong in `providers/*` or environment variables read by `factory.ts`.
+
+<!-- /ANCHOR:stable-api -->
 
 ---
 
-### Legacy Compatibility
+<!-- ANCHOR:boundaries -->
+## 5. BOUNDARIES
 
-The public API maintains 100% compatibility. Existing code works without changes:
+| Boundary | Rule |
+|---|---|
+| Provider choice | `factory.ts` owns provider selection and fallback metadata. |
+| Provider IO | `providers/*` owns external API calls or local model loading. |
+| Profile naming | `profile.ts` owns slugs and database filename derivation. |
+| Storage | This folder returns paths but does not open SQLite connections. |
+| Retrieval | Search ranking and result assembly live outside this folder. |
 
-```javascript
-// Still works
-const { generateDocumentEmbedding, getEmbeddingDimension } = require('./embeddings');
+Main flow:
+
+```text
+caller
+  -> resolveProvider or createEmbeddingsProvider
+  -> factory reads environment and validates provider
+  -> provider instance generates query or document vector
+  -> caller stores or searches with the vector
 ```
 
-<!-- /ANCHOR:features -->
+<!-- /ANCHOR:boundaries -->
 
 ---
 
-<!-- ANCHOR:configuration -->
-## 5. CONFIGURATION
+<!-- ANCHOR:entrypoints -->
+## 6. ENTRYPOINTS
 
-### Environment Variables
+| Entrypoint | Type | Purpose |
+|---|---|---|
+| `createEmbeddingsProvider` | Function | Main provider construction path. |
+| `resolveProvider` | Function | Inspect selected provider without creating one. |
+| `resolveStartupEmbeddingConfig` | Function | Get startup profile, dimension and validation state. |
+| `getProviderInfo` | Function | Report active provider metadata. |
+| `EmbeddingProfile` | Class | Derive display strings, JSON data and database paths. |
 
-| Variable | Required | Default | Description |
-|----------|----------|---------|-------------|
-| `VOYAGE_API_KEY` | No | - | Voyage AI API key (recommended) |
-| `OPENAI_API_KEY` | No | - | OpenAI API key |
-| `EMBEDDINGS_PROVIDER` | No | `auto` | Force specific provider |
-| `SPEC_KIT_DB_DIR` / `SPECKIT_DB_DIR` | No | auto-detected | Preferred database directory override; runtime derives the sqlite filename from the active profile |
-| `MEMORY_DB_PATH` | No | unset | Explicit single-file database override. Prefer the DB dir override when auto profile switching should stay intact |
-| `OPENAI_EMBEDDINGS_MODEL` | No | `text-embedding-3-small` | OpenAI model override |
-| `HF_EMBEDDINGS_MODEL` | No | `nomic-ai/nomic-embed-text-v1.5` | HF model override |
+<!-- /ANCHOR:entrypoints -->
 
-### Manual Override
+---
+
+<!-- ANCHOR:validation -->
+## 7. VALIDATION
+
+Run from the repository root:
 
 ```bash
-# Force HF local even if API keys exist
-export EMBEDDINGS_PROVIDER=hf-local
-
-# Force OpenAI (requires key)
-export EMBEDDINGS_PROVIDER=openai
-export OPENAI_API_KEY=sk-...
-
-# Configure specific model
-export OPENAI_EMBEDDINGS_MODEL=text-embedding-3-large  # 3072 dims
-export HF_EMBEDDINGS_MODEL=nomic-ai/nomic-embed-text-v1.5
+python3 .opencode/skill/sk-doc/scripts/validate_document.py .opencode/skill/system-spec-kit/shared/embeddings/README.md
 ```
 
-### Configuration Precedence
+Expected result: the validator exits with code `0`.
 
-1. Explicit `EMBEDDINGS_PROVIDER` (if not `auto`)
-2. Auto-detection: Voyage if `VOYAGE_API_KEY` exists (recommended)
-3. Auto-detection: OpenAI if `OPENAI_API_KEY` exists
-4. Fallback: HF local
-
-When only `SPEC_KIT_DB_DIR` / `SPECKIT_DB_DIR` is set, the database filename tracks that same precedence automatically so provider switches do not reuse an incompatible sqlite file.
-
-<!-- /ANCHOR:configuration -->
-
----
-
-<!-- ANCHOR:usage-examples -->
-## 6. USAGE EXAMPLES
-
-### Example 1: Generate Embeddings
-
-```javascript
-const embeddings = require('./embeddings');
-
-// For indexing documents
-const docEmbedding = await embeddings.generateDocumentEmbedding('text...');
-
-// For search queries
-const queryEmbedding = await embeddings.generateQueryEmbedding('search...');
-```
-
-**Result**: Float32Array with provider-specific dimensions
-
----
-
-### Example 2: Get Provider Metadata
-
-```javascript
-const embeddings = require('./embeddings');
-
-// Current provider info
-const metadata = embeddings.getProviderMetadata();
-console.log(metadata);
-// {
-//   provider: 'openai',
-//   model: 'text-embedding-3-small',
-//   dim: 1536,
-//   healthy: true
-// }
-
-// Complete profile with database path
-const profile = embeddings.getEmbeddingProfile();
-console.log(profile.getDatabasePath('/base/dir'));
-// '/base/dir/context-index__openai__text-embedding-3-small__1536.sqlite'
-```
-
----
-
-### Example 3: Pre-Warmup (Recommended)
-
-```javascript
-const embeddings = require('./embeddings');
-
-// Call once at startup to download/load model
-await embeddings.preWarmModel();
-// Downloads ~274MB on first run for HF local
-```
-
----
-
-### Example 4: Testing
-
-```bash
-# Basic test (without loading heavy models)
-node scripts/tests/test-embeddings-factory.js
-
-# With OpenAI
-OPENAI_API_KEY=sk-... node scripts/tests/test-embeddings-factory.js
-```
-
----
-
-### Common Patterns
-
-| Pattern | Code | When to Use |
-|---------|------|-------------|
-| Document embedding | `generateDocumentEmbedding(text)` | Indexing content |
-| Query embedding | `generateQueryEmbedding(text)` | Search queries |
-| Pre-warm model | `preWarmModel()` | Application startup |
-| Check provider | `getProviderMetadata()` | Debugging, logging |
-| Get DB path | `getEmbeddingProfile().getDatabasePath(dir)` | Database management |
-
-<!-- /ANCHOR:usage-examples -->
-
----
-
-<!-- ANCHOR:troubleshooting -->
-## 7. TROUBLESHOOTING
-
-### Common Issues
-
-#### Dimension Mismatch
-
-**Symptom**: `Error: dimension mismatch`
-
-**Cause**: Switched providers without using per-profile databases
-
-**Solution**: Should no longer occur with per-profile DBs. If you see this error, verify you're not forcing `MEMORY_DB_PATH` to a shared sqlite file across multiple providers.
-
----
-
-#### OpenAI Provider Requires Key
-
-**Symptom**: `Error: OpenAI provider requires OPENAI_API_KEY`
-
-**Cause**: Forced OpenAI provider without API key
-
-**Solution**:
-```bash
-# Force HF local instead
-export EMBEDDINGS_PROVIDER=hf-local
-```
-
----
-
-#### Model Not Loaded
-
-**Symptom**: `Error: Model not loaded` or timeout on first embedding
-
-**Cause**: HF local downloads ~274MB on first run
-
-**Solution**:
-```javascript
-// Pre-warm the model on startup
-await embeddings.preWarmModel();
-```
-
----
-
-### Quick Fixes
-
-| Problem | Quick Fix |
-|---------|-----------|
-| Dimension mismatch | Delete old DB, let per-profile create new one |
-| API key not found | Check `echo $VOYAGE_API_KEY` or `echo $OPENAI_API_KEY` |
-| Slow first embedding | Call `preWarmModel()` at startup |
-| Wrong provider | Set `EMBEDDINGS_PROVIDER` explicitly |
-
-### Diagnostic Commands
-
-```bash
-# Check active provider (via MCP tool memory_health)
-{
-  "embeddingProvider": {
-    "provider": "...",
-    "model": "...",
-    "dimension": ...
-  }
-}
-
-# Test embedding generation
-node -e "require('./embeddings').generateDocumentEmbedding('test').then(e => console.log('Dims:', e.length))"
-
-# Check environment
-echo "VOYAGE_API_KEY: ${VOYAGE_API_KEY:0:10}..."
-echo "OPENAI_API_KEY: ${OPENAI_API_KEY:0:10}..."
-echo "EMBEDDINGS_PROVIDER: $EMBEDDINGS_PROVIDER"
-```
-
-<!-- /ANCHOR:troubleshooting -->
+<!-- /ANCHOR:validation -->
 
 ---
 
 <!-- ANCHOR:related -->
-## 8. RELATED DOCUMENTS
+## 8. RELATED
 
-### Internal Documentation
-
-| Document | Purpose |
-|----------|---------|
-| [shared/README.md](../README.md) | Parent shared library documentation |
-| [generate-context.js](../../scripts/dist/memory/generate-context.js) | Main script using embeddings |
-| [SKILL.md](../../SKILL.md) | System spec-kit skill documentation |
-
-### External Resources
-
-| Resource | Description |
-|----------|-------------|
-| [@xenova/transformers](https://github.com/xenova/transformers.js) | JavaScript ML library for HF local |
-| [nomic-embed-text](https://huggingface.co/nomic-ai/nomic-embed-text-v1.5) | Default HF embedding model |
-| [Voyage AI](https://www.voyageai.com/) | Recommended embedding provider |
-| [OpenAI Embeddings](https://platform.openai.com/docs/guides/embeddings) | OpenAI embedding API docs |
-
-### Provider Status
-
-`factory.ts` reserves the `ollama` provider name but does not implement it yet. Current production providers are `voyage`, `openai`, and `hf-local`.
+- [`../README.md`](../README.md)
+- [`../types.ts`](../types.ts)
+- [`../algorithms/README.md`](../algorithms/README.md)
+- [`providers/README.md`](providers/README.md)
 
 <!-- /ANCHOR:related -->
-
----
-
-*Documentation version: 2.0 | Last updated: 2025-12-31*

@@ -1,6 +1,6 @@
 ---
 title: "MCP Server Public API"
-description: "Stable import surface for eval, indexing, search, providers, storage, and selected architecture helpers."
+description: "Stable import surface for eval, indexing, search, provider, storage and selected support modules."
 trigger_phrases:
   - "public api"
   - "api surface"
@@ -12,53 +12,92 @@ trigger_phrases:
 <!-- ANCHOR:table-of-contents -->
 ## TABLE OF CONTENTS
 
-- [1. OVERVIEW](#1-overview)
-- [2. AVAILABLE MODULES](#2-available-modules)
-- [3. CONSUMER POLICY](#3-consumer-policy)
-- [4. RELATED](#4-related)
+- [1. OVERVIEW](#1--overview)
+- [2. SURFACE](#2--surface)
+- [3. EXPORTS](#3--exports)
+- [4. ALLOWED IMPORTS](#4--allowed-imports)
+- [5. KEY FILES](#5--key-files)
+- [6. VALIDATION](#6--validation)
+- [7. RELATED](#7--related)
 
 <!-- /ANCHOR:table-of-contents -->
 <!-- ANCHOR:overview -->
 ## 1. OVERVIEW
 
-`api/` is the supported import surface for external consumers such as scripts and eval tooling. The goal is to keep callers out of `lib/`, `handlers/`, and `core/` internals unless a deliberate exception is documented.
+`mcp_server/api/` is the supported import surface for scripts, eval tooling and package consumers that need MCP server capabilities without reaching into internal folders. Add exports here only when an external caller needs a stable contract.
 
-This import surface can expose support data, but it does not replace canonical packet continuity. For Spec Kit recovery, `/spec_kit:resume` still rebuilds state from `handover.md`, then `_memory.continuity`, then the remaining spec docs.
+Internal MCP server code should import from its owning `lib/`, `handlers/`, `core/`, or local module instead of routing through this API barrel.
 
 <!-- /ANCHOR:overview -->
-<!-- ANCHOR:available-modules -->
-## 2. AVAILABLE MODULES
+<!-- ANCHOR:surface -->
+## 2. SURFACE
 
-| Module | Surface |
+| Surface | Purpose |
 |---|---|
-| `eval.ts` | Ablation helpers, BM25 baseline helpers, ground-truth loading, and eval DB init |
-| `indexing.ts` | Runtime bootstrap, embedding warmup, memory index scan, and shutdown helpers |
-| `search.ts` | Hybrid search init/search, FTS5 BM25 helpers, and `vectorIndex` namespace |
-| `providers.ts` | `generateEmbedding`, `generateQueryEmbedding`, `getEmbeddingProfile`, and `retryManager` |
-| `storage.ts` | `initCheckpoints` and `initAccessTracker` |
-| `index.ts` | Re-exports the modules above plus folder-discovery helpers, entity extraction, layer definitions, shared rollout metrics, and memory-roadmap capability flags |
+| Eval | Ablation, BM25 baseline, ground-truth and eval DB helpers. |
+| Indexing | Runtime startup, embedding warmup, spec-doc reindexing and shutdown helpers. |
+| Search | Hybrid search, FTS5 BM25, vector index and search result types. |
+| Providers | Embedding generation, embedding profile lookup and retry manager access. |
+| Storage | Checkpoint and access tracker initialization. |
+| Governance | Scope-governance audit and tier-downgrade helpers for scripts. |
+| Discovery and metadata | Folder descriptions, entities, graph metadata and capability flags. |
 
-Important `index.ts` extras:
+<!-- /ANCHOR:surface -->
+<!-- ANCHOR:exports -->
+## 3. EXPORTS
 
-- Folder-discovery helpers from `lib/search/folder-discovery`.
-- Entity extraction helpers from `lib/extraction/entity-extractor`.
-- Layer metadata from `lib/architecture/layer-definitions`.
-- Roadmap capability flags from `lib/config/capability-flags`.
+`index.ts` re-exports focused modules from this folder plus selected support contracts:
 
-<!-- /ANCHOR:available-modules -->
-<!-- ANCHOR:consumer-policy -->
-## 3. CONSUMER POLICY
+- `eval.ts`: `runAblation`, BM25 helpers, ground-truth helpers, eval DB setup and related types.
+- `indexing.ts`: indexing runtime lifecycle, graph metadata refresh, spec-doc reindexing and enrichment backfill.
+- `search.ts`: hybrid search functions, FTS5 helpers and `vectorIndex`.
+- `providers.ts`: embedding functions, embedding profile lookup and `retryManager`.
+- `storage.ts`: checkpoint and access tracker initialization.
+- Selected `lib/` exports for governance, folder discovery, entity extraction, graph metadata, validation, performance benchmarking, layer metadata and roadmap flags.
 
-- Prefer `@spec-kit/mcp-server/api` or the narrow `@spec-kit/mcp-server/api/<module>` path.
-- Avoid direct imports from `lib/`, `handlers/`, or `core/` for script/runtime consumers.
-- If a needed export is missing, add it here or document a temporary exception in the import-policy allowlist.
+<!-- /ANCHOR:exports -->
+<!-- ANCHOR:allowed-imports -->
+## 4. ALLOWED IMPORTS
 
-<!-- /ANCHOR:consumer-policy -->
+| Caller | Rule |
+|---|---|
+| External scripts | Prefer `@spec-kit/mcp-server/api` or `@spec-kit/mcp-server/api/<module>`. |
+| Eval tooling | Import from this folder unless a local test fixture needs a private module. |
+| Internal MCP server code | Import from the owning internal module, not from `api/index.ts`. |
+| New public needs | Add a narrow export here or document the exception in the import-policy allowlist. |
+
+<!-- /ANCHOR:allowed-imports -->
+<!-- ANCHOR:key-files -->
+## 5. KEY FILES
+
+| File | Responsibility |
+|---|---|
+| `index.ts` | Public barrel for package and script consumers. |
+| `eval.ts` | Eval, ablation and baseline helpers. |
+| `indexing.ts` | Indexing runtime and reindex helper surface. |
+| `search.ts` | Hybrid, BM25 and vector search surface. |
+| `providers.ts` | Embedding provider surface. |
+| `storage.ts` | Storage initialization surface. |
+
+<!-- /ANCHOR:key-files -->
+<!-- ANCHOR:validation -->
+## 6. VALIDATION
+
+Run from the repository root:
+
+```bash
+npm test -- --run .opencode/skill/system-spec-kit/mcp_server/tests/import-policy.vitest.ts
+python3 .opencode/skill/sk-doc/scripts/validate_document.py .opencode/skill/system-spec-kit/mcp_server/api/README.md
+```
+
+Expected result: import policy tests pass and README validation exits `0` with no HVR issues.
+
+<!-- /ANCHOR:validation -->
 <!-- ANCHOR:related -->
-## 4. RELATED
+## 7. RELATED
 
-- `../README.md`
-- `../tests/README.md`
-- `../../scripts/evals/import-policy-allowlist.json`
+- [MCP server](../README.md)
+- [MCP server tests](../tests/README.md)
+- [Import policy allowlist](../../scripts/evals/import-policy-allowlist.json)
 
 <!-- /ANCHOR:related -->

@@ -1,24 +1,22 @@
 {
-  "specFolder": "system-spec-kit/026-graph-and-context-optimization/000-release-cleanup/005-review-remediation/014-phase-parent-documentation/002-generator-and-polish",
-  "description": "Phase 2 follow-on of the phase-parent-documentation packet: deferred items from 001 — generator pointer-write + bubble-up, create.sh --phase template swap, context-index.md template, resume pointer-redirect, hook brief redirect, content-discipline validator (P2), and end-to-end manual test.",
+  "specFolder": "system-spec-kit/026-graph-and-context-optimization/000-release-cleanup/014-phase-parent-documentation/002-generator-and-polish",
+  "description": "Feature Specification: Phase Parent Generator Pointer + Polish",
   "keywords": [
+    "feature",
+    "specification",
     "phase",
     "parent",
     "generator",
     "pointer",
-    "last_active_child_id",
-    "bubble-up",
-    "resume",
-    "redirect",
-    "create.sh",
-    "context-index"
+    "polish"
   ],
-  "lastUpdated": "2026-04-27T11:11:29.101Z",
+  "lastUpdated": "2026-05-02T10:39:47.964Z",
   "specId": "002",
   "folderSlug": "generator-and-polish",
   "parentChain": [
     "system-spec-kit",
     "026-graph-and-context-optimization",
+    "000-release-cleanup",
     "014-phase-parent-documentation"
   ],
   "memorySequence": 2,

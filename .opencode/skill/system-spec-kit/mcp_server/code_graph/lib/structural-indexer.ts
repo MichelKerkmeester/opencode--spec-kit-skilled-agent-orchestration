@@ -1294,8 +1294,9 @@ function shouldExcludePath(
   fullPath: string,
   excludePatterns: RegExp[],
   isDirectory: boolean,
+  config: IndexerConfig,
 ): boolean {
-  if (!shouldIndexForCodeGraph(fullPath)) {
+  if (!shouldIndexForCodeGraph(fullPath, config.scopePolicy)) {
     return true;
   }
   const relativePath = normalizeGlobPath(relative(rootDir, fullPath));
@@ -1372,7 +1373,8 @@ function isGitignored(
 }
 
 /** Recursive file finder matching extension from glob pattern */
-function findFiles(rootDir: string, pattern: string, excludeGlobs: string[], maxSize: number): FileFindResult {
+function findFiles(config: IndexerConfig, pattern: string): FileFindResult {
+  const { rootDir, excludeGlobs, maxFileSizeBytes } = config;
   const extMatch = pattern.match(/\*\.(\w+)$/);
   const targetExt = extMatch ? '.' + extMatch[1] : null;
   const results: string[] = [];
@@ -1417,7 +1419,7 @@ function findFiles(rootDir: string, pattern: string, excludeGlobs: string[], max
         return;
       }
       const fullPath = resolve(currentDir, entry.name);
-      if (shouldExcludePath(rootDir, fullPath, excludePatterns, entry.isDirectory())) {
+      if (shouldExcludePath(rootDir, fullPath, excludePatterns, entry.isDirectory(), config)) {
         excludedByDefault++;
         continue;
       }
@@ -1432,10 +1434,10 @@ function findFiles(rootDir: string, pattern: string, excludeGlobs: string[], max
         if (targetExt && !entry.name.endsWith(targetExt)) continue;
         try {
           const stat = statSync(fullPath);
-          if (stat.size <= maxSize) {
+          if (stat.size <= maxFileSizeBytes) {
             results.push(normalizeFilesystemPath(fullPath));
           } else {
-            console.warn(`[structural-indexer] Skipping large file (${(stat.size / 1024).toFixed(1)}KB > ${(maxSize / 1024).toFixed(1)}KB): ${fullPath}`);
+            console.warn(`[structural-indexer] Skipping large file (${(stat.size / 1024).toFixed(1)}KB > ${(maxFileSizeBytes / 1024).toFixed(1)}KB): ${fullPath}`);
           }
         } catch { /* skip */ }
       }
@@ -1446,7 +1448,8 @@ function findFiles(rootDir: string, pattern: string, excludeGlobs: string[], max
   return { files: results, excludedByDefault, excludedByGitignore, warnings, capExceeded };
 }
 
-function collectSpecificFiles(rootDir: string, specificFiles: string[], maxSize: number): string[] {
+function collectSpecificFiles(config: IndexerConfig, specificFiles: string[]): string[] {
+  const { rootDir, maxFileSizeBytes } = config;
   const dedupedFiles: string[] = [];
   const seenFiles = new Set<string>();
   const canonicalWorkspaceRoot = resolveCanonicalPath(resolve(rootDir));
@@ -1462,7 +1465,7 @@ function collectSpecificFiles(rootDir: string, specificFiles: string[], maxSize:
     if (relativePath === '..' || relativePath.startsWith('../')) {
       continue;
     }
-    if (!shouldIndexForCodeGraph(workspaceCandidate.canonicalPath)) {
+    if (!shouldIndexForCodeGraph(workspaceCandidate.canonicalPath, config.scopePolicy)) {
       continue;
     }
 
@@ -1471,8 +1474,8 @@ function collectSpecificFiles(rootDir: string, specificFiles: string[], maxSize:
       if (!stat.isFile()) {
         continue;
       }
-      if (stat.size > maxSize) {
-        console.warn(`[structural-indexer] Skipping large file (${(stat.size / 1024).toFixed(1)}KB > ${(maxSize / 1024).toFixed(1)}KB): ${workspaceCandidate.originalPath}`);
+      if (stat.size > maxFileSizeBytes) {
+        console.warn(`[structural-indexer] Skipping large file (${(stat.size / 1024).toFixed(1)}KB > ${(maxFileSizeBytes / 1024).toFixed(1)}KB): ${workspaceCandidate.originalPath}`);
         continue;
       }
     } catch {
@@ -2070,9 +2073,8 @@ function buildIndexPhases(
     run() {
       if (options.specificFiles && options.specificFiles.length > 0) {
         const candidateFiles = collectSpecificFiles(
-          config.rootDir,
+          config,
           options.specificFiles,
-          config.maxFileSizeBytes,
         );
         console.info(`[structural-indexer] refreshed ${candidateFiles.length} specific file(s)`);
         return {
@@ -2089,7 +2091,7 @@ function buildIndexPhases(
       const capExceeded = { maxNodes: false, depth: false, gitignoreSize: false };
 
       for (const pattern of config.includeGlobs) {
-        const found = findFiles(config.rootDir, pattern, config.excludeGlobs, config.maxFileSizeBytes);
+        const found = findFiles(config, pattern);
         excludedByDefault += found.excludedByDefault;
         excludedByGitignore += found.excludedByGitignore;
         warnings.push(...found.warnings);

@@ -1,6 +1,6 @@
 ---
 title: "Response Module"
-description: "Envelope helpers, MCP wrappers, and response-profile formatting for memory tool responses."
+description: "Envelope helpers, MCP wrappers, and response profile formatting for memory tool responses."
 trigger_phrases:
   - "response envelope"
   - "response profiles"
@@ -12,43 +12,81 @@ trigger_phrases:
 <!-- ANCHOR:table-of-contents -->
 ## TABLE OF CONTENTS
 
-- [1. OVERVIEW](#1-overview)
-- [2. STRUCTURE](#2-structure)
-- [3. IMPLEMENTED STATE](#3-implemented-state)
-- [4. RELATED](#4-related)
+- [1. OVERVIEW](#1--overview)
+- [2. DATA FLOW](#2--data-flow)
+- [3. KEY FILES](#3--key-files)
+- [4. BOUNDARIES](#4--boundaries)
+- [5. ENTRYPOINTS](#5--entrypoints)
+- [6. VALIDATION](#6--validation)
+- [7. RELATED](#7--related)
 
 <!-- /ANCHOR:table-of-contents -->
 <!-- ANCHOR:overview -->
 ## 1. OVERVIEW
 
-`lib/response/` standardizes how MCP tool handlers build envelopes, wrap them for MCP transport, and optionally compress them into profile-shaped outputs for specific consumers.
-
-Gate E alignment: response envelopes now describe the canonical continuity model directly. Resume-shaped outputs are meant to support `/spec_kit:resume` and should point callers back to `handover.md`, `_memory.continuity`, and the spec docs as the recovery chain.
+`lib/response/` gives MCP handlers one response shape. It builds a typed envelope, syncs token counts against the serialized payload, wraps the result for MCP transport, and can reduce large responses into named profiles.
 
 <!-- /ANCHOR:overview -->
-<!-- ANCHOR:structure -->
-## 2. STRUCTURE
+<!-- ANCHOR:data-flow -->
+## 2. DATA FLOW
+
+```text
+handler data
+  -> createResponse() or createErrorResponse()
+  -> MCPEnvelope { summary, data, hints, meta }
+  -> syncEnvelopeTokenCount()
+  -> optional applyResponseProfile()
+  -> wrapForMCP()
+  -> MCP content envelope
+```
+
+Profiles keep the envelope contract while changing the returned `data` shape for `quick`, `research`, `resume`, or `debug` callers.
+
+<!-- /ANCHOR:data-flow -->
+<!-- ANCHOR:key-files -->
+## 3. KEY FILES
 
 | File | Purpose |
 |---|---|
-| `envelope.ts` | Envelope factories, MCP wrappers, default hints, and serialized token-count synchronization |
-| `profile-formatters.ts` | Profile reducers for `quick`, `research`, `resume`, and `debug` response shapes |
+| `envelope.ts` | Builds success, empty, and error envelopes, syncs token counts, and wraps payloads for MCP transport |
+| `profile-formatters.ts` | Converts result-heavy envelopes into profile-specific response data |
 
-<!-- /ANCHOR:structure -->
-<!-- ANCHOR:implemented-state -->
-## 3. IMPLEMENTED STATE
+<!-- /ANCHOR:key-files -->
+<!-- ANCHOR:boundaries -->
+## 4. BOUNDARIES
 
-- `envelope.ts` exports `createResponse()`, `createSuccessResponse()`, `createEmptyResponse()`, `createErrorResponse()`, `wrapForMCP()`, `createMCPResponse()`, `createMCPSuccessResponse()`, `createMCPEmptyResponse()`, and `createMCPErrorResponse()`.
-- Token counts are synchronized against the fully serialized JSON envelope, not a partial approximation, via `syncEnvelopeTokenCount()` and `serializeEnvelopeWithTokenCount()`.
-- `profile-formatters.ts` exports `applyResponseProfile()` and `applyProfileToEnvelope()` plus the public profile types for `quick`, `research`, `resume`, and `debug`.
-- Response profiles are gated through `isResponseProfileEnabled()` and preserve backward compatibility by returning `null` when profile formatting is disabled or not requested.
+This module owns response shape and transport wrapping only. It does not fetch memory records, rank search results, mutate storage, or decide which profile a handler should request.
 
-<!-- /ANCHOR:implemented-state -->
+<!-- /ANCHOR:boundaries -->
+<!-- ANCHOR:entrypoints -->
+## 5. ENTRYPOINTS
+
+| Entrypoint | Use |
+|---|---|
+| `createSuccessResponse()` | Return a populated envelope |
+| `createEmptyResponse()` | Return a standard no-results envelope with default hints |
+| `createErrorResponse()` | Return a structured error with optional recovery data |
+| `createMCPResponse()` | Create and wrap an envelope in one call |
+| `wrapForMCP()` | Convert an existing envelope to MCP `content` format |
+| `applyResponseProfile()` | Reduce raw response data to a named profile |
+| `applyProfileToEnvelope()` | Apply a profile while preserving envelope metadata |
+
+<!-- /ANCHOR:entrypoints -->
+<!-- ANCHOR:validation -->
+## 6. VALIDATION
+
+- Token counts are calculated from the serialized envelope via `syncEnvelopeTokenCount()`.
+- `serializeEnvelopeWithTokenCount()` is the safe path when callers need JSON output.
+- Profile formatting is gated by `isResponseProfileEnabled()`.
+- Error envelopes set `meta.isError` and include recovery hints when supplied.
+
+<!-- /ANCHOR:validation -->
 <!-- ANCHOR:related -->
-## 4. RELATED
+## 7. RELATED
 
-- `../../hooks/README.md`
-- `../../formatters/README.md`
+- `../formatters/README.md`
+- `../search/README.md`
+- `../../context-server.ts`
 - `../../tests/README.md`
 
 <!-- /ANCHOR:related -->

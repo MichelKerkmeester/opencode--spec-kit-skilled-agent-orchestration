@@ -1,0 +1,24 @@
+{
+  "specFolder": "051-readme-code-template",
+  "description": "Completed README code template governance with Task #5 verification evidence, Task #9 diagram evidence, Task #25 code-folder README batch evidence, Task #28 explicit manifest/remediation evidence, and Task #31 final P1 cleanup evidence",
+  "keywords": [
+    "readme",
+    "code",
+    "template",
+    "governance",
+    "batches",
+    "p1",
+    "p2",
+    "manifest",
+    "remediation",
+    "cleanup"
+  ],
+  "lastUpdated": "2026-05-02T13:05:00.000Z",
+  "specId": "051",
+  "folderSlug": "readme-code-template",
+  "parentChain": [],
+  "memorySequence": 0,
+  "memoryNameHistory": [],
+  "level": "2",
+  "status": "complete"
+}

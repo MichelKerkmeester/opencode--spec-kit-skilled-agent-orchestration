@@ -3,6 +3,7 @@
 // ───────────────────────────────────────────────────────────────
 
 import { beforeEach, describe, expect, it, vi } from 'vitest';
+import { basename, join, resolve } from 'node:path';
 
 const mocks = vi.hoisted(() => ({
   execSyncMock: vi.fn(),
@@ -13,10 +14,12 @@ const mocks = vi.hoisted(() => ({
   loadGoldBatteryMock: vi.fn(),
   getCodeGraphMetadataMock: vi.fn(),
   getGraphFreshnessMock: vi.fn(),
+  getGraphReadinessSnapshotMock: vi.fn(),
   getLastGitHeadMock: vi.fn(),
   getLastGoldVerificationMock: vi.fn(),
   persistIndexedFileResultMock: vi.fn(),
   setCodeGraphMetadataMock: vi.fn(),
+  setCodeGraphScopeMock: vi.fn(),
   setLastDetectorProvenanceMock: vi.fn(),
   setLastDetectorProvenanceSummaryMock: vi.fn(),
   setLastGraphEdgeEnrichmentSummaryMock: vi.fn(),
@@ -30,6 +33,8 @@ const mocks = vi.hoisted(() => ({
   removeFileMock: vi.fn(),
   getTrackedFilesMock: vi.fn(),
   getStatsMock: vi.fn(),
+  getStoredCodeGraphScopeMock: vi.fn(),
+  countTrackedSkillFilesMock: vi.fn(),
 }));
 
 function withPreParseSkippedCount<T>(
@@ -60,6 +65,7 @@ vi.mock('../lib/gold-query-verifier.js', () => ({
 
 vi.mock('../lib/ensure-ready.js', () => ({
   getGraphFreshness: mocks.getGraphFreshnessMock,
+  getGraphReadinessSnapshot: mocks.getGraphReadinessSnapshotMock,
   persistIndexedFileResult: mocks.persistIndexedFileResultMock,
 }));
 
@@ -68,6 +74,7 @@ vi.mock('../lib/code-graph-db.js', () => ({
   getCodeGraphMetadata: mocks.getCodeGraphMetadataMock,
   getLastGoldVerification: mocks.getLastGoldVerificationMock,
   setCodeGraphMetadata: mocks.setCodeGraphMetadataMock,
+  setCodeGraphScope: mocks.setCodeGraphScopeMock,
   setLastDetectorProvenance: mocks.setLastDetectorProvenanceMock,
   setLastDetectorProvenanceSummary: mocks.setLastDetectorProvenanceSummaryMock,
   setLastGraphEdgeEnrichmentSummary: mocks.setLastGraphEdgeEnrichmentSummaryMock,
@@ -81,6 +88,8 @@ vi.mock('../lib/code-graph-db.js', () => ({
   removeFile: mocks.removeFileMock,
   getTrackedFiles: mocks.getTrackedFilesMock,
   getStats: mocks.getStatsMock,
+  getStoredCodeGraphScope: mocks.getStoredCodeGraphScopeMock,
+  countTrackedSkillFiles: mocks.countTrackedSkillFilesMock,
 }));
 
 import { handleCodeGraphScan } from '../handlers/scan.js';
@@ -118,7 +127,17 @@ describe('handleCodeGraphScan', () => {
       queries: [],
     });
     mocks.getCodeGraphMetadataMock.mockReturnValue(null);
+    mocks.getStoredCodeGraphScopeMock.mockReturnValue({
+      fingerprint: 'code-graph-scope:v1:skills=excluded:mcp-coco-index=excluded',
+      label: 'end-user code only; .opencode/skill and mcp-coco-index/mcp_server excluded',
+    });
+    mocks.countTrackedSkillFilesMock.mockReturnValue(0);
     mocks.getGraphFreshnessMock.mockReturnValue('fresh');
+    mocks.getGraphReadinessSnapshotMock.mockReturnValue({
+      freshness: 'fresh',
+      action: 'none',
+      reason: 'all tracked files are up-to-date',
+    });
     mocks.getLastGitHeadMock.mockReturnValue('old-head');
     mocks.getLastGoldVerificationMock.mockReturnValue(null);
     mocks.isFileStaleMock.mockReturnValue(false);
@@ -225,6 +244,174 @@ describe('handleCodeGraphScan', () => {
       },
     });
     expect(mocks.setLastGitHeadMock).toHaveBeenCalledWith('new-head');
+    expect(mocks.setCodeGraphScopeMock).toHaveBeenCalledWith(expect.objectContaining({
+      fingerprint: 'code-graph-scope:v1:skills=excluded:mcp-coco-index=excluded',
+      includeSkills: false,
+    }));
+  });
+
+  it('passes includeSkills through to the indexer config for one-call opt-in scans', async () => {
+    mocks.execSyncMock.mockReturnValue('same-head\n');
+    mocks.getLastGitHeadMock.mockReturnValue('same-head');
+
+    await handleCodeGraphScan({
+      rootDir: process.cwd(),
+      incremental: false,
+      includeSkills: true,
+    });
+
+    expect(mocks.indexFilesMock).toHaveBeenCalledWith(
+      expect.objectContaining({
+        scopePolicy: expect.objectContaining({
+          includeSkills: true,
+          source: 'scan-argument',
+          fingerprint: 'code-graph-scope:v1:skills=included:mcp-coco-index=excluded',
+        }),
+        excludeGlobs: expect.not.arrayContaining(['**/.opencode/skill/**']),
+      }),
+      expect.any(Object),
+    );
+    expect(mocks.setCodeGraphScopeMock).toHaveBeenCalledWith(expect.objectContaining({
+      includeSkills: true,
+      source: 'scan-argument',
+    }));
+  });
+
+  it('lets includeSkills false override an env opt-in for one-call end-user scans', async () => {
+    process.env.SPECKIT_CODE_GRAPH_INDEX_SKILLS = 'true';
+    mocks.execSyncMock.mockReturnValue('same-head\n');
+    mocks.getLastGitHeadMock.mockReturnValue('same-head');
+
+    try {
+      await handleCodeGraphScan({
+        rootDir: process.cwd(),
+        incremental: false,
+        includeSkills: false,
+      });
+
+      expect(mocks.indexFilesMock).toHaveBeenCalledWith(
+        expect.objectContaining({
+          scopePolicy: expect.objectContaining({
+            includeSkills: false,
+            source: 'scan-argument',
+            fingerprint: 'code-graph-scope:v1:skills=excluded:mcp-coco-index=excluded',
+          }),
+          excludeGlobs: expect.arrayContaining(['**/.opencode/skill/**']),
+        }),
+        expect.any(Object),
+      );
+      expect(mocks.setCodeGraphScopeMock).toHaveBeenCalledWith(expect.objectContaining({
+        includeSkills: false,
+        source: 'scan-argument',
+      }));
+    } finally {
+      delete process.env.SPECKIT_CODE_GRAPH_INDEX_SKILLS;
+    }
+  });
+
+  it('passes the canonical rootDir into the indexer config', async () => {
+    const workspaceRoot = resolve(process.cwd());
+    const aliasRoot = join(workspaceRoot, 'alias');
+    const canonicalSkillRoot = join(workspaceRoot, '.opencode', 'skill');
+    mocks.realpathSyncMock.mockImplementation((path: string) => {
+      if (path === workspaceRoot) {
+        return workspaceRoot;
+      }
+      if (path === resolve(aliasRoot)) {
+        return canonicalSkillRoot;
+      }
+      return path;
+    });
+    mocks.execSyncMock.mockReturnValue('same-head\n');
+    mocks.getLastGitHeadMock.mockReturnValue('same-head');
+
+    await handleCodeGraphScan({
+      rootDir: aliasRoot,
+      incremental: false,
+    });
+
+    expect(mocks.indexFilesMock).toHaveBeenCalledWith(
+      expect.objectContaining({
+        rootDir: canonicalSkillRoot,
+        scopePolicy: expect.objectContaining({
+          includeSkills: false,
+        }),
+      }),
+      expect.any(Object),
+    );
+    expect(mocks.execSyncMock).toHaveBeenCalledWith('git rev-parse HEAD', expect.objectContaining({
+      cwd: canonicalSkillRoot,
+      encoding: 'utf-8',
+    }));
+  });
+
+  it('does not expose the workspace prefix in invalid rootDir errors', async () => {
+    const workspaceRoot = resolve(process.cwd());
+    const brokenRoot = join(workspaceRoot, 'missing-link');
+    mocks.realpathSyncMock.mockImplementation((path: string) => {
+      if (path === workspaceRoot) {
+        return workspaceRoot;
+      }
+      throw new Error('broken symlink');
+    });
+
+    const response = await handleCodeGraphScan({
+      rootDir: brokenRoot,
+      incremental: false,
+    });
+    const payload = JSON.parse(response.content[0].text) as { status: string; error: string };
+
+    expect(payload.status).toBe('error');
+    expect(payload.error).toContain('missing-link');
+    expect(payload.error).not.toContain(workspaceRoot);
+  });
+
+  it('uses basenames instead of absolute paths for out-of-workspace rootDir errors', async () => {
+    const workspaceRoot = resolve(process.cwd());
+    const outsideRoot = resolve(workspaceRoot, '..', 'outside-secret');
+    mocks.realpathSyncMock.mockImplementation((path: string) => {
+      if (path === workspaceRoot) {
+        return workspaceRoot;
+      }
+      if (path === outsideRoot) {
+        return outsideRoot;
+      }
+      return path;
+    });
+
+    const response = await handleCodeGraphScan({
+      rootDir: outsideRoot,
+      incremental: false,
+    });
+    const payload = JSON.parse(response.content[0].text) as { status: string; error: string };
+
+    expect(payload.status).toBe('error');
+    expect(payload.error).toContain(basename(outsideRoot));
+    expect(payload.error).not.toContain(workspaceRoot);
+    expect(payload.error).not.toContain(outsideRoot);
+  });
+
+  it('returns scan warnings without absolute workspace paths', async () => {
+    const workspaceRoot = resolve(process.cwd());
+    mocks.execSyncMock.mockReturnValue('same-head\n');
+    mocks.getLastGitHeadMock.mockReturnValue('same-head');
+    mocks.indexFilesMock.mockResolvedValue(Object.assign([], {
+      warnings: [
+        `[structural-indexer] Aborting descent at maxDepth=80: ${join(workspaceRoot, 'src')}`,
+        `[structural-indexer] Aborting walk at ${resolve(workspaceRoot, '..', 'outside-warning')}`,
+      ],
+      capExceeded: { maxNodes: false, depth: true, gitignoreSize: false },
+    }));
+
+    const response = await handleCodeGraphScan({
+      rootDir: workspaceRoot,
+      incremental: false,
+    });
+    const payload = JSON.parse(response.content[0].text) as { data: { warnings: string[] } };
+
+    expect(payload.data.warnings).toContain('[structural-indexer] Aborting descent at maxDepth=80: src');
+    expect(payload.data.warnings).toContain('[structural-indexer] Aborting walk at outside-warning');
+    expect(payload.data.warnings.join('\n')).not.toContain(workspaceRoot);
   });
 
   it('optionally runs verification for explicit full scans and attaches the result', async () => {

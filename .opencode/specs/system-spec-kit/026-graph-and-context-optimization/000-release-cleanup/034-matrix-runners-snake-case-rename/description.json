@@ -1,18 +1,21 @@
 {
-  "specFolder": "specs/system-spec-kit/026-graph-and-context-optimization/000-release-cleanup/005-review-remediation/034-matrix-runners-snake-case-rename",
-  "description": "Renames the legacy kebab-case MCP server matrix runner directory to mcp_server/matrix_runners so it matches adjacent snake_case directories. Updates imports, npm-adjacent docs, runtime docs, feature catalog entries, and historical spec evidence with no semantic code changes.",
+  "specFolder": "system-spec-kit/026-graph-and-context-optimization/000-release-cleanup/034-matrix-runners-snake-case-rename",
+  "description": "Feature Specification: 047 matrix_runners Snake Case Rename",
   "keywords": [
-    "034-matrix-runners-snake-case-rename",
-    "matrix_runners rename",
-    "kebab-to-snake convention",
-    "mcp_server folder convention"
+    "feature",
+    "specification",
+    "047",
+    "snake",
+    "case",
+    "rename"
   ],
-  "lastUpdated": "2026-04-29T22:47:36+02:00",
-  "specId": "047",
-  "folderSlug": "matrix_runners-snake-case-rename",
+  "lastUpdated": "2026-05-02T10:39:48.594Z",
+  "specId": "034",
+  "folderSlug": "matrix-runners-snake-case-rename",
   "parentChain": [
     "system-spec-kit",
-    "026-graph-and-context-optimization"
+    "026-graph-and-context-optimization",
+    "000-release-cleanup"
   ],
   "memorySequence": 47,
   "memoryNameHistory": []

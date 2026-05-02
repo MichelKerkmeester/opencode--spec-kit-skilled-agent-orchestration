@@ -1,22 +1,19 @@
 {
-  "specFolder": "specs/system-spec-kit/026-graph-and-context-optimization/000-release-cleanup/005-review-remediation/018-doc-truth-pass",
-  "description": "Tier A doc-only remediation: fix Copilot/Codex hook docs, CCC command-home doc, ARCHITECTURE handler paths, validation auto-fire wording, and add Trigger column to broad auto-claims.",
+  "specFolder": "system-spec-kit/026-graph-and-context-optimization/000-release-cleanup/018-doc-truth-pass",
+  "description": "Spec: Doc Truth Pass",
   "keywords": [
-    "018-doc-truth-pass",
-    "doc truth pass",
-    "automation doc fixes",
-    "Copilot hook docs fix",
-    "Codex hook docs fix",
-    "CCC command docs",
-    "validation wording",
-    "trigger column"
+    "spec",
+    "doc",
+    "truth",
+    "pass"
   ],
-  "lastUpdated": "2026-04-29T18:36:06.895Z",
-  "specId": "031",
+  "lastUpdated": "2026-05-02T10:39:48.307Z",
+  "specId": "018",
   "folderSlug": "doc-truth-pass",
   "parentChain": [
     "system-spec-kit",
-    "026-graph-and-context-optimization"
+    "026-graph-and-context-optimization",
+    "000-release-cleanup"
   ],
   "memorySequence": 3,
   "memoryNameHistory": [

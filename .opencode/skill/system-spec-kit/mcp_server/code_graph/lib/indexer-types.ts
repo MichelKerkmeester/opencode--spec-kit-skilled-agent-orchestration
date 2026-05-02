@@ -2,6 +2,12 @@
 // MODULE: Code Graph Indexer Types
 // ───────────────────────────────────────────────────────────────
 import { createHash } from 'node:crypto';
+import {
+  CODE_GRAPH_SKILL_EXCLUDE_GLOBS,
+  resolveIndexScopePolicy,
+  type IndexScopePolicy,
+  type ResolveIndexScopePolicyInput,
+} from './index-scope-policy.js';
 
 /** Node types extracted by the structural indexer */
 export type SymbolKind =
@@ -90,6 +96,7 @@ export interface IndexerConfig {
   excludeGlobs: string[];
   maxFileSizeBytes: number;
   languages: SupportedLanguage[];
+  scopePolicy: IndexScopePolicy;
   edgeWeights?: Partial<Record<EdgeType, number>>;
   tsconfigPath?: string;
   baseUrl?: string;
@@ -131,12 +138,30 @@ export function detectLanguage(filePath: string): SupportedLanguage | null {
 }
 
 /** Get default indexer configuration */
-export function getDefaultConfig(rootDir: string): IndexerConfig {
+export function getDefaultConfig(
+  rootDir: string,
+  policyInput?: IndexScopePolicy | ResolveIndexScopePolicyInput,
+): IndexerConfig {
+  const scopePolicy = resolveIndexScopePolicy(policyInput);
+  // Default scope excludes .opencode/skill/** unless the caller opts in.
+  const excludeGlobs = [
+    '**/node_modules/**',
+    '**/dist/**',
+    '**/.git/**',
+    '**/vendor/**',
+    '**/external/**',
+    '**/z_future/**',
+    '**/z_archive/**',
+    '**/mcp-coco-index/mcp_server/**',
+    ...CODE_GRAPH_SKILL_EXCLUDE_GLOBS.filter(() => !scopePolicy.includeSkills),
+  ];
+
   return {
     rootDir,
     includeGlobs: ['**/*.ts', '**/*.tsx', '**/*.mts', '**/*.cts', '**/*.js', '**/*.jsx', '**/*.mjs', '**/*.cjs', '**/*.py', '**/*.sh', '**/*.bash', '**/*.zsh'],
-    excludeGlobs: ['**/node_modules/**', '**/dist/**', '**/.git/**', '**/vendor/**', '**/external/**', '**/z_future/**', '**/z_archive/**', '**/mcp-coco-index/mcp_server/**'],
+    excludeGlobs,
     maxFileSizeBytes: 102_400,
     languages: ['javascript', 'typescript', 'python', 'bash'],
+    scopePolicy,
   };
 }

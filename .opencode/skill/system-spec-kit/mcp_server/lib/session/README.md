@@ -1,309 +1,243 @@
 ---
-title: "Session Layer"
-description: "Session management for the Spec Kit Memory MCP server. Handles session deduplication, crash recovery and context persistence."
+title: "Session: Runtime State And Deduplication"
+description: "Session deduplication, checkpoint state, recovery metadata, and cleanup helpers for the Spec Kit Memory MCP server."
 trigger_phrases:
-  - "session management"
+  - "session manager"
   - "session deduplication"
-  - "crash recovery"
+  - "session recovery"
 ---
 
-# Session Layer
+# Session: Runtime State And Deduplication
 
-> Session management for the Spec Kit Memory MCP server. Handles deduplication and crash recovery with context persistence.
+> Runtime session state, deduplication, checkpoint metadata, and cleanup helpers for the MCP server.
 
----
-
-## TABLE OF CONTENTS
 <!-- ANCHOR:table-of-contents -->
+## TABLE OF CONTENTS
 
-- [1. OVERVIEW](#1-overview)
-- [2. STRUCTURE](#2-structure)
-- [3. FEATURES](#3-features)
-- [4. USAGE EXAMPLES](#4-usage-examples)
-- [5. TROUBLESHOOTING](#5-troubleshooting)
-- [6. RELATED RESOURCES](#6-related-resources)
+- [1. OVERVIEW](#1--overview)
+- [2. ARCHITECTURE](#2--architecture)
+- [3. PACKAGE TOPOLOGY](#3--package-topology)
+- [4. DIRECTORY TREE](#4--directory-tree)
+- [5. KEY FILES](#5--key-files)
+- [6. BOUNDARIES AND FLOW](#6--boundaries-and-flow)
+- [7. ENTRYPOINTS](#7--entrypoints)
+- [8. VALIDATION](#8--validation)
+- [9. RELATED](#9--related)
 
 <!-- /ANCHOR:table-of-contents -->
 
 ---
 
-## 1. OVERVIEW
 <!-- ANCHOR:overview -->
+## 1. OVERVIEW
 
-The session layer provides all session-related operations for the Spec Kit Memory MCP server. It prevents duplicate context injection (saving ~50% tokens on follow-up queries) and enables crash recovery with immediate SQLite persistence.
+`lib/session/` owns runtime session state for the Spec Kit Memory MCP server. It tracks which spec-doc records were already sent to a caller, persists active session metadata, marks interrupted sessions after restarts, and clears stale session data from SQLite-backed tables.
 
-Gate E alignment: operator-facing recovery now anchors on `/spec_kit:resume`, with canonical continuity rebuilt from `handover.md -> _memory.continuity -> spec docs`. Session persistence in this directory supports that flow, but it is not a separate continuity source.
+Current state:
 
-### Key Statistics
-
-| Category | Count | Details |
-|----------|-------|---------|
-| Modules | 1 | `session-manager.ts` |
-| Token Savings | ~50% | On follow-up queries via deduplication |
-| Session TTL | 30 min | Configurable via `SESSION_TTL_MINUTES` |
-| Max Entries | 100 | Per session cap (R7 mitigation) |
-
-### Key Features
-
-| Feature | Description |
-|---------|-------------|
-| **Session Deduplication** | Tracks sent memories to prevent duplicate context injection |
-| **Crash Recovery** | Immediate SQLite persistence backing `/spec_kit:resume` recovery |
-| **Token Savings** | ~50% reduction on follow-up queries |
-| **State Persistence** | Zero data loss on crash via immediate saves |
-| **Phase Awareness** | Session context includes phase metadata for phase-based specs (spec 139) |
+- `session-manager.ts` is the only implementation file in this folder.
+- Session state supports `/spec_kit:resume`, but the canonical recovery ladder remains `handover.md` → `_memory.continuity` → spec docs.
+- Session deduplication writes to `session_sent_memories` and session recovery state writes to `session_state`.
+- Cleanup also touches `working_memory` through `../cognitive/working-memory.js` and governed retention through `../governance/memory-retention-sweep.js`.
 
 <!-- /ANCHOR:overview -->
 
 ---
 
-## 2. STRUCTURE
-<!-- ANCHOR:structure -->
+<!-- ANCHOR:architecture -->
+## 2. ARCHITECTURE
 
+```text
+╭──────────────────────────────────────────────────────────────────╮
+│                    lib/session/                                  │
+╰──────────────────────────────────────────────────────────────────╯
+
+┌────────────────┐      ┌─────────────────────┐      ┌────────────────────┐
+│ MCP handlers   │ ───▶ │ session-manager.ts  │ ───▶ │ SQLite session     │
+│ memory tools   │      │ public functions    │      │ tables             │
+└───────┬────────┘      └──────────┬──────────┘      └─────────┬──────────┘
+        │                          │                           │
+        │                          ▼                           ▼
+        │                ┌─────────────────────┐       ┌───────────────────┐
+        └──────────────▶ │ working-memory      │       │ retention sweep   │
+                         │ cleanup             │       │ governance cleanup│
+                         └─────────────────────┘       └───────────────────┘
+
+Canonical recovery ladder:
+session_state → /spec_kit:resume → handover.md → _memory.continuity → spec docs
 ```
+
+Dependency direction: callers → `session-manager.ts` → SQLite, working memory, retention sweep.
+
+<!-- /ANCHOR:architecture -->
+
+---
+
+<!-- ANCHOR:package-topology -->
+## 3. PACKAGE TOPOLOGY
+
+```text
 session/
- session-manager.ts  # Session deduplication, crash recovery, state management (~28KB)
- README.md           # This file
++-- session-manager.ts  # Deduplication, persisted session state, recovery helpers, cleanup timers
+`-- README.md           # Folder orientation
 ```
 
-### Key Files
+Allowed dependency direction:
 
-| File | Purpose |
-|------|---------|
-| `session-manager.ts` | Core session tracking, deduplication, and state persistence used by resume/recovery flows |
+```text
+handlers and tools → lib/session/session-manager.ts
+lib/session/session-manager.ts → lib/cognitive/working-memory.js
+lib/session/session-manager.ts → lib/governance/memory-retention-sweep.js
+lib/session/session-manager.ts → SQLite database handle
+```
 
-<!-- /ANCHOR:structure -->
+Disallowed dependency direction:
+
+```text
+lib/session/ → handler orchestration
+lib/session/ → resume ladder ownership
+lib/session/ → continuity record schema ownership
+```
+
+<!-- /ANCHOR:package-topology -->
 
 ---
 
-## 3. FEATURES
-<!-- ANCHOR:features -->
+<!-- ANCHOR:directory-tree -->
+## 4. DIRECTORY TREE
 
-### Session Deduplication (v1.2.0)
-
-**Purpose**: Prevent sending the same spec-doc record content twice in a session, saving tokens.
-
-| Aspect | Details |
-|--------|---------|
-| **Hash-based** | SHA-256 hash of memory content (truncated to 16 chars) |
-| **Immediate Save** | SQLite persistence on each mark (crash resilient) |
-| **Batch Support** | Efficient batch checking and marking |
-| **Token Savings** | ~200 tokens per duplicate avoided |
-
-```
-Session Query Flow:
-1. User queries memory_search
-2. Results retrieved from index
-3. filterSearchResults() removes already-sent memories
-4. Filtered results returned to client
-5. markResultsSent() records what was sent
+```text
+session/
++-- session-manager.ts  # Session schema setup, dedup hashes, persistence, checkpoint output, cleanup
+`-- README.md           # This file
 ```
 
-### Crash Recovery (v1.2.0)
-
-**Purpose**: Zero data loss on MCP server crash or context compaction.
-
-| Aspect | Details |
-|--------|---------|
-| **Immediate Persistence** | State saved to SQLite instantly |
-| **Interrupted Detection** | On startup, active sessions marked as interrupted |
-| **State Recovery** | `recoverState()` returns state with `_recovered: true` flag |
-| **Resume Alignment** | Persisted state is available for upstream `handover.md` and `_memory.continuity` reconstruction |
-
-Session states:
-- `active`: Session in progress
-- `completed`: Session ended normally
-- `interrupted`: Session crashed (detected on restart)
-
-### Canonical Recovery Alignment
-
-**Purpose**: Keep technical session state available for the canonical resume flow.
-
-Upstream recovery surfaces can rebuild continuity from persisted session state plus:
-- Session ID and status
-- Spec folder and current task
-- Last action and context summary
-- Pending work description
-- The canonical recovery chain: `handover.md -> _memory.continuity -> spec docs`
-
-<!-- /ANCHOR:features -->
+<!-- /ANCHOR:directory-tree -->
 
 ---
 
-## 4. USAGE EXAMPLES
-<!-- ANCHOR:usage-examples -->
+<!-- ANCHOR:key-files -->
+## 5. KEY FILES
 
-### Example 1: Filter Search Results (Primary Integration)
+| File | Responsibility |
+|---|---|
+| `session-manager.ts` | Initializes session tables, filters duplicate search results, records sent memories, saves and recovers session state, writes `CONTINUE_SESSION.md`, and runs cleanup intervals. |
 
-```typescript
-import { filterSearchResults, markResultsSent } from './session-manager';
-
-// After retrieving search results
-const { filtered, dedupStats } = filterSearchResults(sessionId, results);
-
-console.log(`Filtered ${dedupStats.filtered} duplicates`);
-console.log(`Token savings: ${dedupStats.tokenSavingsEstimate}`);
-
-// Return filtered results to client, then mark as sent
-markResultsSent(sessionId, filtered);
-```
-
-### Example 2: Crash Recovery on Startup
-
-```typescript
-import { init, resetInterruptedSessions, getInterruptedSessions } from './session-manager';
-
-// Initialize session manager
-init(database);
-
-// Mark any active sessions as interrupted
-const { interruptedCount } = resetInterruptedSessions();
-console.log(`Found ${interruptedCount} interrupted sessions`);
-
-// Get details for recovery UI
-const { sessions } = getInterruptedSessions();
-sessions.forEach(s => {
-  console.log(`Session ${s.sessionId}: ${s.lastAction} in ${s.specFolder}`);
-});
-```
-
-### Example 3: Save Session State with Checkpoint
-
-```typescript
-import { checkpointSession, saveSessionState } from './session-manager';
-
-// Save state immediately (minimal)
-saveSessionState(sessionId, {
-  specFolder: 'specs/<###-spec-name>',
-  currentTask: 'T071',
-  lastAction: 'Implemented causal edges',
-  contextSummary: 'Working on memory relationships...',
-  pendingWork: 'Need to add traversal depth limit'
-});
-
-// Full checkpoint for upstream resume surfaces
-checkpointSession(sessionId, {
-  specFolder: 'specs/<###-spec-name>',
-  currentTask: 'T072',
-  contextSummary: 'Session checkpoint before break'
-}, '/absolute/path/to/specs/<###-spec-name>');
-```
-
-### Common Patterns
-
-| Pattern | Code | When to Use |
-|---------|------|-------------|
-| Check if should send | `shouldSendMemory(sessionId, memory)` | Before returning single memory |
-| Batch check | `shouldSendMemoriesBatch(sessionId, memories)` | Before returning multiple memories |
-| Mark single sent | `markMemorySent(sessionId, memory)` | After returning a spec-doc record |
-| Mark batch sent | `markMemoriesSentBatch(sessionId, memories)` | After returning multiple memories |
-| Clear session | `clearSession(sessionId)` | On explicit session end |
-| Get session stats | `getSessionStats(sessionId)` | For debugging/logging |
-| Recover state | `recoverState(sessionId)` | On session resume |
-| Complete session | `completeSession(sessionId)` | On normal session end |
-
-<!-- /ANCHOR:usage-examples -->
+<!-- /ANCHOR:key-files -->
 
 ---
 
-## 5. TROUBLESHOOTING
-<!-- ANCHOR:troubleshooting -->
+<!-- ANCHOR:boundaries-flow -->
+## 6. BOUNDARIES AND FLOW
 
-### Common Issues
+| Boundary | Rule |
+|---|---|
+| Session ownership | Owns runtime session IDs, dedup hashes, active or interrupted state, and cleanup timers. |
+| Continuity ownership | Does not own packet continuity truth. It only provides runtime state that resume surfaces can read. |
+| Canonical ladder | Recovery should resolve through `handover.md`, then `_memory.continuity`, then spec docs. |
+| Storage | Requires an initialized SQLite database handle before persistence and dedup helpers can run. |
+| Cleanup | Can clear `session_sent_memories`, completed or interrupted `session_state`, and matching `working_memory` rows. |
 
-#### Memories Being Filtered When They Shouldn't Be
+Main deduplication flow:
 
-**Symptom**: Expected memories not returned in search results.
-
-**Cause**: Memories already marked as sent in this session.
-
-**Solution**:
-```typescript
-import { getSessionStats, clearSession } from './session-manager';
-
-// Check session stats
-const stats = getSessionStats(sessionId);
-console.log(`Total sent: ${stats.totalSent}`);
-
-// Clear session to reset
-clearSession(sessionId);
+```text
+╭──────────────────────────────────────────╮
+│ Caller has memory search results         │
+╰──────────────────────────────────────────╯
+                  │
+                  ▼
+┌──────────────────────────────────────────┐
+│ filterSearchResults(sessionId, results)  │
+└──────────────────────────────────────────┘
+                  │
+                  ▼
+┌──────────────────────────────────────────┐
+│ generateMemoryHash(memory)               │
+└──────────────────────────────────────────┘
+                  │
+                  ▼
+┌──────────────────────────────────────────┐
+│ session_sent_memories check and reserve  │
+└──────────────────────────────────────────┘
+                  │
+                  ▼
+╭──────────────────────────────────────────╮
+│ Caller receives filtered results         │
+╰──────────────────────────────────────────╯
 ```
 
-#### Session State Not Persisting
+Main recovery state flow:
 
-**Symptom**: Session state lost between queries.
-
-**Cause**: Database not initialized or session ID changing.
-
-**Solution**:
-```typescript
-import { getDb } from './session-manager';
-
-// Verify initialization
-const db = getDb();
-if (!db) {
-  console.error('Session manager not initialized');
-}
-
-// Ensure consistent session ID
-console.log(`Using session: ${sessionId}`);
+```text
+saveSessionState()
+        │
+        ▼
+session_state row
+        │
+        ├──▶ recoverState() for a requested session ID
+        │
+        ├──▶ getInterruptedSessions() for restart recovery
+        │
+        └──▶ checkpointSession() for optional CONTINUE_SESSION.md output
 ```
 
-### Quick Fixes
-
-| Problem | Quick Fix |
-|---------|-----------|
-| Session dedup disabled | Check `DISABLE_SESSION_DEDUP` env var |
-| TTL too short/long | Set `SESSION_TTL_MINUTES` env var |
-| Max entries reached | Oldest entries auto-pruned (FIFO) |
-
-### Diagnostic Commands
-
-```typescript
-import { isEnabled, getConfig, getSessionStats, getInterruptedSessions } from './session-manager';
-
-// Check if deduplication enabled
-console.log('Enabled:', isEnabled());
-console.log('Config:', getConfig());
-
-// Check session stats
-console.log(getSessionStats(sessionId));
-
-// Check for interrupted sessions
-console.log(getInterruptedSessions());
-```
-
-### Configuration
-
-| Environment Variable | Default | Description |
-|---------------------|---------|-------------|
-| `SESSION_TTL_MINUTES` | 30 | Session timeout in minutes |
-| `SESSION_MAX_ENTRIES` | 100 | Maximum entries per session |
-| `DISABLE_SESSION_DEDUP` | false | Set 'true' to disable deduplication |
-
-<!-- /ANCHOR:troubleshooting -->
+<!-- /ANCHOR:boundaries-flow -->
 
 ---
 
-## 6. RELATED RESOURCES
+<!-- ANCHOR:entrypoints -->
+## 7. ENTRYPOINTS
+
+| Entrypoint | Type | Purpose |
+|---|---|---|
+| `init(database)` | Function | Stores the database handle, creates session schemas, and starts cleanup intervals. |
+| `filterSearchResults(sessionId, results)` | Function | Removes and reserves duplicate memory results for a session. |
+| `markResultsSent(sessionId, results)` | Function | Marks returned memory results after delivery. |
+| `shouldSendMemory(sessionId, memory)` | Function | Checks one memory result against session dedup history. |
+| `shouldSendMemoriesBatch(sessionId, memories, markAsSent)` | Function | Checks a batch and can reserve entries in one path. |
+| `saveSessionState(sessionId, state)` | Function | Persists active session metadata in `session_state`. |
+| `recoverState(sessionId, scope)` | Function | Reads persisted state and reactivates interrupted sessions when scope matches. |
+| `resetInterruptedSessions()` | Function | Marks active sessions as interrupted during startup recovery. |
+| `getInterruptedSessions(scope)` | Function | Lists interrupted sessions, filtered by tenant, user, or agent scope when provided. |
+| `checkpointSession(sessionId, state, specFolderPath)` | Function | Saves state and optionally writes `CONTINUE_SESSION.md` under a spec folder. |
+| `cleanupExpiredSessions()` | Function | Removes old sent-memory rows using `SESSION_TTL_MINUTES`. |
+| `cleanupStaleSessions(thresholdMs)` | Function | Removes stale working memory, sent-memory, and completed or interrupted session-state rows. |
+| `completeSession(sessionId)` | Function | Marks a session complete and clears matching working memory. |
+| `shutdown()` | Function | Clears background cleanup intervals. |
+
+<!-- /ANCHOR:entrypoints -->
+
+---
+
+<!-- ANCHOR:validation -->
+## 8. VALIDATION
+
+Run from the repository root unless noted.
+
+```bash
+python3 .opencode/skill/sk-doc/scripts/validate_document.py .opencode/skill/system-spec-kit/mcp_server/lib/session/README.md
+```
+
+Expected result: the README validation command exits with code `0`.
+
+```bash
+python3 .opencode/skill/sk-doc/scripts/extract_structure.py .opencode/skill/system-spec-kit/mcp_server/lib/session/README.md
+```
+
+Expected result: the extracted structure reports README sections and no critical documentation issues.
+
+For code changes in this folder, run the TypeScript or package-level checks used by the MCP server before claiming runtime behavior changed.
+
+<!-- /ANCHOR:validation -->
+
+---
+
 <!-- ANCHOR:related -->
+## 9. RELATED
 
-### Internal Documentation
-
-| Document | Purpose |
-|----------|---------|
-| [../README.md](../README.md) | Parent lib directory overview |
-| [../storage/README.md](../storage/README.md) | Storage layer for persistence |
-
-### Related Modules
-
-| Module | Purpose |
-|--------|---------|
-| `context-server.ts` | MCP server that uses session layer |
-| `storage/checkpoints.ts` | Checkpoint creation uses session state |
+- [`../README.md`](../README.md)
+- [`../resume/README.md`](../resume/README.md)
+- [`../continuity/README.md`](../continuity/README.md)
+- [`../storage/README.md`](../storage/README.md)
 
 <!-- /ANCHOR:related -->
-
----
-
-*Documentation version: 1.7.3 | Last updated: 2026-02-21 | Session layer v1.2.0*

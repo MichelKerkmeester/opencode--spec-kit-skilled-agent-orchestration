@@ -22,7 +22,7 @@ _memory:
     session_dedup:
       fingerprint: "sha256:0260000000007008000000000000000000000000000000000000000000000002"
       session_id: "008-code-graph-backend-resilience"
-      parent_session_id: "026-graph-and-context-optimization"
+      parent_session_id: null
     completion_pct: 0
     open_questions: []
     answered_questions: []

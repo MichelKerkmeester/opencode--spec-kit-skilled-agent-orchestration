@@ -1,6 +1,6 @@
 ---
 title: "Spec Scripts"
-description: "Spec lifecycle scripts for create, upgrade, placeholder cleanup, validation, and completion checks."
+description: "Spec lifecycle shell entrypoints for create, upgrade, validation, completion checks and archival."
 trigger_phrases:
   - "spec scripts"
   - "upgrade spec level"
@@ -8,166 +8,192 @@ trigger_phrases:
   - "check placeholders"
 ---
 
-
 # Spec Scripts
 
 <!-- ANCHOR:table-of-contents -->
 ## TABLE OF CONTENTS
 
-- [1. OVERVIEW](#1-overview)
-- [2. CURRENT INVENTORY](#2-current-inventory)
-- [3. UPGRADE FLOW (SPEC124/128/129/136-139)](#3-upgrade-flow-spec124128129136-139)
-- [4. COMPLETION GATE](#4-completion-gate)
-- [5. NOTES](#5-notes)
+- [1. OVERVIEW](#1--overview)
+- [2. ARCHITECTURE](#2--architecture)
+- [3. PACKAGE TOPOLOGY](#3--package-topology)
+- [4. KEY FILES](#4--key-files)
+- [5. BOUNDARIES AND FLOW](#5--boundaries-and-flow)
+- [6. ENTRYPOINTS](#6--entrypoints)
+- [7. VALIDATION](#7--validation)
+- [8. RELATED](#8--related)
 
 <!-- /ANCHOR:table-of-contents -->
+
+---
+
 <!-- ANCHOR:overview -->
 ## 1. OVERVIEW
 
-The `scripts/spec/` directory is the shell-based spec lifecycle layer.
-Under Gate E, these scripts validate and evolve the canonical packet docs that `/spec_kit:resume` restores through `handover.md` -> `_memory.continuity` -> spec docs. Generated memory artifacts remain supporting only.
+`scripts/spec/` owns shell entrypoints for spec folder lifecycle work. It creates packet folders, upgrades documentation levels, validates structure, checks completion state and archives finished or stale folders.
 
-### Architecture Diagram
+Current state:
 
-```
-┌──────────────────────────────────────────────────────────────────────┐
-│                    SPEC LIFECYCLE ARCHITECTURE                        │
-├──────────────────────────────────────────────────────────────────────┤
-│                                                                      │
-│                           ┌─────────────┐                           │
-│                           │ create.sh   │                           │
-│                           │ (scaffold)  │                           │
-│                           └──────┬──────┘                           │
-│                                  │                                   │
-│    ┌──────────┐    ┌─────────────▼─────────────┐    ┌──────────┐   │
-│    │AI agent  │───▶│    upgrade-level.sh      │───▶│ validate │   │
-│    │populates │    │    (inject sections)      │    │ .sh      │   │
-│    │spec docs │    └───────────────────────────┘    │ (rules/) │   │
-│    └──────────┘                                     └────┬─────┘   │
-│                                  ┌────────────────────────▼───────┐ │
-│                                  │       check-placeholders.sh    │ │
-│                                  │       (verify clean)           │ │
-│                                  └───────────────┬────────────────┘ │
-│                                                  │                  │
-│  ┌───────────────────────────────────────────────▼───────────────┐ │
-│  │                    QUALITY GATES                              │ │
-│  │  ┌─────────────────┐  ┌──────────────────┐  ┌──────────────┐ │ │
-│  │  │ validate.sh     │  │ check-           │  │ calculate-   │ │ │
-│  │  │ (modular rules) │  │ completion.sh    │  │ completeness │ │ │
-│  │  └─────────────────┘  │ (gate-enforce)   │  │ .sh (metrics)│ │ │
-│  │                       └──────────────────┘  └──────────────┘ │ │
-│  └───────────────────────────────────────────────────────────────┘ │
-│                                                                      │
-│  ┌─────────────────────────────────────────────────────────────────┐│
-│  │               SUPPORTING SCRIPTS                                 ││
-│  │  ┌──────────────┐  ┌──────────────┐  ┌──────────────┐          ││
-│  │  │archive.sh    │  │recommend-    │  │progressive-  │          ││
-│  │  │(stale specs) │  │ level.sh     │  │ validate.sh  │          ││
-│  │  └──────────────┘  │(auto-detect) │  │(4-stage pipe)│          ││
-│  │                    └──────────────┘  └──────────────┘          ││
-│  └─────────────────────────────────────────────────────────────────┘│
-│                                                                      │
-│  ┌─────────────────────────────────────────────────────────────────┐│
-│  │                   INPUTS                                        ││
-│  │ ┌──────────┐ ┌──────────┐ ┌──────────────┐ ┌────────────────┐  ││
-│  │ │rules/    │ │templates/│ │ spec-kit-    │ │ spec folder    │  ││
-│  │ │check-*.sh│ │manifest/ │ │ docs.json    │ │ (target path)  │  ││
-│  │ └──────────┘ └──────────┘ └──────────────┘ └────────────────┘  ││
-│  └─────────────────────────────────────────────────────────────────┘│
-│                                                                      │
-│  Phase support: create.sh --phase + validate.sh --recursive         │
-│                                                                      │
-└──────────────────────────────────────────────────────────────────────┘
-```
-
-### Directory Tree
-
-```
-scripts/spec/
-├── create.sh                      # Scaffold new spec folders from templates (--level, --phase)
-├── upgrade-level.sh               # Upgrade spec folder to Level 2/3/3+ (--dry-run, --keep-backups)
-├── check-placeholders.sh          # Detect unresolved [PLACEHOLDER] markers
-├── validate.sh                    # Orchestrate modular validation rules (--strict, --recursive)
-├── progressive-validate.sh        # 4-stage validation pipeline (detect → auto-fix → suggest → report)
-├── test-validation.sh             # Validation orchestration behavior helper
-├── check-completion.sh            # Enforce Gate: checklist.md all verified
-├── calculate-completeness.sh      # Compute checklist completion metrics
-├── recommend-level.sh             # Auto-recommend Level from task signals
-├── archive.sh                     # Archive completed or stale spec folders
-└── README.md
-```
+- Shell scripts are the public command surface for spec lifecycle operations.
+- Validation delegates rule checks to `../rules/` and shared helpers in `../lib/`.
+- Scripts accept explicit spec folder paths and are intended to run from the repository root.
 
 <!-- /ANCHOR:overview -->
-<!-- ANCHOR:current-inventory -->
-## 2. CURRENT INVENTORY
 
+---
 
-- `create.sh` - create new spec folders from templates
-- `upgrade-level.sh` - upgrade existing folders to `2`, `3`, or `3+`
-- `check-placeholders.sh` - detect unresolved bracket placeholders after upgrades
-- `validate.sh` - orchestrate modular validation rules
-- `test-validation.sh` - validation helper script for spec rule orchestration behavior
-- `check-completion.sh` - enforce completion gate before claiming done
-- `calculate-completeness.sh` - compute checklist completion metrics
-- `recommend-level.sh` - recommend level from task signals
-- `archive.sh` - archive completed or stale specs
-- `progressive-validate.sh` - progressive 4-level validation pipeline (detect, auto-fix, suggest, report)
+<!-- ANCHOR:architecture -->
+## 2. ARCHITECTURE
 
+```text
+╭──────────────────────────────────────────────────────────────╮
+│                         SPEC SCRIPTS                         │
+╰──────────────────────────────────────────────────────────────╯
 
-<!-- /ANCHOR:current-inventory -->
-<!-- ANCHOR:upgrade-flow-spec124128129136-139 -->
-## 3. UPGRADE FLOW (SPEC124/128/129/136-139)
+┌──────────────┐      ┌────────────────┐      ┌────────────────┐
+│ Operator     │ ───▶ │ create.sh      │ ───▶ │ Spec folder    │
+│ or command   │      │ upgrade-level  │      │ files          │
+└──────┬───────┘      └───────┬────────┘      └───────┬────────┘
+       │                      │                       │
+       │                      ▼                       ▼
+       │              ┌──────────────┐       ┌────────────────┐
+       └────────────▶ │ validate.sh  │ ───▶  │ rules/check-*  │
+                      └──────┬───────┘       └───────┬────────┘
+                             │                       │
+                             ▼                       ▼
+                      ┌──────────────┐       ┌────────────────┐
+                      │ completion   │       │ lib/*.sh       │
+                      │ and archive  │       │ helpers        │
+                      └──────────────┘       └────────────────┘
 
-
-Canonical flow for upgrades:
-
-```bash
-# 1) Upgrade target level
-bash .opencode/skill/system-spec-kit/scripts/spec/upgrade-level.sh specs/<###-spec-name> --to 3
-
-# 2) AI auto-populate injected placeholder sections from existing spec context
-
-# 3) Verify no placeholders remain
-bash .opencode/skill/system-spec-kit/scripts/spec/check-placeholders.sh specs/<###-spec-name>
-
-# 4) Run full validation (includes anchor checks)
-bash .opencode/skill/system-spec-kit/scripts/spec/validate.sh specs/<###-spec-name>
+Dependency direction: spec/*.sh ───▶ rules/*.sh ───▶ lib/*.sh
 ```
 
-`validate.sh` executes modular rules in `scripts/rules/`, including `check-anchors.sh` for ANCHOR tag pairing.
+<!-- /ANCHOR:architecture -->
 
+---
 
-Phase-based spec folders (specs 136-139 and later) use `--phase` with `create.sh` and `--recursive` with `validate.sh`:
+<!-- ANCHOR:package-topology -->
+## 3. PACKAGE TOPOLOGY
 
-```bash
-# Create a phase child folder inside an existing spec
-bash .opencode/skill/system-spec-kit/scripts/spec/create.sh --phase specs/<###-parent-spec>/<###-phase-child>
-
-# Validate a phase parent and all its children recursively
-bash .opencode/skill/system-spec-kit/scripts/spec/validate.sh specs/<###-parent-spec> --recursive
+```text
+scripts/spec/
++-- create.sh                    # Scaffold spec folders from templates
++-- upgrade-level.sh             # Add level-owned docs and sections
++-- check-placeholders.sh        # Detect unresolved template placeholders
++-- validate.sh                  # Run structural validation rules
++-- progressive-validate.sh      # Staged validation helper
++-- check-completion.sh          # Verify completion checklist state
++-- calculate-completeness.sh    # Report checklist completion metrics
++-- recommend-level.sh           # Recommend documentation level from task signals
++-- archive.sh                   # Move completed or stale spec folders
++-- check-template-staleness.sh  # Compare generated docs with templates
++-- quality-audit.sh             # Batch quality audit helper
+`-- README.md
 ```
 
-<!-- /ANCHOR:upgrade-flow-spec124128129136-139 -->
-<!-- ANCHOR:completion-gate -->
-## 4. COMPLETION GATE
+Allowed direction:
 
+- `spec/*.sh` may source shared shell helpers from `../lib/`.
+- `validate.sh` may call validation rules from `../rules/`.
+- Lifecycle scripts may read templates and write only the selected spec folder.
 
-Before completion claims:
+Disallowed direction:
 
-```bash
-bash .opencode/skill/system-spec-kit/scripts/spec/check-completion.sh specs/<###-spec-name>
+- Rule scripts should not mutate spec content.
+- Shell helpers should not call spec lifecycle entrypoints.
+- Spec scripts should not depend on generated `dist/` output.
+
+<!-- /ANCHOR:package-topology -->
+
+---
+
+<!-- ANCHOR:key-files -->
+## 4. KEY FILES
+
+| File | Role |
+|---|---|
+| `create.sh` | Creates new Level 1 or phase folders from templates. |
+| `upgrade-level.sh` | Adds missing files and sections for higher documentation levels. |
+| `validate.sh` | Runs the modular validation gate used before completion claims. |
+| `check-completion.sh` | Confirms checklist evidence before a task is called complete. |
+| `progressive-validate.sh` | Runs a staged validation pass for detect, fix, suggest and report flows. |
+| `archive.sh` | Moves completed or stale spec folders into the archive area. |
+
+<!-- /ANCHOR:key-files -->
+
+---
+
+<!-- ANCHOR:boundaries-and-flow -->
+## 5. BOUNDARIES AND FLOW
+
+Main validation flow:
+
+```text
+╭──────────────────────────────╮
+│ Repository-root command      │
+╰──────────────────────────────╯
+              │
+              ▼
+┌──────────────────────────────┐
+│ scripts/spec/validate.sh     │
+└──────────────┬───────────────┘
+               ▼
+┌──────────────────────────────┐
+│ Load lib shell helpers       │
+└──────────────┬───────────────┘
+               ▼
+┌──────────────────────────────┐
+│ Run rules/check-*.sh         │
+└──────────────┬───────────────┘
+               ▼
+┌──────────────────────────────┐
+│ Print pass, warning or error │
+└──────────────────────────────┘
 ```
 
+This folder owns shell orchestration only. Template content belongs under `templates/`, validation rule behavior belongs under `rules/` and shared shell primitives belong under `lib/`.
 
-<!-- /ANCHOR:completion-gate -->
-<!-- ANCHOR:notes -->
-## 5. NOTES
+<!-- /ANCHOR:boundaries-and-flow -->
 
+---
 
-- `upgrade-level.sh` supports `--dry-run`, `--json`, `--verbose`, and `--keep-backups`.
-- `create.sh` supports `--subfolder` for subfolder-based work inside an existing spec folder.
-- `create.sh` supports `--phase` to create a numbered phase child folder inside a parent spec (e.g., `001-phase-name/`).
-- `validate.sh` supports `--recursive` to validate a parent spec folder and all its phase children in one pass.
-- `validate.sh` supports emergency bypass via `SPECKIT_SKIP_VALIDATION=1`.
-- `create.sh` auto-generates `description.json` in each created folder (normal mode, phase parent, and phase children) via `generate-description.js`. Generation failures are non-fatal — a warning is printed and creation continues.
-<!-- /ANCHOR:notes -->
+<!-- ANCHOR:entrypoints -->
+## 6. ENTRYPOINTS
+
+```bash
+bash .opencode/skill/system-spec-kit/scripts/spec/create.sh specs/<name>
+bash .opencode/skill/system-spec-kit/scripts/spec/upgrade-level.sh specs/<name> --to 3
+bash .opencode/skill/system-spec-kit/scripts/spec/check-placeholders.sh specs/<name>
+bash .opencode/skill/system-spec-kit/scripts/spec/validate.sh specs/<name> --strict
+bash .opencode/skill/system-spec-kit/scripts/spec/check-completion.sh specs/<name>
+```
+
+<!-- /ANCHOR:entrypoints -->
+
+---
+
+<!-- ANCHOR:validation -->
+## 7. VALIDATION
+
+Use repository-root commands:
+
+```bash
+bash .opencode/skill/system-spec-kit/scripts/spec/validate.sh specs/<name> --strict
+bash .opencode/skill/system-spec-kit/scripts/spec/check-completion.sh specs/<name>
+```
+
+Use `--recursive` with `validate.sh` when the target is a phase parent with child phase folders.
+
+<!-- /ANCHOR:validation -->
+
+---
+
+<!-- ANCHOR:related -->
+## 8. RELATED
+
+- [`../README.md`](../README.md)
+- [`../lib/README.md`](../lib/README.md)
+- [`../rules/README.md`](../rules/README.md)
+- [`../templates/README.md`](../templates/README.md)
+
+<!-- /ANCHOR:related -->

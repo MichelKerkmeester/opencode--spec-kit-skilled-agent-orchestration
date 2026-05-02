@@ -1,14 +1,23 @@
 {
-  "specFolder": "system-spec-kit/026-graph-and-context-optimization/000-release-cleanup/005-review-remediation/015-mcp-runtime-stress-remediation/020-w3-w7-verification-and-expansion-research",
-  "description": "10-iter deep research charter: verify W3-W7 wiring, surface adjacent/connecting opportunities, identify enterprise-readiness expansion candidates, and audit system-spec-kit + mcp_server for deletable empty folders.",
-  "keywords": ["deep-research", "W3", "W4", "W5", "W6", "W7", "enterprise-readiness", "wiring-audit", "expansion", "empty-folder-audit", "trust-tree", "rerank", "shadow-weights", "cocoindex", "degraded-readiness"],
-  "lastUpdated": "2026-04-29T07:55:00.000Z",
+  "specFolder": "system-spec-kit/026-graph-and-context-optimization/000-release-cleanup/015-mcp-runtime-stress-remediation/020-w3-w7-verification-and-expansion-research",
+  "description": "Research Charter: W3-W7 Verification & Enterprise-Readiness Expansion",
+  "keywords": [
+    "research",
+    "charter",
+    "w3-w7",
+    "verification",
+    "enterprise-readiness",
+    "expansion"
+  ],
+  "lastUpdated": "2026-05-02T10:39:48.179Z",
   "specId": "020",
   "folderSlug": "w3-w7-verification-and-expansion-research",
   "parentChain": [
     "system-spec-kit",
     "026-graph-and-context-optimization",
+    "000-release-cleanup",
     "015-mcp-runtime-stress-remediation"
   ],
-  "memorySequence": 1
+  "memorySequence": 1,
+  "memoryNameHistory": []
 }

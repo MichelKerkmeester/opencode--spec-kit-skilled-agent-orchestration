@@ -1,6 +1,6 @@
 ---
 title: "MCP Server Schemas"
-description: "Centralized Zod validation schemas for all MCP tool inputs, with strict mode control, path traversal guards and typed error formatting."
+description: "Zod input schemas, strict-mode guards and typed validation errors for MCP tool arguments."
 trigger_phrases:
   - "tool input schemas"
   - "zod validation"
@@ -9,66 +9,174 @@ trigger_phrases:
   - "strict schemas"
 ---
 
-
 # MCP Server Schemas
 
 <!-- ANCHOR:table-of-contents -->
 ## TABLE OF CONTENTS
 
-- [1. OVERVIEW](#1-overview)
-- [2. STRUCTURE](#2-structure)
-- [3. KEY CONCEPTS](#3-key-concepts)
-- [4. RELATED DOCUMENTS](#4-related-documents)
+- [1. OVERVIEW](#1--overview)
+- [2. ARCHITECTURE](#2--architecture)
+- [3. DIRECTORY TREE](#3--directory-tree)
+- [4. KEY FILES](#4--key-files)
+- [5. BOUNDARIES AND FLOW](#5--boundaries-and-flow)
+- [6. ENTRYPOINTS](#6--entrypoints)
+- [7. VALIDATION](#7--validation)
+- [8. RELATED](#8--related)
 
 <!-- /ANCHOR:table-of-contents -->
+
+---
+
 <!-- ANCHOR:overview -->
 ## 1. OVERVIEW
 
-`schemas/` holds the Zod validation registry used by MCP tool handlers. Treat `TOOL_DEFINITIONS.length` as the public tool-count source of truth and `TOOL_SCHEMAS` as the validation registry; compatibility aliases or internal helper schemas can change the registry-key count without changing the public surface.
+`mcp_server/schemas/` owns the Zod schema registry used to validate MCP tool arguments. Tool handlers call this layer before executing user-provided input.
 
-Those handlers now sit behind the Gate E continuity contract: `/spec_kit:resume` is the recovery surface, and packet continuity comes from `handover.md` -> `_memory.continuity` -> canonical spec docs. Generated memory artifacts are supporting only.
+Current state:
 
-Strict mode is on by default (`SPECKIT_STRICT_SCHEMAS !== 'false'`). When enabled, unknown parameters cause validation to fail instead of passing through silently.
-
-Compatibility and aliased tools may reuse the same validator path or add an extra schema key, so treat `TOOL_DEFINITIONS.length` in `tool-schemas.ts` as the public tool count and `TOOL_SCHEMAS` as the validation registry.
+- `TOOL_DEFINITIONS.length` is the public tool-count source of truth.
+- `TOOL_SCHEMAS` is the validation registry and may include compatibility or helper entries.
+- Strict mode is on unless `SPECKIT_STRICT_SCHEMAS=false`.
+- Validation errors include tool name, issue summaries and unknown-parameter lists.
 
 <!-- /ANCHOR:overview -->
-<!-- ANCHOR:structure -->
-## 2. STRUCTURE
 
-| File | Purpose |
-|---|---|
-| `tool-input-schemas.ts` | Defines Zod schemas for the 54-tool public MCP surface plus compatibility/internal entries, exports `TOOL_SCHEMAS` registry, `validateToolArgs()`, `getToolSchema()`, `formatZodError()`, `getSchema()` and the `ToolSchemaValidationError` class |
+---
+
+<!-- ANCHOR:architecture -->
+## 2. ARCHITECTURE
+
+```text
+╭──────────────────────────────────────────────────────────────────╮
+│                         mcp_server/schemas                       │
+╰──────────────────────────────────────────────────────────────────╯
+
+┌─────────────┐      ┌────────────────┐      ┌────────────────┐
+│ Tool caller │ ───▶ │ Tool handler   │ ───▶ │ validateToolArgs│
+└──────┬──────┘      └───────┬────────┘      └────────┬───────┘
+       │                     │                        │
+       │                     ▼                        ▼
+       │             ┌───────────────┐        ┌───────────────┐
+       └──────────▶  │ TOOL_SCHEMAS  │ ───▶   │ Zod schema    │
+                     └───────┬───────┘        └───────┬───────┘
+                             │                        │
+                             ▼                        ▼
+                     ┌───────────────┐        ┌───────────────┐
+                     │ Parsed args   │        │ Typed error   │
+                     └───────────────┘        └───────────────┘
+
+Dependency direction: tool handlers ───▶ schema registry ───▶ shared validators
+```
+
+<!-- /ANCHOR:architecture -->
+
+---
+
+<!-- ANCHOR:directory-tree -->
+## 3. DIRECTORY TREE
+
+```text
+schemas/
++-- tool-input-schemas.ts  # Zod registry, shared validators and error formatting
+`-- README.md
+```
 
 No subfolders exist in this directory.
 
-<!-- /ANCHOR:structure -->
-<!-- ANCHOR:key-concepts -->
-## 3. KEY CONCEPTS
+<!-- /ANCHOR:directory-tree -->
 
-**Schema factory (`getSchema`)** -- Wraps `z.object()` with strict/passthrough toggling based on the `SPECKIT_STRICT_SCHEMAS` env var. All tool schemas use this factory.
+---
 
-**Safe numeric preprocessing** -- A custom preprocessor that coerces numeric strings to numbers but rejects empty strings, `null` and `false` (which `z.coerce.number()` would silently convert to `0`).
+<!-- ANCHOR:key-files -->
+## 4. KEY FILES
 
-**Path traversal guard** -- `pathString()` and `optionalPathString()` add a refinement that rejects paths containing `..` or null bytes.
+| File | Responsibility |
+|---|---|
+| `tool-input-schemas.ts` | Defines tool input schemas, shared validators, `validateToolArgs()`, `getToolSchema()`, `formatZodError()`, `getSchema()` and `ToolSchemaValidationError`. |
 
-**Shared validators** -- Reusable building blocks (`positiveInt`, `positiveIntMax`, `boundedNumber`, `intentEnum`, `importanceTierEnum`, `relationEnum`) keep per-tool schema definitions concise.
+<!-- /ANCHOR:key-files -->
 
-**Discriminated delete** -- `memory_delete` uses a `z.union` of two branches: single-record delete (requires `id`) and bulk folder delete (requires `specFolder` + `confirm: true`).
+---
 
-**Allowed-parameters map** -- `ALLOWED_PARAMETERS` mirrors the schema registry and feeds error messages so callers see the exact list of valid parameter names on validation failure.
+<!-- ANCHOR:boundaries-flow -->
+## 5. BOUNDARIES AND FLOW
 
-**Error formatting** -- `formatZodError()` translates Zod issues into a structured `ToolSchemaValidationError` with tool name, human-readable message, issue summaries and unknown-parameter lists.
+| Boundary | Rule |
+|---|---|
+| Imports | Tool modules import validation helpers from this folder or the parent `tool-schemas.ts` barrel. |
+| Exports | Export schema helpers and typed validation errors only. |
+| Ownership | Keep input validation here. Keep tool execution in `mcp_server/tools/`. |
+| Paths | Use `pathString()` or `optionalPathString()` for path-like parameters. |
 
-**Consumers** -- The schemas are imported directly by tool modules (`memory-tools.ts`, `checkpoint-tools.ts`, `causal-tools.ts`, `lifecycle-tools.ts`, `context-tools.ts`, `types.ts`) and re-exported through the parent-level `tool-schemas.ts` barrel.
+Main flow:
 
-<!-- /ANCHOR:key-concepts -->
-<!-- ANCHOR:related-documents -->
-## 4. RELATED DOCUMENTS
+```text
+╭──────────────────────────────────────────╮
+│ Tool handler receives arguments          │
+╰──────────────────────────────────────────╯
+                  │
+                  ▼
+┌──────────────────────────────────────────┐
+│ validateToolArgs() selects schema        │
+└──────────────────────────────────────────┘
+                  │
+                  ▼
+┌──────────────────────────────────────────┐
+│ getSchema() applies strict mode          │
+└──────────────────────────────────────────┘
+                  │
+                  ▼
+┌──────────────────────────────────────────┐
+│ Zod parses or rejects arguments          │
+└──────────────────────────────────────────┘
+                  │
+                  ▼
+╭──────────────────────────────────────────╮
+│ Parsed args or ToolSchemaValidationError │
+╰──────────────────────────────────────────╯
+```
 
-- `../tool-schemas.ts` -- barrel re-export and `ToolDefinition` interface
-- `../tools/README.md` -- tool handler modules that consume these schemas
-- `../core/README.md` -- shared runtime config and state
-- `../tests/review-fixes.vitest.ts` -- test coverage for schema validation
+<!-- /ANCHOR:boundaries-flow -->
 
-<!-- /ANCHOR:related-documents -->
+---
+
+<!-- ANCHOR:entrypoints -->
+## 6. ENTRYPOINTS
+
+| Entrypoint | Type | Purpose |
+|---|---|---|
+| `validateToolArgs()` | Function | Validates raw arguments for a named tool. |
+| `getToolSchema()` | Function | Returns the Zod schema for a tool name. |
+| `formatZodError()` | Function | Converts Zod issues into a typed tool error. |
+| `getSchema()` | Function | Applies strict or passthrough object behavior. |
+| `ToolSchemaValidationError` | Class | Carries validation failure details to callers. |
+
+<!-- /ANCHOR:entrypoints -->
+
+---
+
+<!-- ANCHOR:validation -->
+## 7. VALIDATION
+
+Run from the repository root:
+
+```bash
+npm test -- --run mcp_server/tests/review-fixes.vitest.ts
+python3 .opencode/skill/sk-doc/scripts/validate_document.py .opencode/skill/system-spec-kit/mcp_server/schemas/README.md
+```
+
+Expected result: schema tests pass and README validation exits `0` with no HVR violations.
+
+<!-- /ANCHOR:validation -->
+
+---
+
+<!-- ANCHOR:related -->
+## 8. RELATED
+
+- [Tool schema barrel](../tool-schemas.ts)
+- [Tool handlers](../tools/README.md)
+- [MCP server core](../core/README.md)
+- [Schema validation tests](../tests/review-fixes.vitest.ts)
+
+<!-- /ANCHOR:related -->

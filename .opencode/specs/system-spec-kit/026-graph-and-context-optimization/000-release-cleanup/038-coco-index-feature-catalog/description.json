@@ -1,12 +1,30 @@
 {
   "title": "051 CocoIndex Feature Catalog",
-  "description": "Authors a complete feature_catalog for .opencode/skill/mcp-coco-index with 46 current-state feature snippets across 9 categories, a root index, source anchors, packet docs, audit findings and remediation log.",
-  "contextType": "implementation",
-  "importance_tier": "important",
   "trigger_phrases": [
     "038-coco-index-feature-catalog",
     "mcp-coco-index feature catalog",
     "cocoindex catalog",
     "semantic search catalog"
-  ]
+  ],
+  "contextType": "implementation",
+  "importance_tier": "important",
+  "specFolder": "system-spec-kit/026-graph-and-context-optimization/000-release-cleanup/038-coco-index-feature-catalog",
+  "description": "Feature Specification: 051 CocoIndex Feature Catalog",
+  "keywords": [
+    "feature",
+    "specification",
+    "051",
+    "cocoindex",
+    "catalog"
+  ],
+  "lastUpdated": "2026-05-02T10:39:48.630Z",
+  "specId": "038",
+  "folderSlug": "coco-index-feature-catalog",
+  "parentChain": [
+    "system-spec-kit",
+    "026-graph-and-context-optimization",
+    "000-release-cleanup"
+  ],
+  "memorySequence": 0,
+  "memoryNameHistory": []
 }

@@ -1,24 +1,20 @@
 {
-  "specFolder": "system-spec-kit/026-graph-and-context-optimization/000-release-cleanup/005-review-remediation/014-phase-parent-documentation/001-validator-and-docs",
-  "description": "Phase 1 of the phase-parent-documentation packet: validator phase-parent branches (check-files.sh + check-level-match.sh), detection helpers (is_phase_parent shell + isPhaseParent ESM JS), templates/phase_parent/spec.md, graph-metadata schema additive accept-path, and CLAUDE.md / AGENTS.md / AGENTS sync triad / SKILL.md documentation sync. Tolerant migration policy preserves legacy parents like 026.",
+  "specFolder": "system-spec-kit/026-graph-and-context-optimization/000-release-cleanup/014-phase-parent-documentation/001-validator-and-docs",
+  "description": "Feature Specification: Phase Parent Documentation",
   "keywords": [
+    "feature",
+    "specification",
     "phase",
     "parent",
-    "validator",
-    "detection",
-    "template",
-    "graph-metadata",
-    "tolerant",
-    "migration",
-    "lean",
-    "trio"
+    "documentation"
   ],
-  "lastUpdated": "2026-04-27T12:15:00Z",
+  "lastUpdated": "2026-05-02T10:39:47.958Z",
   "specId": "001",
   "folderSlug": "validator-and-docs",
   "parentChain": [
     "system-spec-kit",
     "026-graph-and-context-optimization",
+    "000-release-cleanup",
     "014-phase-parent-documentation"
   ],
   "memorySequence": 3,

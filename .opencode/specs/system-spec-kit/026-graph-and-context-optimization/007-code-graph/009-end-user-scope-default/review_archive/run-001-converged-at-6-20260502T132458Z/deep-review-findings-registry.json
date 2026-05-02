@@ -1,0 +1,71 @@
+{
+  "sessionId": "2026-05-02T12:34:30.068Z",
+  "generation": 1,
+  "lineageMode": "new",
+  "openFindings": [
+    {
+      "id": "R1-P1-001",
+      "severity": "P1",
+      "cluster": "correctness",
+      "file": ".opencode/skill/system-spec-kit/mcp_server/code_graph/lib/index-scope-policy.ts:30",
+      "title": "includeSkills:false cannot force end-user scope when SPECKIT_CODE_GRAPH_INDEX_SKILLS=true",
+      "iteration": 1
+    },
+    {
+      "id": "R1-P2-001",
+      "severity": "P2",
+      "cluster": "resource-map-coverage",
+      "file": ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/007-code-graph/009-end-user-scope-default/resource-map.md:78",
+      "title": "Resource map marks several Phase 2 handlers as modified although the packet diff did not touch them",
+      "iteration": 1
+    },
+    {
+      "id": "R2-P2-001",
+      "severity": "P2",
+      "cluster": "resource-map-coverage",
+      "file": ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/007-code-graph/009-end-user-scope-default/resource-map.md:54-90",
+      "title": "Resource map omits actual code-graph readiness test and README artifacts changed by the implementation",
+      "iteration": 2
+    },
+    {
+      "id": "R3-P1-001",
+      "severity": "P1",
+      "cluster": "security",
+      "file": ".opencode/skill/system-spec-kit/mcp_server/code_graph/handlers/scan.ts:184-217",
+      "title": "Symlinked rootDir can bypass default .opencode/skill exclusion",
+      "iteration": 3
+    },
+    {
+      "id": "R4-P2-001",
+      "severity": "P2",
+      "cluster": "security",
+      "file": ".opencode/skill/system-spec-kit/mcp_server/code_graph/handlers/scan.ts:184",
+      "title": "Scope validation errors and scan warnings expose absolute filesystem paths",
+      "iteration": 4
+    },
+    {
+      "id": "R4-P2-002",
+      "severity": "P2",
+      "cluster": "resource-map-coverage",
+      "file": ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/007-code-graph/009-end-user-scope-default/resource-map.md:58",
+      "title": "Resource map omits broader changed docs/artifacts visible in the implementation diff",
+      "iteration": 4
+    }
+  ],
+  "resolvedFindings": [],
+  "repeatedFindings": [],
+  "dimensionCoverage": {
+    "correctness": true,
+    "security": true,
+    "traceability": true,
+    "maintainability": false
+  },
+  "findingsBySeverity": {
+    "P0": 0,
+    "P1": 2,
+    "P2": 4
+  },
+  "openFindingsCount": 6,
+  "resolvedFindingsCount": 0,
+  "convergenceScore": 0
+}

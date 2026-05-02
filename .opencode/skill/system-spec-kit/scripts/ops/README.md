@@ -10,154 +10,86 @@ trigger_phrases:
 
 # Ops Self-Healing Scripts
 
-> Deterministic remediation helpers for operational failure drills and recovery runs.
-
----
-
-## TABLE OF CONTENTS
 <!-- ANCHOR:table-of-contents -->
+## TABLE OF CONTENTS
 
 - [1. OVERVIEW](#1-overview)
-- [2. QUICK START](#2-quick-start)
-- [3. FAILURE CLASSES](#3-failure-classes)
-- [4. SCRIPT MAP](#4-script-map)
-- [5. RETRY AND ESCALATION CONTRACT](#5-retry-and-escalation-contract)
-- [6. USAGE EXAMPLES](#6-usage-examples)
-- [7. TROUBLESHOOTING](#7-troubleshooting)
-- [8. RELATED RESOURCES](#8-related-resources)
+- [2. SCRIPT IO](#2-script-io)
+- [3. ENTRYPOINTS](#3-entrypoints)
+- [4. VALIDATION FROM REPO ROOT](#4-validation-from-repo-root)
+- [5. KEY FILES](#5-key-files)
+- [6. BOUNDARIES](#6-boundaries)
+- [7. RELATED](#7-related)
 
 <!-- /ANCHOR:table-of-contents -->
----
-
-## 1. OVERVIEW
 <!-- ANCHOR:overview -->
+## 1. OVERVIEW
 
-These scripts automate bounded remediation steps for known failure classes in the spec-kit memory system. Every handler follows deterministic retry behavior. If retries are exhausted, the script emits one escalation JSON line and exits non-zero.
-For packet continuity incidents, operators should still re-anchor on `/spec_kit:resume` and `handover.md -> _memory.continuity -> spec docs` before using these remediation helpers.
-
-### What You Get
-
-| Capability | Description |
-| --- | --- |
-| Deterministic retries | Repeatable retry limits per step |
-| Scenario control | `success` and `escalate` modes for drills |
-| Unified escalation format | Single-line JSON payload with owner and next action |
-| Runbook helper | Class listing, details, and drill orchestration |
+`scripts/ops/` contains deterministic shell runbooks for known spec-kit operational failure classes. Each healer runs detect, repair, and verify steps with bounded retry behavior and emits a structured escalation payload when retry budget is exhausted.
 
 <!-- /ANCHOR:overview -->
----
+<!-- ANCHOR:script-io -->
+## 2. SCRIPT IO
 
-## 2. QUICK START
-<!-- ANCHOR:quick-start -->
+| Flow | Input | Output |
+| --- | --- | --- |
+| Class listing | `runbook.sh list` | Supported failure class keys |
+| Runbook detail | `runbook.sh show <class>` | Human-readable runbook for one class |
+| Drill execution | `runbook.sh drill <class|all> --scenario <success|escalate>` | Success output or escalation JSON |
+| Healer execution | Failure class plus retry options | Deterministic detect, repair, and verify sequence |
 
-### List Supported Classes
+Supported classes are `index-drift`, `session-ambiguity`, `ledger-mismatch`, and `telemetry-drift`.
+
+<!-- /ANCHOR:script-io -->
+<!-- ANCHOR:entrypoints -->
+## 3. ENTRYPOINTS
+
+- `runbook.sh list` prints supported failure classes.
+- `runbook.sh show <class>` prints one class runbook.
+- `runbook.sh drill <class|all> --scenario <success|escalate> --max-attempts <n>` runs bounded remediation drills.
+- `heal-*.sh` scripts run class-specific detect, repair, and verify flows.
+- `ops-common.sh` provides shared retry, logging, and escalation helpers.
+
+<!-- /ANCHOR:entrypoints -->
+<!-- ANCHOR:validation-from-repo-root -->
+## 4. VALIDATION FROM REPO ROOT
+
+Run ops validation from the repository root:
 
 ```bash
-.opencode/skill/system-spec-kit/scripts/ops/runbook.sh list
+bash .opencode/skill/system-spec-kit/scripts/ops/runbook.sh list
+bash .opencode/skill/system-spec-kit/scripts/ops/runbook.sh show index-drift
+bash .opencode/skill/system-spec-kit/scripts/ops/runbook.sh drill all --scenario success --max-attempts 1
+python3 .opencode/skill/sk-code-opencode/scripts/verify_alignment_drift.py --root .opencode/skill/system-spec-kit/scripts/ops
 ```
 
-### Show One Class Runbook
-
-```bash
-.opencode/skill/system-spec-kit/scripts/ops/runbook.sh show index-drift
-```
-
-### Run a Success Drill Across All Classes
-
-```bash
-.opencode/skill/system-spec-kit/scripts/ops/runbook.sh drill all --scenario success --max-attempts 3
-```
-
-<!-- /ANCHOR:quick-start -->
----
-
-## 3. FAILURE CLASSES
-<!-- ANCHOR:failure-classes -->
-
-The current deterministic classes are:
-
-1. `index-drift`
-2. `session-ambiguity`
-3. `ledger-mismatch`
-4. `telemetry-drift`
-
-Each class has a dedicated healer script with the same control interface.
-
-<!-- /ANCHOR:failure-classes -->
----
-
-## 4. SCRIPT MAP
-<!-- ANCHOR:script-map -->
+<!-- /ANCHOR:validation-from-repo-root -->
+<!-- ANCHOR:key-files -->
+## 5. KEY FILES
 
 | File | Purpose |
 | --- | --- |
-| `ops-common.sh` | Shared retry, logging, and escalation helpers |
-| `heal-index-drift.sh` | Run index-drift remediation workflow |
-| `heal-session-ambiguity.sh` | Run session-ambiguity remediation workflow |
-| `heal-ledger-mismatch.sh` | Run ledger-mismatch remediation workflow |
-| `heal-telemetry-drift.sh` | Run telemetry-drift remediation workflow |
-| `runbook.sh` | List classes, show runbook detail, execute drills |
+| `ops-common.sh` | Shared retry, logging, option parsing, and escalation helpers |
+| `heal-index-drift.sh` | Remediation workflow for index drift failures |
+| `heal-session-ambiguity.sh` | Remediation workflow for session ambiguity failures |
+| `heal-ledger-mismatch.sh` | Remediation workflow for ledger mismatch failures |
+| `heal-telemetry-drift.sh` | Remediation workflow for telemetry drift failures |
+| `runbook.sh` | Class listing, runbook display, and drill orchestration |
 
-<!-- /ANCHOR:script-map -->
----
+<!-- /ANCHOR:key-files -->
+<!-- ANCHOR:boundaries -->
+## 6. BOUNDARIES
 
-## 5. RETRY AND ESCALATION CONTRACT
-<!-- ANCHOR:retry-and-escalation-contract -->
+- Ops scripts model known failure classes; they are not a general incident-management system.
+- Healers must keep bounded retries and emit one escalation JSON line on retry exhaustion.
+- Scripts should remain deterministic so drills and release gates are repeatable.
 
-- Retries are deterministic and configured per step.
-- `--max-attempts` sets the hard upper bound.
-- `--scenario success` uses a bounded-success path.
-- `--scenario escalate` forces retry exhaustion for drill validation.
+<!-- /ANCHOR:boundaries -->
+<!-- ANCHOR:related -->
+## 7. RELATED
 
-Escalation payload example:
+- `../README.md`
+- `../spec/README.md`
+- `../../mcp_server/README.md`
 
-```json
-{"event":"ESCALATION","failure_class":"telemetry-drift","step":"verify-release-gate","attempts":2,"owner":"Operations Lead","reason":"bounded-retry-exhausted","next_action":"operator-ack-required","command":"node ...","timestamp":"2026-02-22T00:00:00Z"}
-```
-
-<!-- /ANCHOR:retry-and-escalation-contract -->
----
-
-## 6. USAGE EXAMPLES
-<!-- ANCHOR:usage-examples -->
-
-### Escalation Drill for One Class
-
-```bash
-.opencode/skill/system-spec-kit/scripts/ops/runbook.sh drill telemetry-drift --scenario escalate --max-attempts 2
-```
-
-### Common Handler Options
-
-Each healer script supports:
-
-- `--scenario <success|escalate>`
-- `--max-attempts <n>`
-- `--backoff-seconds <n>`
-- `--detect-failures <n>`
-- `--repair-failures <n>`
-- `--verify-failures <n>`
-
-<!-- /ANCHOR:usage-examples -->
----
-
-## 7. TROUBLESHOOTING
-<!-- ANCHOR:troubleshooting -->
-
-| Issue | Cause | Fix |
-| --- | --- | --- |
-| Script exits non-zero | Retry budget exhausted | Read emitted escalation payload, then route to named owner |
-| Unknown class in runbook | Invalid class key | Run `runbook.sh list` and retry with a supported class |
-| No escalation in test | Scenario not set to escalate | Re-run with `--scenario escalate` |
-
-<!-- /ANCHOR:troubleshooting -->
----
-
-## 8. RELATED RESOURCES
-<!-- ANCHOR:related-resources -->
-
-- `.opencode/skill/system-spec-kit/scripts/README.md`
-- `.opencode/skill/system-spec-kit/scripts/spec/README.md`
-- `.opencode/skill/system-spec-kit/mcp_server/README.md`
-
-<!-- /ANCHOR:related-resources -->
+<!-- /ANCHOR:related -->

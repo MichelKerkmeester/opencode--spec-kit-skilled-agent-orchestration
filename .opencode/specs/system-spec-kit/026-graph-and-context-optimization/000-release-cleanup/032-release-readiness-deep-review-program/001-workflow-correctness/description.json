@@ -1,18 +1,21 @@
 {
-  "specFolder": "specs/system-spec-kit/026-graph-and-context-optimization/000-release-cleanup/005-review-remediation/032-release-readiness-deep-review-program/001-workflow-correctness",
-  "description": "Deep-review angle 1: audits 7 canonical /spec_kit:* and /memory:* commands for correctness, security, traceability, maintainability. Severity-classified P0/P1/P2 findings with file:line evidence.",
+  "specFolder": "system-spec-kit/026-graph-and-context-optimization/000-release-cleanup/032-release-readiness-deep-review-program/001-workflow-correctness",
+  "description": "Feature Specification: Workflow Correctness Release-Readiness Audit",
   "keywords": [
-    "045-001-workflow-correctness",
-    "workflow correctness audit",
-    "spec_kit memory commands review",
-    "release-readiness workflow"
+    "feature",
+    "specification",
+    "workflow",
+    "correctness",
+    "release-readiness",
+    "audit"
   ],
-  "lastUpdated": "2026-04-29T20:25:00.000Z",
+  "lastUpdated": "2026-05-02T10:39:48.489Z",
   "specId": "001",
   "folderSlug": "workflow-correctness",
   "parentChain": [
     "system-spec-kit",
     "026-graph-and-context-optimization",
+    "000-release-cleanup",
     "032-release-readiness-deep-review-program"
   ],
   "memorySequence": 1,

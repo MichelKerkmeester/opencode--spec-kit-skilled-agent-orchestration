@@ -11,7 +11,8 @@
     "system-spec-kit/026-graph-and-context-optimization/007-code-graph/005-code-graph-advisor-refinement",
     "system-spec-kit/026-graph-and-context-optimization/007-code-graph/006-code-graph-doctor-command",
     "system-spec-kit/026-graph-and-context-optimization/007-code-graph/007-code-graph-resilience-research",
-    "system-spec-kit/026-graph-and-context-optimization/007-code-graph/008-code-graph-backend-resilience"
+    "system-spec-kit/026-graph-and-context-optimization/007-code-graph/008-code-graph-backend-resilience",
+    "system-spec-kit/026-graph-and-context-optimization/007-code-graph/009-end-user-scope-default"
   ],
   "migrated": true,
   "migration_source": "legacy",
@@ -229,6 +230,7 @@
       "plan.md",
       "tasks.md",
       "implementation-summary.md"
-    ]
+    ],
+    "last_active_child_id": "system-spec-kit/026-graph-and-context-optimization/007-code-graph/009-end-user-scope-default"
   }
 }

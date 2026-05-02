@@ -1,24 +1,25 @@
 ---
-title: "Database Directory"
-description: "Runtime location for SQLite database files used by the MCP server memory system."
+title: "Shared MCP Server Database Directory"
+description: "Runtime database directory used by shared MCP server path and embedding helpers."
 trigger_phrases:
-  - "database directory"
+  - "shared database directory"
   - "sqlite database location"
   - "context index database"
 ---
 
-# Database Directory
-
-> Runtime location for SQLite database files used by the MCP server memory system.
-
----
+# Shared MCP Server Database Directory
 
 <!-- ANCHOR:table-of-contents -->
 ## TABLE OF CONTENTS
 
-- [1. OVERVIEW](#1-overview)
-- [2. STRUCTURE](#2-structure)
-- [3. RELATED DOCUMENTS](#3-related-documents)
+- [1. OVERVIEW](#1--overview)
+- [2. ARCHITECTURE](#2--architecture)
+- [3. PACKAGE TOPOLOGY](#3--package-topology)
+- [4. DIRECTORY TREE](#4--directory-tree)
+- [5. KEY FILES](#5--key-files)
+- [6. BOUNDARIES AND FLOW](#6--boundaries-and-flow)
+- [7. VALIDATION](#7--validation)
+- [8. RELATED](#8--related)
 
 <!-- /ANCHOR:table-of-contents -->
 
@@ -27,44 +28,123 @@ trigger_phrases:
 <!-- ANCHOR:overview -->
 ## 1. OVERVIEW
 
-This folder is the default storage location for SQLite databases created at runtime by the spec-doc record indexer. It does not contain source code.
-These databases back supporting retrieval artifacts; canonical packet continuity still lives in `handover.md -> _memory.continuity -> spec docs` and is resumed through `/spec_kit:resume`.
+`shared/mcp_server/database/` is a runtime storage directory used by shared MCP server helpers and tests that resolve database paths through the shared package. It is a data directory, not a source module folder.
 
-**Path resolution:** `shared/config.ts` resolves this directory by walking up from `__dirname` to find `mcp_server/database/`. The path can be overridden with the `SPEC_KIT_DB_DIR` or `SPECKIT_DB_DIR` environment variable.
+Current responsibilities:
 
-**Per-profile databases:** Each unique combination of `{provider, model, dimension}` produces its own SQLite file (via `EmbeddingProfile.getDatabasePath()`), preventing dimension-mismatch errors when switching providers.
-
-**`.db-updated` file:** Contains a Unix timestamp (milliseconds) recording the last database modification. Used by the indexer to detect stale data.
+- Hold runtime SQLite files when shared-package path resolution targets this location.
+- Hold test database fixtures when a shared-package test needs a concrete database file.
+- Provide `.db-updated` for refresh detection through shared config exports.
 
 <!-- /ANCHOR:overview -->
 
 ---
 
-<!-- ANCHOR:structure -->
-## 2. STRUCTURE
+<!-- ANCHOR:architecture -->
+## 2. ARCHITECTURE
 
-| File | Purpose |
-| ---- | ------- |
-| `.db-updated` | Timestamp marker for last database write (not source code) |
-| `context-index.sqlite` | Legacy database created at runtime (HF Local, nomic, 768d) |
-| `context-index__*__*__*.sqlite` | Per-profile databases created at runtime (provider, model, dimension in filename) |
+```text
+shared/config.ts and shared/paths.ts
+        │
+        ▼
+shared/mcp_server/database/
+        │
+        +--> .db-updated marker
+        +--> test database fixtures when present
+        `--> generated SQLite files when this path is active
+```
 
-Note: `.sqlite` files are generated at runtime. They are not committed to version control.
+<!-- /ANCHOR:architecture -->
 
-<!-- /ANCHOR:structure -->
+---
+
+<!-- ANCHOR:package-topology -->
+## 3. PACKAGE TOPOLOGY
+
+```text
+database/
++-- README.md                  # Directory guide
++-- .db-updated                # Runtime update marker
+`-- test-context-index.sqlite  # Shared-package test fixture when present
+```
+
+Generated SQLite files and sidecars are runtime artifacts. They are not source modules.
+
+<!-- /ANCHOR:package-topology -->
+
+---
+
+<!-- ANCHOR:directory-tree -->
+## 4. DIRECTORY TREE
+
+```text
+database/
++-- README.md
++-- .db-updated
++-- test-context-index.sqlite
++-- *.sqlite        # Generated runtime databases or test fixtures
++-- *.db            # Generated runtime databases
++-- *-wal           # Generated SQLite write-ahead logs
+`-- *-shm           # Generated SQLite shared-memory files
+```
+
+<!-- /ANCHOR:directory-tree -->
+
+---
+
+<!-- ANCHOR:key-files -->
+## 5. KEY FILES
+
+| File | Responsibility |
+|---|---|
+| `README.md` | Explains the shared database directory contract. |
+| `.db-updated` | Stores the last database update timestamp for refresh checks. |
+| `test-context-index.sqlite` | Test fixture for shared-package database path behavior when present. |
+
+Do not treat `*-wal` or `*-shm` files as key files. They are SQLite sidecars created and removed by SQLite.
+
+<!-- /ANCHOR:key-files -->
+
+---
+
+<!-- ANCHOR:boundaries-and-flow -->
+## 6. BOUNDARIES AND FLOW
+
+This directory does not own schema code, embedding generation or index scan logic. Those responsibilities live in shared helpers, MCP server modules and scripts.
+
+Main flow:
+
+```text
+shared config -> resolved database path -> SQLite file read or write -> .db-updated marker -> caller refresh check
+```
+
+Keep runtime database files out of source inventories unless they are named test fixtures with a clear purpose.
+
+<!-- /ANCHOR:boundaries-and-flow -->
+
+---
+
+<!-- ANCHOR:validation -->
+## 7. VALIDATION
+
+Run from the repository root:
+
+```bash
+python3 .opencode/skill/sk-doc/scripts/validate_document.py .opencode/skill/system-spec-kit/shared/mcp_server/database/README.md
+```
+
+For code changes that affect this path, run the shared package tests that cover `shared/config.ts`, `shared/paths.ts` and embedding profile path resolution.
+
+<!-- /ANCHOR:validation -->
 
 ---
 
 <!-- ANCHOR:related -->
-## 3. RELATED DOCUMENTS
+## 8. RELATED
 
-| Document | Purpose |
-| -------- | ------- |
-| [shared/config.ts](../../config.ts) | Database directory resolution and `DB_UPDATED_FILE` export |
-| [shared/paths.ts](../../paths.ts) | `DB_PATH` constant pointing to the default database |
-| [shared/embeddings/profile.ts](../../embeddings/profile.ts) | Per-profile database path generation |
-| [shared/embeddings/README.md](../../embeddings/README.md) | Embeddings factory with per-profile DB explanation |
+- [shared/config.ts](../../config.ts)
+- [shared/paths.ts](../../paths.ts)
+- [shared/embeddings/profile.ts](../../embeddings/profile.ts)
+- [shared/embeddings/README.md](../../embeddings/README.md)
 
 <!-- /ANCHOR:related -->
-
----

@@ -5,7 +5,7 @@
 
 import { execSync } from 'node:child_process';
 import { existsSync } from 'node:fs';
-import { resolve } from 'node:path';
+import { basename, isAbsolute, relative, resolve } from 'node:path';
 import { buildEdgeDistribution, computeEdgeShare } from '../lib/edge-drift.js';
 import { getDefaultConfig, type DetectorProvenance, type CodeEdge } from '../lib/indexer-types.js';
 import { indexFiles } from '../lib/structural-indexer.js';
@@ -20,6 +20,7 @@ import {
 import { isRecord } from '../lib/query-result-adapter.js';
 import { buildReadinessBlock } from '../lib/readiness-contract.js';
 import { canonicalizeWorkspacePaths, isWithinWorkspace } from '../lib/utils/workspace-path.js';
+import { resolveIndexScopePolicy } from '../lib/index-scope-policy.js';
 import { handleCodeGraphQuery } from './query.js';
 
 export interface ScanArgs {
@@ -27,6 +28,7 @@ export interface ScanArgs {
   includeGlobs?: string[];
   excludeGlobs?: string[];
   incremental?: boolean;
+  includeSkills?: boolean;
   verify?: boolean;
   persistBaseline?: boolean;
 }
@@ -174,6 +176,23 @@ function hasUsablePersistedEdgeDistributionBaseline(): boolean {
   }
 }
 
+function relativize(absPath: string, workspaceRoot: string): string {
+  const resolvedPath = resolve(absPath);
+  const resolvedWorkspace = resolve(workspaceRoot);
+  const workspaceRelative = relative(resolvedWorkspace, resolvedPath);
+  if (workspaceRelative === '') {
+    return '.';
+  }
+  if (!workspaceRelative.startsWith('..') && !isAbsolute(workspaceRelative)) {
+    return workspaceRelative;
+  }
+  return basename(resolvedPath);
+}
+
+function relativizeScanWarning(warning: string, workspaceRoot: string): string {
+  return warning.replace(/\/[^\s'"`{}\[\],)]+/g, match => relativize(match, workspaceRoot));
+}
+
 /** Handle code_graph_scan tool call */
 export async function handleCodeGraphScan(args: ScanArgs): Promise<{ content: Array<{ type: string; text: string }> }> {
   const startTime = Date.now();
@@ -192,7 +211,7 @@ export async function handleCodeGraphScan(args: ScanArgs): Promise<{ content: Ar
         type: 'text',
         text: JSON.stringify({
           status: 'error',
-          error: `rootDir path is invalid or contains a broken symlink: ${resolvedRootDir}`,
+          error: `rootDir path is invalid or contains a broken symlink: ${relativize(resolvedRootDir, process.cwd())}`,
         }),
       }],
     };
@@ -205,18 +224,19 @@ export async function handleCodeGraphScan(args: ScanArgs): Promise<{ content: Ar
         type: 'text',
         text: JSON.stringify({
           status: 'error',
-          error: `rootDir must stay within the workspace root: ${canonicalWorkspace}`,
+          error: `rootDir must stay within the workspace root; received: ${relativize(canonicalRootDir, canonicalWorkspace)}`,
         }),
       }],
     };
   }
 
-  const config = getDefaultConfig(resolvedRootDir);
+  const scopePolicy = resolveIndexScopePolicy({ includeSkills: args.includeSkills });
+  const config = getDefaultConfig(canonicalRootDir, scopePolicy);
   if (args.includeGlobs) config.includeGlobs = args.includeGlobs;
   if (args.excludeGlobs) config.excludeGlobs = [...config.excludeGlobs, ...args.excludeGlobs];
 
   const previousGitHead = graphDb.getLastGitHead();
-  const currentGitHead = getCurrentGitHead(resolvedRootDir);
+  const currentGitHead = getCurrentGitHead(canonicalRootDir);
   const fullReindexTriggered = incremental
     && previousGitHead !== null
     && currentGitHead !== null
@@ -288,6 +308,7 @@ export async function handleCodeGraphScan(args: ScanArgs): Promise<{ content: Ar
     graphDb.setLastDetectorProvenance(detectorProvenanceSummary.dominant);
   }
   graphDb.setLastDetectorProvenanceSummary(detectorProvenanceSummary);
+  graphDb.setCodeGraphScope(scopePolicy);
   if (filesIndexed > 0 && graphEdgeEnrichmentSummary) {
     graphDb.setLastGraphEdgeEnrichmentSummary(graphEdgeEnrichmentSummary);
   } else if (filesIndexed > 0) {
@@ -319,7 +340,7 @@ export async function handleCodeGraphScan(args: ScanArgs): Promise<{ content: Ar
     previousGitHead,
     detectorProvenanceSummary,
     graphEdgeEnrichmentSummary,
-    warnings: results.warnings ?? [],
+    warnings: (results.warnings ?? []).map(warning => relativizeScanWarning(warning, canonicalWorkspace)),
     capExceeded: results.capExceeded ?? { maxNodes: false, depth: false, gitignoreSize: false },
   };
   const lastPersistedAt = graphDb.getStats().lastScanTimestamp;

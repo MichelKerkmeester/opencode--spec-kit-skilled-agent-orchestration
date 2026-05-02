@@ -21,11 +21,14 @@ const mocks = vi.hoisted(() => ({
   getCodeGraphMetadata: vi.fn(),
   getDb: vi.fn(),
   getGraphFreshness: vi.fn(),
+  getGraphReadinessSnapshot: vi.fn(),
   getLastDetectorProvenance: vi.fn(),
   getLastGitHead: vi.fn(),
   getLastGoldVerification: vi.fn(),
   getStats: vi.fn(),
+  getStoredCodeGraphScope: vi.fn(),
   getTrackedFiles: vi.fn(),
+  countTrackedSkillFiles: vi.fn(),
   indexFiles: vi.fn(),
   isFileStale: vi.fn(),
   mkdirSync: vi.fn(),
@@ -41,6 +44,7 @@ const mocks = vi.hoisted(() => ({
   resolveSubjectFilePath: vi.fn(),
   setLastDetectorProvenance: vi.fn(),
   setLastDetectorProvenanceSummary: vi.fn(),
+  setCodeGraphScope: vi.fn(),
   setLastGitHead: vi.fn(),
   setLastGraphEdgeEnrichmentSummary: vi.fn(),
   statSync: vi.fn(),
@@ -71,6 +75,7 @@ vi.mock('../lib/code-graph-context.js', () => ({
 vi.mock('../lib/ensure-ready.js', () => ({
   ensureCodeGraphReady: mocks.ensureCodeGraphReady,
   getGraphFreshness: mocks.getGraphFreshness,
+  getGraphReadinessSnapshot: mocks.getGraphReadinessSnapshot,
 }));
 
 vi.mock('../lib/code-graph-db.js', () => ({
@@ -80,7 +85,9 @@ vi.mock('../lib/code-graph-db.js', () => ({
   getLastGitHead: mocks.getLastGitHead,
   getLastGoldVerification: mocks.getLastGoldVerification,
   getStats: mocks.getStats,
+  getStoredCodeGraphScope: mocks.getStoredCodeGraphScope,
   getTrackedFiles: mocks.getTrackedFiles,
+  countTrackedSkillFiles: mocks.countTrackedSkillFiles,
   isFileStale: mocks.isFileStale,
   queryEdgesFrom: mocks.queryEdgesFrom,
   queryEdgesTo: mocks.queryEdgesTo,
@@ -94,6 +101,7 @@ vi.mock('../lib/code-graph-db.js', () => ({
   resolveSubjectFilePath: mocks.resolveSubjectFilePath,
   setLastDetectorProvenance: mocks.setLastDetectorProvenance,
   setLastDetectorProvenanceSummary: mocks.setLastDetectorProvenanceSummary,
+  setCodeGraphScope: mocks.setCodeGraphScope,
   setLastGitHead: mocks.setLastGitHead,
   setLastGraphEdgeEnrichmentSummary: mocks.setLastGraphEdgeEnrichmentSummary,
   upsertFile: mocks.upsertFile,
@@ -146,6 +154,7 @@ function createDb({
   byName?: string[];
 } = {}) {
   return {
+    transaction: vi.fn((fn: () => unknown) => fn),
     prepare: vi.fn((sql: string) => ({
       all: vi.fn(() => {
         if (sql.includes('fq_name = ?')) {
@@ -197,11 +206,21 @@ describe('code-graph sibling readiness emission', () => {
     mocks.getCodeGraphMetadata.mockReturnValue(null);
     mocks.getDb.mockReturnValue(createDb());
     mocks.getGraphFreshness.mockReturnValue('fresh');
+    mocks.getGraphReadinessSnapshot.mockReturnValue({
+      freshness: 'fresh',
+      action: 'none',
+      reason: 'all tracked files are up-to-date',
+    });
     mocks.getLastDetectorProvenance.mockReturnValue('structured');
     mocks.getLastGitHead.mockReturnValue('head');
     mocks.getLastGoldVerification.mockReturnValue(null);
+    mocks.getStoredCodeGraphScope.mockReturnValue({
+      fingerprint: 'code-graph-scope:v1:skills=excluded:mcp-coco-index=excluded',
+      label: 'end-user code only; .opencode/skill and mcp-coco-index/mcp_server excluded',
+    });
     mocks.getStats.mockReturnValue(createStats());
     mocks.getTrackedFiles.mockReturnValue([]);
+    mocks.countTrackedSkillFiles.mockReturnValue(0);
     mocks.indexFiles.mockResolvedValue([{
       filePath: '/workspace/current.ts',
       language: 'typescript',

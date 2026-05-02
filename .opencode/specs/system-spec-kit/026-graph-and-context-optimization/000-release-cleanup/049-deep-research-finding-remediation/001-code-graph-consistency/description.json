@@ -1,14 +1,21 @@
 {
-  "specFolder": "049-deep-research-finding-remediation/001-code-graph-consistency",
-  "description": "Phase 1: code-graph-consistency",
+  "specFolder": "system-spec-kit/026-graph-and-context-optimization/000-release-cleanup/049-deep-research-finding-remediation/001-code-graph-consistency",
+  "description": "Feature Specification: 001 Code-Graph Consistency Remediation",
   "keywords": [
-    "phase",
-    "code-graph-consistency"
+    "feature",
+    "specification",
+    "001",
+    "code-graph",
+    "consistency",
+    "remediation"
   ],
-  "lastUpdated": "2026-05-01T07:08:22.831Z",
+  "lastUpdated": "2026-05-02T10:39:48.657Z",
   "specId": "001",
   "folderSlug": "code-graph-consistency",
   "parentChain": [
+    "system-spec-kit",
+    "026-graph-and-context-optimization",
+    "000-release-cleanup",
     "049-deep-research-finding-remediation"
   ],
   "memorySequence": 1,

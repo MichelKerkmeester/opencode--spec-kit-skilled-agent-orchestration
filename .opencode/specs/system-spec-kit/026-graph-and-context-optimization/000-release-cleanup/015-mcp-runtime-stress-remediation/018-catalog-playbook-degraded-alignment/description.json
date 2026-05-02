@@ -1,27 +1,20 @@
 {
-  "specFolder": "system-spec-kit/026-graph-and-context-optimization/000-release-cleanup/005-review-remediation/015-mcp-runtime-stress-remediation/018-catalog-playbook-degraded-alignment",
+  "specFolder": "system-spec-kit/026-graph-and-context-optimization/000-release-cleanup/015-mcp-runtime-stress-remediation/018-catalog-playbook-degraded-alignment",
   "description": "Feature Specification: Catalog and playbook degraded-alignment",
   "keywords": [
+    "feature",
+    "specification",
     "catalog",
     "playbook",
-    "degraded-readiness",
-    "alignment",
-    "fallbackDecision",
-    "rankingSignals",
-    "code-graph-context",
-    "code-graph-query",
-    "code-graph-status",
-    "shared-vocabulary",
-    "handler-local-payload",
-    "p2",
-    "docs-only"
+    "degraded-alignment"
   ],
-  "lastUpdated": "2026-04-27T22:45:00.000Z",
+  "lastUpdated": "2026-05-02T10:39:48.165Z",
   "specId": "018",
   "folderSlug": "catalog-playbook-degraded-alignment",
   "parentChain": [
     "system-spec-kit",
     "026-graph-and-context-optimization",
+    "000-release-cleanup",
     "015-mcp-runtime-stress-remediation"
   ],
   "memorySequence": 0,

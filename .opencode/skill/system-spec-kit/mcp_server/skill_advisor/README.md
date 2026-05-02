@@ -1,382 +1,196 @@
 ---
-title: "Skill Advisor"
-description: "Self-contained native-first skill routing package with MCP tools, runtime hooks, Python compatibility scripts, validation bundle, auto-update daemon, and 5-lane scorer fusion."
+title: "Skill Advisor Package"
+description: "Native skill routing package for advisor MCP tools, hooks, scoring, validation and Python compatibility."
 trigger_phrases:
   - "skill advisor"
-  - "gate 2 routing"
   - "advisor_recommend"
+  - "gate 2 routing"
   - "skill advisor hook"
-  - "skill advisor setup"
 ---
 
-# Skill Advisor
+# Skill Advisor Package
 
-> Native-first Gate 2 routing for the Spec Kit skill library, with Python kept as the compatibility path inside this package.
-
----
-
+<!-- ANCHOR:table-of-contents -->
 ## TABLE OF CONTENTS
 
-- [1. OVERVIEW](#1-overview)
-- [2. QUICK START](#2-quick-start)
-- [3. CURRENT ARCHITECTURE](#3-current-architecture)
-- [4. RUNTIME INTEGRATIONS](#4-runtime-integrations)
-- [5. FEATURE SUMMARY](#5-feature-summary)
-- [6. VALIDATION BASELINE](#6-validation-baseline)
-- [7. PACKAGE STRUCTURE](#7-package-structure)
-- [8. ROLLBACK AND TROUBLESHOOTING](#8-rollback-and-troubleshooting)
-- [9. RELATED DOCUMENTS](#9-related-documents)
+- [1. OVERVIEW](#1--overview)
+- [2. ARCHITECTURE](#2--architecture)
+- [3. DIRECTORY TREE](#3--directory-tree)
+- [4. KEY FILES](#4--key-files)
+- [5. BOUNDARIES AND FLOW](#5--boundaries-and-flow)
+- [6. ENTRYPOINTS](#6--entrypoints)
+- [7. VALIDATION](#7--validation)
+- [8. RELATED](#8--related)
+
+<!-- /ANCHOR:table-of-contents -->
 
 ---
 
+<!-- ANCHOR:overview -->
 ## 1. OVERVIEW
 
-The Skill Advisor routes through the native TypeScript package at `.opencode/skill/system-spec-kit/mcp_server/skill_advisor/`. This package owns scoring, daemon freshness, lifecycle metadata, validation, MCP handlers, schemas, hook-compatible rendering, operator docs, manual playbooks, and Python compatibility scripts.
+`skill_advisor/` owns native Gate 2 skill routing for Spec Kit. It contains the scorer, daemon freshness checks, MCP handlers, runtime hook rendering, validation bundle and Python compatibility scripts.
 
-Python remains available for runtimes or scripts that cannot call MCP tools directly. The shim at `scripts/skill_advisor.py` probes the native advisor first, translates native output back to the legacy JSON-array shape when possible, and falls back to the local Python scorer only when native routing is unavailable or explicitly bypassed. Forced local Python scoring is a compatibility fallback with weaker parity guarantees than the native TypeScript scorer.
+Current state:
 
-### Architecture Diagram
+- Native MCP tools are the primary runtime surface.
+- Python scripts remain a compatibility path for callers that cannot use MCP tools directly.
+- Public responses stay prompt-safe and expose skill labels, scores, thresholds and trust metadata.
 
-```
-┌──────────────────────────────────────────────────────────────────────┐
-│                  SKILL ADVISOR ARCHITECTURE                           │
-├──────────────────────────────────────────────────────────────────────┤
-│                                                                      │
-│  ┌─────────────────────────────────────────────────────────────────┐│
-│  │                    CALLERS                                       ││
-│  │  ┌──────────────┐  ┌──────────────┐  ┌────────────────────────┐ ││
-│  │  │ Gate 2       │  │ CLI Runtimes │  │ plugin-bridge.js       │ ││
-│  │  │ (AGENTS.md)  │  │ user-prompt  │  │ (OpenCode compat API)  │ ││
-│  │  │              │  │ -submit hooks│  │                        │ ││
-│  │  └──────────────┘  └──────────────┘  └────────────────────────┘ ││
-│  └──────────────────────────┬───────────────────────────────────────┘│
-│                             │                                        │
-│  ┌──────────────────────────▼───────────────────────────────────────┐│
-│  │                        MCP TOOLS                                 ││
-│  │  ┌──────────────────┐ ┌──────────────────┐ ┌──────────────────┐ ││
-│  │  │advisor_recommend │ │ advisor_status   │ │advisor_rebuild   │ ││
-│  │  │prompt → skill    │ │ freshness, trust │ │ force rebuild    │ ││
-│  │  │ brief (topK)     │ │ generation,      │ │ from source      │ ││
-│  │  └──────────────────┘ │ lane weights     │ └──────────────────┘ ││
-│  │                       └──────────────────┘                      ││
-│  │  ┌──────────────────┐                                           ││
-│  │  │advisor_validate  │                                           ││
-│  │  │ corpus/holdout   │                                           ││
-│  │  │ parity/safety    │                                           ││
-│  │  └──────────────────┘                                           ││
-│  └──────────────────────────┬───────────────────────────────────────┘│
-│                             │                                        │
-│  ┌──────────────────────────▼───────────────────────────────────────┐│
-│  │                    5-LANE FUSION SCORER                          ││
-│  │  ┌──────────────┐ ┌──────────────┐ ┌──────────────────────────┐ ││
-│  │  │explicit      │ │ lexical      │ │ graph_causal             │ ││
-│  │  │ (0.45)       │ │ (0.30)       │ │ (0.15)                   │ ││
-│  │  │author-declared│ │BM25 overlap  │ │causal graph lineage      │ ││
-│  │  │keywords       │ │             │ │                          │ ││
-│  │  └──────────────┘ └──────────────┘ └──────────────────────────┘ ││
-│  │  ┌──────────────┐ ┌──────────────────────────────────────────┐  ││
-│  │  │derived       │ │ semantic_shadow (0.00, inert)            │  ││
-│  │  │ (0.10)       │ │ scored but weight locked per ADR-006     │  ││
-│  │  │auto-keywords │ └──────────────────────────────────────────┘  ││
-│  │  └──────────────┘                                               ││
-│  └──────────────────────────────────────────────────────────────────┘│
-│                                                                      │
-│  ┌─────────────────────────────────────────────────────────────────┐│
-│  │                  DAEMON + FRESHNESS                              ││
-│  │  ┌──────────────┐ ┌──────────────┐ ┌──────────────────────────┐ ││
-│  │  │ daemon/      │ │ freshness/   │ │ compat/                  │ ││
-│  │  │ Chokidar     │ │ trust-state  │ │ Python parity shim       │ ││
-│  │  │ watcher ≤1%  │ │ (live|stale  │ │ scripts/skill_advisor.py │ ││
-│  │  │ CPU, <20MB   │ │ |absent|unav)│ │                          │ ││
-│  │  └──────────────┘ └──────────────┘ └──────────────────────────┘ ││
-│  └─────────────────────────────────────────────────────────────────┘│
-│                                                                      │
-│  Accuracy: 80.5% full corpus | 77.5% holdout | ≤10 UNKNOWN         │
-│  Regression: 52/52 P0 cases pass                                    │
-│                                                                      │
-└──────────────────────────────────────────────────────────────────────┘
-```
-
-Current shipped baseline:
-
-| Area | Shipped Reality |
-| --- | --- |
-| Native MCP tools | `advisor_recommend`, `advisor_rebuild`, `advisor_status`, `advisor_validate` |
-| Fusion lanes | explicit_author 0.45, lexical 0.30, graph_causal 0.15, derived_generated 0.15, semantic_shadow 0.00 |
-| Accuracy | 80.5% full corpus, 77.5% holdout, UNKNOWN <= 10 |
-| Regression parity | 0 regressions on Python-correct prompts |
-| Python compatibility | 52/52 Python regression suite passed |
-| Package tests | 23 advisor test files / 167 tests |
-| Watcher limits | Chokidar narrow scope, ≤ 1% idle CPU, < 20 MB RSS (measured 0.031% / 5.516 MB) |
-| Freshness states | `live`, `stale`, `absent`, `unavailable` fail open |
+<!-- /ANCHOR:overview -->
 
 ---
 
-## 2. QUICK START
-
-### Native MCP Tools
-
-Build the MCP server:
-
-```bash
-npm --prefix .opencode/skill/system-spec-kit/mcp_server run build
-```
-
-Call the native advisor tools from the active MCP client:
+<!-- ANCHOR:architecture -->
+## 2. ARCHITECTURE
 
 ```text
-advisor_status({"workspaceRoot":"/absolute/path/to/repo"})
-advisor_rebuild({"workspaceRoot":"/absolute/path/to/repo","force":true})
-advisor_recommend({"workspaceRoot":"/absolute/path/to/repo","prompt":"save this conversation context to memory","options":{"topK":1,"includeAttribution":true}})
-advisor_validate({"confirmHeavyRun":true,"workspaceRoot":"/absolute/path/to/repo","skillSlug":null})
+╭────────────────────────────────────────────────────────────────╮
+│ Skill Advisor                                                  │
+╰────────────────────────────────────────────────────────────────╯
+
+┌──────────────┐      ┌──────────────┐      ┌──────────────────┐
+│ MCP callers  │ ───▶ │ handlers/    │ ───▶ │ lib/scorer/      │
+│ Hook callers │      │ tools/       │      │ lib/freshness/   │
+└──────┬───────┘      └──────┬───────┘      └────────┬─────────┘
+       │                     │                       │
+       ▼                     ▼                       ▼
+┌──────────────┐      ┌──────────────┐      ┌──────────────────┐
+│ compat/      │      │ schemas/     │      │ daemon + graph   │
+│ scripts/     │      │ docs/tests   │      │ metadata         │
+└──────────────┘      └──────────────┘      └──────────────────┘
+
+Dependency direction:
+handlers → lib → schemas
+compat → handlers and lib
+scripts call the native package first, then Python fallback when needed
 ```
 
-Expected shape:
-
-- `advisor_status` returns `freshness`, `generation`, `trustState`, `lastScanAt`, `skillCount`, and `laneWeights`.
-- `advisor_recommend` returns the resolved `workspaceRoot`, prompt-safe `recommendations[]`, `effectiveThresholds` (`confidenceThreshold`, `uncertaintyThreshold`, `confidenceOnly`), cache state, lifecycle redirect metadata, freshness/trust metadata, and optional warnings or abstain reasons for fail-open or threshold-filtered results.
-- `advisor_validate` returns `workspaceRoot`, `thresholdSemantics`, telemetry rollups, and real corpus, holdout, parity, safety, and latency slices.
-- When `skillSlug` is provided, `advisor_validate.telemetry.outcomes.scope` reports `{"kind":"skill","skillSlug":"..."}` and `telemetry.outcomes.totals` counts only outcome records that touch that skill via `skillLabel` or `correctedSkillLabel`.
-
-### Python Compatibility Fallback
-
-Use the shim when a runtime cannot call MCP tools directly or when a script still expects the legacy JSON array:
-
-```bash
-python3 .opencode/skill/system-spec-kit/mcp_server/skill_advisor/scripts/skill_advisor.py "help me commit my changes" --threshold 0.8
-printf '%s' "save this conversation context to memory" | python3 .opencode/skill/system-spec-kit/mcp_server/skill_advisor/scripts/skill_advisor.py --stdin
-python3 .opencode/skill/system-spec-kit/mcp_server/skill_advisor/scripts/skill_advisor.py --force-native "save this context"
-python3 .opencode/skill/system-spec-kit/mcp_server/skill_advisor/scripts/skill_advisor.py --force-local "save this context"
-```
-
-### Disable Flag
-
-To temporarily disable the advisor across every surface (native tools, hooks, plugin, shim), set:
-
-```bash
-export SPECKIT_SKILL_ADVISOR_HOOK_DISABLED=1
-```
-
-All consumers honor this flag and fail open with a documented disabled status.
-
-Controls:
-
-| Control | Meaning |
-| --- | --- |
-| `--stdin` | Read one prompt from stdin. |
-| `--force-native` | Require native `advisor_recommend`; fail if unavailable. |
-| `--force-local` | Bypass native delegation and use Python scoring. |
-| `--threshold` | Set confidence threshold; default is `0.8`. |
-| `SPECKIT_SKILL_ADVISOR_HOOK_DISABLED=1` | Disable prompt-time advisor surfaces and native recommendations. |
-| `SPECKIT_SKILL_ADVISOR_FORCE_LOCAL=1` | Force Python fallback for shim or plugin diagnostics. |
+<!-- /ANCHOR:architecture -->
 
 ---
 
-## 3. CURRENT ARCHITECTURE
-
-The native package is self-contained:
+<!-- ANCHOR:directory-tree -->
+## 3. DIRECTORY TREE
 
 ```text
-.opencode/skill/system-spec-kit/mcp_server/skill_advisor/
+skill_advisor/
 ├── README.md
-├── SET-UP_GUIDE.md
 ├── INSTALL_GUIDE.md
-├── graph-metadata.json
-├── feature_catalog/
-├── manual_testing_playbook/
-├── scripts/
-├── bench/
-├── compat/
-├── docs/
-├── handlers/
-├── lib/
-├── schemas/
-├── tests/
-└── tools/
+├── SET-UP_GUIDE.md
+├── bench/                    # Latency and scorer measurement helpers
+├── compat/                   # Stable package entrypoints for external callers
+├── daemon/                   # Watcher and freshness process code
+├── docs/                     # Operator notes and alignment records
+├── feature_catalog/          # Current feature inventory
+├── handlers/                 # MCP handler implementations
+├── lib/                      # Scorer, freshness, lifecycle and rendering logic
+├── manual_testing_playbook/  # Manual scenario package
+├── schemas/                  # Tool and metadata contracts
+├── scripts/                  # Python shim, regression and bench scripts
+├── tests/                    # Vitest and compatibility coverage
+└── tools/                    # MCP tool descriptors
 ```
 
-### 5-Lane Fusion
-
-Scoring uses 5-lane analytical fusion. The semantic lane is shadow-only and hardcoded at weight `0.00`; it can be measured but does not affect live routing.
-
-| Lane | Weight | Role |
-| --- | --- | --- |
-| `explicit_author` | 0.45 | Author-declared signals (`intent_signals`, explicit mentions). |
-| `lexical` | 0.30 | IDF-weighted token overlap on the active corpus. |
-| `graph_causal` | 0.15 | Graph-edge evidence via projected skill_nodes/skill_edges. |
-| `derived_generated` | 0.10 | Auto-extracted derived entries under trust-lane control. |
-| `semantic_shadow` | 0.00 | Semantic similarity (shadow-only; hardcoded at 0). |
-
-Prompt safety is enforced at every public boundary. `sanitizeSkillLabel` runs before SQLite writes, `graph-metadata.json.derived` writes, response envelopes, lifecycle diagnostics, and plugin bridge output. `includeAttribution` returns lane contribution numbers only; it does not return prompt-derived evidence snippets.
-
-The code graph lives in its own package at `.opencode/skill/system-spec-kit/mcp_server/code_graph/`. Advisor docs should not point at retired shared `lib/code-graph` or handler paths.
+<!-- /ANCHOR:directory-tree -->
 
 ---
 
-## 4. RUNTIME INTEGRATIONS
+<!-- ANCHOR:key-files -->
+## 4. KEY FILES
 
-| Runtime | Current Entry |
-| --- | --- |
-| Claude Code | `.opencode/skill/system-spec-kit/mcp_server/hooks/claude/user-prompt-submit.ts` |
-| Copilot CLI | `.opencode/skill/system-spec-kit/mcp_server/hooks/copilot/user-prompt-submit.ts` |
-| Gemini CLI | `.opencode/skill/system-spec-kit/mcp_server/hooks/gemini/user-prompt-submit.ts` |
-| Codex CLI | `.opencode/skill/system-spec-kit/mcp_server/hooks/codex/session-start.ts`, `hooks/codex/user-prompt-submit.ts`, and `hooks/codex/prompt-wrapper.ts` fallback |
-| OpenCode | `.opencode/plugins/spec-kit-skill-advisor.js` and `.opencode/skill/system-spec-kit/mcp_server/plugin_bridges/spec-kit-skill-advisor-bridge.mjs` |
+| File | Role |
+|---|---|
+| `handlers/advisor-recommend.ts` | Scores prompts and returns prompt-safe recommendations. |
+| `handlers/advisor-status.ts` | Reports freshness, trust state and generation metadata. |
+| `handlers/advisor-rebuild.ts` | Rebuilds the advisor index from source metadata. |
+| `handlers/advisor-validate.ts` | Runs corpus, holdout, parity, safety and latency checks. |
+| `compat/index.ts` | Stable native compatibility entrypoint. |
+| `scripts/skill_advisor.py` | Python shim for runtimes that need CLI output. |
+| `lib/scorer/` | Five-lane scoring and ambiguity handling. |
+| `lib/freshness/` | Freshness, trust and cache state logic. |
 
-All hook paths fail open. When `SPECKIT_SKILL_ADVISOR_HOOK_DISABLED=1` is set, the adapters skip advisor work and return no context or a prompt-safe disabled status.
+<!-- /ANCHOR:key-files -->
 
-The OpenCode plugin bridge imports the stable native compatibility entrypoint:
+---
+
+<!-- ANCHOR:boundaries-and-flow -->
+## 5. BOUNDARIES AND FLOW
+
+Boundaries:
+
+- This package owns advisor routing only.
+- It may read skill metadata, graph metadata and advisor cache state.
+- It must not own code graph indexing or memory retrieval behavior.
+- Runtime plugins should import `dist/skill_advisor/compat/index.js`, not private compiled handler files.
+
+Control flow:
 
 ```text
-.opencode/skill/system-spec-kit/mcp_server/dist/skill_advisor/compat/index.js
+╭────────────────────╮
+│ prompt or command  │
+╰─────────┬──────────╯
+          ▼
+┌────────────────────┐
+│ MCP tool or shim   │
+└─────────┬──────────┘
+          ▼
+┌────────────────────┐
+│ schema validation  │
+└─────────┬──────────┘
+          ▼
+┌────────────────────┐
+│ scorer + freshness │
+└─────────┬──────────┘
+          ▼
+┌────────────────────┐
+│ prompt-safe brief  │
+└────────────────────┘
 ```
 
-It should not pin to private handler files in `dist/`.
+<!-- /ANCHOR:boundaries-and-flow -->
 
 ---
 
-## 5. FEATURE SUMMARY
+<!-- ANCHOR:entrypoints -->
+## 6. ENTRYPOINTS
 
-The [feature catalog](./feature_catalog/feature_catalog.md) lists 36 features across 7 groups:
+| Entrypoint | Use |
+|---|---|
+| `advisor_recommend` | Runtime skill recommendation. |
+| `advisor_status` | Freshness and trust inspection. |
+| `advisor_rebuild` | Index rebuild after skill metadata changes. |
+| `advisor_validate` | Release and regression validation. |
+| `scripts/skill_advisor.py` | CLI compatibility and hook fallback. |
 
-| Group | Scope |
-| --- | --- |
-| [01--daemon-and-freshness](./feature_catalog/01--daemon-and-freshness/) | Watcher, lease, lifecycle, generation, trust state, rebuild-from-source, cache invalidation. |
-| [02--auto-indexing](./feature_catalog/02--auto-indexing/) | Derived extraction, sanitizer, provenance, sync, anti-stuffing, DF/IDF corpus. |
-| [03--lifecycle-routing](./feature_catalog/03--lifecycle-routing/) | Age haircut, supersession, archive handling, schema migration, rollback. |
-| [04--scorer-fusion](./feature_catalog/04--scorer-fusion/) | 5-lane fusion, projection, ambiguity, attribution, ablation, weights config. |
-| [06--mcp-surface](./feature_catalog/06--mcp-surface/) | `advisor_recommend`, `advisor_rebuild`, `advisor_status`, `advisor_validate`, compat entrypoint. |
-| [07--hooks-and-plugin](./feature_catalog/07--hooks-and-plugin/) | Claude, Copilot, Gemini, Codex hooks plus OpenCode plugin bridge. |
-| [08--python-compat](./feature_catalog/08--python-compat/) | Python CLI shim, regression suite, bench runner. |
+<!-- /ANCHOR:entrypoints -->
 
 ---
 
-## 6. VALIDATION BASELINE
+<!-- ANCHOR:validation -->
+## 7. VALIDATION
 
-Use the native validation tool for release checks:
-
-```text
-advisor_validate({"confirmHeavyRun":true,"workspaceRoot":"/absolute/path/to/repo","skillSlug":null})
-```
-
-The current baseline:
-
-- Full corpus top-1 accuracy: 80.5%.
-- Holdout top-1 accuracy: 77.5%.
-- UNKNOWN count: <= 10.
-- Python-correct parity regressions: 0.
-- Safety slices include adversarial stuffing.
-- Latency slices include cache-hit and uncached p95 measurements (~6.99 ms / ~11.45 ms).
-
-Aggregate validation thresholds are intentionally different from prompt-time routing thresholds:
-
-- Prompt-time routing defaults: confidence `0.8`, uncertainty `0.35`.
-- Aggregate validation gates: full corpus `0.75`, holdout `0.725`, per-skill `0.7`, UNKNOWN `<= 10`.
-- `advisor_validate` publishes both sets under `thresholdSemantics` so runtime routing and release-gate scoring stay explicit.
-- `advisor_validate` keeps diagnostics workspace-global, but subset validation scopes telemetry outcome totals to the requested `skillSlug` and reports that scope explicitly.
-
-Python compatibility regression:
-
-```bash
-python3 .opencode/skill/system-spec-kit/mcp_server/skill_advisor/scripts/skill_advisor_regression.py \
-  --dataset .opencode/skill/system-spec-kit/mcp_server/skill_advisor/scripts/fixtures/skill_advisor_regression_cases.jsonl
-```
-
-Native package checks:
+Run from the repository root:
 
 ```bash
 npm --prefix .opencode/skill/system-spec-kit/mcp_server run typecheck
 npm --prefix .opencode/skill/system-spec-kit/mcp_server run build
-(cd .opencode/skill/system-spec-kit/mcp_server && ../scripts/node_modules/.bin/vitest run skill_advisor/tests/ code_graph/tests/ --reporter=default)
+(cd .opencode/skill/system-spec-kit/mcp_server && ../scripts/node_modules/.bin/vitest run skill_advisor/tests/ --reporter=default)
+python3 .opencode/skill/system-spec-kit/mcp_server/skill_advisor/scripts/skill_advisor_regression.py --dataset .opencode/skill/system-spec-kit/mcp_server/skill_advisor/scripts/fixtures/skill_advisor_regression_cases.jsonl
 ```
 
-Manual validation surface: the [playbook](./manual_testing_playbook/manual_testing_playbook.md) ships 47 deterministic scenarios across 10 groups. Automated counterparts include 23 advisor test files / 167 vitest tests and the 52-case Python regression suite.
+<!-- /ANCHOR:validation -->
 
 ---
 
-## 7. PACKAGE STRUCTURE
+<!-- ANCHOR:related -->
+## 8. RELATED
 
-Directory ownership:
+| Document | Role |
+|---|---|
+| [INSTALL_GUIDE.md](./INSTALL_GUIDE.md) | Setup, rollback and operator checks. |
+| [Feature catalog](./feature_catalog/feature_catalog.md) | Current feature inventory. |
+| [Manual testing playbook](./manual_testing_playbook/manual_testing_playbook.md) | Manual validation scenarios. |
+| [Hook reference](../../references/hooks/skill-advisor-hook.md) | Runtime hook contract. |
 
-| Directory | Purpose |
-| --- | --- |
-| `bench/` | Latency, scorer, and watcher measurements. |
-| `compat/` | Stable package entrypoint for plugin bridge and Python shim consumers. |
-| `docs/` | Alignment notes and operational blockers. |
-| `feature_catalog/` | Operator-facing feature inventory for daemon freshness, auto-indexing, lifecycle, scorer, MCP surface, hooks/plugin, and Python compat. |
-| `handlers/` | MCP handler implementations (`advisor-recommend.ts`, `advisor-rebuild.ts`, `advisor-status.ts`, `advisor-validate.ts`). |
-| `lib/corpus/` | DF/IDF corpus statistics. |
-| `lib/compat/` | Daemon probe and redirect metadata adapters. |
-| `lib/daemon/` | Watcher, lease, lifecycle. |
-| `lib/derived/` | Deterministic derived extraction, sanitizer, provenance, trust lanes, anti-stuffing, sync. |
-| `lib/freshness/` | Generation, trust state, rebuild-from-source, cache invalidation. |
-| `lib/lifecycle/` | Age haircut, supersession, archive handling, schema migration, rollback. |
-| `lib/scorer/` | 5-lane fusion, per-lane scorers under `lanes/`, projection, ambiguity, attribution, ablation, weights config. |
-| `manual_testing_playbook/` | Native tools, hooks, compatibility, H5 recovery, auto-update daemon, auto-indexing, lifecycle, scorer, Python compat scenarios (9 groups / 42 scenarios). |
-| `schemas/` | Zod contracts for tool IO and daemon metadata. |
-| `scripts/` | Python shim, runtime, regression, bench, graph compiler, fixtures, routing accuracy tools, and shell helpers. |
-| `tests/` | Handler, parity, compat, scorer, legacy compatibility, and Python script tests. |
-| `tools/` | MCP tool descriptors registered by the parent server. |
-
-Public API entrypoints for external consumers:
-
-```ts
-export { handleAdvisorRecommend } from '../handlers/advisor-recommend.js';
-export { rebuildAdvisorIndex } from '../handlers/advisor-rebuild.js';
-export { readAdvisorStatus } from '../handlers/advisor-status.js';
-export { probeAdvisorDaemon } from '../lib/compat/daemon-probe.js';
-export { buildSkillAdvisorBrief } from '../lib/skill-advisor-brief.js';
-export { renderAdvisorBrief } from '../lib/render.js';
-```
-
-Plugin bridge and shim consumers should import the compiled equivalent:
-
-```text
-.opencode/skill/system-spec-kit/mcp_server/dist/skill_advisor/compat/index.js
-```
-
-Do not pin plugins to private compiled handler files.
-
----
-
-## 8. ROLLBACK AND TROUBLESHOOTING
-
-Use rollback controls only long enough to diagnose or recover:
-
-```bash
-export SPECKIT_SKILL_ADVISOR_HOOK_DISABLED=1
-export SPECKIT_SKILL_ADVISOR_FORCE_LOCAL=1
-python3 .opencode/skill/system-spec-kit/mcp_server/skill_advisor/scripts/skill_advisor.py --force-local "your prompt"
-```
-
-Unset the controls after recovery:
-
-```bash
-unset SPECKIT_SKILL_ADVISOR_HOOK_DISABLED
-unset SPECKIT_SKILL_ADVISOR_FORCE_LOCAL
-```
-
-Operator states:
-
-| State | Meaning | First Check |
-| --- | --- | --- |
-| `live` | Daemon writer is active and generation is fresh | `advisor_status({"workspaceRoot":"..."})` |
-| `stale` | No live writer but a previous snapshot is readable | `advisor_status` plus daemon logs |
-| `absent` | No snapshot exists for the workspace | Bring daemon up; `advisor_status` |
-| `unavailable` | Storage unreadable (corruption or permissions) | Rebuild from source; `skill_graph_scan({})` |
-| `degraded` | Stale generation or impaired health | OP-001 playbook |
-| `quarantined` | Watcher isolated malformed skill metadata | OP-002 playbook |
-
-Follow the OP and AU scenarios in the [manual playbook](./manual_testing_playbook/manual_testing_playbook.md) for detailed recovery steps.
-
----
-
-## 9. RELATED DOCUMENTS
-
-| Document | Purpose |
-| --- | --- |
-| [INSTALL_GUIDE.md](./INSTALL_GUIDE.md) | Native bootstrap, compatibility shim, rollback, and operator checks. |
-| [SET-UP_GUIDE.md](./SET-UP_GUIDE.md) | Project setup notes and rollback controls. |
-| [Feature catalog](./feature_catalog/feature_catalog.md) | 42-feature operator-facing inventory across 8 groups. |
-| [Manual testing playbook](./manual_testing_playbook/manual_testing_playbook.md) | 47 deterministic scenarios across 10 groups. |
-| [Hook reference](../../references/hooks/skill-advisor-hook.md) | Runtime hook contract for Claude, Copilot, Gemini, Codex, and OpenCode. |
+<!-- /ANCHOR:related -->

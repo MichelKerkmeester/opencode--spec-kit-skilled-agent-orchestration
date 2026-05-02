@@ -1,22 +1,19 @@
 {
-  "specFolder": "026-graph-and-context-optimization/006-graph-impact-and-affordance-uplift/008-deep-research-review",
-  "description": "Deep Research Review: Phase 006 + 006/007 + 011 Independent Audit (008)",
+  "specFolder": "system-spec-kit/026-graph-and-context-optimization/006-graph-impact-and-affordance-uplift/008-deep-research-review",
+  "description": "Feature Specification: Deep Research Review 008",
   "keywords": [
+    "feature",
+    "specification",
     "deep",
     "research",
     "review",
-    "phase",
-    "006",
-    "007",
-    "011",
-    "independent",
-    "audit",
     "008"
   ],
-  "lastUpdated": "2026-04-25T17:17:39.152Z",
+  "lastUpdated": "2026-05-02T10:39:48.731Z",
   "specId": "008",
   "folderSlug": "deep-research-review",
   "parentChain": [
+    "system-spec-kit",
     "026-graph-and-context-optimization",
     "006-graph-impact-and-affordance-uplift"
   ],

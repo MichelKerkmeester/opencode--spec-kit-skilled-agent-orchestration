@@ -1,20 +1,20 @@
 {
-  "specFolder": "specs/system-spec-kit/026-graph-and-context-optimization/000-release-cleanup/005-review-remediation/023-cli-matrix-adapter-runners",
-  "description": "Builds per-CLI adapter runners, a 70-cell manifest, meta-runner, docs, and mocked smoke tests for packet 030's F1-F14 x CLI-executor matrix.",
+  "specFolder": "system-spec-kit/026-graph-and-context-optimization/000-release-cleanup/023-cli-matrix-adapter-runners",
+  "description": "Spec: CLI Matrix Adapter Runners",
   "keywords": [
-    "023-cli-matrix-adapter-runners",
-    "CLI matrix adapter",
-    "matrix runner adapters",
-    "cli-codex adapter",
-    "cli-copilot adapter",
-    "cli-gemini adapter"
+    "spec",
+    "cli",
+    "matrix",
+    "adapter",
+    "runners"
   ],
-  "lastUpdated": "2026-04-29T18:37:01.129Z",
-  "specId": "036",
+  "lastUpdated": "2026-05-02T10:39:48.352Z",
+  "specId": "023",
   "folderSlug": "cli-matrix-adapter-runners",
   "parentChain": [
     "system-spec-kit",
-    "026-graph-and-context-optimization"
+    "026-graph-and-context-optimization",
+    "000-release-cleanup"
   ],
   "memorySequence": 2,
   "memoryNameHistory": [

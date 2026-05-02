@@ -8,6 +8,11 @@ import Database from 'better-sqlite3';
 import { join, isAbsolute, resolve as resolvePath } from 'node:path';
 import { readFileSync, statSync } from 'node:fs';
 import { generateContentHash, type CodeNode, type CodeEdge, type DetectorProvenance } from './indexer-types.js';
+import {
+  CODE_GRAPH_SCOPE_FINGERPRINT_KEY,
+  CODE_GRAPH_SCOPE_LABEL_KEY,
+  type IndexScopePolicy,
+} from './index-scope-policy.js';
 import { DATABASE_DIR } from '../../core/config.js';
 
 let db: Database.Database | null = null;
@@ -45,6 +50,11 @@ export type GraphEdgeEvidenceSummaryClass =
 export interface GraphEdgeEnrichmentSummary {
   edgeEvidenceClass: GraphEdgeEvidenceSummaryClass;
   numericConfidence: number;
+}
+
+export interface StoredCodeGraphScope {
+  fingerprint: string | null;
+  label: string | null;
 }
 
 /** Schema version for migration tracking */
@@ -227,6 +237,18 @@ export function getCodeGraphMetadata(key: string): string | null {
 
 export function setCodeGraphMetadata(key: string, value: string): void {
   setMetadata(key, value);
+}
+
+export function getStoredCodeGraphScope(): StoredCodeGraphScope {
+  return {
+    fingerprint: getMetadata(CODE_GRAPH_SCOPE_FINGERPRINT_KEY),
+    label: getMetadata(CODE_GRAPH_SCOPE_LABEL_KEY),
+  };
+}
+
+export function setCodeGraphScope(scopePolicy: Pick<IndexScopePolicy, 'fingerprint' | 'label'>): void {
+  setMetadata(CODE_GRAPH_SCOPE_FINGERPRINT_KEY, scopePolicy.fingerprint);
+  setMetadata(CODE_GRAPH_SCOPE_LABEL_KEY, scopePolicy.label);
 }
 
 export function getLastGitHead(): string | null {
@@ -559,6 +581,16 @@ export function getTrackedFiles(): string[] {
   const d = getDb();
   const rows = d.prepare('SELECT file_path FROM code_files').all() as Array<{ file_path: string }>;
   return rows.map((row) => row.file_path);
+}
+
+export function countTrackedSkillFiles(): number {
+  const d = getDb();
+  const row = d.prepare(`
+    SELECT COUNT(*) AS count
+    FROM code_files
+    WHERE file_path LIKE '%.opencode/skill/%'
+  `).get() as { count: number } | undefined;
+  return row?.count ?? 0;
 }
 
 /** Remove a file and its nodes/edges from the graph */

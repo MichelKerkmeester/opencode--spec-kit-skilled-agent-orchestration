@@ -1,56 +1,75 @@
-# Resource Map Extractor
+# Resource Map Scripts
 
-`extract-from-evidence.cjs` exposes one pure CommonJS function:
+> CommonJS helper for turning review or research evidence into a resource map ledger.
 
-```js
-const { emitResourceMap } = require('./extract-from-evidence.cjs');
+---
+
+## TABLE OF CONTENTS
+
+- [1. OVERVIEW](#1--overview)
+- [2. OWNERSHIP](#2--ownership)
+- [3. TREE AND KEY FILES](#3--tree-and-key-files)
+- [4. BOUNDARIES](#4--boundaries)
+- [5. VALIDATION](#5--validation)
+- [6. RELATED](#6--related)
+
+---
+
+## 1. OVERVIEW
+
+`scripts/resource-map/` owns the CommonJS helper that turns deep review or deep research evidence into a `resource-map.md` ledger.
+
+Current state:
+
+- `extract-from-evidence.cjs` exports `emitResourceMap`.
+- The helper accepts review and research evidence shapes.
+- Output is a markdown resource ledger grouped by repo file category.
+
+---
+
+## 2. OWNERSHIP
+
+This directory belongs to the System Spec Kit script layer. Keep it usable from CommonJS callers and avoid runtime dependencies that complicate script execution.
+
+---
+
+## 3. TREE AND KEY FILES
+
+```text
+scripts/resource-map/
++-- README.md
+`-- extract-from-evidence.cjs
 ```
 
-## Input Contract
+| File | Role |
+|---|---|
+| `extract-from-evidence.cjs` | Exports `emitResourceMap({ shape, deltas, packet, scope, createdAt })` |
 
-`emitResourceMap({ shape, deltas, packet, scope, createdAt }) -> string`
+---
 
-- `shape`: required. Either `'review'` or `'research'`.
-- `deltas`: required. Array of parsed delta objects, delta record arrays, or `{ records: [...] }` / `{ events: [...] }` wrappers.
-- `packet`: optional metadata object. Current implementation reads `title`, `name`, `packet`, `packetId`, `scope`, and `specFolder` when present.
-- `scope`: optional one-line summary for the emitted map.
-- `createdAt`: optional ISO timestamp. Defaults to `new Date().toISOString()`.
+## 4. BOUNDARIES
 
-## Output Contract
+- Accept only `review` and `research` shapes unless callers are updated first.
+- Emit repo-relative paths only.
+- Reject traversal-style paths during normalization.
+- Keep category output deterministic.
 
-Returns a fully rendered `resource-map.md` string using the phase-002 ten-category skeleton:
+---
 
-- `READMEs`
-- `Documents`
-- `Commands`
-- `Agents`
-- `Skills`
-- `Specs`
-- `Scripts`
-- `Tests`
-- `Config`
-- `Meta`
+## 5. VALIDATION
 
-Empty categories are omitted without renumbering the remaining headings.
+```bash
+node - <<'NODE'
+const { emitResourceMap } = require('./.opencode/skill/system-spec-kit/scripts/resource-map/extract-from-evidence.cjs')
+console.log(emitResourceMap({ shape: 'research', deltas: [{ sources: ['README.md'] }], scope: 'smoke' }).includes('README.md'))
+NODE
+```
 
-## Shape Adapters
+Expected result: `true`.
 
-### Review
+---
 
-- Tracks repo paths from `file`, `path`, `filePath`, `sourcePath`, and `target`.
-- Uses the latest severity seen for each `finding_id` / `findingId`.
-- Counts final `P0`, `P1`, and `P2` findings per file.
-- Files referenced but ending clean are emitted with `Action=Validated`.
+## 6. RELATED
 
-### Research
-
-- Tracks repo paths from `source_paths`, `sourcePath`, `citations`, `sources`, `file`, and `path`.
-- Deduplicates citations per iteration, so the same file only counts once per iteration.
-- Emits `Action=Cited` with `Citations=<N>` in the `Note` column.
-
-## Deterministic Fallbacks
-
-- Unknown or unsupported evidence rows are skipped and surfaced via `- **Degraded**: true` plus a degraded-row count in the Summary block.
-- URLs are ignored because the output surface is a repo file ledger.
-- Traversal-style relative paths such as `../outside.md` are rejected during normalization.
-- Unknown file extensions fall back to the `Documents` category.
+- [`../`](../) - System Spec Kit scripts.
+- [`../../templates/level_contract_optional_resource-map.md`](../../templates/level_contract_optional_resource-map.md) - Optional resource map contract.

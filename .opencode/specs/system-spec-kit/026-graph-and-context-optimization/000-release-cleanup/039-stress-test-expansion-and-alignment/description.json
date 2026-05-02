@@ -1,12 +1,32 @@
 {
   "title": "052 Stress Test Expansion and Alignment",
-  "description": "Aligns mcp_server/stress_test TypeScript with sk-code-opencode expectations, maps scoped feature catalogs to stress_test coverage, and adds high-value tests for budget allocation, query surrogates, and skill-advisor scorer fusion.",
-  "contextType": "implementation",
-  "importance_tier": "important",
   "trigger_phrases": [
     "039-stress-test-expansion-and-alignment",
     "stress test alignment",
     "stress test coverage",
     "sk-code-opencode stress test"
-  ]
+  ],
+  "contextType": "implementation",
+  "importance_tier": "important",
+  "specFolder": "system-spec-kit/026-graph-and-context-optimization/000-release-cleanup/039-stress-test-expansion-and-alignment",
+  "description": "Feature Specification: 052 Stress Test Expansion and Alignment",
+  "keywords": [
+    "feature",
+    "specification",
+    "052",
+    "stress",
+    "test",
+    "expansion",
+    "alignment"
+  ],
+  "lastUpdated": "2026-05-02T10:39:48.638Z",
+  "specId": "039",
+  "folderSlug": "stress-test-expansion-and-alignment",
+  "parentChain": [
+    "system-spec-kit",
+    "026-graph-and-context-optimization",
+    "000-release-cleanup"
+  ],
+  "memorySequence": 0,
+  "memoryNameHistory": []
 }

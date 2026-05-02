@@ -10,17 +10,19 @@ trigger_phrases:
 
 # Embedding Providers
 
-> Concrete embedding provider implementations for HuggingFace Local, OpenAI and Voyage AI backends.
+> Concrete implementations of the shared embedding provider contract. The parent embeddings package selects one provider, then callers use the same stable API regardless of backend.
 
 ---
 
 <!-- ANCHOR:table-of-contents -->
 ## TABLE OF CONTENTS
 
-- [1. OVERVIEW](#1-overview)
-- [2. STRUCTURE](#2-structure)
-- [3. PROVIDER COMPARISON](#3-provider-comparison)
-- [4. RELATED DOCUMENTS](#4-related-documents)
+- [1. OVERVIEW](#1--overview)
+- [2. STRUCTURE](#2--structure)
+- [3. STABLE API](#3--stable-api)
+- [4. BOUNDARIES](#4--boundaries)
+- [5. VALIDATION](#5--validation)
+- [6. RELATED DOCUMENTS](#6--related-documents)
 
 <!-- /ANCHOR:table-of-contents -->
 
@@ -29,18 +31,9 @@ trigger_phrases:
 <!-- ANCHOR:overview -->
 ## 1. OVERVIEW
 
-Each file in this folder implements the `IEmbeddingProvider` interface from `shared/types.ts`. The parent `factory.ts` selects the active provider based on environment variables and available API keys.
+This folder contains provider adapters for the `IEmbeddingProvider` interface from `../../types.ts`. Providers hide backend-specific calls, model dimensions and task hints behind one embedding surface.
 
-For Gate E continuity, use `/spec_kit:resume` as the operator-facing recovery surface. Rebuild prior packet context from `handover.md` -> `_memory.continuity` -> canonical spec docs; generated memory artifacts stay supporting only.
-
-All three providers share a common surface:
-
-- `generateEmbedding(text)` -- produce a `Float32Array` vector from raw text
-- `embedDocument(text)` / `embedQuery(text)` -- task-specific wrappers (some providers apply task prefixes)
-- `warmup()` / `healthCheck()` -- connectivity and readiness checks
-- `getMetadata()` / `getProfile()` -- introspection for logging and per-profile database path resolution
-
-Error handling follows REQ-032: cloud providers retry transient failures three times with exponential backoff (1s, 2s, 4s) and fail fast on 401/403.
+The parent package owns provider selection in `../factory.ts`. Files in this folder should stay focused on backend behavior: request shaping, retries, task prefixes, metadata and health checks.
 
 <!-- /ANCHOR:overview -->
 
@@ -49,44 +42,89 @@ Error handling follows REQ-032: cloud providers retry transient failures three t
 <!-- ANCHOR:structure -->
 ## 2. STRUCTURE
 
-| File | Provider | Default Model | Dimensions | Notes |
-| ---- | -------- | ------------- | ---------- | ----- |
-| `hf-local.ts` | HuggingFace Local | `nomic-ai/nomic-embed-text-v1.5` | 768 | Offline fallback. Uses `@huggingface/transformers`. Applies nomic task prefixes (`search_document:`, `search_query:`). Auto-detects MPS (Apple Silicon) with CPU fallback. |
-| `openai.ts` | OpenAI | `text-embedding-3-small` | 1536 | Cloud provider. Supports `text-embedding-3-large` (3072d) and `text-embedding-ada-002` (1536d). No task prefixes. |
-| `voyage.ts` | Voyage AI | `voyage-4` | 1024 | Recommended provider (+8% retrieval quality). Uses Voyage `input_type` (`document`/`query`) for optimized retrieval. Supports Voyage 3 and 4 model families. |
+```text
+providers/
+├── README.md      # This file
+├── hf-local.ts    # HuggingFace local transformer provider
+├── openai.ts      # OpenAI embeddings provider
+└── voyage.ts      # Voyage AI embeddings provider
+```
+
+| File | Provider | Default model | Dimensions | Role |
+| ---- | -------- | ------------- | ---------- | ---- |
+| `hf-local.ts` | HuggingFace Local | `nomic-ai/nomic-embed-text-v1.5` | 768 | Offline provider with `search_document:` and `search_query:` prefixes |
+| `openai.ts` | OpenAI | `text-embedding-3-small` | 1536 | Cloud provider with OpenAI usage tracking and retry handling |
+| `voyage.ts` | Voyage AI | `voyage-4` | 1024 | Cloud provider using Voyage `input_type` for document and query embeddings |
 
 <!-- /ANCHOR:structure -->
 
 ---
 
-<!-- ANCHOR:provider-comparison -->
-## 3. PROVIDER COMPARISON
+<!-- ANCHOR:stable-api -->
+## 3. STABLE API
 
-| Aspect | HF Local | OpenAI | Voyage |
-| ------ | -------- | ------ | ------ |
-| Cost | Free | ~$0.02/1M tokens | ~$0.06/1M tokens |
-| Requires API key | No | Yes (`OPENAI_API_KEY`) | Yes (`VOYAGE_API_KEY`) |
-| Offline capable | Yes | No | No |
-| Retry logic | None (local) | `retryWithBackoff` | `retryWithBackoff` |
-| Task differentiation | Nomic prefixes | Same method for both | `input_type` parameter |
-| First-load overhead | ~274MB model download | None | None |
-| Usage tracking | No | Yes (`getUsageStats()`) | Yes (`getUsageStats()`) |
+Each provider implements the same public contract:
 
-<!-- /ANCHOR:provider-comparison -->
+| Method | Purpose |
+| ------ | ------- |
+| `generateEmbedding(text)` | Return a `Float32Array` embedding for raw text |
+| `embedDocument(text)` | Produce a document embedding with provider-specific document hints |
+| `embedQuery(text)` | Produce a query embedding with provider-specific query hints |
+| `warmup()` | Prepare local model state or verify remote readiness |
+| `healthCheck()` | Return backend availability without changing caller control flow |
+| `getMetadata()` | Report provider name, model and dimensions |
+| `getProfile()` | Report profile data used by the embeddings package |
+
+Cloud providers also expose usage data for logging and diagnostics. Do not call provider internals from outside `shared/embeddings`. Use the interface or factory entry points.
+
+<!-- /ANCHOR:stable-api -->
+
+---
+
+<!-- ANCHOR:boundaries -->
+## 4. BOUNDARIES
+
+Import direction is inward from provider implementations to shared contracts and helpers:
+
+- Providers may import shared types from `../../types.ts`.
+- Providers may import retry and chunking helpers from shared packages.
+- Parent embeddings files may import providers to construct the selected backend.
+- Code outside `shared/embeddings` should not import `providers/*` directly.
+- Provider files should not depend on MCP server endpoints, spec-folder workflows or database code.
+
+Keep backend-specific behavior in the provider file that owns it. Put provider-neutral selection logic in `../factory.ts` and profile path logic in `../profile.ts`.
+
+<!-- /ANCHOR:boundaries -->
+
+---
+
+<!-- ANCHOR:validation -->
+## 5. VALIDATION
+
+Run targeted provider tests or TypeScript checks after changing provider logic:
+
+```bash
+npm test -- --runInBand embeddings
+npx tsc --noEmit
+python3 .opencode/skill/sk-doc/scripts/validate_document.py .opencode/skill/system-spec-kit/shared/embeddings/providers/README.md
+```
+
+For README-only edits, `validate_document.py` is the required file-level check.
+
+<!-- /ANCHOR:validation -->
 
 ---
 
 <!-- ANCHOR:related -->
-## 4. RELATED DOCUMENTS
+## 6. RELATED DOCUMENTS
 
 | Document | Purpose |
 | -------- | ------- |
-| [embeddings/README.md](../README.md) | Parent embeddings factory documentation |
+| [embeddings/README.md](../README.md) | Parent embeddings package overview |
 | [embeddings/factory.ts](../factory.ts) | Provider selection and auto-detection logic |
 | [embeddings/profile.ts](../profile.ts) | Per-profile database path generation |
-| [shared/types.ts](../../types.ts) | `IEmbeddingProvider` interface and related types |
-| [shared/utils/retry.ts](../../utils/retry.ts) | Retry-with-backoff used by OpenAI and Voyage |
-| [shared/chunking.ts](../../chunking.ts) | Semantic chunking used by HF Local for long texts |
+| [shared/types.ts](../../types.ts) | `IEmbeddingProvider` and shared retrieval types |
+| [shared/utils/retry.ts](../../utils/retry.ts) | Retry helper used by cloud providers |
 
 <!-- /ANCHOR:related -->
 

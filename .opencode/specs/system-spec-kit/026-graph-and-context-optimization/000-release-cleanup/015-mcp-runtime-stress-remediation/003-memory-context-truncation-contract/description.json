@@ -1,5 +1,5 @@
 {
-  "specFolder": "system-spec-kit/026-graph-and-context-optimization/000-release-cleanup/005-review-remediation/015-mcp-runtime-stress-remediation/003-memory-context-truncation-contract",
+  "specFolder": "system-spec-kit/026-graph-and-context-optimization/000-release-cleanup/015-mcp-runtime-stress-remediation/003-memory-context-truncation-contract",
   "description": "Feature Specification: memory_context truncation contract + token telemetry",
   "keywords": [
     "feature",
@@ -9,12 +9,13 @@
     "token",
     "telemetry"
   ],
-  "lastUpdated": "2026-04-27T14:15:10.468Z",
+  "lastUpdated": "2026-05-02T10:39:48.029Z",
   "specId": "003",
   "folderSlug": "memory-context-truncation-contract",
   "parentChain": [
     "system-spec-kit",
     "026-graph-and-context-optimization",
+    "000-release-cleanup",
     "015-mcp-runtime-stress-remediation"
   ],
   "memorySequence": 0,

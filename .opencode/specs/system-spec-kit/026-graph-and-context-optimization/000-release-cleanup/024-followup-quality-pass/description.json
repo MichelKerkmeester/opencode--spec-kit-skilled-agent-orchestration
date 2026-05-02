@@ -1,22 +1,20 @@
 {
-  "specFolder": "system-spec-kit/026-graph-and-context-optimization/000-release-cleanup/005-review-remediation/024-followup-quality-pass",
-  "description": "Phase parent for 6-child follow-up quality and alignment pass after packets 031-036 shipped. Children: sk-code-opencode audit, feature catalog trio, testing playbook trio, sk-doc template alignment, stress-test folder migration, README cascade refresh.",
+  "specFolder": "system-spec-kit/026-graph-and-context-optimization/000-release-cleanup/024-followup-quality-pass",
+  "description": "Phase Parent: Follow-up Quality Pass",
   "keywords": [
-    "phase-parent",
-    "quality-pass",
-    "sk-code-opencode-audit",
-    "feature-catalog",
-    "testing-playbook",
-    "sk-doc-alignment",
-    "stress-test-folder",
-    "readme-cascade"
+    "phase",
+    "parent",
+    "follow-up",
+    "quality",
+    "pass"
   ],
-  "lastUpdated": "2026-04-29T18:37:17.937Z",
-  "specId": "037",
+  "lastUpdated": "2026-05-02T10:39:48.358Z",
+  "specId": "024",
   "folderSlug": "followup-quality-pass",
   "parentChain": [
     "system-spec-kit",
-    "026-graph-and-context-optimization"
+    "026-graph-and-context-optimization",
+    "000-release-cleanup"
   ],
   "memorySequence": 2,
   "memoryNameHistory": [

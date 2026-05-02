@@ -1,10 +1,21 @@
 {
-  "specFolder": "system-spec-kit/026-graph-and-context-optimization/000-release-cleanup/005-review-remediation/032-release-readiness-deep-review-program",
-  "description": "Phase parent for 10-child release-readiness deep-review audit program. Each child audits one of 10 distinct angles (workflow correctness, memory data integrity, skill advisor freshness, code graph readiness, cross-runtime hook parity, MCP tool schema/governance, deep-loop workflow integrity, validator+spec-doc integrity, documentation truth, upgrade safety+operability).",
-  "keywords": ["phase-parent", "release-readiness", "deep-review-program", "10-angle-audit", "p0-p1-p2-classification"],
-  "lastUpdated": "2026-04-29T22:00:00.000Z",
-  "specId": "045",
+  "specFolder": "system-spec-kit/026-graph-and-context-optimization/000-release-cleanup/032-release-readiness-deep-review-program",
+  "description": "Phase Parent: Release-Readiness Deep-Review Program",
+  "keywords": [
+    "phase",
+    "parent",
+    "release-readiness",
+    "deep-review",
+    "program"
+  ],
+  "lastUpdated": "2026-05-02T10:39:48.478Z",
+  "specId": "032",
   "folderSlug": "release-readiness-deep-review-program",
-  "parentChain": ["system-spec-kit", "026-graph-and-context-optimization"],
-  "memorySequence": 1
+  "parentChain": [
+    "system-spec-kit",
+    "026-graph-and-context-optimization",
+    "000-release-cleanup"
+  ],
+  "memorySequence": 1,
+  "memoryNameHistory": []
 }

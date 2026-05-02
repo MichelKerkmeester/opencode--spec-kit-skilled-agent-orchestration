@@ -1,5 +1,5 @@
 {
-  "specFolder": "system-spec-kit/022-hybrid-rag-fusion/001-hybrid-rag-fusion-epic/011-research-based-refinement",
+  "specFolder": "system-spec-kit/z_archive/022-hybrid-rag-fusion/001-hybrid-rag-fusion-epic/011-research-based-refinement",
   "description": "Feature Specification: Research-Based Refinement",
   "keywords": [
     "feature",
@@ -7,11 +7,12 @@
     "research-based",
     "refinement"
   ],
-  "lastUpdated": "2026-04-27T13:33:11.717Z",
+  "lastUpdated": "2026-05-02T10:39:49.151Z",
   "specId": "011",
   "folderSlug": "research-based-refinement",
   "parentChain": [
     "system-spec-kit",
+    "z_archive",
     "022-hybrid-rag-fusion",
     "001-hybrid-rag-fusion-epic"
   ],

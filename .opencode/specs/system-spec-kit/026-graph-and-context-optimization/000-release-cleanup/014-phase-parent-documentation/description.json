@@ -1,5 +1,5 @@
 {
-  "specFolder": "system-spec-kit/026-graph-and-context-optimization/000-release-cleanup/005-review-remediation/014-phase-parent-documentation",
+  "specFolder": "system-spec-kit/026-graph-and-context-optimization/000-release-cleanup/014-phase-parent-documentation",
   "description": "Feature Specification: Phase Parent Documentation",
   "keywords": [
     "feature",
@@ -8,12 +8,13 @@
     "parent",
     "documentation"
   ],
-  "lastUpdated": "2026-04-27T15:56:03.099Z",
-  "specId": "010",
+  "lastUpdated": "2026-05-02T10:39:47.946Z",
+  "specId": "014",
   "folderSlug": "phase-parent-documentation",
   "parentChain": [
     "system-spec-kit",
-    "026-graph-and-context-optimization"
+    "026-graph-and-context-optimization",
+    "000-release-cleanup"
   ],
   "memorySequence": 8,
   "memoryNameHistory": [

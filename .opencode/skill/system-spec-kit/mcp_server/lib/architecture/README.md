@@ -1,178 +1,208 @@
 ---
-title: "Architecture Module"
-description: "7-layer MCP architecture with token budgets and document-aware routing."
+title: "Architecture: MCP Layer Definitions"
+description: "Layer constants, tool mapping and token budget helpers for Spec Kit Memory MCP tools."
 trigger_phrases:
-  - "architecture"
+  - "architecture layers"
   - "layer definitions"
   - "token budgets"
 ---
 
-# Architecture Module
+# Architecture: MCP Layer Definitions
 
-> 7-layer MCP architecture with token budgets and document-aware routing.
-
----
-
-## TABLE OF CONTENTS
 <!-- ANCHOR:table-of-contents -->
+## TABLE OF CONTENTS
 
-- [1. OVERVIEW](#1-overview)
-- [2. STRUCTURE](#2-structure)
-- [3. FEATURES](#3-features)
-- [4. USAGE](#4-usage)
-- [5. RELATED RESOURCES](#5-related-resources)
+- [1. OVERVIEW](#1--overview)
+- [2. ARCHITECTURE](#2--architecture)
+- [3. PACKAGE TOPOLOGY](#3--package-topology)
+- [4. DIRECTORY TREE](#4--directory-tree)
+- [5. KEY FILES](#5--key-files)
+- [6. BOUNDARIES AND FLOW](#6--boundaries-and-flow)
+- [7. ENTRYPOINTS](#7--entrypoints)
+- [8. VALIDATION](#8--validation)
+- [9. RELATED](#9--related)
 
 <!-- /ANCHOR:table-of-contents -->
 
 ---
 
-## 1. OVERVIEW
 <!-- ANCHOR:overview -->
+## 1. OVERVIEW
 
-The architecture module defines the 7-layer MCP tool organization (T060) that enables progressive disclosure from high-level orchestration to specialized operations. This layer model also frames document-aware behavior (spec documents, memory notes, constitutional files) used across indexing and retrieval.
+`architecture/` owns the MCP layer model used to label tools, assign token budgets and recommend tool surfaces by task type. The folder is intentionally small because the layer map is a shared reference, not a runtime pipeline.
 
-Gate E keeps that document-aware behavior anchored on `/spec_kit:resume` and the canonical packet chain `handover.md` -> `_memory.continuity` -> spec docs. Generated memory artifacts remain supporting only.
+Current state:
 
-### Design Principles
-
-| Principle | Description |
-|-----------|-------------|
-| **Progressive Disclosure** | Start with high-level, drill down as needed |
-| **Token Efficiency** | Higher layers = fewer tokens, more targeted |
-| **Cognitive Load** | Reduce choices at each decision point |
-| **Document Awareness** | Keep retrieval aware of `documentType` and `specLevel` metadata |
-
-### Layer Summary
-
-| Layer | Name | Token Budget | Purpose |
-|-------|------|--------------|---------|
-| L1 | Orchestration | 2000 | Unified entry points with intent-aware routing |
-| L2 | Core | 1500 | Primary memory operations (search, save, triggers) |
-| L3 | Discovery | 800 | Browse and explore (list, stats, health) |
-| L4 | Mutation | 500 | Modify existing spec-doc records (update, delete, validate) |
-| L5 | Lifecycle | 600 | Checkpoint and version management |
-| L6 | Analysis | 1200 | Deep inspection and causal analysis |
-| L7 | Maintenance | 1000 | System maintenance and bulk operations |
+- Seven layers group tools from orchestration through maintenance.
+- Token budgets live beside layer definitions so descriptions and runtime routing stay aligned.
+- Documentation helpers generate a markdown view of the current layer map.
 
 <!-- /ANCHOR:overview -->
 
 ---
 
-## 2. STRUCTURE
-<!-- ANCHOR:structure -->
+<!-- ANCHOR:architecture -->
+## 2. ARCHITECTURE
 
+```text
+╭──────────────────────────────────────────────────────────────────╮
+│                    ARCHITECTURE LAYERS                           │
+╰──────────────────────────────────────────────────────────────────╯
+
+┌────────────────┐      ┌──────────────────────┐      ┌───────────────────┐
+│ MCP tool names │ ───▶ │ layer-definitions.ts │ ───▶ │ Layer prefix text │
+└───────┬────────┘      └──────────┬───────────┘      └───────────────────┘
+        │                          │
+        │                          ▼
+        │                ┌──────────────────────┐
+        ├──────────────▶ │ Token budget lookup  │
+        │                └──────────────────────┘
+        │
+        │                ┌──────────────────────┐
+        └──────────────▶ │ Task recommendation  │
+                         └──────────────────────┘
+
+Dependency direction: MCP registration ───▶ architecture constants ───▶ formatted descriptions
 ```
+
+<!-- /ANCHOR:architecture -->
+
+---
+
+<!-- ANCHOR:package-topology -->
+## 3. PACKAGE TOPOLOGY
+
+```text
 architecture/
-├── layer-definitions.ts  # 7-layer hierarchy with token budgets (~8KB)
-└── README.md             # This file
++-- layer-definitions.ts  # Layer data, mappings and helper functions
+`-- README.md             # Local developer orientation
+
+Allowed direction:
+MCP registration → architecture/layer-definitions.ts
+architecture/layer-definitions.ts → local constants and TypeScript types
+
+Disallowed direction:
+architecture/ → memory database access
+architecture/ → tool handler execution
+architecture/ → generated dist files
 ```
 
-### Key Files
-
-| File | Purpose |
-|------|---------|
-| `layer-definitions.ts` | Layer constants, tool-to-layer mapping, token budget helpers, documentation generator |
-
-<!-- /ANCHOR:structure -->
+<!-- /ANCHOR:package-topology -->
 
 ---
 
-## 3. FEATURES
-<!-- ANCHOR:features -->
+<!-- ANCHOR:directory-tree -->
+## 4. DIRECTORY TREE
 
-### Layer Definitions
+```text
+architecture/
+├── layer-definitions.ts
+└── README.md
+```
 
-Each layer includes:
-- **id**: Layer identifier (L1-L7)
-- **name**: Human-readable name
-- **description**: Purpose and usage guidance
-- **tokenBudget**: Maximum tokens for responses
-- **priority**: Layer order (1 = highest)
-- **useCase**: When to use this layer
-- **tools**: Array of tools belonging to this layer
-
-### Exported Functions
-
-| Function | Signature | Purpose |
-|----------|-----------|---------|
-| `getLayerPrefix` | `(toolName: string) => string` | Get layer prefix string, e.g., `[L2:Core]` |
-| `enhanceDescription` | `(toolName: string, desc: string) => string` | Add layer prefix to tool description |
-| `getTokenBudget` | `(toolName: string) => number` | Get token budget for a tool (default: 1000) |
-| `getLayerInfo` | `(toolName: string) => LayerDefinition \| null` | Get full layer definition for a tool |
-| `getLayersByPriority` | `() => LayerDefinition[]` | Get all layers sorted by priority |
-| `getRecommendedLayers` | `(taskType: TaskType) => LayerId[]` | Get recommended layers for task type |
-| `getLayerDocumentation` | `() => string` | Generate markdown documentation |
-
-### Exported Types
-
-`LayerDefinition`, `LayerId`, `TaskType`
-
-### Exported Constants
-
-`LAYER_DEFINITIONS`, `TOOL_LAYER_MAP`
-
-<!-- /ANCHOR:features -->
+<!-- /ANCHOR:directory-tree -->
 
 ---
 
-## 4. USAGE
-<!-- ANCHOR:usage -->
+<!-- ANCHOR:key-files -->
+## 5. KEY FILES
 
-### Basic Import
+| File | Role |
+|---|---|
+| `layer-definitions.ts` | Defines `LayerDefinition`, layer IDs, token budgets, tool-to-layer mapping, task recommendations and markdown generation. |
 
-```typescript
-import {
-  LAYER_DEFINITIONS,
-  getTokenBudget,
-  getLayerPrefix
-} from './layer-definitions';
-```
+Layer summary:
 
-### Get Token Budget
+| Layer | Name | Purpose |
+|---|---|---|
+| `L1` | Orchestration | Unified entry points with intent-aware routing. |
+| `L2` | Core | Primary memory operations such as search, save and triggers. |
+| `L3` | Discovery | Browse, stats and health surfaces. |
+| `L4` | Mutation | Update, delete and validation operations. |
+| `L5` | Lifecycle | Checkpoints and restore operations. |
+| `L6` | Analysis | Causal tracing, learning, graph and evaluation operations. |
+| `L7` | Maintenance | Bulk indexing, scans and maintenance work. |
 
-```typescript
-const budget = getTokenBudget('memory_search');
-// Returns: 1500 (L2: Core layer budget)
-```
-
-### Enhance Tool Description
-
-```typescript
-const enhanced = enhanceDescription('memory_search', 'Search memories');
-// Returns: "[L2:Core] Search memories"
-```
-
-### Get Recommended Layers
-
-```typescript
-const layers = getRecommendedLayers('search');
-// Returns: ['L1', 'L2'] - Start orchestration, fallback to core
-```
-
-<!-- /ANCHOR:usage -->
+<!-- /ANCHOR:key-files -->
 
 ---
 
-## 5. RELATED RESOURCES
+<!-- ANCHOR:boundaries-and-flow -->
+## 6. BOUNDARIES AND FLOW
+
+Boundaries:
+
+- Own layer metadata, token budgets and layer lookup helpers.
+- Do not own tool implementation, tool registration side effects or response bodies.
+- Keep mappings explicit so missing tools fall back safely to default budgets.
+- Keep this folder free of storage, network and filesystem behavior.
+
+Main flow:
+
+```text
+╭──────────────────────────────────────────╮
+│ Tool name or task type                   │
+╰──────────────────────────────────────────╯
+                  │
+                  ▼
+┌──────────────────────────────────────────┐
+│ Lookup layer mapping                     │
+└──────────────────────────────────────────┘
+                  │
+                  ▼
+┌──────────────────────────────────────────┐
+│ Return prefix, budget or recommendation  │
+└──────────────────────────────────────────┘
+                  │
+                  ▼
+╭──────────────────────────────────────────╮
+│ Caller formats tool metadata             │
+╰──────────────────────────────────────────╯
+```
+
+<!-- /ANCHOR:boundaries-and-flow -->
+
+---
+
+<!-- ANCHOR:entrypoints -->
+## 7. ENTRYPOINTS
+
+| Entrypoint | Used For |
+|---|---|
+| `getLayerPrefix(toolName)` | Add a layer tag such as `[L2:Core]` to a tool description. |
+| `enhanceDescription(toolName, desc)` | Build the full user-facing tool description prefix. |
+| `getTokenBudget(toolName)` | Read the token budget for a mapped tool. |
+| `getLayerInfo(toolName)` | Retrieve the full layer record for a tool. |
+| `getLayersByPriority()` | Return all layer definitions in priority order. |
+| `getRecommendedLayers(taskType)` | Choose layer groups for a task category. |
+| `getLayerDocumentation()` | Render the layer table as markdown. |
+
+<!-- /ANCHOR:entrypoints -->
+
+---
+
+<!-- ANCHOR:validation -->
+## 8. VALIDATION
+
+Run from the repository root:
+
+```bash
+pnpm --dir .opencode/skill/system-spec-kit typecheck
+python3 .opencode/skill/sk-doc/scripts/validate_document.py .opencode/skill/system-spec-kit/mcp_server/lib/architecture/README.md
+```
+
+<!-- /ANCHOR:validation -->
+
+---
+
 <!-- ANCHOR:related -->
+## 9. RELATED
 
-### Internal Documentation
-
-| Document | Purpose |
-|----------|---------|
-| [../README.md](../README.md) | Parent lib directory overview |
-| [../response/](../response/) | Response envelope formatting |
-| [../cache/](../cache/) | Tool output caching |
-
-### Related Modules
-
-| Module | Relationship |
-|--------|--------------|
-| `context-server.ts` | Uses layer definitions for tool organization |
+| Resource | Relationship |
+|---|---|
+| [../README.md](../README.md) | Parent library map. |
+| [../response/README.md](../response/README.md) | Response shaping that uses token budgets. |
+| [../cache/README.md](../cache/README.md) | Cached tool output surfaces. |
+| [../../README.md](../../README.md) | MCP server overview. |
 
 <!-- /ANCHOR:related -->
-
----
-
-**Version**: 1.8.0
-**Last Updated**: 2026-02-16

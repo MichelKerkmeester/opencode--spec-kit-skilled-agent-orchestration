@@ -1,18 +1,21 @@
 {
-  "specFolder": "system-spec-kit/026-graph-and-context-optimization/000-release-cleanup/005-review-remediation/024-followup-quality-pass/001-sk-code-opencode-audit",
-  "description": "Audits new code from 033/034/036 against sk-code-opencode standards. PASS / fix-applied / skill-gap categories. Fixes applied in-packet; skill gaps deferred to follow-up. Build + tests verified post-fix.",
+  "specFolder": "system-spec-kit/026-graph-and-context-optimization/000-release-cleanup/024-followup-quality-pass/001-sk-code-opencode-audit",
+  "description": "Feature Specification: 037/001 sk-code-opencode Audit",
   "keywords": [
-    "037-001-sk-code-opencode-audit",
-    "sk-code-opencode audit",
-    "audit 033 034 036",
-    "standards alignment audit"
+    "feature",
+    "specification",
+    "037",
+    "001",
+    "sk-code-opencode",
+    "audit"
   ],
-  "lastUpdated": "2026-04-29T18:38:26.449Z",
+  "lastUpdated": "2026-05-02T10:39:48.370Z",
   "specId": "001",
   "folderSlug": "sk-code-opencode-audit",
   "parentChain": [
     "system-spec-kit",
     "026-graph-and-context-optimization",
+    "000-release-cleanup",
     "024-followup-quality-pass"
   ],
   "memorySequence": 2,

@@ -1,0 +1,14 @@
+{
+  "specFolder": "009-end-user-scope-default",
+  "description": "end-user-scope-default",
+  "keywords": [
+    "end-user-scope-default"
+  ],
+  "lastUpdated": "2026-05-02T11:04:14.636Z",
+  "specId": "009",
+  "folderSlug": "end-user-scope-default",
+  "parentChain": [],
+  "memorySequence": 0,
+  "memoryNameHistory": [],
+  "level": "3"
+}

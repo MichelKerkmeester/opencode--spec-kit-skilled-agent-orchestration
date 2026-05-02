@@ -1,223 +1,218 @@
 ---
-title: "Providers Modules"
-description: "Embedding provider abstraction and retry management for the Spec Kit Memory system."
+title: "Providers: Embeddings and Retry"
+description: "Embedding provider exports and retry queue management for Spec Kit Memory indexing."
 trigger_phrases:
   - "embedding providers"
   - "retry manager"
-  - "backoff retry"
+  - "embedding retry"
 ---
 
-# Providers Modules
+# Providers: Embeddings and Retry
 
-> Embedding provider abstraction and retry management for the Spec Kit Memory system.
-
----
-
-## TABLE OF CONTENTS
 <!-- ANCHOR:table-of-contents -->
+## TABLE OF CONTENTS
 
-- [1. OVERVIEW](#1-overview)
-- [2. STRUCTURE](#2-structure)
-- [3. FEATURES](#3-features)
-- [4. USAGE EXAMPLES](#4-usage-examples)
-- [5. RELATED RESOURCES](#5-related-resources)
+- [1. OVERVIEW](#1--overview)
+- [2. ARCHITECTURE](#2--architecture)
+- [3. PACKAGE TOPOLOGY](#3--package-topology)
+- [4. DIRECTORY TREE](#4--directory-tree)
+- [5. KEY FILES](#5--key-files)
+- [6. BOUNDARIES AND FLOW](#6--boundaries-and-flow)
+- [7. ENTRYPOINTS](#7--entrypoints)
+- [8. VALIDATION](#8--validation)
+- [9. RELATED](#9--related)
 
 <!-- /ANCHOR:table-of-contents -->
 
 ---
 
-## 1. OVERVIEW
 <!-- ANCHOR:overview -->
+## 1. OVERVIEW
 
-The providers module handles embedding generation and retry logic for the Spec Kit Memory MCP server. It provides a unified abstraction layer for multiple embedding providers (Voyage AI, OpenAI) with exponential backoff retry management for reliable embedding generation.
+`providers/` owns the MCP server edge for embedding generation and retry handling. It re-exports shared embedding helpers and manages retry timing for records whose embedding generation fails.
 
-Those providers support the Gate E recovery model where `/spec_kit:resume` restores packet context from `handover.md` -> `_memory.continuity` -> spec docs. Generated memory artifacts remain supporting only.
+Current state:
 
-### Key Statistics
-
-| Category | Count | Details |
-|----------|-------|---------|
-| Modules | 2 | embeddings, retry-manager |
-| Backoff Delays | 3 | 1min, 5min, 15min exponential |
-| Max Retries | 3 | Before marking as permanently failed |
-
-### Key Features
-
-| Feature | Description |
-|---------|-------------|
-| **Provider Abstraction** | Unified interface for Voyage AI, OpenAI and local models (re-exported from `@spec-kit/shared/embeddings`) |
-| **Exponential Backoff** | Retry with 1min, 5min, 15min delays |
-| **Background Retry Job** | Optional processing of pending embeddings every 5 minutes |
-| **Graceful Degradation** | Falls back to BM25-only mode when all providers fail |
+- `embeddings.ts` delegates provider logic to `@spec-kit/shared/embeddings`.
+- `retry-manager.ts` tracks pending, retry, success and failed embedding states.
+- The retry manager can run one batch on demand or keep a background interval active.
+- Provider failures can open a cooldown circuit so retry paths pause outbound embedding calls.
 
 <!-- /ANCHOR:overview -->
 
 ---
 
-## 2. STRUCTURE
-<!-- ANCHOR:structure -->
+<!-- ANCHOR:architecture -->
+## 2. ARCHITECTURE
 
+```text
+╭──────────────────────────────────────────────────────────────────╮
+│                         PROVIDERS                                │
+╰──────────────────────────────────────────────────────────────────╯
+
+┌────────────────┐      ┌────────────────────┐      ┌───────────────────┐
+│ Indexing caller│ ───▶ │ embeddings.ts      │ ───▶ │ Shared providers  │
+└───────┬────────┘      └────────────────────┘      └───────────────────┘
+        │
+        │               ┌────────────────────┐      ┌───────────────────┐
+        └─────────────▶ │ retry-manager.ts   │ ───▶ │ Memory DB rows    │
+                        └─────────┬──────────┘      └───────────────────┘
+                                  │
+                                  ▼
+                        ┌────────────────────┐
+                        │ Background timer   │
+                        └────────────────────┘
+
+Dependency direction: indexing callers ───▶ providers ───▶ shared embeddings or DB helpers
 ```
+
+<!-- /ANCHOR:architecture -->
+
+---
+
+<!-- ANCHOR:package-topology -->
+## 3. PACKAGE TOPOLOGY
+
+```text
 providers/
- embeddings.ts        # Re-export from @spec-kit/shared/embeddings
- retry-manager.ts     # Exponential backoff with background job
- README.md            # This file
++-- embeddings.ts     # Shared embedding helper re-export
++-- retry-manager.ts  # Retry queue, backoff and background processing
+`-- README.md         # Local developer orientation
+
+Allowed direction:
+indexing callers → providers/embeddings.ts
+indexing callers → providers/retry-manager.ts
+providers/embeddings.ts → @spec-kit/shared/embeddings
+providers/retry-manager.ts → storage and provider helpers
+
+Disallowed direction:
+providers/ → MCP response formatting
+providers/ → search ranking formulas
+providers/ → generated dist files
 ```
 
-### Key Files
-
-| File | Purpose |
-|------|---------|
-| `embeddings.ts` | Re-exports all embedding utilities from `@spec-kit/shared/embeddings` |
-| `retry-manager.ts` | Retry queue, backoff timing, background job processing |
-
-### Compiled Output
-
-TypeScript source files compile to `mcp_server/dist/lib/providers/` with corresponding `.js` and `.d.ts` files.
-
-<!-- /ANCHOR:structure -->
+<!-- /ANCHOR:package-topology -->
 
 ---
 
-## 3. FEATURES
-<!-- ANCHOR:features -->
+<!-- ANCHOR:directory-tree -->
+## 4. DIRECTORY TREE
 
-### Embeddings Provider (`embeddings.ts`)
-
-**Purpose**: Unified interface for generating embeddings from multiple providers
-
-| Aspect | Details |
-|--------|---------|
-| **Providers** | Voyage AI (primary), OpenAI, HuggingFace local |
-| **Task Types** | Query embeddings, document embeddings, batch processing |
-| **Dimensions** | Dynamic based on provider/model selection |
-| **Source** | Re-exported from `@spec-kit/shared/embeddings` (workspace package) |
-
-```typescript
-import { generateDocumentEmbedding, generateQueryEmbedding } from './embeddings';
-
-const docEmbedding = await generateDocumentEmbedding('authentication flow');
-const queryEmbedding = await generateQueryEmbedding('how to authenticate?');
+```text
+providers/
+├── embeddings.ts
+├── retry-manager.ts
+└── README.md
 ```
 
-### Retry Manager (`retry-manager.ts`)
-
-**Purpose**: Handle failed embedding generations with exponential backoff
-
-| Aspect | Details |
-|--------|---------|
-| **Backoff Delays** | 1 minute, 5 minutes, 15 minutes |
-| **Max Retries** | 3 attempts before permanent failure |
-| **Background Job** | Processes up to 5 pending items every 5 minutes |
-| **Status Tracking** | pending, retry, success, failed states |
-
-**Exported functions:**
-
-| Function | Signature | Purpose |
-|----------|-----------|---------|
-| `getRetryQueue` | `(limit?: number) => RetryMemoryRow[]` | Get items eligible for retry |
-| `getFailedEmbeddings` | `() => RetryMemoryRow[]` | Get permanently failed items |
-| `getRetryStats` | `() => RetryStats` | Get queue statistics |
-| `getEmbeddingRetryStats` | `() => EmbeddingRetryStats` | Get a lightweight in-memory retry health snapshot without DB access |
-| `retryEmbedding` | `(id: number, content: string) => Promise<RetryResult>` | Retry a single embedding |
-| `markAsFailed` | `(id: number, reason: string) => void` | Mark as permanently failed |
-| `resetForRetry` | `(id: number) => boolean` | Reset a failed item for retry |
-| `processRetryQueue` | `(limit?: number, contentLoader?) => Promise<BatchResult>` | Process batch of retries |
-| `startBackgroundJob` | `(options?) => boolean` | Start background retry job |
-| `stopBackgroundJob` | `() => boolean` | Stop background retry job |
-| `isBackgroundJobRunning` | `() => boolean` | Check if background job is active |
-| `runBackgroundJob` | `(batchSize?: number) => Promise<BackgroundJobResult>` | Run a single background job iteration |
-
-**Exported constants:** `BACKGROUND_JOB_CONFIG`, `BACKOFF_DELAYS`, `MAX_RETRIES`
-
-**Exported types:**
-
-| Type | Purpose |
-|------|---------|
-| `EmbeddingRetryStats` | In-memory retry health snapshot returned by `getEmbeddingRetryStats()`, including pending/failed counts, retry attempts, circuit-breaker state, last run and queue depth |
-
-**T3-15 circuit breaker:** The retry manager opens a provider circuit breaker after 5 consecutive embedding-provider failures, cools down for 2 minutes, and causes retry paths to skip outbound embedding API calls until the cooldown expires.
-
-<!-- /ANCHOR:features -->
+<!-- /ANCHOR:directory-tree -->
 
 ---
 
-## 4. USAGE EXAMPLES
-<!-- ANCHOR:usage-examples -->
+<!-- ANCHOR:key-files -->
+## 5. KEY FILES
 
-### Example 1: Generate Embedding
+| File | Role |
+|---|---|
+| `embeddings.ts` | Re-exports shared embedding generation functions for query, document and batch embedding paths. |
+| `retry-manager.ts` | Loads retry candidates, applies backoff, retries embeddings, records final failure and controls the background retry interval. |
 
-```typescript
-import { generateDocumentEmbedding } from './embeddings';
+Retry constants:
 
-const text = 'How does the authentication flow work?';
-const embedding = await generateDocumentEmbedding(text);
+| Constant | Role |
+|---|---|
+| `BACKOFF_DELAYS` | Delay sequence for retry attempts. |
+| `MAX_RETRIES` | Maximum attempts before a record is marked failed. |
+| `BACKGROUND_JOB_CONFIG` | Default interval and batch settings for background retry work. |
 
-if (embedding) {
-  console.log(`Embedding dimensions: ${embedding.length}`);
-}
-```
-
-### Example 2: Monitor Retry Queue
-
-```typescript
-import { getRetryStats, getRetryQueue, getFailedEmbeddings } from './retry-manager';
-
-const stats = getRetryStats();
-console.log(`Queue size: ${stats.queue_size}, Failed: ${stats.failed}`);
-
-const queue = getRetryQueue(10);
-queue.forEach(item => {
-  console.log(`${item.id}: ${item.retryCount} retries`);
-});
-```
-
-### Example 3: Background Retry Job
-
-```typescript
-import { startBackgroundJob, stopBackgroundJob, isBackgroundJobRunning } from './retry-manager';
-
-startBackgroundJob({ intervalMs: 300000, batchSize: 5, enabled: true });
-console.log(isBackgroundJobRunning()); // true
-stopBackgroundJob();
-```
-
-### Common Patterns
-
-| Pattern | Code | When to Use |
-|---------|------|-------------|
-| Generate doc embedding | `generateDocumentEmbedding(text)` | Index new content |
-| Generate query embedding | `generateQueryEmbedding(text)` | Search queries |
-| Check queue stats | `getRetryStats()` | Monitor health |
-| Process retries | `processRetryQueue(limit)` | Manual retry trigger |
-| Reset failed | `resetForRetry(id)` | Re-attempt specific item |
-| Start background | `startBackgroundJob()` | Server startup |
-
-<!-- /ANCHOR:usage-examples -->
+<!-- /ANCHOR:key-files -->
 
 ---
 
-## 5. RELATED RESOURCES
+<!-- ANCHOR:boundaries-and-flow -->
+## 6. BOUNDARIES AND FLOW
+
+Boundaries:
+
+- Own embedding helper access and failed-embedding retry orchestration.
+- Do not own chunking, search fusion, score ranking or user-facing response envelopes.
+- Keep provider selection in the shared embedding package unless MCP retry behavior needs local state.
+- Keep background work opt-in through exported start and stop functions.
+
+Retry flow:
+
+```text
+╭──────────────────────────────────────────╮
+│ Embedding generation fails               │
+╰──────────────────────────────────────────╯
+                  │
+                  ▼
+┌──────────────────────────────────────────┐
+│ Retry row enters pending or retry state  │
+└──────────────────────────────────────────┘
+                  │
+                  ▼
+┌──────────────────────────────────────────┐
+│ Backoff window decides eligibility       │
+└──────────────────────────────────────────┘
+                  │
+                  ▼
+┌──────────────────────────────────────────┐
+│ retryEmbedding calls provider helpers    │
+└──────────────────────────────────────────┘
+                  │
+                  ▼
+╭──────────────────────────────────────────╮
+│ Row becomes success, retry or failed     │
+╰──────────────────────────────────────────╯
+```
+
+<!-- /ANCHOR:boundaries-and-flow -->
+
+---
+
+<!-- ANCHOR:entrypoints -->
+## 7. ENTRYPOINTS
+
+| Entrypoint | File | Used For |
+|---|---|---|
+| `generateDocumentEmbedding` | `embeddings.ts` | Build an embedding for indexed document content. |
+| `generateQueryEmbedding` | `embeddings.ts` | Build an embedding for semantic search queries. |
+| `getRetryQueue` | `retry-manager.ts` | Load rows eligible for retry. |
+| `getFailedEmbeddings` | `retry-manager.ts` | Inspect permanently failed rows. |
+| `getRetryStats` | `retry-manager.ts` | Read persisted retry queue counts. |
+| `getEmbeddingRetryStats` | `retry-manager.ts` | Read in-memory retry health. |
+| `retryEmbedding` | `retry-manager.ts` | Retry one record. |
+| `processRetryQueue` | `retry-manager.ts` | Retry a batch of records. |
+| `startBackgroundJob` | `retry-manager.ts` | Start interval-based retry processing. |
+| `stopBackgroundJob` | `retry-manager.ts` | Stop interval-based retry processing. |
+
+<!-- /ANCHOR:entrypoints -->
+
+---
+
+<!-- ANCHOR:validation -->
+## 8. VALIDATION
+
+Run from the repository root:
+
+```bash
+pnpm --dir .opencode/skill/system-spec-kit typecheck
+python3 .opencode/skill/sk-doc/scripts/validate_document.py .opencode/skill/system-spec-kit/mcp_server/lib/providers/README.md
+```
+
+<!-- /ANCHOR:validation -->
+
+---
+
 <!-- ANCHOR:related -->
+## 9. RELATED
 
-### Internal Documentation
-
-| Document | Purpose |
-|----------|---------|
-| [lib/README.md](../README.md) | Parent library overview |
-| [contracts/README.md](../contracts/README.md) | Shared data contracts used by providers |
-| [search/README.md](../search/README.md) | Vector search using embeddings |
-
-### External Resources
-
-| Resource | Description |
-|----------|-------------|
-| [Voyage AI Docs](https://docs.voyageai.com/) | Primary embedding provider |
-| [OpenAI Embeddings](https://platform.openai.com/docs/guides/embeddings) | Alternative provider |
+| Resource | Relationship |
+|---|---|
+| [../contracts/README.md](../contracts/README.md) | Shared data shapes used by provider-facing paths. |
+| [../search/README.md](../search/README.md) | Vector search path that consumes embeddings. |
+| [../storage/README.md](../storage/README.md) | Database rows used by retry state. |
+| [../README.md](../README.md) | Parent library map. |
 
 <!-- /ANCHOR:related -->
-
----
-
-**Version**: 1.7.2
-**Last Updated**: 2026-02-16

@@ -1,6 +1,6 @@
 ---
 title: "System-Spec-Kit Scripts"
-description: "Current script inventory and execution flow for system-spec-kit scripts."
+description: "Script package entrypoints, source zones, boundaries and validation commands for system-spec-kit."
 trigger_phrases:
   - "spec kit scripts"
   - "validation scripts"
@@ -8,241 +8,225 @@ trigger_phrases:
   - "upgrade level workflow"
 ---
 
-
 # System-Spec-Kit Scripts
 
 <!-- ANCHOR:table-of-contents -->
 ## TABLE OF CONTENTS
 
-- [1. OVERVIEW](#1-overview)
-- [2. INVENTORY SNAPSHOT](#2-inventory-snapshot)
-- [3. POST-SPEC124/128/129 WORKFLOW](#3-post-spec124128129-workflow)
-- [4. BUILD AND RUNTIME](#4-build-and-runtime)
-- [5. RELATED READMES](#5-related-readmes)
+- [1. OVERVIEW](#1--overview)
+- [2. ARCHITECTURE](#2--architecture)
+- [3. PACKAGE TOPOLOGY](#3--package-topology)
+- [4. KEY FILES](#4--key-files)
+- [5. BOUNDARIES AND FLOW](#5--boundaries-and-flow)
+- [6. ENTRYPOINTS](#6--entrypoints)
+- [7. VALIDATION](#7--validation)
+- [8. RELATED](#8--related)
 
 <!-- /ANCHOR:table-of-contents -->
+
+---
+
 <!-- ANCHOR:overview -->
 ## 1. OVERVIEW
 
-This directory contains the shell and TypeScript tooling that powers spec creation, upgrades, validation, memory save, packet graph metadata refresh/backfill, context indexing, and targeted Vitest regressions around hardened script behavior.
+`.opencode/skill/system-spec-kit/scripts/` contains the shell and TypeScript tooling for spec lifecycle work, memory saves, metadata refresh, evaluations, setup checks and script regression coverage.
 
-### Architecture Diagram
+Current state:
 
-```
-┌──────────────────────────────────────────────────────────────────────┐
-│                      SCRIPTS ARCHITECTURE                            │
-├──────────────────────────────────────────────────────────────────────┤
-│                                                                      │
-│  ┌─────────────────────────────────────────────────────────────────┐│
-│  │                     ENTRYPOINT LAYER                             ││
-│  │  ┌────────────┐  ┌──────────┐  ┌──────────┐  ┌──────────────┐  ││
-│  │  │ spec/      │  │ memory/  │  │ evals/   │  │ spec-folder/ │  ││
-│  │  │ create.sh  │  │ generate │  │ ablation │  │ generate-    │  ││
-│  │  │ validate.sh│  │ -context │  │ health   │  │ description  │  ││
-│  │  │ upgrade.sh │  │ rank-    │  │ boundary │  │              │  ││
-│  │  │ archive.sh │  │ memories │  │ checks   │  │              │  ││
-│  │  └────────────┘  │ reindex  │  └──────────┘  └──────────────┘  ││
-│  │                  └──────────┘                                    ││
-│  └───────────────────────────┬──────────────────────────────────────┘│
-│                              │                                       │
-│  ┌───────────────────────────▼──────────────────────────────────────┐│
-│  │                     PIPELINE LAYER                               ││
-│  │  ┌──────────┐ ┌──────────┐ ┌──────────┐ ┌──────────┐ ┌───────┐ ││
-│  │  │core/     │ │extractors│ │loaders/  │ │renderers│ │utils/ │ ││
-│  │  │workflow  │ │semantic  │ │data-     │ │template  │ │retry  │ ││
-│  │  │modules   │ │extraction│ │loader.ts │ │renderer  │ │jsonc  │ ││
-│  │  │(17 ts)   │ │(12 ts)   │ │          │ │          │ │token  │ ││
-│  │  └──────────┘ └──────────┘ └──────────┘ └──────────┘ └───────┘ ││
-│  └───────────┬─────────────────────────────────┬────────────────────┘│
-│              │                                 │                     │
-│  ┌───────────▼─────────┐           ┌───────────▼───────────────────┐ │
-│  │    LIBRARY LAYER    │           │      INFRASTRUCTURE           │ │
-│  │ ┌─────────────────┐ │           │ ┌──────────┐ ┌─────────────┐ │ │
-│  │ │ lib/            │ │           │ │setup/    │ │ test-fixt/  │ │ │
-│  │ │ (17 ts + 3 sh)  │ │           │ │prereq    │ │ (62 dirs)   │ │ │
-│  │ │ anchor-gen.ts   │ │           │ │native    │ │             │ │ │
-│  │ │ flowchart-gen   │ │           │ │rebuild   │ │             │ │ │
-│  │ │ embeddings.ts   │─┼──────────▶│ │installer │ │             │ │ │
-│  │ │ trigger-ext.ts  │ │           │ └──────────┘ └─────────────┘ │ │
-│  │ └─────────────────┘ │           │ ┌──────────┐ ┌─────────────┐ │ │
-│  │ ┌─────────────────┐ │           │ │ops/      │ │   graph/    │ │ │
-│  │ │ rules/          │ │           │ │healing   │ │  backfill   │ │ │
-│  │ │ check-anchor.sh │─┼──────────▶│ │scripts   │ │  -graph.ts  │ │ │
-│  │ │ check-links.sh  │ │           │ └──────────┘ └─────────────┘ │ │
-│  │ └─────────────────┘ │           └──────────────────────────────┘ │
-│  └─────────────────────┘                                            │
-│                                                                      │
-│  ┌─────────────────────────────────────────────────────────────────┐│
-│  │              EXTERNAL INTERFACES                                 ││
-│  │  ┌───────────────────┐   ┌──────────────────────────────────┐   ││
-│  │  │ mcp_server/api/   │   │   shared/ (via @spec-kit/shared) │   ││
-│  │  │ (runtime imports) │   │   embeddings, trigger-           │   ││
-│  │  │                   │   │   extractor, algorithms          │   ││
-│  │  └───────────────────┘   └──────────────────────────────────┘   ││
-│  └─────────────────────────────────────────────────────────────────┘│
-│                                                                      │
-│  Flow: Env → spec/{create,upgrade} → AI population → validate →     │
-│        completion check → generate-context (memory save)            │
-│                                                                      │
-└──────────────────────────────────────────────────────────────────────┘
-```
-
-### Directory Tree
-
-```
-scripts/
-├── spec/                         # Lifecycle: create, validate, upgrade, archive
-├── spec-folder/                  # TS modules: description generation, folder detection
-├── memory/                       # Memory pipeline: generate-context, rank, reindex
-├── evals/                        # Evaluations: ablations, boundary checks, dashboards
-├── core/                         # Workflow modules (17 TypeScript files)
-├── extractors/                   # Semantic extraction (12 TypeScript files)
-├── loaders/                      # Data loading (1 TypeScript file)
-├── renderers/                    # Template rendering (1 TypeScript file)
-├── utils/                        # Utility modules (19 TypeScript files)
-├── lib/                          # Shared libs: TS (17) + shell (3)
-├── rules/                        # Validation rules (20 shell files)
-├── graph/                        # Graph backfill CLI
-├── setup/                        # Environment setup and prerequisites
-├── ops/                          # Healing and runbook scripts
-├── config/                       # Configuration module
-├── types/                        # TypeScript type definitions
-├── tests/                        # JS, shell, Python test suites
-├── templates/                    # Inline-gate-renderer TS and shell
-├── kpi/                          # Quality KPI scripts
-├── scratch/                      # Temporary workspace (gitignored)
-├── scripts-registry.json         # Registry of all scripts and entrypoints
-├── package.json                  # Package manifest (ESM, type: module)
-└── README.md
-```
+- Shell entrypoints live in focused folders such as `spec/`, `rules/`, `setup/` and `ops/`.
+- TypeScript source folders compile to `dist/` for runtime use.
+- `scripts-registry.json` describes script inventory and package-level entrypoints.
 
 <!-- /ANCHOR:overview -->
-<!-- ANCHOR:inventory-snapshot -->
-## 2. INVENTORY SNAPSHOT
 
+---
 
-Top-level files with extensions (8 including this README):
-- `README.md`
-- `check-api-boundary.sh`
-- `check-links.sh`
-- `common.sh`
-- `package.json`
-- `registry-loader.sh`
-- `scripts-registry.json`
-- `tsconfig.json`
+<!-- ANCHOR:architecture -->
+## 2. ARCHITECTURE
 
-Primary script directories:
-- `spec/` - 12 lifecycle scripts (`create.sh`, `upgrade-level.sh`, `check-placeholders.sh`, `validate.sh`, `progressive-validate.sh`, `test-validation.sh`, `check-completion.sh`, `calculate-completeness.sh`, `recommend-level.sh`, `archive.sh`, `check-template-staleness.sh`, `quality-audit.sh`)
-- `spec-folder/` - 5 TypeScript modules (`generate-description.ts`, `folder-detector.ts`, `alignment-validator.ts`, `directory-setup.ts`, `index.ts`)
-- `rules/` - 21 files total: 20 shell validation rules plus directory README (`0` TypeScript rule files; `LINKS_VALID` runs only when `SPECKIT_VALIDATE_LINKS=true`)
-- `graph/` - 1 TypeScript backfill CLI (`backfill-graph-metadata.ts`) for repo-wide `graph-metadata.json` dry-runs and writes
-- `memory/` - 8 TypeScript/JS CLIs (`generate-context.ts`, `rank-memories.ts`, `cleanup-orphaned-vectors.ts`, `validate-memory-quality.ts`, `reindex-embeddings.ts`, `ast-parser.ts`, `backfill-frontmatter.ts`, `rebuild-auto-entities.ts`)
-- `core/` - 17 TypeScript workflow modules plus barrel export
-- `config/` - 1 TypeScript configuration module (`index.ts`)
-- `extractors/` - 14 files total (12 TypeScript extraction modules, barrel export, and directory README)
-- `loaders/` - 1 TypeScript loading module (`data-loader.ts`) plus barrel export
-- `renderers/` - 1 TypeScript rendering module (`template-renderer.ts`) plus barrel export
-- `utils/` - 19 TypeScript utility modules plus barrel export
-- `types/` - TypeScript type definitions (`session-types.ts`)
-- `lib/` - 17 TypeScript libraries plus 3 shell helper libraries
-- `evals/` - 16 evaluation assets including 14 scripts, policy allowlist, and directory README
-- `ops/` - 5 shell healing/runbook scripts plus shared helper (`ops-common.sh`)
-- `setup/` - 6 setup files including prerequisite checks, native-module rebuild helpers, installer, Node version recorder, and directory README
-- `scratch/` - empty-by-default workspace for temporary script artifacts and local debugging notes
-- `kpi/` - shell KPI scripts (`quality-kpi.sh`)
-- `tests/` - JS, shell, Python, and Vitest regression suites for scripts and modules
-- `test-fixtures/` - 62 numbered fixture directories for validation rule testing
-- `templates/` - inline renderer shell and TypeScript sources for manifest template rendering
+```text
+╭──────────────────────────────────────────────────────────────╮
+│                    SYSTEM-SPEC-KIT SCRIPTS                   │
+╰──────────────────────────────────────────────────────────────╯
 
+┌──────────────┐      ┌────────────────┐      ┌────────────────┐
+│ Operator     │ ───▶ │ Entry scripts  │ ───▶ │ Spec, memory   │
+│ or command   │      │ spec, memory   │      │ or graph files │
+└──────┬───────┘      └───────┬────────┘      └────────────────┘
+       │                      │
+       │                      ▼
+       │              ┌──────────────┐       ┌────────────────┐
+       └────────────▶ │ TS source    │ ───▶  │ dist/ runtime  │
+                      │ modules      │       │ output         │
+                      └──────┬───────┘       └────────────────┘
+                             │
+                             ▼
+                      ┌──────────────┐       ┌────────────────┐
+                      │ lib, utils   │ ───▶  │ tests and evals│
+                      │ shared code  │       │ verification   │
+                      └──────────────┘       └────────────────┘
 
-<!-- /ANCHOR:inventory-snapshot -->
-<!-- ANCHOR:post-spec124128129-workflow -->
-## 3. POST-SPEC124/128/129/136-139 WORKFLOW
-
-
-For spec-level upgrades and memory-safe docs flow:
-1. Run `spec/upgrade-level.sh` to inject level-specific template sections.
-2. Auto-populate injected placeholders from existing spec context (no placeholder text left behind).
-3. Run `spec/check-placeholders.sh` to confirm placeholder cleanup.
-4. Run `spec/validate.sh` to enforce rule checks, including anchor checks.
-5. Run `spec/check-completion.sh` before claiming completion.
-
-Anchor requirements introduced in this workflow are validated by `rules/check-anchors.sh` and enforced through `spec/validate.sh`.
-
-Phase workflow additions (specs 138-139):
-- `spec/create.sh --phase` supports phase-based spec folder decomposition.
-- `spec/validate.sh --recursive` validates parent and child phase folders.
-
-
-<!-- /ANCHOR:post-spec124128129-workflow -->
-<!-- ANCHOR:build-and-runtime -->
-## 4. BUILD AND RUNTIME
-
-
-`scripts/` is pure ESM at runtime (`package.json` sets `"type": "module"`). TypeScript sources compile to ESM (`"module": "es2022"`) and local runtime imports use `.js` specifiers so the generated `dist/` entrypoints run under both Node 25 and the legacy Node 20.19.x target.
-
-TypeScript sources compile to `dist/` (generated build output; do not edit or commit by hand):
-
-```bash
-cd .opencode/skill/system-spec-kit/scripts
-npm run build
+Dependency direction: entrypoints ───▶ source modules ───▶ lib and utils
 ```
 
-> **Note:** `dist/` directories contain build output generated from TypeScript sources via `tsc --build`. They are not source of truth and should not be checked into version control. Edit the `.ts` source files and rebuild instead. See [ARCHITECTURE.md](../ARCHITECTURE.md) for the full dist/ policy.
+<!-- /ANCHOR:architecture -->
 
-Memory save entrypoint (required by Memory Save Rule):
+---
 
-```bash
-node .opencode/skill/system-spec-kit/scripts/dist/memory/generate-context.js /tmp/save-context-data-<session-id>.json specs/<###-spec-name>
+<!-- ANCHOR:package-topology -->
+## 3. PACKAGE TOPOLOGY
+
+```text
+scripts/
++-- spec/                  # Spec lifecycle shell entrypoints
++-- rules/                 # Validation rule scripts
++-- memory/                # Memory save, ranking and indexing CLIs
++-- graph/                 # Graph metadata backfill CLI
++-- spec-folder/           # Spec folder metadata and detection modules
++-- core/                  # Workflow modules
++-- extractors/            # Semantic extraction modules
++-- loaders/               # Data loading module
++-- renderers/             # Template rendering module
++-- utils/                 # Utility modules
++-- lib/                   # Shared TypeScript and shell helpers
++-- evals/                 # Evaluation scripts and policy checks
++-- setup/                 # Environment checks and setup helpers
++-- ops/                   # Healing and runbook helpers
++-- tests/                 # JS, shell, Python and Vitest coverage
++-- test-fixtures/         # Validation fixtures
++-- templates/             # Inline renderer sources
++-- types/                 # Shared TypeScript type definitions
++-- package.json           # ESM package manifest
++-- scripts-registry.json  # Script inventory
+`-- README.md
 ```
 
-Canonical saves now refresh the root `graph-metadata.json` packet contract as part of the same workflow run. For repo-wide coverage and rollout backfill, use:
+Allowed direction:
+
+- CLI folders may call shared helpers in `lib/` and `utils/`.
+- TypeScript source may import package-local modules through ESM paths.
+- Tests may exercise fixtures under `test-fixtures/`.
+
+Disallowed direction:
+
+- Source files should not import generated `dist/` output.
+- Shared helpers should not own spec folder policy that belongs in `spec/` or `rules/`.
+- Temporary artifacts should stay under `scratch/` or OS temp paths.
+
+<!-- /ANCHOR:package-topology -->
+
+---
+
+<!-- ANCHOR:key-files -->
+## 4. KEY FILES
+
+| File or Folder | Role |
+|---|---|
+| `spec/` | Creates, upgrades, validates, completes and archives spec folders. |
+| `rules/` | Holds validation checks used by `spec/validate.sh`. |
+| `memory/generate-context.ts` | Builds structured memory save output and metadata updates. |
+| `graph/backfill-graph-metadata.ts` | Refreshes graph metadata across spec folders. |
+| `lib/` | Shares TypeScript helpers and sourced shell utilities. |
+| `scripts-registry.json` | Lists package scripts and known entrypoints. |
+| `package.json` | Defines ESM runtime settings and build scripts. |
+
+<!-- /ANCHOR:key-files -->
+
+---
+
+<!-- ANCHOR:boundaries-and-flow -->
+## 5. BOUNDARIES AND FLOW
+
+Build flow:
+
+```text
+╭──────────────────────────────╮
+│ TypeScript source folders    │
+╰──────────────────────────────╯
+              │
+              ▼
+┌──────────────────────────────┐
+│ npm run build                │
+└──────────────┬───────────────┘
+               ▼
+┌──────────────────────────────┐
+│ dist/ runtime output         │
+└──────────────┬───────────────┘
+               ▼
+┌──────────────────────────────┐
+│ Node CLI entrypoints         │
+└──────────────────────────────┘
+```
+
+Validation flow:
+
+```text
+╭──────────────────────────────╮
+│ Spec folder path             │
+╰──────────────────────────────╯
+              │
+              ▼
+┌──────────────────────────────┐
+│ spec/validate.sh             │
+└──────────────┬───────────────┘
+               ▼
+┌──────────────────────────────┐
+│ rules/check-*.sh             │
+└──────────────┬───────────────┘
+               ▼
+┌──────────────────────────────┐
+│ pass, warning or error       │
+└──────────────────────────────┘
+```
+
+This package owns local automation. Long-lived product behavior belongs in the skill docs, MCP server code or shared package code.
+
+<!-- /ANCHOR:boundaries-and-flow -->
+
+---
+
+<!-- ANCHOR:entrypoints -->
+## 6. ENTRYPOINTS
 
 ```bash
+npm --prefix .opencode/skill/system-spec-kit/scripts run build
+bash .opencode/skill/system-spec-kit/scripts/spec/validate.sh specs/<name> --strict
+node .opencode/skill/system-spec-kit/scripts/dist/memory/generate-context.js /tmp/save-context-data.json specs/<name>
 node .opencode/skill/system-spec-kit/scripts/dist/graph/backfill-graph-metadata.js --dry-run
-node .opencode/skill/system-spec-kit/scripts/dist/graph/backfill-graph-metadata.js
 ```
 
-Use `/spec_kit:resume` for active recovery; canonical continuity lives in `handover.md -> _memory.continuity -> spec docs`, while generated `memory/` output remains supporting/indexed material.
+Use structured JSON input with `generate-context.js`. Do not pass free-form positional save text.
 
-Direct positional saves are not supported; use structured JSON. Explicit CLI targets remain authoritative in structured-input modes, and phase-folder saves write into that selected phase folder's `memory/` directory.
+<!-- /ANCHOR:entrypoints -->
 
-JSON mode is also supported:
+---
+
+<!-- ANCHOR:validation -->
+## 7. VALIDATION
+
+Use repository-root commands:
 
 ```bash
-node .opencode/skill/system-spec-kit/scripts/dist/memory/generate-context.js /tmp/save-context-data-<session-id>.json specs/<###-spec-name>
+npm --prefix .opencode/skill/system-spec-kit/scripts run build
+npm --prefix .opencode/skill/system-spec-kit/scripts test
+bash .opencode/skill/system-spec-kit/scripts/spec/validate.sh specs/<name> --strict
 ```
 
-Direct positional mode now exits non-zero with migration guidance to `--json`, `--stdin`, or a JSON temp file.
+Run targeted shell or Vitest checks when editing one script zone. Use the parent package build after TypeScript changes.
 
-Generated memories are now blocked before write/index when they violate the rendered-memory contract:
-- missing required frontmatter keys
-- missing mandatory anchors or HTML ids
-- raw Mustache/template leakage
-- duplicate top-of-body separators
-- aligned but under-evidenced saves that now fail `INSUFFICIENT_CONTEXT_ABORT`
+<!-- /ANCHOR:validation -->
 
+---
 
-<!-- /ANCHOR:build-and-runtime -->
-<!-- ANCHOR:related-readmes -->
-## 5. RELATED READMES
+<!-- ANCHOR:related -->
+## 8. RELATED
 
+- [`spec/README.md`](spec/README.md)
+- [`lib/README.md`](lib/README.md)
+- [`rules/README.md`](rules/README.md)
+- [`memory/README.md`](memory/README.md)
+- [`evals/README.md`](evals/README.md)
+- [`setup/README.md`](setup/README.md)
+- [`ops/README.md`](ops/README.md)
 
-- `spec/README.md`
-- `spec-folder/README.md`
-- `core/README.md`
-- `memory/README.md`
-- `tests/README.md`
-- `extractors/README.md`
-- `loaders/README.md`
-- `renderers/README.md`
-- `utils/README.md`
-- `types/README.md`
-- `lib/README.md`
-- `evals/README.md`
-- `ops/README.md`
-- `setup/README.md`
-- `kpi/README.md`
-- `test-fixtures/README.md`
-- `templates/README.md`
-<!-- /ANCHOR:related-readmes -->
+<!-- /ANCHOR:related -->

@@ -1,14 +1,22 @@
 {
-  "specFolder": "system-spec-kit/026-graph-and-context-optimization/000-release-cleanup/005-review-remediation/015-mcp-runtime-stress-remediation/027-memory-context-structural-channel-research",
-  "description": "5-iteration deep research on extending memory_context's intent-aware routing to include code_graph_query as a structural retrieval channel. Three sub-questions: intent signal reliability, merged response shape, SearchDecisionEnvelope coverage.",
-  "keywords": ["memory_context", "structural-channel", "code_graph_query", "fusion", "intent-routing", "deep-research"],
-  "lastUpdated": "2026-04-29T09:30:00.000Z",
+  "specFolder": "system-spec-kit/026-graph-and-context-optimization/000-release-cleanup/015-mcp-runtime-stress-remediation/027-memory-context-structural-channel-research",
+  "description": "Research Charter: memory_context Structural Channel Routing",
+  "keywords": [
+    "research",
+    "charter",
+    "structural",
+    "channel",
+    "routing"
+  ],
+  "lastUpdated": "2026-05-02T10:39:48.252Z",
   "specId": "027",
   "folderSlug": "memory-context-structural-channel-research",
   "parentChain": [
     "system-spec-kit",
     "026-graph-and-context-optimization",
+    "000-release-cleanup",
     "015-mcp-runtime-stress-remediation"
   ],
-  "memorySequence": 1
+  "memorySequence": 1,
+  "memoryNameHistory": []
 }

@@ -1,0 +1,71 @@
+{
+  "schema_version": 1,
+  "packet_id": "system-spec-kit/026-graph-and-context-optimization/000-release-cleanup/051-readme-code-template",
+  "spec_folder": "system-spec-kit/026-graph-and-context-optimization/000-release-cleanup/051-readme-code-template",
+  "parent_id": null,
+  "children_ids": [],
+  "manual": {
+    "depends_on": [],
+    "supersedes": [],
+    "related_to": []
+  },
+  "derived": {
+    "trigger_phrases": [
+      "readme code template",
+      "readme template verification",
+      "dqi 99 excellent",
+      "hvr punctuation no matches",
+      "hvr banned word no matches",
+      "code folder readme batches",
+      "p1 batches complete",
+      "p2 batches 01-22 complete",
+      "readme sweep manifest",
+      "final blocker remediation",
+      "final p1 cleanup"
+    ],
+    "key_topics": [
+      "README template governance",
+      "Task #5 verification evidence",
+      "Task #6 HVR punctuation cleanup",
+      "Task #25 code-folder README batch evidence",
+      "Task #28 README sweep manifest",
+      "Task #31 final P1 cleanup evidence",
+      "final remediation evidence",
+      "sk-doc documentation templates",
+      "shared README fixed"
+    ],
+    "importance_tier": "important",
+    "status": "complete",
+    "key_files": [
+      ".opencode/skill/sk-doc/assets/documentation/readme_template.md",
+      ".opencode/skill/sk-doc/assets/documentation/readme_code_template.md",
+      ".opencode/skill/system-spec-kit/shared/README.md",
+      ".opencode/skill/system-spec-kit/templates/scratch/README.md",
+      "spec.md",
+      "plan.md",
+      "tasks.md",
+      "checklist.md",
+      "implementation-summary.md"
+    ],
+    "entities": [
+      { "name": "readme_template.md", "type": "file" },
+      { "name": "readme_code_template.md", "type": "file" },
+      { "name": "Task #5", "type": "task" },
+      { "name": "Task #6", "type": "task" },
+      { "name": "Task #9", "type": "task" },
+      { "name": "Task #25", "type": "task" },
+      { "name": "Task #28", "type": "task" },
+      { "name": "Task #31", "type": "task" },
+      { "name": ".opencode/skill/system-spec-kit/shared/README.md", "type": "file" },
+      { "name": ".opencode/skill/system-spec-kit/mcp_server/code_graph/README.md", "type": "file" },
+      { "name": ".opencode/skill/system-spec-kit/mcp_server/stress_test/README.md", "type": "file" },
+      { "name": "templates/scratch/README.md", "type": "file" }
+    ],
+    "causal_summary": "README code template governance with explicit sweep manifest, final remediation evidence, and final P1 cleanup evidence",
+    "created_at": "2026-05-02T11:03:13Z",
+    "last_save_at": "2026-05-02T13:05:00Z",
+    "save_lineage": "graph_only",
+    "last_accessed_at": null,
+    "source_docs": ["spec.md","plan.md","tasks.md","checklist.md","implementation-summary.md"]
+  }
+}

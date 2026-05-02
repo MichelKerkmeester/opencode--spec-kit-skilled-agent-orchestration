@@ -6,9 +6,10 @@
 // TEST: Code Graph Structural Indexer
 // ───────────────────────────────────────────────────────────────
 import { afterEach, describe, expect, it } from 'vitest';
-import { mkdirSync, mkdtempSync, readFileSync, realpathSync, rmSync, statSync, utimesSync, writeFileSync } from 'node:fs';
+import { mkdirSync, mkdtempSync, readFileSync, realpathSync, rmSync, statSync, symlinkSync, utimesSync, writeFileSync } from 'node:fs';
 import { tmpdir } from 'node:os';
 import { dirname, join } from 'node:path';
+import { shouldIndexForCodeGraph } from '../../lib/utils/index-scope.js';
 import {
   generateSymbolId,
   generateContentHash,
@@ -16,6 +17,10 @@ import {
   getDefaultConfig,
   DEFAULT_EDGE_WEIGHTS,
 } from '../lib/indexer-types.js';
+import {
+  CODE_GRAPH_INDEX_SKILLS_ENV,
+  resolveIndexScopePolicy,
+} from '../lib/index-scope-policy.js';
 import {
   closeDb,
   ensureFreshFiles,
@@ -94,6 +99,7 @@ function persistIndexResults(results: ParseResult[]): void {
 }
 
 afterEach(() => {
+  delete process.env[CODE_GRAPH_INDEX_SKILLS_ENV];
   try {
     closeDb();
   } catch {
@@ -247,11 +253,111 @@ describe('indexer-types', () => {
       expect(config.excludeGlobs.length).toBeGreaterThan(0);
       expect(config.maxFileSizeBytes).toBe(102400);
     });
+
+    it('excludes .opencode/skill by default and exposes the active scope fingerprint', () => {
+      const config = getDefaultConfig('/root');
+
+      expect(config.scopePolicy.includeSkills).toBe(false);
+      expect(config.scopePolicy.fingerprint).toBe('code-graph-scope:v1:skills=excluded:mcp-coco-index=excluded');
+      expect(config.excludeGlobs).toContain('**/.opencode/skill/**');
+      expect(shouldIndexForCodeGraph('/root/.opencode/skill/example.ts', config.scopePolicy)).toBe(false);
+    });
+
+    it('omits the skill exclude when the env opt-in is enabled', () => {
+      process.env[CODE_GRAPH_INDEX_SKILLS_ENV] = 'true';
+
+      const config = getDefaultConfig('/root');
+
+      expect(config.scopePolicy).toMatchObject({
+        includeSkills: true,
+        source: 'env',
+        fingerprint: 'code-graph-scope:v1:skills=included:mcp-coco-index=excluded',
+      });
+      expect(config.excludeGlobs).not.toContain('**/.opencode/skill/**');
+      expect(shouldIndexForCodeGraph('/root/.opencode/skill/example.ts', config.scopePolicy)).toBe(true);
+    });
+
+    it('uses the per-call opt-in without depending on process env', () => {
+      const config = getDefaultConfig('/root', { includeSkills: true, env: { [CODE_GRAPH_INDEX_SKILLS_ENV]: 'false' } });
+
+      expect(config.scopePolicy).toMatchObject({
+        includeSkills: true,
+        source: 'scan-argument',
+      });
+      expect(config.excludeGlobs).not.toContain('**/.opencode/skill/**');
+      expect(shouldIndexForCodeGraph('/root/.opencode/skill/example.ts', config.scopePolicy)).toBe(true);
+    });
+
+    it('lets an explicit per-call false override an env opt-in', () => {
+      const config = getDefaultConfig('/root', { includeSkills: false, env: { [CODE_GRAPH_INDEX_SKILLS_ENV]: 'true' } });
+
+      expect(config.scopePolicy).toMatchObject({
+        includeSkills: false,
+        source: 'scan-argument',
+        fingerprint: 'code-graph-scope:v1:skills=excluded:mcp-coco-index=excluded',
+      });
+      expect(config.excludeGlobs).toContain('**/.opencode/skill/**');
+      expect(shouldIndexForCodeGraph('/root/.opencode/skill/example.ts', config.scopePolicy)).toBe(false);
+    });
+
+    it('keeps mcp-coco-index/mcp_server excluded even when skill indexing is enabled', () => {
+      const config = getDefaultConfig('/root', resolveIndexScopePolicy({ includeSkills: true, env: {} }));
+
+      expect(config.excludeGlobs).toContain('**/mcp-coco-index/mcp_server/**');
+      expect(shouldIndexForCodeGraph('/root/.opencode/skill/mcp-coco-index/mcp_server/index.ts', config.scopePolicy)).toBe(false);
+    });
   });
 });
 
 describe('structural-indexer', () => {
   describe('parseFile - TypeScript', () => {
+    it('skips .opencode/skill candidates before parsing by default and includes them with opt-in', async () => {
+      const tempDir = mkdtempSync(join(tmpdir(), 'code-graph-scope-fixture-'));
+
+      try {
+        const appFilePath = writeWorkspaceFile(tempDir, 'src/app.ts', 'export function app() { return 1; }\n');
+        const skillFilePath = writeWorkspaceFile(
+          tempDir,
+          '.opencode/skill/example/SKILL.ts',
+          'export function skillInternal() { return 2; }\n',
+        );
+
+        const defaultResults = await indexFiles(getDefaultConfig(tempDir), { skipFreshFiles: false });
+        expect(defaultResults.map((result) => realpathSync(result.filePath))).toContain(realpathSync(appFilePath));
+        expect(defaultResults.map((result) => realpathSync(result.filePath))).not.toContain(realpathSync(skillFilePath));
+
+        const optInResults = await indexFiles(
+          getDefaultConfig(tempDir, { includeSkills: true, env: {} }),
+          { skipFreshFiles: false },
+        );
+        expect(optInResults.map((result) => realpathSync(result.filePath))).toContain(realpathSync(skillFilePath));
+      } finally {
+        rmSync(tempDir, { recursive: true, force: true });
+      }
+    });
+
+    it('keeps symlinked skill roots excluded when the scan root is canonicalized first', async () => {
+      const tempDir = mkdtempSync(join(tmpdir(), 'code-graph-symlink-scope-fixture-'));
+
+      try {
+        const skillFilePath = writeWorkspaceFile(
+          tempDir,
+          '.opencode/skill/example.ts',
+          'export function skillInternal() { return 2; }\n',
+        );
+        const aliasDir = join(tempDir, 'alias');
+        symlinkSync(join(tempDir, '.opencode', 'skill'), aliasDir, 'dir');
+
+        const aliasResults = await indexFiles(getDefaultConfig(realpathSync(aliasDir)), { skipFreshFiles: false });
+        expect(aliasResults.map((result) => realpathSync(result.filePath))).not.toContain(realpathSync(skillFilePath));
+
+        const workspaceResults = await indexFiles(getDefaultConfig(tempDir), { skipFreshFiles: false });
+        expect(workspaceResults.map((result) => realpathSync(result.filePath))).not.toContain(realpathSync(skillFilePath));
+      } finally {
+        rmSync(tempDir, { recursive: true, force: true });
+      }
+    });
+
     it('extracts functions', async () => {
       const content = `export function myFunc(arg: string): void {}\nasync function other() {}`;
       const result = await parseFile('/test.ts', content, 'typescript');
@@ -505,8 +611,7 @@ describe('structural-indexer', () => {
         );
 
         const results = await indexFiles(getDefaultConfig(tempDir), { skipFreshFiles: false });
-        const canonicalDepPath = realpathSync(depFilePath);
-        const depResult = results.find((result) => realpathSync(result.filePath) === canonicalDepPath);
+        const depResult = results.find((result) => realpathSync(result.filePath) === realpathSync(depFilePath));
         const consumerResult = results.find((result) => realpathSync(result.filePath) === realpathSync(consumerFilePath));
         const depNode = depResult?.nodes.find((node) => node.name === 'aliasedDep' && node.kind === 'function');
 
@@ -517,7 +622,7 @@ describe('structural-indexer', () => {
           metadata: expect.objectContaining({
             moduleSpecifier: '@app/dep',
             importKind: 'value',
-            resolvedFilePath: canonicalDepPath,
+            resolvedFilePath: depFilePath,
           }),
         }));
       } finally {
@@ -690,7 +795,7 @@ describe('structural-indexer', () => {
 
         const resolver = loadTsconfigResolver(workspaceRoot);
 
-        expect(resolver.resolve(join(workspaceRoot, 'src/consumer.ts'), '@alias/dep')).toBe(realpathSync(depFilePath));
+        expect(resolver.resolve(join(workspaceRoot, 'src/consumer.ts'), '@alias/dep')).toBe(depFilePath);
       } finally {
         rmSync(tempRoot, { recursive: true, force: true });
       }
@@ -729,7 +834,7 @@ describe('structural-indexer', () => {
         const resolver = loadTsconfigResolver(workspaceRoot);
 
         expect(() => resolver.resolve(join(workspaceRoot, 'src/consumer.ts'), '@alias/dep')).not.toThrow();
-        expect(resolver.resolve(join(workspaceRoot, 'src/consumer.ts'), '@alias/dep')).toBe(realpathSync(depFilePath));
+        expect(resolver.resolve(join(workspaceRoot, 'src/consumer.ts'), '@alias/dep')).toBe(depFilePath);
       } finally {
         rmSync(tempRoot, { recursive: true, force: true });
       }
@@ -835,8 +940,8 @@ describe('structural-indexer', () => {
             targetId: canonicalNode?.symbolId,
             metadata: expect.objectContaining({
               moduleSpecifier: './foo',
-              resolvedFilePath: realpathSync(fooFilePath),
-              resolvedSymbolFilePath: realpathSync(barFilePath),
+              resolvedFilePath: fooFilePath,
+              resolvedSymbolFilePath: barFilePath,
             }),
           });
         }

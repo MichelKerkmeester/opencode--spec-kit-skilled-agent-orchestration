@@ -1,16 +1,17 @@
 {
-  "specFolder": "system-spec-kit/022-hybrid-rag-fusion/001-hybrid-rag-fusion-epic",
+  "specFolder": "system-spec-kit/z_archive/022-hybrid-rag-fusion/001-hybrid-rag-fusion-epic",
   "description": "Feature Specification: 001-hybrid-rag-fusion-epic",
   "keywords": [
     "feature",
     "specification",
     "001-hybrid-rag-fusion-epic"
   ],
-  "lastUpdated": "2026-04-27T13:33:11.717Z",
+  "lastUpdated": "2026-05-02T10:39:49.138Z",
   "specId": "001",
   "folderSlug": "hybrid-rag-fusion-epic",
   "parentChain": [
     "system-spec-kit",
+    "z_archive",
     "022-hybrid-rag-fusion"
   ],
   "memorySequence": 3,

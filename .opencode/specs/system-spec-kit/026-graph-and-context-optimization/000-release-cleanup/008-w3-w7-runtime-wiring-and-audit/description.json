@@ -1,24 +1,23 @@
 {
-  "specFolder": "system-spec-kit/026-graph-and-context-optimization/000-release-cleanup/005-review-remediation/008-w3-w7-runtime-wiring-and-audit",
-  "description": "Phase G telemetry-first runtime wiring and audit for W3-W7 search/RAG decisions.",
+  "specFolder": "system-spec-kit/026-graph-and-context-optimization/000-release-cleanup/008-w3-w7-runtime-wiring-and-audit",
+  "description": "Feature Specification: 008 W3-W7 Runtime Wiring and Audit",
   "keywords": [
-    "search-decision-envelope",
-    "runtime-wiring",
-    "telemetry-first",
-    "decision-audit",
-    "query-plan-rerank",
-    "advisor-shadow-sink",
-    "cocoindex-calibration",
-    "degraded-readiness"
+    "feature",
+    "specification",
+    "008",
+    "w3-w7",
+    "runtime",
+    "wiring",
+    "audit"
   ],
-  "lastUpdated": "2026-04-29T05:10:00Z",
+  "lastUpdated": "2026-05-02T10:39:47.911Z",
   "specId": "008",
   "folderSlug": "w3-w7-runtime-wiring-and-audit",
   "parentChain": [
     "system-spec-kit",
     "026-graph-and-context-optimization",
-    "000-release-cleanup",
-    "005-review-remediation"
+    "000-release-cleanup"
   ],
-  "memorySequence": 1
+  "memorySequence": 1,
+  "memoryNameHistory": []
 }

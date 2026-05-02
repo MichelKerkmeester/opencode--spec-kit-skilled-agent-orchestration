@@ -1,6 +1,6 @@
 ---
 title: "Interfaces"
-description: "Protocol abstractions for embedding/vector backends, with shared-package migration notes."
+description: "Runtime contracts for vector-store consumers and shared embedding interfaces."
 trigger_phrases:
   - "interfaces"
   - "embedding provider interface"
@@ -9,150 +9,82 @@ trigger_phrases:
 
 # Interfaces
 
-> Protocol abstractions for embedding/vector backends, with shared-package migration notes.
-
----
-
-## TABLE OF CONTENTS
 <!-- ANCHOR:table-of-contents -->
+## TABLE OF CONTENTS
 
-- [1. OVERVIEW](#1-overview)
-- [2. STRUCTURE](#2-structure)
-- [3. FEATURES](#3-features)
-- [4. USAGE EXAMPLES](#4-usage-examples)
-- [5. RELATED RESOURCES](#5-related-resources)
+- [1. OVERVIEW](#1--overview)
+- [2. DATA FLOW](#2--data-flow)
+- [3. KEY FILES](#3--key-files)
+- [4. BOUNDARIES](#4--boundaries)
+- [5. ENTRYPOINTS](#5--entrypoints)
+- [6. VALIDATION](#6--validation)
+- [7. RELATED](#7--related)
 
 <!-- /ANCHOR:table-of-contents -->
-
----
-
-## 1. OVERVIEW
 <!-- ANCHOR:overview -->
+## 1. OVERVIEW
 
-The interfaces module documents contracts for embedding providers and vector stores. Most interfaces now live in `@spec-kit/shared`; this local module remains the compatibility layer and local vector-store stub.
-
-These interfaces support retrieval plumbing, but canonical packet continuity still lives in `/spec_kit:resume` and packet docs. Recovery order remains `handover.md`, then `_memory.continuity`, then the remaining spec docs, with generated memory artifacts kept secondary.
-
-### Key Benefits
-
-| Benefit | Description |
-|---------|-------------|
-| **Testability** | Mock implementations for fast, deterministic unit tests |
-| **Flexibility** | Swap backends (local vs API embeddings) via configuration |
-| **Adaptability** | Migrate to new systems (e.g., LadybugDB) without interface changes |
-| **Decoupling** | Core logic depends on interfaces, not concrete implementations |
-| **Document-Type Indexing Alignment** | Retrieval pipeline preserves document metadata (`documentType`, `specLevel`) through storage boundaries |
+`lib/interfaces/` keeps the local runtime contract for vector-store implementations. TypeScript interface definitions live in `@spec-kit/shared`, while this folder provides a real class that plain JavaScript consumers can extend.
 
 <!-- /ANCHOR:overview -->
+<!-- ANCHOR:data-flow -->
+## 2. DATA FLOW
 
----
-
-## 2. STRUCTURE
-<!-- ANCHOR:structure -->
-
-> **Note**: Most source files (`embedding-provider.ts`, `index.ts`) were relocated to `@spec-kit/shared` during the shared package migration. `vector-store.ts` remains as a local stub/re-export.
-
-```
-interfaces/
-├── vector-store.ts         # Vector store interface (stub/re-export from @spec-kit/shared)
-└── README.md               # This file
+```text
+embedding or vector request
+  -> consumer depends on IVectorStore
+  -> concrete vector store implements the methods
+  -> search, upsert, delete, get, stats, availability
+  -> vector result or stored record metadata
 ```
 
-### Relocated Files
+The interface boundary lets retrieval code call a vector backend without binding to one storage implementation.
 
-| File | Status |
-|------|--------|
-| `embedding-provider.ts` | Relocated to `@spec-kit/shared` |
-| `vector-store.ts` | **Remains locally** (stub/re-export) |
-| `index.ts` | Relocated to `@spec-kit/shared` |
+<!-- /ANCHOR:data-flow -->
+<!-- ANCHOR:key-files -->
+## 3. KEY FILES
 
-<!-- /ANCHOR:structure -->
+| File | Purpose |
+|---|---|
+| `vector-store.ts` | Exports `IVectorStore`, an abstract runtime base class for JS consumers |
 
----
+Shared types such as `VectorStoreInterface` are re-exported from `@spec-kit/shared/types`.
 
-## 3. FEATURES
-<!-- ANCHOR:features -->
+<!-- /ANCHOR:key-files -->
+<!-- ANCHOR:boundaries -->
+## 4. BOUNDARIES
 
-### Local Runtime Contract
+This folder owns contracts, not storage behavior. It does not create embeddings, open database handles, run vector search, or manage memory records.
 
-The local module currently exports one runtime contract:
+<!-- /ANCHOR:boundaries -->
+<!-- ANCHOR:entrypoints -->
+## 5. ENTRYPOINTS
 
-| Export | Location | Purpose |
-|--------|----------|---------|
-| `IVectorStore` | `vector-store.ts` | Abstract base class for JS runtime consumers; subclasses must implement search/upsert/delete/get/stats/availability/dimension/close |
+| Entrypoint | Use |
+|---|---|
+| `IVectorStore.search()` | Retrieve nearest records for an embedding |
+| `IVectorStore.upsert()` | Store or replace an embedding and metadata |
+| `IVectorStore.delete()` | Remove a stored vector by ID |
+| `IVectorStore.get()` | Load a stored vector record by ID |
+| `IVectorStore.getStats()` | Return backend counts and status data |
+| `IVectorStore.isAvailable()` | Report whether the backend can serve requests |
+| `IVectorStore.getEmbeddingDimension()` | Report the expected embedding dimension |
+| `IVectorStore.close()` | Release backend resources |
 
-### Shared-Package Contracts
+<!-- /ANCHOR:entrypoints -->
+<!-- ANCHOR:validation -->
+## 6. VALIDATION
 
-`IEmbeddingProvider` and TypeScript-first interface definitions are maintained in `@spec-kit/shared` as part of the shared-package migration.
+- Base-class methods throw until a subclass overrides them.
+- Interface compliance is covered by `../../tests/interfaces.vitest.ts`.
+- Implementations should match the shared `VectorStoreInterface` type when used from TypeScript.
 
-### Test-Only Mocks
-
-`MockEmbeddingProvider` and `MockVectorStore` are implemented in `../../tests/interfaces.vitest.ts` for interface compliance tests. They are not exported from `lib/interfaces/`.
-
-<!-- /ANCHOR:features -->
-
----
-
-## 4. USAGE EXAMPLES
-<!-- ANCHOR:usage-examples -->
-
-### Implementing a Custom Vector Store
-
-```typescript
-import { IVectorStore } from './vector-store';
-
-class InMemoryVectorStore extends IVectorStore {
-  async search(embedding, topK, options) { return []; }
-  async upsert(id, embedding, metadata) { return 1; }
-  async delete(id) { return true; }
-  async get(id) { return null; }
-  async getStats() { return { total: 0, pending: 0, success: 0, failed: 0, retry: 0 }; }
-  isAvailable() { return true; }
-  getEmbeddingDimension() { return 1024; }
-  close() {}
-}
-```
-
-### Verifying Base-Class Enforcement
-
-```typescript
-import { IVectorStore } from './vector-store';
-
-const base = new IVectorStore();
-await base.search([], 10); // throws: "Method search() must be implemented by subclass"
-```
-
-### Using Test-Only Mocks
-
-Use `../../tests/interfaces.vitest.ts` when you need the in-memory `MockEmbeddingProvider` or `MockVectorStore` test helpers.
-
-<!-- /ANCHOR:usage-examples -->
-
----
-
-## 5. RELATED RESOURCES
+<!-- /ANCHOR:validation -->
 <!-- ANCHOR:related -->
+## 7. RELATED
 
-### Internal Documentation
-
-| Document | Purpose |
-|----------|---------|
-| [../README.md](../README.md) | Parent lib directory overview |
-| [./vector-store.ts](./vector-store.ts) | Local runtime abstract class contract |
-| [../search/vector-index-impl.ts](../search/vector-index-impl.ts) | Main in-repo `IVectorStore` implementation |
-| [../../tests/interfaces.vitest.ts](../../tests/interfaces.vitest.ts) | Interface compliance tests and mock classes |
-
-### Design Patterns
-
-| Pattern | Application |
-|---------|-------------|
-| Interface Segregation | Each interface has single responsibility |
-| Dependency Injection | Consumers accept interface, not concrete class |
-| Strategy Pattern | Swap implementations at runtime |
+- `../search/vector-index-impl.ts`
+- `../../tests/interfaces.vitest.ts`
+- `@spec-kit/shared/types`
 
 <!-- /ANCHOR:related -->
-
----
-
-**Version**: 1.8.0
-**Last Updated**: 2026-02-16

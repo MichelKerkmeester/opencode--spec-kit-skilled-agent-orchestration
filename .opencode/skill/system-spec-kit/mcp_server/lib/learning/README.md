@@ -1,223 +1,221 @@
 ---
-title: "Learning"
-description: "Correction tracking that updates stability signals across memory and spec-document entries."
+title: "Learning: Correction Tracking"
+description: "Correction tracking for memory stability updates and relation-aware cache invalidation."
 trigger_phrases:
   - "learning corrections"
   - "memory stability"
   - "correction tracking"
 ---
 
-# Learning
+# Learning: Correction Tracking
 
-> Correction tracking that updates stability signals across memory and spec-document entries.
-
----
-
-## TABLE OF CONTENTS
 <!-- ANCHOR:table-of-contents -->
+## TABLE OF CONTENTS
 
-- [1. OVERVIEW](#1-overview)
-- [2. STRUCTURE](#2-structure)
-- [3. FEATURES](#3-features)
-- [4. USAGE EXAMPLES](#4-usage-examples)
-- [5. RELATED RESOURCES](#5-related-resources)
+- [1. OVERVIEW](#1--overview)
+- [2. ARCHITECTURE](#2--architecture)
+- [3. DIRECTORY TREE](#3--directory-tree)
+- [4. KEY FILES](#4--key-files)
+- [5. BOUNDARIES AND FLOW](#5--boundaries-and-flow)
+- [6. ENTRYPOINTS](#6--entrypoints)
+- [7. VALIDATION](#7--validation)
+- [8. RELATED](#8--related)
 
 <!-- /ANCHOR:table-of-contents -->
 
 ---
 
-## 1. OVERVIEW
 <!-- ANCHOR:overview -->
+## 1. OVERVIEW
 
-The learning module tracks corrections over time and applies stability adjustments that help the system learn which entries are most reliable. This applies to both standard memory notes and indexed spec documents, improving ranking quality for spec and decision retrieval.
-These stability signals support retrieval and ranking only; canonical packet continuity still resumes through `/spec_kit:resume` with `handover.md -> _memory.continuity -> spec docs`.
+`lib/learning/` records corrections between memory rows and updates stability scores. It owns the `memory_corrections` table, relation enablement checks and graph cache invalidation after correction edge changes.
 
-### Key Benefits
+Current state:
 
-| Benefit | Description |
-|---------|-------------|
-| **Self-improving** | System learns from corrections over time |
-| **Traceable** | Full correction history with undo capability |
-| **Confidence signals** | Stability scores reflect memory reliability |
-| **Atomic operations** | Database transactions ensure consistency |
+- `corrections.ts` owns schema setup, correction writes, undo, chain traversal and stats.
+- `index.ts` is the public barrel for snake_case and camelCase exports.
+- The module imports graph cache clearers so relation updates do not leave stale graph signals.
 
 <!-- /ANCHOR:overview -->
 
 ---
 
-## 2. STRUCTURE
-<!-- ANCHOR:structure -->
+<!-- ANCHOR:architecture -->
+## 2. ARCHITECTURE
 
-> **Note**: Source files remain locally and are also available in `@spec-kit/shared`.
-
+```text
+╭──────────────────────────────────────────────╮
+│ lib/learning/                                │
+│ Correction tracking boundary                 │
+╰──────────────────────────────────────────────╯
+                    │
+                    ▼
+┌──────────────────────────────────────────────┐
+│ index.ts                                     │
+│ Public barrel exports                        │
+└──────────────────────┬───────────────────────┘
+                       │
+                       ▼
+┌──────────────────────────────────────────────┐
+│ corrections.ts                               │
+│ Schema, writes, undo, queries and stats      │
+└───────────┬──────────────────────┬───────────┘
+            │                      │
+            ▼                      ▼
+┌──────────────────────┐  ┌────────────────────┐
+│ better-sqlite3 DB    │  │ graph caches       │
+│ memory_corrections   │  │ degree and signals │
+└──────────────────────┘  └────────────────────┘
 ```
+
+<!-- /ANCHOR:architecture -->
+
+---
+
+<!-- ANCHOR:directory-tree -->
+## 3. DIRECTORY TREE
+
+```text
 learning/
-├── corrections.ts   # Memory correction tracking with stability adjustments
-├── index.ts         # Module barrel exports
-└── README.md        # This file
+├── corrections.ts          # Correction schema, writes, undo, chains and stats
+├── index.ts                # Public barrel exports
+└── README.md               # Developer orientation
 ```
 
-### Key Files
-
-| File | Purpose |
-|------|---------|
-| `corrections.ts` | Correction types, stability adjustments, history tracking |
-| `index.ts` | Unified export of all learning functionality |
-
-<!-- /ANCHOR:structure -->
+<!-- /ANCHOR:directory-tree -->
 
 ---
 
-## 3. FEATURES
-<!-- ANCHOR:features -->
+<!-- ANCHOR:key-files -->
+## 4. KEY FILES
 
-### Correction Types
+| File | Role |
+|---|---|
+| `corrections.ts` | Owns correction types, constants, database state, schema setup and public operations |
+| `index.ts` | Re-exports the audited public surface from `corrections.ts` |
 
-| Type | Code | Description |
-|------|------|-------------|
-| **Superseded** | `superseded` | Old spec-doc record replaced by new, more accurate one |
-| **Deprecated** | `deprecated` | Memory marked as outdated but preserved |
-| **Refined** | `refined` | Memory content improved or clarified |
-| **Merged** | `merged` | Multiple memories consolidated into one |
+Imports used by this folder:
 
-### Stability Adjustments
+| Import | Used By | Purpose |
+|---|---|---|
+| `better-sqlite3` | `corrections.ts` | Database handle and prepared statements |
+| `../graph/graph-signals.js` | `corrections.ts` | Clears graph signal cache after relation changes |
+| `../search/graph-search-fn.js` | `corrections.ts` | Clears graph degree cache after relation changes |
 
-| Event | Multiplier | Effect |
-|-------|------------|--------|
-| Memory corrected | 0.5x | Original loses 50% stability |
-| Memory replaces | 1.2x | Replacement gains 20% stability |
-
-### Core Functions
-
-| Function | Purpose |
-|----------|---------|
-| `record_correction(params)` | Record a correction with stability updates |
-| `undo_correction(id)` | Reverse a correction, restore stability |
-| `get_corrections_for_memory(id)` | Get correction history for a spec-doc record |
-| `get_correction_chain(id)` | Traverse full correction graph |
-| `get_corrections_stats()` | Aggregate statistics |
-
-### Convenience Functions
-
-| Function | Purpose |
-|----------|---------|
-| `deprecate_memory(id, reason)` | Mark memory as deprecated |
-| `supersede_memory(old_id, new_id, reason)` | Replace with newer version |
-| `refine_memory(original_id, refined_id, reason)` | Link to improved version |
-| `merge_memories(source_ids, merged_id, reason)` | Consolidate multiple memories |
-
-<!-- /ANCHOR:features -->
+<!-- /ANCHOR:key-files -->
 
 ---
 
-## 4. USAGE EXAMPLES
-<!-- ANCHOR:usage-examples -->
+<!-- ANCHOR:boundaries-and-flow -->
+## 5. BOUNDARIES AND FLOW
 
-### Recording a Correction
+Allowed imports:
 
-```typescript
-import { corrections } from './index';
+- Learning may import database types and graph cache invalidation helpers.
+- Callers should import from `lib/learning/index.js` rather than reaching into private state.
 
-// Initialize with database
-corrections.init(db);
+Disallowed ownership:
 
-// Record that memory 5 supersedes memory 3
-const result = corrections.record_correction({
-  original_memory_id: 3,
-  correction_memory_id: 5,
-  correction_type: 'superseded',
-  reason: 'Updated with latest API changes',
-  corrected_by: 'user'
-});
+- Learning does not own retrieval ranking, memory parsing or graph search.
+- Learning does not create memory rows. It records relations between existing rows.
 
-console.log(result.stability_changes);
-// {
-//   original: { before: 1.0, after: 0.5, penalty_applied: 0.5 },
-//   correction: { before: 1.0, after: 1.2, boost_applied: 1.2 }
-// }
+Correction flow:
+
+```text
+Caller records correction
+          │
+          ▼
+Validate relation flag and database handle
+          │
+          ▼
+Ensure memory_corrections schema
+          │
+          ▼
+Write correction and stability changes
+          │
+          ▼
+Clear graph degree and signal caches
+          │
+          ▼
+Return correction result
 ```
 
-### Deprecating a Spec-Doc Record
-
-```typescript
-import { deprecate_memory } from './index';
-
-// Mark memory as outdated (no replacement)
-const result = deprecate_memory(42, 'Outdated API documentation');
-// Original stability reduced by 50%
-```
-
-### Merging Multiple Memories
-
-```typescript
-import { merge_memories } from './index';
-
-// Consolidate 3 memories into 1
-const results = merge_memories(
-  [10, 11, 12],  // Source memory IDs
-  15,            // Merged target ID
-  'Consolidated duplicate context entries'
-);
-// Each source gets 0.5x penalty, target gets 1.2x boost
-```
-
-### Undoing a Correction
-
-```typescript
-import { undo_correction } from './index';
-
-// Reverse correction #7
-const result = undo_correction(7);
-
-console.log(result.stability_restored);
-// { original: 1.0, correction: 1.0 }
-```
-
-### Querying Correction History
-
-```typescript
-import { get_corrections_for_memory, get_corrections_stats } from './index';
-
-// Get all corrections involving memory 5
-const history = get_corrections_for_memory(5, { include_undone: false });
-
-// Get aggregate stats
-const stats = get_corrections_stats();
-// { total: 42, by_type: { superseded: 30, deprecated: 8, ... }, undone: 3 }
-```
-
-<!-- /ANCHOR:usage-examples -->
+<!-- /ANCHOR:boundaries-and-flow -->
 
 ---
 
-## 5. RELATED RESOURCES
+<!-- ANCHOR:entrypoints -->
+## 6. ENTRYPOINTS
+
+Public import path:
+
+```typescript
+import {
+  deprecate_memory,
+  ensure_schema,
+  get_correction_chain,
+  get_corrections_for_memory,
+  get_corrections_stats,
+  init,
+  record_correction,
+  undo_correction,
+} from './index.js'
+
+import type {
+  CorrectionRecord,
+  CorrectionResult,
+  CorrectionStats,
+  RecordCorrectionParams,
+  UndoResult,
+} from './index.js'
+```
+
+Public functions:
+
+| Export | Purpose |
+|---|---|
+| `init`, `get_db`, `is_enabled`, `ensure_schema` | Module lifecycle and schema readiness |
+| `record_correction`, `undo_correction` | Correction mutation APIs |
+| `get_corrections_for_memory`, `get_correction_chain`, `get_corrections_stats` | Query APIs |
+| `deprecate_memory`, `supersede_memory`, `refine_memory`, `merge_memories` | Convenience mutation APIs |
+| CamelCase aliases | JavaScript-friendly names for the same public functions |
+
+Public constants and types:
+
+| Export | Purpose |
+|---|---|
+| `CORRECTION_TYPES` | Allowed correction labels |
+| `CORRECTION_STABILITY_PENALTY` | Stability multiplier for corrected source rows |
+| `REPLACEMENT_STABILITY_BOOST` | Stability multiplier for replacement rows |
+| `CorrectionTypes`, `CorrectionRecord`, `CorrectionResult`, `CorrectionChain`, `CorrectionStats` | Public result and record shapes |
+
+<!-- /ANCHOR:entrypoints -->
+
+---
+
+<!-- ANCHOR:validation -->
+## 7. VALIDATION
+
+Run from the repository root after editing this README:
+
+```bash
+python3 .opencode/skill/sk-doc/scripts/validate_document.py .opencode/skill/system-spec-kit/mcp_server/lib/learning/README.md
+```
+
+Use the package TypeScript checks for runtime changes in `corrections.ts` or `index.ts`.
+
+<!-- /ANCHOR:validation -->
+
+---
+
 <!-- ANCHOR:related -->
+## 8. RELATED
 
-### Internal Documentation
-
-| Document | Purpose |
-|----------|---------|
-| [../README.md](../README.md) | Parent lib directory overview |
-| [../cognitive/](../cognitive/) | Stability and decay algorithms |
-| [../storage/](../storage/) | Memory index persistence |
-
-### Configuration
-
-| Environment Variable | Default | Description |
-|---------------------|---------|-------------|
-| `SPECKIT_RELATIONS` | `true` | Enable/disable correction tracking |
-
-### Database Schema
-
-The module creates a `memory_corrections` table with:
-- Correction type and timestamps
-- Before/after stability values (for undo)
-- Foreign keys to `memory_index`
-- Indexes for efficient queries
+| Resource | Relationship |
+|---|---|
+| `../README.md` | Parent library map |
+| `../graph/README.md` | Graph signal cache consumer |
+| `../search/README.md` | Graph degree cache consumer |
+| `../storage/README.md` | Memory row persistence context |
 
 <!-- /ANCHOR:related -->
-
----
-
-**Version**: 1.8.0
-**Last Updated**: 2026-02-16

@@ -1,14 +1,20 @@
 {
-  "specFolder": "system-spec-kit/026-graph-and-context-optimization/000-release-cleanup/005-review-remediation/015-mcp-runtime-stress-remediation/025-memory-search-degraded-readiness-wiring",
-  "description": "Level 1 fix: wire degradedReadiness into SearchDecisionEnvelope from memory_search via getGraphReadinessSnapshot + shared mapper. Closes PP-1 TC-3 expected_fail.",
-  "keywords": ["memory_search", "degradedReadiness", "graph-readiness-snapshot", "search-decision-envelope", "PP-1", "TC-3"],
-  "lastUpdated": "2026-04-29T09:30:00.000Z",
+  "specFolder": "system-spec-kit/026-graph-and-context-optimization/000-release-cleanup/015-mcp-runtime-stress-remediation/025-memory-search-degraded-readiness-wiring",
+  "description": "Spec: memory_search degradedReadiness Wiring",
+  "keywords": [
+    "spec",
+    "degradedreadiness",
+    "wiring"
+  ],
+  "lastUpdated": "2026-05-02T10:39:48.242Z",
   "specId": "025",
   "folderSlug": "memory-search-degraded-readiness-wiring",
   "parentChain": [
     "system-spec-kit",
     "026-graph-and-context-optimization",
+    "000-release-cleanup",
     "015-mcp-runtime-stress-remediation"
   ],
-  "memorySequence": 1
+  "memorySequence": 1,
+  "memoryNameHistory": []
 }

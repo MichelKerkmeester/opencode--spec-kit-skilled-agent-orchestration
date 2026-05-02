@@ -1,5 +1,5 @@
 {
-  "specFolder": "system-spec-kit/026-graph-and-context-optimization/000-release-cleanup/005-review-remediation/015-mcp-runtime-stress-remediation/002-mcp-runtime-improvement-research",
+  "specFolder": "system-spec-kit/026-graph-and-context-optimization/000-release-cleanup/015-mcp-runtime-stress-remediation/002-mcp-runtime-improvement-research",
   "description": "Feature Specification: MCP Runtime Improvement Deep Research",
   "keywords": [
     "feature",
@@ -10,12 +10,13 @@
     "deep",
     "research"
   ],
-  "lastUpdated": "2026-04-27T14:15:10.463Z",
+  "lastUpdated": "2026-05-02T10:39:48.019Z",
   "specId": "002",
   "folderSlug": "mcp-runtime-improvement-research",
   "parentChain": [
     "system-spec-kit",
     "026-graph-and-context-optimization",
+    "000-release-cleanup",
     "015-mcp-runtime-stress-remediation"
   ],
   "memorySequence": 0,

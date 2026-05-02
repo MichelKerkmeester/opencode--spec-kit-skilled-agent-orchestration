@@ -1,89 +1,257 @@
 ---
-title: "Core System Scripts"
-description: "Core TypeScript workflow modules for context generation, scoring, writing, and indexing."
+title: "Core Scripts: Context Workflow Modules"
+description: "TypeScript modules that generate, score, write and index Spec Kit continuity context."
 trigger_phrases:
   - "core workflow"
   - "memory workflow"
   - "subfolder resolution"
 ---
 
+# Core Scripts: Context Workflow Modules
 
-# Core System Scripts
+> TypeScript modules for context-save orchestration, scoring, file output and indexing hooks.
 
 <!-- ANCHOR:table-of-contents -->
 ## TABLE OF CONTENTS
 
-- [1. OVERVIEW](#1-overview)
-- [2. CURRENT INVENTORY](#2-current-inventory)
-- [3. RUNTIME MODEL](#3-runtime-model)
-- [4. WORKFLOW NOTES](#4-workflow-notes)
-- [5. QUICK VERIFICATION](#5-quick-verification)
+- [1. OVERVIEW](#1--overview)
+- [2. ARCHITECTURE](#2--architecture)
+- [3. PACKAGE TOPOLOGY](#3--package-topology)
+- [4. DIRECTORY TREE](#4--directory-tree)
+- [5. KEY FILES](#5--key-files)
+- [6. BOUNDARIES AND FLOW](#6--boundaries-and-flow)
+- [7. ENTRYPOINTS](#7--entrypoints)
+- [8. VALIDATION](#8--validation)
+- [9. RELATED](#9--related)
 
 <!-- /ANCHOR:table-of-contents -->
+
+---
+
 <!-- ANCHOR:overview -->
 ## 1. OVERVIEW
 
-The `core/` directory contains orchestration modules used by `dist/memory/generate-context.js` to update a packet's canonical continuity surfaces.
+`scripts/core/` contains the TypeScript workflow modules used by `scripts/dist/memory/generate-context.js`. The folder owns context-save orchestration, quality scoring, metadata extraction, file writing, indexing hooks and spec-folder path handling.
+
+Current state:
+
+- Source of truth is `scripts/core/*.ts`.
+- Compiled runtime output is `scripts/dist/core/*.js`.
+- `workflow.ts` composes the save flow and imports focused helpers from this folder.
 
 <!-- /ANCHOR:overview -->
-<!-- ANCHOR:current-inventory -->
-## 2. CURRENT INVENTORY
 
-Current source inventory: 17 TypeScript modules plus `index.ts` barrel export.
+---
 
-- `alignment-validator.ts` - spec folder alignment checking and tree-thinning application for file change lists
-- `config.ts` - config loading and path/constants wiring
-- `content-cleaner.ts` - HTML stripping and literal anchor escaping for rendered spec-doc record content
-- `file-writer.ts` - write/validation helpers for generated files
-- `frontmatter-editor.ts` - frontmatter metadata injection and trigger phrase YAML rendering
-- `memory-indexer.ts` - indexing hooks and metadata preparation
-- `memory-metadata.ts` - memory classification, session dedup, causal links, and evidence snapshot assembly
-- `post-save-review.ts` - Post-save quality review — compares saved frontmatter against JSON payload, emits machine-readable severity-graded findings (Step 10.5)
-- `quality-gates.ts` - memory indexing decision logic and sufficiency abort formatting
-- `quality-scorer.ts` - quality scoring support for generated artifacts
-- `subfolder-utils.ts` - spec folder and child-folder resolution helpers
-- `title-builder.ts` - memory title construction, normalization, and dashboard suffix helpers
-- `topic-extractor.ts` - derive topic signals from folder/content inputs
-- `tree-thinning.ts` - bottom-up merging of small files during context loading to reduce token overhead (pre-pipeline)
-- `workflow-accessors.ts` - safe typed accessors for loosely-typed workflow objects
-- `workflow-path-utils.ts` - path normalization, key-file discovery, and alignment keyword helpers
-- `workflow.ts` - main orchestration flow
-- `index.ts` - barrel exports
+<!-- ANCHOR:architecture -->
+## 2. ARCHITECTURE
 
+```text
+╭──────────────────────────────────────────────────────────────────╮
+│                         scripts/core/                            │
+╰──────────────────────────────────────────────────────────────────╯
 
-<!-- /ANCHOR:current-inventory -->
-<!-- ANCHOR:runtime-model -->
-## 3. RUNTIME MODEL
+┌──────────────────────┐      ┌──────────────────────┐
+│ generate-context.js  │ ───▶ │ workflow.ts          │
+│ dist/memory caller   │      │ save orchestration   │
+└──────────────────────┘      └──────────┬───────────┘
+                                          │
+                                          ▼
+┌──────────────────────┐      ┌──────────────────────┐
+│ path + config        │ ◀─── │ workflow helpers     │
+│ config/subfolders    │      │ accessors/path utils │
+└──────────┬───────────┘      └──────────┬───────────┘
+           │                             │
+           ▼                             ▼
+┌──────────────────────┐      ┌──────────────────────┐
+│ metadata + scoring   │ ───▶ │ writers + indexers   │
+│ memory/title/topic   │      │ file/memory hooks    │
+└──────────────────────┘      └──────────────────────┘
 
-
-- Source of truth: `core/*.ts`
-- Runtime: `dist/core/*.js`
-- Build command:
-
-```bash
-cd .opencode/skill/system-spec-kit/scripts && npm run build
+Dependency direction:
+workflow.ts -> focused core helpers -> scripts/lib utilities
+index.ts -> public exports only
 ```
 
+<!-- /ANCHOR:architecture -->
 
-<!-- /ANCHOR:runtime-model -->
-<!-- ANCHOR:workflow-notes -->
-## 4. WORKFLOW NOTES
+---
 
+<!-- ANCHOR:package-topology -->
+## 3. PACKAGE TOPOLOGY
 
-- `workflow.ts` composes loaders, extractors, renderers, and lib utilities.
-- `subfolder-utils.ts` supports subfolder-aware operations used by memory save flows.
-- `file-writer.ts` and `memory-indexer.ts` keep generated context output consistent with indexing expectations.
-- `post-save-review.ts` runs after writes in JSON-mode save flows to compare saved frontmatter against the input payload and surface severity-graded drift findings.
-- `workflow.ts` now treats the canonical continuity path as unconditional. The save flow uses a single canonical path with no staged migration layer.
-- `workflow.ts` updates per-folder `description.json` after each spec-doc record save (increments `memorySequence`, appends to `memoryNameHistory`). This tracking is best-effort — failures are non-fatal.
+```text
+scripts/core/
++-- index.ts                  # Public barrel for core modules
++-- workflow.ts               # Main context-save orchestration
++-- workflow-accessors.ts     # Typed accessors for workflow objects
++-- workflow-path-utils.ts    # Path normalization and key-file discovery
++-- config.ts                 # Runtime config and constants
++-- subfolder-utils.ts        # Spec folder and child-folder resolution
++-- save-context-path.ts      # Save path resolution helpers
++-- memory-*.ts               # Metadata and indexing support
++-- *-scorer.ts               # Quality scoring support
++-- *-validator.ts            # Alignment and quality gate checks
+`-- README.md
+```
 
+Allowed dependency direction:
 
-<!-- /ANCHOR:workflow-notes -->
-<!-- ANCHOR:quick-verification -->
-## 5. QUICK VERIFICATION
+```text
+workflow.ts -> core helper modules -> scripts/lib utilities
+index.ts -> core helper modules
+core helper modules -> Node built-ins and local script libraries
+```
 
+Disallowed dependency direction:
+
+```text
+core helper modules -> scripts/dist compiled output
+scripts/lib utilities -> workflow.ts
+runtime callers -> private helper assumptions not exported by index.ts
+```
+
+<!-- /ANCHOR:package-topology -->
+
+---
+
+<!-- ANCHOR:directory-tree -->
+## 4. DIRECTORY TREE
+
+```text
+scripts/core/
++-- alignment-validator.ts       # Spec-folder alignment and tree-thinning checks
++-- config.ts                    # Shared config loading and path wiring
++-- content-cleaner.ts           # HTML stripping and anchor escaping
++-- find-predecessor-memory.ts   # Prior memory lookup support
++-- frontmatter-editor.ts        # Frontmatter injection and trigger rendering
++-- index.ts                     # Barrel exports
++-- memory-indexer.ts            # Indexing hooks and metadata preparation
++-- memory-metadata.ts           # Memory classification and evidence snapshots
++-- post-save-review.ts          # Post-save frontmatter drift review
++-- quality-gates.ts             # Save and indexing gate decisions
++-- quality-scorer.ts            # Artifact quality scoring
++-- save-context-path.ts         # Save target path helpers
++-- subfolder-utils.ts           # Spec folder resolution helpers
++-- title-builder.ts             # Memory title construction
++-- topic-extractor.ts           # Topic signal extraction
++-- tree-thinning.ts             # Context tree compaction helpers
++-- workflow-accessors.ts        # Safe accessors for loose workflow data
++-- workflow-path-utils.ts       # Path normalization and key-file discovery
++-- workflow.ts                  # Main orchestration flow
+`-- README.md
+```
+
+<!-- /ANCHOR:directory-tree -->
+
+---
+
+<!-- ANCHOR:key-files -->
+## 5. KEY FILES
+
+| File | Responsibility |
+|---|---|
+| `workflow.ts` | Runs the context-save flow from parsed input through generated continuity artifacts. |
+| `config.ts` | Centralizes script paths, repository roots and runtime constants. |
+| `subfolder-utils.ts` | Resolves spec folders, child folders and subfolder-aware save targets. |
+| `save-context-path.ts` | Computes canonical save paths for generated context output. |
+| `memory-metadata.ts` | Builds metadata used by memory records, deduplication, causal links and evidence snapshots. |
+| `memory-indexer.ts` | Prepares indexing calls and memory metadata for saved artifacts. |
+| `frontmatter-editor.ts` | Injects metadata and renders trigger phrase frontmatter. |
+| `post-save-review.ts` | Compares saved frontmatter with JSON payloads and reports drift findings. |
+| `quality-gates.ts` | Decides whether save and indexing quality gates pass or abort. |
+| `index.ts` | Exposes the modules that callers can import from `core`. |
+
+<!-- /ANCHOR:key-files -->
+
+---
+
+<!-- ANCHOR:boundaries-flow -->
+## 6. BOUNDARIES AND FLOW
+
+| Boundary | Rule |
+|---|---|
+| Imports | Source modules import local TypeScript helpers and script libraries, not compiled `dist/` output. |
+| Exports | `index.ts` is the public barrel for this folder. Keep one-off helpers private unless another script imports them. |
+| Ownership | This folder owns context-save orchestration helpers. MCP server tools, database code and spec templates belong outside `scripts/core/`. |
+
+Main flow:
+
+```text
+╭──────────────────────────────────────────╮
+│ dist/memory/generate-context.js          │
+╰──────────────────────────────────────────╯
+                  │
+                  ▼
+┌──────────────────────────────────────────┐
+│ workflow.ts                              │
+└──────────────────────────────────────────┘
+                  │
+                  ▼
+┌──────────────────────────────────────────┐
+│ config + path + subfolder resolution     │
+└──────────────────────────────────────────┘
+                  │
+                  ▼
+┌──────────────────────────────────────────┐
+│ metadata extraction and quality scoring  │
+└──────────────────────────────────────────┘
+                  │
+                  ▼
+┌──────────────────────────────────────────┐
+│ generated files and indexing hooks       │
+└──────────────────────────────────────────┘
+                  │
+                  ▼
+╭──────────────────────────────────────────╮
+│ continuity files, descriptions and graph │
+╰──────────────────────────────────────────╯
+```
+
+<!-- /ANCHOR:boundaries-flow -->
+
+---
+
+<!-- ANCHOR:entrypoints -->
+## 7. ENTRYPOINTS
+
+| Entrypoint | Type | Purpose |
+|---|---|---|
+| `workflow.ts` | Module | Main source file for the save workflow. |
+| `index.ts` | Module | Public barrel for importing core helpers. |
+| `scripts/dist/core` | Compiled output | Runtime location consumed after `npm run build`. |
+| `scripts/dist/memory/generate-context.js` | CLI script | Primary caller for core workflow behavior. |
+
+<!-- /ANCHOR:entrypoints -->
+
+---
+
+<!-- ANCHOR:validation -->
+## 8. VALIDATION
+
+Run from the repository root unless noted.
+
+```bash
+npm --prefix .opencode/skill/system-spec-kit/scripts run build
+```
+
+Expected result: TypeScript compiles and updates `scripts/dist/`.
 
 ```bash
 node -e "const core=require('./.opencode/skill/system-spec-kit/scripts/dist/core'); console.log(Object.keys(core))"
 ```
-<!-- /ANCHOR:quick-verification -->
+
+Expected result: Node prints the exported core module names.
+
+<!-- /ANCHOR:validation -->
+
+---
+
+<!-- ANCHOR:related -->
+## 9. RELATED
+
+- [`../README.md`](../README.md)
+- [`../memory/README.md`](../memory/README.md)
+- [`../../README.md`](../../README.md)
+
+<!-- /ANCHOR:related -->

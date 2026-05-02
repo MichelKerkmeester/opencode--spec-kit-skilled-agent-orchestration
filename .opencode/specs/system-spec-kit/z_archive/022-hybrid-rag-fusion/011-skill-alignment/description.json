@@ -1,5 +1,5 @@
 {
-  "specFolder": "system-spec-kit/022-hybrid-rag-fusion/011-skill-alignment",
+  "specFolder": "system-spec-kit/z_archive/022-hybrid-rag-fusion/011-skill-alignment",
   "description": "Feature Specification: Skill Alignment — system-spec-kit",
   "keywords": [
     "feature",
@@ -8,11 +8,12 @@
     "alignment",
     "system-spec-kit"
   ],
-  "lastUpdated": "2026-04-27T13:38:47.634Z",
+  "lastUpdated": "2026-05-02T10:39:49.227Z",
   "specId": "011",
   "folderSlug": "skill-alignment",
   "parentChain": [
     "system-spec-kit",
+    "z_archive",
     "022-hybrid-rag-fusion"
   ],
   "memorySequence": 2,

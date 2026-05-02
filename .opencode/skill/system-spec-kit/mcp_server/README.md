@@ -1,38 +1,31 @@
 ---
-title: "Spec Kit Memory - MCP Server"
-description: "Model Context Protocol server providing semantic memory, hybrid search and graph intelligence for AI-assisted development across sessions, models and tools."
+title: "MCP Server: Spec Kit Memory Runtime"
+description: "Model Context Protocol server package for memory retrieval, code graph context, skill routing, hooks, persistence, and diagnostics."
 trigger_phrases:
   - "MCP server"
   - "spec kit memory"
-  - "hybrid search"
-  - "cognitive memory"
   - "memory_context"
-  - "memory_search"
+  - "code_graph_query"
   - "advisor_recommend"
-  - "FSRS decay"
 importance_tier: "important"
 ---
 
-# Spec Kit Memory - MCP Server
+# MCP Server: Spec Kit Memory Runtime
 
-> AI memory that persists across sessions, models and tools without poisoning your context window.
-
----
+> Local MCP runtime for memory retrieval, code graph context, skill routing, hooks, persistence, and diagnostics.
 
 <!-- ANCHOR:table-of-contents -->
 ## TABLE OF CONTENTS
 
 - [1. OVERVIEW](#1--overview)
-- [2. QUICK START](#2--quick-start)
-- [3. FEATURES](#3--features)
-  - [3.1 HOW THE INDEXED-CONTINUITY STORE WORKS](#31--how-the-indexed-continuity-store-works)
-  - [3.2 TOOL REFERENCE](#32--tool-reference)
-- [4. STRUCTURE](#4--structure)
-- [5. CONFIGURATION](#5--configuration)
-- [6. USAGE EXAMPLES](#6--usage-examples)
-- [7. TROUBLESHOOTING](#7--troubleshooting)
-- [8. FAQ](#8--faq)
-- [9. RELATED DOCUMENTS](#9--related-documents)
+- [2. ARCHITECTURE](#2--architecture)
+- [3. PACKAGE TOPOLOGY](#3--package-topology)
+- [4. DIRECTORY TREE](#4--directory-tree)
+- [5. KEY FILES](#5--key-files)
+- [6. BOUNDARIES AND FLOW](#6--boundaries-and-flow)
+- [7. ENTRYPOINTS](#7--entrypoints)
+- [8. VALIDATION](#8--validation)
+- [9. RELATED](#9--related)
 
 <!-- /ANCHOR:table-of-contents -->
 
@@ -41,1839 +34,263 @@ importance_tier: "important"
 <!-- ANCHOR:overview -->
 ## 1. OVERVIEW
 
-### What This Is
+`mcp_server/` owns the Spec Kit Memory MCP runtime. It exposes tools for memory search, context recovery, code graph analysis, CocoIndex status, skill advisor routing, checkpoints, evaluation, and maintenance.
 
-Your AI assistant has amnesia. Every conversation starts from scratch. You explain your project architecture on Monday and by Wednesday it is a blank slate. This server fixes that.
+Current state:
 
-Spec Kit Memory is a Model Context Protocol (MCP) server that gives AI assistants persistent memory. It stores decisions, code context and project history in a local SQLite database, then finds exactly what is relevant when you need it. Think of it like a personal librarian that keeps notes on every conversation, files them by topic and hands you the right ones when you start a new task.
+- `context-server.ts` is the server entrypoint for MCP transport and tool dispatch.
+- `tool-schemas.ts`, `schemas/`, and `tools/` define the public tool surface and input contracts.
+- `handlers/`, `code_graph/`, `lib/`, and `skill_advisor/` own the runtime behavior behind those tools.
+- `database/` stores local SQLite state for indexed memory and code graph data.
+- Runtime hooks under `hooks/` prepare startup, prompt, and compact-context payloads for supported clients.
 
-The server works across sessions, models and tools. Switch from Claude to GPT to Gemini and back. The spec-doc record stays the same because it lives in a database on your machine, not inside any AI's context window.
-
-Code-graph handlers share one readiness contract, session-resume auth binds to transport caller context by default, and Copilot compact-cache uses the same provenance-wrapped recovery path as Claude and Gemini.
-
-### Architecture Diagram
-
-```
-┌──────────────────────────────────────────────────────────────────────┐
-│                  SPEC KIT MEMORY MCP SERVER                           │
-├──────────────────────────────────────────────────────────────────────┤
-│                                                                      │
-│  ┌──────────┐  ┌──────────┐  ┌──────────┐  ┌──────────────────────┐ │
-│  │  Claude  │  │  Gemini  │  │ Copilot  │  │  Codex / OpenCode    │ │
-│  └────┬─────┘  └────┬─────┘  └────┬─────┘  └──────────┬───────────┘ │
-│       │             │             │                    │             │
-│  ┌────▼─────────────▼─────────────▼────────────────────▼───────────┐ │
-│  │                        HOOK LAYER                               │ │
-│  │  session-prime / user-prompt-submit / compact-inject / cache    │ │
-│  │  Transport: stdout injection (Claude/Gemini) | managed file     │ │
-│  │  (Copilot) | native hooks (Codex) | plugin bridge (OpenCode)    │ │
-│  └───────────────────────────┬─────────────────────────────────────┘ │
-│                              │                                       │
-│  ┌───────────────────────────▼─────────────────────────────────────┐ │
-│  │                    TOOL DISPATCH LAYER                           │ │
-│  │  dispatchTool() → 54 MCP tools across 5 dispatcher modules      │ │
-│  └───────────────────────────┬──────────────────────────────────────┘ │
-│                              │                                       │
-│  ┌───────────────────────────▼─────────────────────────────────────┐ │
-│  │                    HANDLER LAYER                                 │ │
-│  │  ┌──────────┐ ┌──────────┐ ┌──────────┐ ┌──────────────────┐   │ │
-│  │  │ Context/ │ │  Save    │ │  CRUD    │ │ Causal Graph     │   │ │
-│  │  │ Search   │ │ Pipeline │ │ Checkpts │ │ Pre/Post-flight  │   │ │
-│  │  └──────────┘ └──────────┘ └──────────┘ └──────────────────┘   │ │
-│  │  lazy-loaded via async import(), index.ts re-exports            │ │
-│  └───────────────────────────┬─────────────────────────────────────┘ │
-│                              │                                       │
-│  ┌───────────────────────────▼─────────────────────────────────────┐ │
-│  │                    CORE LIBRARY (219+ modules)                  │ │
-│  │  ┌──────────┐ ┌──────────┐ ┌──────────┐ ┌──────────────────┐   │ │
-│  │  │ search/  │ │cognitive │ │storage/  │ │graph/scoring/    │   │ │
-│  │  │hybrid    │ │ FSRS     │ │SQLite    │ │continuity/       │   │ │
-│  │  │4-stage   │ │attention │ │migrations│ │routing/merge/    │   │ │
-│  │  └──────────┘ └──────────┘ └──────────┘ └──────────────────┘   │ │
-│  │  ┌──────────────────────────────────────────────────────────┐   │ │
-│  │  │  CONSUMED SUBSYSTEMS                                      │   │ │
-│  │  │  skill_advisor/         code_graph/                       │   │ │
-│  │  │  5-lane fusion scorer   structural indexer + CCC bridge   │   │ │
-│  │  │  matrix_runners/        stress_test/                      │   │ │
-│  │  └──────────────────────────────────────────────────────────┘   │ │
-│  └───────────────────────────┬─────────────────────────────────────┘ │
-│                              │                                       │
-│  ┌───────────────────────────▼─────────────────────────────────────┐ │
-│  │                    DATA LAYER                                    │ │
-│  │  ┌──────────────────┐  ┌──────────────────────────────────┐     │ │
-│  │  │ speckit_memory.db│  │ code-graph.sqlite                │     │ │
-│  │  │ (spec-doc records)│  │ (structural nodes/edges)        │     │ │
-│  │  │ + vector index   │  │                                  │     │ │
-│  │  └──────────────────┘  └──────────────────────────────────┘     │ │
-│  └──────────────────────────────────────────────────────────────────┘ │
-│                                                                      │
-│  Recovery: /spec_kit:resume → handover.md → _memory.continuity →    │
-│            spec docs (generated memories are supporting context)     │
-│                                                                      │
-└──────────────────────────────────────────────────────────────────────┘
-```
-
-> Note: When this server says "memory," it means our local indexed-continuity store — the SQLite-backed spec-doc record index that ships with this skill. It is **not** Anthropic Claude Memory (the managed product surfaced in claude.ai) and it is **not** the MCP reference `memory` server (the upstream community example). Identifiers (`memory_*` MCP tools, `memory_*` SQL tables, `memory-*.ts` handlers, `MEMORY_*` constants) are frozen by REQ-001; the disambiguation lives in operator-facing prose only.
-
-### Key Numbers
-
-| What | Count | Details |
-|------|-------|---------|
-| **MCP tools** | 54 | Canonical live registry from `TOOL_DEFINITIONS.length` in `tool-schemas.ts` |
-| **Search channels** | 5 core + CocoIndex bridge | Vector, FTS5, BM25, Causal Graph, Degree (+ CocoIndex semantic code search as external bridge) |
-| **Pipeline stages** | 4 | Gather (graph-first routing), Score, Rerank, Filter |
-| **Importance tiers** | 6 | constitutional, critical, important, normal, temporary, deprecated |
-| **Memory states** | 4 active | HOT, WARM, COLD, DORMANT |
-| **Intent types** | 7 | add_feature, fix_bug, refactor, security_audit, understand, find_spec, find_decision |
-| **Causal relations** | 6 | caused, enabled, supersedes, contradicts, derived_from, supports |
-| **Retrieval modes** | 5 | auto, quick, deep, focused, resume |
-| **Embedding providers** | 3 | Voyage AI, OpenAI, HuggingFace local |
-
-### How This Compares to Basic RAG
-
-| Capability | Basic RAG | Spec Kit Memory |
-|------------|-----------|-----------------|
-| **Search** | Vector similarity only | 5 core channels + CocoIndex bridge, fused with Reciprocal Rank Fusion (K tuned per intent) |
-| **Routing** | No routing | Graph-first structural routing: Code Graph -> CocoIndex -> Memory; 3-tier FTS fallback when graph/semantic miss |
-| **"Why" queries** | Not possible | Causal graph with 6 relationship types, community detection and depth signals |
-| **Forgetting curve** | None or exponential | FSRS power-law decay with classification-aware 2D matrix (context type x importance tier) |
-| **Query understanding** | Keyword match | Intent classification (7 types), complexity routing, query decomposition |
-| **Sessions** | Stateless | Working memory with attention decay, ~50% token savings via deduplication |
-| **Section retrieval** | Returns full documents | ANCHOR-based chunking with ~93% token savings |
-| **Duplicate handling** | Indexes everything | 4-outcome Prediction Error gating (create, reinforce, update, supersede) |
-| **Memory state** | Everything treated equally | 4 active cognitive states (HOT through DORMANT) with FSRS-driven transitions |
-| **Save quality** | Accept everything | 3-layer gate (structure, semantic sufficiency, duplicate) with dry-run preview |
-| **Explainability** | Black box | Confidence scoring (high/medium/low) + two-tier trace (basic and debug) |
-| **Access control** | None | Governed tenant, user, agent, and session boundaries |
-| **Evaluation** | Manual testing | Ablation studies, 12-metric computation (MRR, NDCG), synthetic ground truth corpus |
-
-### How You Use It
-
-The indexed-continuity store exposes its MCP tools through 4 memory slash commands plus the borrowed recovery workflow in `/spec_kit:resume`. Dedicated code-graph, CocoIndex, and Skill Advisor tools live in the same server. Think of commands as doors into the system. Each door opens access only to the tools it needs.
-
-| Command | What It Does | Trigger | Tool Count |
-|---------|-------------|---------|------------|
-| `/memory:search` | Search, retrieve and analyze knowledge | Explicit operator command | 13 tools |
-| `/memory:learn` | Create always-surface rules (constitutional memories) | Explicit operator command | 6 tools |
-| `/memory:manage` | Database maintenance, checkpoints, bulk ingestion, and CCC lifecycle routing | Explicit operator command | 22 primary tools + 1 helper |
-| `/memory:save` | Update packet continuity, refresh packet metadata on every invocation, and emit supporting generated context artifacts | Explicit save command/keyword; Step 11.5 indexes touched docs when enabled | 4 tools |
-| `/spec_kit:resume` | Canonical operator-facing recovery surface for an interrupted spec-folder session; rebuilds active context from `handover.md`, then `_memory.continuity`, then packet docs | Explicit operator recovery command or runtime fallback | Broad helper surface for packet recovery |
-
-### Requirements
-
-| Requirement | Minimum | Recommended |
-|-------------|---------|-------------|
-| Node.js | 18.x | 20.x LTS |
-| SQLite | Bundled | Bundled (better-sqlite3) |
-| Embedding API | None (HuggingFace local) | Voyage AI (`VOYAGE_API_KEY`) |
-| Memory | 512 MB | 1 GB+ |
-| Disk | 100 MB | 500 MB (grows with index size) |
-
-Module/runtime profile in this package:
-- `package.json` sets `"type": "module"` (ESM runtime output from `dist/`).
-- `tsconfig.json` uses `"module": "nodenext"` and `"moduleResolution": "nodenext"`.
-
-### Index Scope Invariants
-
-The spec-doc record and code-graph scanners share one path-policy source at `lib/utils/index-scope.ts`.
-
-- Memory indexing must never admit any path with a `z_future/`, `external/`, or `z_archive/` segment.
-- Code-graph scanning must never admit any path with an `external/` segment, and it preserves the existing `.git/`, `node_modules/`, `dist/`, `vendor/`, `z_future/`, `z_archive/`, and `mcp-coco-index/mcp_server/` exclusions.
-- `importanceTier: constitutional` is only valid for files inside `/constitutional/`; non-constitutional saves are downgraded to `important` at save time instead of failing hard.
-
-#### Repair / Verify / Rollback
-
-```bash
-cd .opencode/skill/system-spec-kit
-node scripts/dist/memory/cleanup-index-scope-violations.js --verify
-cp mcp_server/database/context-index__voyage__voyage-4__1024.sqlite /tmp/context-index.before-scope-cleanup.sqlite
-node scripts/dist/memory/cleanup-index-scope-violations.js --apply
-node scripts/dist/memory/cleanup-index-scope-violations.js --verify
-cp /tmp/context-index.before-scope-cleanup.sqlite mcp_server/database/context-index__voyage__voyage-4__1024.sqlite
-```
-
-Rollback is the final `cp` line; rerun `--verify` after rollback to confirm the restored database state is the one you intended.
-
-### Governance Audit Action Strings
-
-- `tier_downgrade_non_constitutional_path`: a runtime save, update, checkpoint, or post-insert write tried to apply constitutional priority to a non-constitutional path and the tier was normalized away from `constitutional`.
-- `tier_downgrade_non_constitutional_path_cleanup`: the cleanup CLI bulk-normalized an already-persisted non-constitutional row from `constitutional` to `important`.
-- `checkpoint_restore_excluded_path_rejected`: checkpoint replay encountered a path that current index-scope rules would reject entirely, so the restore denied that row and aborted atomically.
+This package is local-first. It reads and writes repository-local databases, generated build output, and hook payloads, while keeping authored spec docs outside the server package.
 
 <!-- /ANCHOR:overview -->
 
 ---
 
-<!-- ANCHOR:quick-start -->
-## 2. QUICK START
+<!-- ANCHOR:architecture -->
+## 2. ARCHITECTURE
 
-This section covers the minimum steps to get running. For full installation with embedding providers, database migration and environment setup, see [INSTALL_GUIDE.md](./INSTALL_GUIDE.md).
+```text
+╭──────────────────────────────────────────────────────────────────╮
+│                    MCP SERVER PACKAGE                            │
+╰──────────────────────────────────────────────────────────────────╯
 
-### 30-Second Setup
+┌──────────────┐      ┌──────────────────┐      ┌─────────────────┐
+│ MCP clients  │ ───▶ │ context-server.ts│ ───▶ │ tool dispatcher │
+│ hooks / CLI  │      │ transport layer  │      │ schemas + tools │
+└──────┬───────┘      └────────┬─────────┘      └────────┬────────┘
+       │                       │                         │
+       │                       ▼                         ▼
+       │              ┌──────────────────┐      ┌─────────────────┐
+       └───────────▶  │ hooks + startup  │      │ handlers/       │
+                      │ brief builders   │      │ tool execution  │
+                      └────────┬─────────┘      └────────┬────────┘
+                               │                         │
+                               ▼                         ▼
+                      ┌──────────────────┐      ┌─────────────────┐
+                      │ lib/             │ ───▶ │ database/       │
+                      │ search + memory  │      │ SQLite stores   │
+                      └────────┬─────────┘      └─────────────────┘
+                               │
+                               ▼
+                      ┌──────────────────┐
+                      │ code_graph/      │
+                      │ structural index │
+                      └──────────────────┘
 
-```bash
-# 1. Install dependencies (from the mcp_server directory)
-cd .opencode/skill/system-spec-kit/mcp_server
-npm ci
-
-# 2. Build the TypeScript source
-npm run build
-
-# 3. Verify the server starts
-node dist/context-server.js --help
+Dependency direction:
+transport ───▶ schemas/tools ───▶ handlers ───▶ lib/code_graph/shared
+handlers ───▶ database and filesystem adapters
+hooks ───▶ shared payload builders and read-only status helpers
 ```
 
-### Add to Your MCP Configuration
-
-Use the configuration shape that matches your client.
-
-**OpenCode (`opencode.json`)**
-
-```json
-{
-  "mcp": {
-    "spec_kit_memory": {
-      "type": "local",
-      "command": [
-        "node",
-        ".opencode/skill/system-spec-kit/mcp_server/dist/context-server.js"
-      ],
-      "environment": {
-        "EMBEDDINGS_PROVIDER": "auto",
-        "SPEC_KIT_DB_DIR": ".opencode/skill/system-spec-kit/mcp_server/database"
-      }
-    }
-  }
-}
-```
-
-**Generic `mcpServers` clients (for example Claude Desktop)**
-
-```json
-{
-  "mcpServers": {
-    "spec-kit-memory": {
-      "command": "node",
-      "args": ["/absolute/path/to/.opencode/skill/system-spec-kit/mcp_server/dist/context-server.js"],
-      "env": {
-        "VOYAGE_API_KEY": "your-key-here"
-      }
-    }
-  }
-}
-```
-
-### Verify It Works
-
-After connecting your MCP client, call the health check:
-
-```json
-{
-  "tool": "memory_health",
-  "arguments": { "reportMode": "full" }
-}
-```
-
-You should get a JSON response with `status: "ok"` and database table counts.
-
-### Save Your First Memory
-
-```json
-{
-  "tool": "memory_save",
-  "arguments": {
-    "filePath": "/absolute/path/to/your/memory-file.md"
-  }
-}
-```
-
-### Run Your First Search
-
-```json
-{
-  "tool": "memory_context",
-  "arguments": {
-    "input": "how did we decide on the auth architecture?",
-    "mode": "auto"
-  }
-}
-```
-
-The system reads your question, figures out you are looking for a past decision and routes to the right search strategy automatically.
-
-<!-- /ANCHOR:quick-start -->
+<!-- /ANCHOR:architecture -->
 
 ---
 
-<!-- ANCHOR:features -->
-## 3. FEATURES
+<!-- ANCHOR:package-topology -->
+## 3. PACKAGE TOPOLOGY
 
-### 3.1 HOW THE INDEXED-CONTINUITY STORE WORKS
-
-This section explains the main ideas behind the indexed-continuity store in plain language. For the full tool reference with parameters, skip to [3.2 Tool Reference](#32-tool-reference).
-
----
-
-#### 3.1.1 HYBRID SEARCH
-
-When you search for something, the system checks several sources at once. Think of a librarian who checks the card catalog, the shelf labels, the reading room sign-out sheet and the recommendation board all at the same time.
-
-**Five core search channels** work together, with **CocoIndex** available as an external semantic code search bridge:
-
-| Channel | How It Works | Good For |
-|---------|-------------|----------|
-| **Vector** | Compares the meaning of your query against stored embeddings | Finding related content even when the words are different |
-| **FTS5** | Full-text search on exact words and phrases | Looking up specific terms or error messages |
-| **BM25** | Keyword relevance scoring (like a search engine) | Ranking results when you know roughly what you want |
-| **Causal Graph** | Follows causal links between memories | "Why did we choose this?" questions |
-| **Degree** | Scores memories by graph connectivity, weighted by edge type (`caused`=1.0, `enabled`=0.75, `supports`=0.5) | Finding important hub memories (capped to prevent over-influence) |
-| **CocoIndex** *(bridge)* | Semantic code search via vector embeddings across source files | Finding code implementations when memory channels miss; concept-first code discovery |
-
-**Graph-first routing** determines query dispatch order: structural queries route to the Code Graph first, then CocoIndex for semantic code discovery, then the 5-channel memory pipeline. This avoids forcing one search system to handle both structural relationships and semantic similarity.
-
-**Reciprocal Rank Fusion (RRF)** combines all channel results using the formula `1/(K + rank)`. The K parameter is tuned per query intent through sensitivity analysis across K values {10, 20, 40, 60, 80, 100, 120}. A spec-doc record that scores well in multiple channels rises to the top because RRF gives exponential weight to high-ranking items while still including lower-ranked contributions.
-
-**Channel min-representation** guarantees every active channel gets at least one result in the final set, preventing a single dominant channel from drowning out useful evidence.
-
-**Quality-aware 3-tier fallback** activates when graph and semantic channels miss:
-
-| Fallback Tier | Channel | When It Kicks In |
-|---------------|---------|------------------|
-| Tier 1 | FTS5 full-text search | Graph and semantic channels return weak results |
-| Tier 2 | BM25 keyword scoring | FTS5 results below confidence floor |
-| Tier 3 | Grep/Glob filesystem search | Still poor results after BM25 |
-
-**Confidence truncation** cuts off results at 2x the median score gap so you never get a long tail of irrelevant items.
-
-**Evidence gap detection** (TRM Z-score) flags when retrieved memories do not adequately cover the query and suggests broadening the search.
-
-**Calibrated overlap bonus** rewards memories found by multiple channels at once. The bonus scales based on how many channels found the result and how confidently they scored it, rather than applying a flat bonus.
-
-**Tool-level TTL cache** remembers recent results for 60 seconds. When you save, update or delete a spec-doc record, the cache for affected searches clears automatically. You never see stale results.
-
----
-
-#### 3.1.2 SEARCH PIPELINE
-
-Every search goes through four stages. Each stage has one clear job and cannot change results from earlier stages.
-
-**Stage 1 -- Gather candidates** using graph-first routing: structural queries dispatch to Code Graph first, then CocoIndex for semantic code discovery, then the spec-doc record pipeline's active channels in parallel. Constitutional-tier memories are always injected regardless of score.
-
-**Stage 2 -- Score and fuse** using RRF plus eight post-fusion scoring signals:
-
-| Signal | What It Does | Magnitude |
-|--------|-------------|-----------|
-| Co-activation boost | Memories co-occurring with matched results get a lift. Fan-effect divisor `1/sqrt(neighbors)` prevents hubs from dominating | +0.25 |
-| FSRS decay | Adjusts score by memory retrievability `R(t,S)`. Recently accessed memories score higher | multiplicative |
-| Interference penalty | Suppresses clusters of near-identical memories (>0.75 Jaccard similarity) | -0.08 per neighbor |
-| Cold-start boost | Fresh memories (<48h) get `0.15 * exp(-elapsed/12)`, 12h half-life, capped at 0.95 | +0.15 max |
-| Session recency | Memories accessed in the current session get a recency bump | cap 0.20 |
-| Causal 2-hop | Memories 1-2 hops from retrieved causal neighbors get a contextual boost | variable |
-| Intent weights | Each of the 7 task intents has its own channel weight profile | variable |
-| Channel min-rep | Floor ensures each active channel has at least one result in the fused set | 0.005 |
-
-All channel scores are normalized to 0-1 before fusion so no single channel wins just because its scale is bigger.
-
-**Stage 3 -- Rerank** using a cross-encoder model that runs locally via node-llama-cpp (GGUF format). No cloud API needed. If your machine lacks VRAM, the reranker gracefully skips and Stage 2 order stands. MPAB (Multi-Pass Aggregation with Boundary) collapses individual chunks back to their parent memory -- the best chunk counts most, but documents with multiple matching chunks rank higher than a single lucky hit.
-
-**Stage 4 -- Filter and annotate**. Enforces score immutability (no score changes after Stage 2). Applies state filtering by minimum state parameter. Annotates results with confidence labels (high/medium/low) and feature flag states.
-
----
-
-#### 3.1.3 QUERY INTELLIGENCE
-
-Before any search runs, the system figures out what kind of help you need. Think of it like a triage nurse who reads your symptoms and routes you to the right specialist.
-
-**Complexity routing** sizes up your question and picks the right amount of effort:
-
-| Complexity | Channels | Token Budget | When |
-|-----------|----------|-------------|------|
-| Simple | 2 | 800 tokens | Quick lookups, single-topic questions |
-| Moderate | 4 | 1,500 tokens | Multi-factor questions, debugging |
-| Complex | All 5 | 2,000 tokens | Research, architecture decisions |
-
-**Intent classification** maps your query to one of 7 task types (`add_feature`, `fix_bug`, `refactor`, `security_audit`, `understand`, `find_spec`, `find_decision`). Each type has its own channel weight profile. A `find_decision` query boosts the causal graph channel. A `fix_bug` query boosts exact-match channels.
-
-**Query decomposition** splits multi-topic questions into focused sub-queries. Each searches separately and results merge. No LLM call needed.
-
-**Query expansion** automatically adds related terms when the question is complex, so you find relevant results even when the exact wording differs. Only kicks in for complex queries to avoid bloating simple lookups.
-
-**Index-time query surrogates** pre-generate alternative names, summaries and likely questions about content when a spec-doc record is first saved. These are stored alongside the original so future searches match against them too. Like a library cataloger adding subject headings and cross-references to a new book.
-
-**Context pressure monitoring** watches how full your context window is getting. Above 60% usage the system downgrades to focused mode. Above 80% it switches to quick mode.
-
-For low-confidence deep searches, the system has two additional fallback strategies:
-
-- **LLM query reformulation** -- asks the LLM to rephrase the query more abstractly, grounding in actual knowledge base content. Reformulated hits pass through the same scope, context and quality checks as ordinary results
-- **HyDE (Hypothetical Document Embeddings)** -- writes a hypothetical answer to your question, then searches for real documents matching that imaginary answer. Surfaces content your original wording missed
-
----
-
-#### 3.1.4 MEMORY LIFECYCLE AND SCORING
-
-Not all memories are equally useful forever. The system tracks how fresh each spec-doc record is using FSRS (Free Spaced Repetition Scheduler), a model validated on 100M+ Anki flashcard users. The formula `R(t, S) = (1 + (19/81) x t/S)^(-0.5)` calculates a retrievability score where `t` is time since last access and `S` is a stability parameter.
-
-Think of it like how your own brain works: things you reviewed recently are easy to recall, while things you have not thought about in months fade into the background.
-
-**Two-dimensional decay matrix** -- decay speed is controlled by context type AND importance tier:
-
-| | constitutional | critical | important | normal | temporary | deprecated |
-|---|---|---|---|---|---|---|
-| **Decisions** | Never | Never | 1.5x | 1x | 0.5x | 0.25x |
-| **Research** | Never | 2x slower | 1.5x | 1x | 0.5x | 0.25x |
-| **General** | Never | 1.5x slower | Slow | Normal | Fast | Fastest |
-
-A critical decision never fades. A temporary debugging note fades within days.
-
-**Cold-start novelty boost** -- fresh memories (under 48 hours) get an exponential boost of `0.15 * exp(-elapsed_hours / 12)` with a 12-hour half-life, capped at 0.95. This counteracts FSRS's natural tendency to underrank brand-new content.
-
-**Interference penalty** -- prevents similar spec-doc records from flooding results together. If several memories in the same spec folder share more than 75% Jaccard similarity, each additional neighbor costs -0.08 points. Enforces diversity at the similarity level, beyond ranking alone.
-
-**Auto-promotion** -- memories earn their way up. After 5 positive validation marks, a normal memory promotes to important. After 10, important promotes to critical. Rate-limited to prevent bulk promotion during busy sessions.
-
-**Negative feedback with 30-day decay** -- demotes unhelpful memories, but the penalty fades over time. This prevents permanent blacklisting and allows memories to recover relevance as the project evolves.
-
-**Four active cognitive states** based on access patterns:
-
-**HOT** (just used) >> **WARM** (recently relevant) >> **COLD** (not accessed lately) >> **DORMANT** (inactive)
-
-The active continuity and recovery ladder uses only the four live states above.
-
-When you search, HOT memories get full content in results. WARM memories appear as summaries. COLD and below only show up if they score well enough to earn a spot.
-
----
-
-#### 3.1.5 CAUSAL GRAPH
-
-The system tracks how decisions relate to each other. Think of it like a corkboard with sticky notes connected by string. One note says "we chose JWT tokens." A string connects it to "because the session store was too slow." Another string connects that to "the Redis outage on March 5th."
-
-**Six types of causal relationships** link memories together:
-
-| Relation | Weight | Meaning |
-|----------|--------|---------|
-| **caused** | 1.0 | A led directly to B |
-| **enabled** | 0.75 | A made B possible |
-| **supersedes** | -- | B replaces A |
-| **contradicts** | -- | A and B conflict |
-| **derived_from** | -- | B is based on A |
-| **supports** | 0.5 | A provides evidence for B |
-
-**Typed-weighted degree channel** -- uses these weights to rank memories by their graph importance. Hub caps (`MAX_TYPED_DEGREE`=15, `MAX_TOTAL_DEGREE`=50) and a `DEGREE_BOOST_CAP` of 0.15 prevent any single highly-connected memory from dominating results.
-
-**Co-activation spreading** -- boosts memories connected to ones you already found relevant. A fan-effect divisor (`1/sqrt(neighbor_count)`) prevents popular hub memories from getting an outsized boost just because they connect to everything.
-
-**Community detection** (Louvain algorithm) -- automatically clusters related memories into groups. When one memory in a cluster is relevant, its neighbors get a small boost. This surfaces related context you might not have thought to ask for.
-
-**Graph momentum** -- tracks how quickly a spec-doc record is gaining new connections. Trending knowledge (recently gaining links) surfaces higher than static nodes. Actively evolving decisions get more visibility.
-
-**Temporal contiguity** -- gives a time-proximity boost to memories created around the same time. If one memory from a Tuesday afternoon session is relevant, others from that same session probably are too. The boost fades as the time gap grows.
-
-**Typed traversal** -- pays attention to what kind of connection it follows based on your question. A "what caused this bug?" query prioritizes cause-and-effect links. A "what supports this decision?" query prioritizes evidence links. In smaller knowledge bases, the system takes shorter, more targeted steps.
-
-**Causal depth signals** -- measure how deep each spec-doc record sits in the decision tree. Root decisions (with many descendants) get different tiebreaker boosts than leaf tasks.
-
-**Async LLM graph backfill** -- uses an AI to read important documents after they are saved and suggest additional causal connections that pattern matching missed. Runs in the background after initial save.
-
-**Edge density measurement** -- tracks the average links per memory. Too few means graph features add little value. Too many triggers a hold on new link creation to prevent a tangled mess.
-
-**Unified graph retrieval** -- all graph features run through one consistent path with reproducible results and full explainability. A single switch turns off all graph features if anything goes wrong.
-
-**Causal trust display badges** -- `memory_search` results carry an additive `trustBadges` payload per `MemoryResultEnvelope`, derived at response time from existing causal-edge columns. The `formatSearchResults()` formatter at `mcp_server/formatters/search-results.ts` batch-reads connected causal-edge data and attaches the following display-only fields to each result envelope: `confidence` (clamped from the strongest connected edge `strength`), `extractionAge` (human-readable age from the newest connected `extracted_at`), `lastAccessAge` (human-readable age from the newest connected `last_accessed`), `orphan` (`true` when the result has no incoming causal edges), and `weightHistoryChanged` (`true` when any connected edge has a `weight_history` row). The formatter fails open when the DB handle or `weight_history` table is unavailable, and preserves any precomputed `trustBadges` payload a caller already supplied. `mcp_server/lib/response/profile-formatters.ts` extends response-profile result typing so the `quick`, `research`, and `resume` profiles preserve the badge payload on `results[]` and `topResult` rather than dropping it during shaping. The placement decision is per-result, not top-level — the trust signal belongs beside the specific spec-doc record claim the user is judging. No schema change, no new relation types, no new storage of code/process/tool facts.
-
----
-
-#### 3.1.6 SAVE INTELLIGENCE
-
-When you save new knowledge, the system runs an arbitration process before storing anything. It runs a sophisticated arbitration process to decide what to do with incoming content.
-
-**Prediction Error gating** compares new content against existing spec-doc records and picks one of four outcomes:
-
-| Outcome | When | What Happens |
-|---------|------|-------------|
-| **CREATE** | No similar spec-doc record exists | Stored as new knowledge |
-| **REINFORCE** | Similar exists, new one adds value | Both kept, old one gets a confidence boost |
-| **UPDATE** | Similar exists, new one is better | Old version replaced in place |
-| **SUPERSEDE** | New knowledge contradicts the old | New version active, old one demoted to deprecated |
-
-This is session-scoped to prevent cross-session interference.
-
-**Reconsolidation-on-save** -- handles near-duplicates intelligently. Nearly identical content gets merged. Contradictions retire the old version. Different content keeps both. Like a filing clerk who reads the new document, checks the cabinet and makes an informed decision instead of just stuffing it in.
-
-**Semantic sufficiency gating** -- rejects memories too thin or lacking real evidence. Short documents with strong structural signals (clear title, proper labels) get an exception.
-
-**Verify-fix-verify loop** -- runs quality checks inside the save workflow when `SPECKIT_QUALITY_LOOP` is enabled. If the spec-doc record falls short, the save path can try to fix problems and check again before storing.
-
-**Content normalization** -- strips formatting clutter (bullet markers, code fences, header symbols) before generating embeddings. Cleaner fingerprints match your questions more accurately.
-
-**Auto-entity extraction** -- spots tool names, project names and concept names when you save and adds them to a shared catalog. Connects memories mentioning the same things even when surrounding text differs completely.
-
-**Signal vocabulary expansion** -- recognizes correction signals ("actually", "wait") and preference signals ("prefer", "want") in your language, shaping quality scoring.
-
-**Correction tracking** -- records what changed when a newer memory replaces an older one. Creates a paper trail of how knowledge evolved.
-
-**SHA-256 content-hash deduplication** -- recognizes unchanged files instantly and skips expensive reprocessing.
-
----
-
-#### 3.1.7 SESSION AWARENESS
-
-The system keeps track of what happened during your current conversation so it does not repeat itself or lose context mid-session.
-
-**Working memory with attention decay** -- stores findings from the current session. Each result's relevance decays by `0.85^distance` per event (where distance is how many tool calls ago it was found). Floor is 0.05, eviction at 0.01. Recent findings stay prominent while older ones fade gracefully.
-
-**Session deduplication** -- pushes down results you already saw. If you got a result 3 turns ago, new searches rank it lower. Saves approximately 50% of tokens on follow-up queries.
-
-**Context pressure monitoring** -- watches how full your AI's context window is getting. Above 60% usage: downgrades to focused mode. Above 80%: switches to quick mode. Prevents memory retrieval from overwhelming the conversation.
-
----
-
-#### 3.1.8 QUALITY GATES AND LEARNING
-
-Not everything deserves to be stored. Before a new spec-doc record enters the system, it goes through three layered checks:
-
-1. **Structure gate** -- does the file have the required format, headings and metadata?
-2. **Semantic sufficiency gate** -- is there enough real content to be useful?
-3. **Duplicate gate** -- does this already exist? If so, run Prediction Error arbitration (create, reinforce, update or supersede)
-
-If a file fails any gate, the system rejects it with a clear explanation. Preview all checks without saving using `dryRun: true`.
-
-The system also learns from how you use search results:
-
-**Learned relevance feedback** -- watches when you mark results as useful or not. Helpful results get a boost in future queries. 10 safeguards prevent noise: denylist, rate limits, 30-day decay, per-cycle caps, minimum session thresholds, one-week trial period before boosts go live.
-
-**Result confidence scoring** -- tags each result as high, medium or low confidence using fast heuristics (no LLM needed). Checks: top-K separation, multi-channel agreement, quality score and source document structure.
-
-**Two-tier explainability** -- basic mode shows a plain-language reason ("matched strongly on meaning, boosted by causal graph connection"). Debug mode shows exact channel contributions and weights.
-
-**Mode-aware response profiles** -- formats results differently by situation. Quick lookup returns top answer only. Research returns full results with evidence. Resume returns state plus next-steps. Debug returns the full retrieval trace.
-
-**Empty result recovery** -- diagnoses why a search came back empty (too narrow filter, unclear question, missing knowledge) and suggests next steps.
-
----
-
-#### 3.1.10 RETRIEVAL ENHANCEMENTS
-
-Beyond the core search pipeline, several enhancements make retrieval smarter at finding what you actually need.
-
-**Constitutional memory as expert knowledge injection** -- tags high-priority memories with instructions about when to surface. They appear whenever relevant without you asking, like sticky notes on a filing cabinet that say "pull this file whenever someone asks about X." Constitutional injections obey global scope enforcement so the wrong tenant's rules never leak.
-
-**Spec folder hierarchy search** -- uses your project folder organization as a retrieval signal. If you are looking at a child folder, the system also checks parent and sibling folders for related information.
-
-**Dual-scope memory auto-surface** -- watches for tool use and context compression events and automatically brings up important memories without being asked.
-
-**Cross-document entity linking** -- connects memories across folders when they reference the same concept, even if the surrounding text is completely different.
-
-**Memory summary search channel** -- creates a short summary of each spec-doc record when saved and searches against those summaries. Like reading the back-cover blurb of a book.
-
-**Contextual tree injection** -- labels each result with its position in the project hierarchy ("Project > Feature > Detail") so you always know where it belongs.
-
-**ANCHOR-based section retrieval** -- indexed packet docs and generated continuity artifacts can include `<!-- ANCHOR:name -->` markers. The search system indexes individual sections separately, allowing retrieval of just "decisions" or "next-steps" from a large document (~93% token savings). Files above 50K characters are always chunk-split.
-
-**Provenance-rich response envelopes** (when `includeTrace` is enabled) -- show exactly how each result was found: which channels contributed, how scores were calculated and where the information originated.
-
----
-
-#### 3.1.11 INDEXING AND INFRASTRUCTURE
-
-The system keeps the index accurate and performant as your project evolves.
-
-##### Code-graph freshness model
-
-The structural code graph does not have a real-time source-code watcher. The current watcher paths are markdown/spec-doc or skill-graph scoped, while structural graph freshness is read-path/manual. See `mcp_server/code_graph/lib/ensure-ready.ts` and `mcp_server/code_graph/handlers/scan.ts` for the read-path and explicit scan contracts.
-
-**Read-path self-heal** -- `code_graph/lib/ensure-ready.ts:329-442` runs from graph read handlers and can selectively reindex changed tracked files when stale sets are safe to repair inline. This is invoked by query/context reads; it is not a file-save watcher.
-
-**Manual full repair** -- `code_graph_scan` is operator-triggered. The handler at `code_graph/handlers/scan.ts:177-356` performs incremental or full indexing and persists the refreshed graph state when a broad repair is needed.
-
-**Status surface** -- `code_graph_status` is diagnostic/read-only. The status handler reads the readiness snapshot at `code_graph/handlers/status.ts:158-167` and reports freshness/trust metadata without repairing the graph.
-
-**Required-action behavior** -- when a graph read requires a full scan that cannot run inline, `code_graph_query` blocks the answer and emits `requiredAction: "code_graph_scan"` with `blockReason: "full_scan_required"` from `code_graph/handlers/query.ts:787-828`.
-
-**Optional markdown filesystem watching** (chokidar) -- when `SPECKIT_FILE_WATCHER=true`, watches configured markdown/spec-doc paths and re-indexes changed docs. This is not a structural code-graph source watcher; run `code_graph_scan` when structural graph freshness requires a full scan.
-
-**Incremental indexing with content hashing** -- tracks SHA-256 hashes of every indexed file. Unchanged files get skipped instantly during scans.
-
-**Embedding retry orchestrator** -- when the embedding service is temporarily unavailable, the spec-doc record is saved without a vector and queued for retry. A background worker retries until it succeeds. A temporary outage never permanently blocks full searchability.
-
-**Lexical-only fallback indexing** -- saves memories in a simpler text-searchable form when the embedding service is down. Keyword search still works. When the service returns, the system upgrades to full vector searchability automatically.
-
-**Atomic write-then-index** -- writes files to a temporary location first and only moves them once confirmed. Crash-safe with pending-file recovery on startup.
-
-**Chunked-save finalization** -- chunked saves track the created parent and child IDs so finalization stays transactional. Prediction-error supersede finalization records cross-path `supersedes` edges and marks predecessors superseded inside one transaction. Safe-swap updates null old-child `parent_id` values before bulk delete inside that same finalization step, and any finalize failure triggers compensating cleanup that removes the staged replacement chunk tree. Parent BM25 mutation is delayed until at least one chunk succeeds and, for safe-swap updates, until finalization completes, which preserves the old parent BM25 state when all chunks fail.
-
-**Dynamic server instructions** -- at MCP startup, tells the calling AI how many memories are stored, how many folders exist and which search methods are available.
-
-| Automation claim | Trigger | Default / caveat | Manual fallback |
-| --- | --- | --- | --- |
-| Markdown/spec-doc watcher indexing | `SPECKIT_FILE_WATCHER=true` starts the watcher | Default off; re-indexes markdown/spec docs, not structural code graph | `memory_index_scan` |
-| Touched packet doc indexing | `/memory:save` Step 11.5 with `SPECKIT_AUTO_INDEX_TOUCHED=on` | Save workflow only | `memory_index_scan({ specFolder })` |
-| Spec validation | Operator workflow invokes `validate.sh --strict` | No universal PostToolUse validator hook found | `bash .opencode/skill/system-spec-kit/scripts/spec/validate.sh <spec-folder> --strict` |
-| CCC lifecycle | `/memory:manage ccc ...` or direct `ccc_*` MCP call | Manual; no background CCC trigger found | `ccc_status`, `ccc_reindex`, `ccc_feedback` |
-
----
-
-#### 3.1.12 EVALUATION INFRASTRUCTURE
-
-Research-grade infrastructure for measuring and improving search quality over time.
-
-**12-metric core computation** -- grades every query across twelve quality dimensions (MRR@1/3/10, NDCG@10, MAP and more). Together they pinpoint exactly where search is struggling, like a doctor running multiple tests instead of just asking "do you feel sick?"
-
-**Synthetic ground truth corpus** -- 110 test questions with known correct answers in everyday language plus trick questions. Makes it possible to measure objectively whether changes improve or hurt quality. The corpus is keyed to live parent-memory IDs, so after DB rebuilds or imports you should rerun `scripts/evals/map-ground-truth-ids.ts` against the active `context-index.sqlite` before trusting ablation or reporting deltas.
-
-**Ablation study framework** -- turns off each search channel one at a time and measures quality degradation (Recall@20 delta). Identifies which components are critical.
-
-**Holdout scoring evaluation** -- tests proposed ranking improvements on a fixed test set before they go live. A new approach only reaches production after it proves itself.
-
-**Learned Stage 2 weight combiner** -- learns the best combination of scoring signals from actual usage data. Candidate weights are evaluated offline against held-out runs before they affect live ranking.
-
-**Scoring observability** -- randomly samples scoring events and saves before-and-after snapshots for debugging.
-
----
-
-#### 3.1.13 CODE GRAPH
-
-The code graph system provides structural code analysis via tree-sitter AST parsing and SQLite storage. It maps what connects to what in the codebase: function calls, imports, class hierarchy and containment.
-
-**Architecture:** CocoIndex (semantic, external MCP) finds code by concept. Code Graph (structural, this server) maps imports, calls and hierarchy. Memory (session, this server) preserves decisions. The compact-merger combines all three under a 4000-token budget for compaction injection. Code-graph source is self-contained under `code_graph/` with `handlers/`, `lib/`, `tools/`, and `tests/`.
-
-**Phase-DAG runner:** `indexFiles()` runs through a typed phase-DAG runner at `code_graph/lib/phase-runner.ts`. The scan flow decomposes into four declared phases: `find-candidates` -> `parse-candidates` -> `finalize` -> `emit-metrics`. The runner validates duplicate names, missing dependencies, and cycles before any phase body runs and attaches `phaseName` to any `PhaseRunnerError`. `IndexFilesResult` shape, public exports, and the SQLite schema are unchanged — the runner is purely orchestrational.
-
-**Parser:** Tree-sitter WASM is the default parser (JS/TS/Python/Shell). Set `SPECKIT_PARSER=regex` for regex fallback.
-
-**Storage:** `database/code-graph.sqlite` (separate from `database/context-index.sqlite`), with tables: `code_files`, `code_nodes`, `code_edges`, and `code_graph_metadata`.
-
-**Edge types:** `CONTAINS`, `CALLS`, `IMPORTS`, `EXPORTS`, `EXTENDS`, `IMPLEMENTS`, `DECORATES`, `OVERRIDES`, `TYPE_OF`.
-
-**Edge explanation and blast-radius uplift:** Edge metadata writes include graph-local `reason` and `step` JSON fields next to the existing `confidence`, `detectorProvenance`, and `evidenceClass` payload. `code_graph_query` relationship rows surface those fields for each edge, and `code_graph_context` propagates them through both structured edges and compact text briefs. `blast_radius` keeps the prior file-oriented payload while adding `depthGroups`, `riskLevel` (graph-local: `high` on ambiguity or depth-one fanout >10, `medium` on 4-10, `low` otherwise), an optional `minConfidence` traversal filter, `ambiguityCandidates`, and a structured `failureFallback` so callers never receive a bare error string when resolution cannot continue. The `code_edges` schema stays at `metadata TEXT` — the new fields ride inside the existing JSON blob.
-
-**`detect_changes` preflight MCP tool:** A read-only handler at `code_graph/handlers/detect-changes.ts` is registered alongside the other Code Graph handlers in `code_graph/handlers/index.ts` and exposed as a top-level MCP tool via the dispatcher (`code_graph/tools/code-graph-tools.ts`), JSON schema (`tool-schemas.ts`), and strict Zod validator (`schemas/tool-input-schemas.ts`). It accepts `{ diff: string, rootDir?: string }` and returns `{ status, affectedSymbols[], affectedFiles[], blockedReason?, timestamp, readiness }`. The P1 safety invariant is hard: `ensureCodeGraphReady` runs first with `allowInlineIndex: false` and `allowInlineFullScan: false`, so any non-`fresh` readiness state returns `status: 'blocked'` before the diff is parsed and `affectedSymbols[]` is empty (false-safe RISK-03 mitigation). A clean-room minimal unified-diff parser at `code_graph/lib/diff-parser.ts` handles `diff --git`, `--- a/<path>`, `+++ b/<path>`, and `@@ -oldStart[,oldLines] +newStart[,newLines] @@` headers, returning `parse_error` on malformed input — no new npm dependency is required. Symbol attribution uses pure line-range overlap against `queryOutline(filePath)` rows; synthetic per-file `module` nodes are excluded so they don't drown per-symbol signal. New route/tool/shape graph entities (`route_map`, `tool_map`, `shape_check`, `api_impact`) remain deferred; the routine MCP exposure of this read-only handler is unaffected.
-
-**Read-path readiness:** `ensureCodeGraphReady()` runs automatically inside `code_graph_query` and `code_graph_context`. It checks graph freshness, returns a `readiness` block, and performs bounded inline selective reindex only when the stale set is small enough to repair safely on the read path. Empty graphs, large stale sets, and other full-scan cases remain explicit `code_graph_scan` work.
-
-**Shared readiness contract:** `code_graph/lib/readiness-contract.ts` owns the shared readiness helpers used by query, scan, status, context, and CCC handlers. Read-path trust labels project onto the canonical `SharedPayloadTrustState` vocabulary instead of a new local enum.
-
-**Startup/recovery surfaces:** `session_resume`, `session_bootstrap`, and the startup brief report freshness-aware graph status instead of count-only health. Startup surfaces are intentionally non-mutating snapshots, so later structural reads may still differ if repo state changes.
-
-**Cross-runtime startup payload parity:** all four supported runtimes transport the same compact startup shared-payload through their runtime-specific hooks — `hooks/claude/session-prime.ts`, `hooks/gemini/session-prime.ts`, `hooks/copilot/session-prime.ts`, and `hooks/codex/session-start.ts`. The transported payload includes `graphQualitySummary` (detector provenance + edge-enrichment summary) and the `sharedPayloadTransport` envelope produced by `buildStartupBrief()`. `session_bootstrap()` remains available as a manual recovery path when native startup hooks are disabled or unwired.
-
-**CALLS disambiguation:** `code_graph_query` CALLS mode prefers callable implementation nodes over wrapper-shadow candidates for ambiguous subjects (e.g. `handle*`), and records ambiguity / selected-candidate metadata alongside the results so callers can audit the choice.
-
-**Query routing:** Structural queries (callers, imports, dependencies) go to `code_graph_query`. Semantic and concept queries go to CocoIndex (`mcp__cocoindex_code__search`). Session and memory queries go to `memory_context`.
-
-**Budget allocator floors:** constitutional 700, codeGraph 1200, cocoIndex 900, triggered 400, overflow pool 800 = 4000 total.
-
----
-
-#### 3.1.14 SKILL ADVISOR
-
-The Skill Advisor is the native Gate 2 routing surface for matching prompts to skills. It lives as a self-contained package under `skill_advisor/` inside this MCP server and exposes four MCP tools:
-
-| Tool | Purpose |
-|------|---------|
-| `advisor_recommend` | Route a prompt through native 5-lane fusion and return prompt-safe recommendations. |
-| `advisor_rebuild` | Explicitly rebuild the advisor index, with `force` support and before/after freshness diagnostics. |
-| `advisor_status` | Report freshness, generation, trust state, `skillCount`, `lastScanAt`, lane weights, and daemon availability. |
-| `advisor_validate` | Return measured corpus, holdout, parity, safety, and latency slices. |
-
-**Architecture:** the native package owns scorer fusion, daemon freshness, lifecycle redirects, compatibility entrypoints, Zod schemas, and package-local tests. The Python script at `.opencode/skill/system-spec-kit/mcp_server/skill_advisor/scripts/skill_advisor.py` is a compatibility shim: it probes the native path first, translates native output to the legacy JSON-array shape, and falls back to local Python scoring when native routing is unavailable.
-
-**Fusion lanes:** explicit_author 0.45, lexical 0.30, graph_causal 0.15, derived_generated 0.10, semantic_shadow 0.00. The semantic lane is shadow-only and hardcoded at 0.
-
-**Affordance evidence:** `advisor_recommend` accepts structured tool/resource hints as a sanitized affordance lane wired into the existing `derived_generated` and `graph_causal` lanes — no new scoring lane, no new `entity_kind`, no new relation type. The allowlist normalizer at `skill_advisor/lib/affordance-normalizer.ts` accepts only `skillId`/`skill_id`, `name`, `triggers[]`, `category`, and the existing relation fields (`dependsOn[]`/`depends_on[]`, `enhances[]`, `siblings[]`, `prerequisiteFor[]`/`prerequisite_for[]`, `conflictsWith[]`/`conflicts_with[]`). Free-form `description` text is intentionally ignored as a trigger source. URLs, email addresses, token-shaped fragments, control characters, and instruction-shaped strings are stripped or dropped before scoring. Sanitized triggers contribute through the existing `derived_generated` lane (`scorer/lanes/derived.ts`) with reduced weight, and normalized relations become temporary edges in the existing `graph_causal` lane (`scorer/lanes/graph-causal.ts`) reusing the existing `enhances` / `siblings` / `depends_on` / `prerequisite_for` / `conflicts_with` `EDGE_MULTIPLIER` values. Recommendation payloads cite stable `affordance:<skillId>:<index>` identifiers — never raw matched phrases. The Python graph compiler (`skill_advisor/scripts/skill_graph_compiler.py`) compiles `derived.affordances[]` into existing `signals` and sparse adjacency without changing `ALLOWED_ENTITY_KINDS` (`{"skill", "agent", "script", "config", "reference"}`).
-
-**Current baseline:** 80.5% full corpus, 77.5% holdout, UNKNOWN <= 10, and zero regressions on Python-correct prompts.
-
-**Public API:** plugin and shim consumers should use `skill_advisor/compat/index.ts` or its compiled `dist/skill_advisor/compat/index.js` equivalent. Do not pin external consumers to private compiled handler paths.
-
-For package-local details, see [Skill Advisor Native Package README](skill_advisor/README.md) and [Skill Advisor Native Bootstrap](skill_advisor/INSTALL_GUIDE.md).
-
-**Tuning the scoring tables:** `/doctor:skill-advisor` is the user-facing surface for proposing and applying optimizations to `TOKEN_BOOSTS`, `PHRASE_BOOSTS`, `CATEGORY_HINTS`, and per-skill `graph-metadata.json` derived fields (`derived.trigger_phrases`, `derived.key_topics`). The command runs a 5-phase pipeline (Discovery -> Analysis -> Proposal -> Apply -> Verify) with auto and confirm modes; mutation boundaries are validated by a Phase 3 canonical-path validator (realpath + repo-relative + allowlist exact-match) before any write, and a per-run rollback script is generated under packet-local scratch for safe recovery. End-user setup guide: [`.opencode/install_guides/SET-UP - Skill Advisor.md`](<../../../install_guides/SET-UP - Skill Advisor.md>).
-
-**Runtime hook surface:** prompt-time Skill Advisor adapters ship for Claude, Gemini, Copilot, and Codex. Claude, Gemini, and Codex inject the brief through runtime hook output when their hooks are wired; Copilot refreshes its managed local custom-instructions block for next-prompt freshness and keeps hook stdout as `{}`. Codex native hooks require `codex_hooks` plus user/workspace `hooks.json`; repo `.codex/settings.json` is an example template. When native routing is unavailable, use the documented runtime fallback paths rather than treating the Python shim as the primary operator surface.
-
-| Runtime automation | Trigger | Default / caveat | Fallback |
-| --- | --- | --- | --- |
-| Claude advisor/startup | `.claude/settings.local.json` hook events | Richest project-local lifecycle surface | `/spec_kit:resume`, direct MCP tools |
-| Codex advisor/startup | `[features].codex_hooks = true` plus user/workspace `hooks.json` | No Spec Kit Stop hook; `.codex/settings.json` is template-only | `/spec_kit:resume`, `session_bootstrap()` |
-| Copilot advisor/startup | Copilot-supported writer scripts | Next-prompt custom-instructions freshness only | Managed instructions file, `/spec_kit:resume` |
-| OpenCode advisor | Plugin transform/event handlers | Plugin transport, not shell hooks | Direct MCP tools |
-
-- [hooks/README.md](./hooks/README.md) - runtime hook overview for the MCP server package
-- [hooks/claude/README.md](./hooks/claude/README.md) - Claude registration and `UserPromptSubmit` behavior
-- [hooks/gemini/README.md](./hooks/gemini/README.md) - Gemini registration and prompt-time advisor wiring
-- [hooks/copilot/README.md](./hooks/copilot/README.md) - Copilot wrapper/custom-instructions path and fallback behavior
-- [hooks/codex/README.md](./hooks/codex/README.md) - Codex native hook wiring and deferred config guidance
-- [../references/hooks/skill-advisor-hook.md](../references/hooks/skill-advisor-hook.md) - canonical cross-runtime hook reference and capability matrix
-- [../references/hooks/skill-advisor-hook-validation.md](../references/hooks/skill-advisor-hook-validation.md) - manual validation playbook for hook setup and troubleshooting
-
----
-
-### 3.2 TOOL REFERENCE
-
-Tools are listed by architecture layer. Each entry has a plain-language description and a parameter table. For full Zod schemas with types and defaults, see `tool-schemas.ts`.
-
-**Start here for most tasks**: `memory_context` (L1) automatically figures out what you need. Use the lower-level tools when you want precise control.
-
----
-
-#### L1: Orchestration (3 tools)
-
-##### `memory_context`
-
-The smart entry point. You describe what you need and it figures out the best way to find it. It reads your query, detects whether you are looking for a decision, debugging context or general knowledge, picks the right search mode and returns the most relevant results. Start here for almost everything.
-
-| Parameter | Type | Notes |
-|-----------|------|-------|
-| `input` | string | **Required.** Your question or task description |
-| `mode` | string | `auto` (default), `quick`, `deep`, `focused`, `resume` |
-| `intent` | string | Override detected intent: `add_feature`, `fix_bug`, `refactor`, `security_audit`, `understand`, `find_spec`, `find_decision` |
-| `specFolder` | string | Narrow results to a specific spec folder |
-| `tenantId` | string | Tenant boundary for governed retrieval |
-| `userId` | string | User boundary for governed retrieval |
-| `agentId` | string | Agent boundary for governed retrieval |
-| `limit` | number | Max results to return (default varies by mode) |
-| `sessionId` | string | Session ID for deduplication across turns |
-| `anchors` | string[] | Pull specific sections: `["state", "next-steps"]` |
-| `tokenUsage` | number | Current token budget fraction (0.0-1.0) for adaptive depth |
-| `enableDedup` | boolean | Skip memories already seen this session |
-| `includeContent` | boolean | Include full memory content in response |
-| `includeTrace` | boolean | Include retrieval trace for debugging |
-
-```json
-{
-  "tool": "memory_context",
-  "arguments": {
-    "input": "implement JWT refresh token rotation",
-    "intent": "add_feature",
-    "specFolder": "specs/005-auth",
-    "anchors": ["decisions", "next-steps"]
-  }
-}
-```
-
----
-
-##### `session_resume`
-
-Resume session with combined memory, code graph and CocoIndex status in a single call. Use when you want the detailed merged resume payload directly. The response carries freshness-aware code-graph status (`fresh`, `stale`, `empty`, `error`) instead of count-only health. Session-resume auth binds `args.sessionId` to the transport caller context from `lib/context/caller-context.ts`; mismatches are rejected by default, with `MCP_SESSION_RESUME_AUTH_MODE=permissive` available for canary rollout. For the canonical first-call recovery path on session start or after `/clear`, prefer `session_bootstrap`, and for operator-facing packet recovery prefer `/spec_kit:resume`, which reconstructs context from `handover.md`, then `_memory.continuity`, then packet docs.
-
-| Parameter | Type | Notes |
-|-----------|------|-------|
-| `specFolder` | string | Scope resume to a specific spec folder |
-| `minimal` | boolean | Skip heavy memory context, return code graph, CocoIndex, structural context, hints, and optional session quality without the full memory payload |
-
----
-
-##### `session_bootstrap`
-
-Complete session bootstrap in one call. This is the canonical first-call recovery step on session start or after `/clear`. It wraps the full `session_resume` payload plus `session_health` and returns context, health, structural readiness and recommended next actions. Startup/bootstrap surfaces are freshness-aware but non-mutating; use `code_graph_scan` when readiness shows an empty or broad full-scan state. For documented spec-folder workflows, `/spec_kit:resume` sits above this tool as the operator-facing recovery surface.
-
-| Parameter | Type | Notes |
-|-----------|------|-------|
-| `specFolder` | string | Scope bootstrap to a specific spec folder |
-
----
-
-#### L2: Core (4 tools)
-
-##### `memory_search`
-
-The main search tool. You type what you are looking for in plain language and the system searches through all stored knowledge to find the best matches. It understands meaning (beyond keywords), so searching for "login problems" can find a document titled "authentication troubleshooting."
-
-| Parameter | Type | Notes |
-|-----------|------|-------|
-| `query` | string | Free-text search (use `query` OR `concepts`, not both) |
-| `concepts` | string[] | AND search: 2-5 strings that must all match |
-| `specFolder` | string | Scope to a folder |
-| `tenantId` | string | Tenant boundary |
-| `userId` | string | User boundary |
-| `agentId` | string | Agent boundary |
-| `limit` | number | 1-100 results (default 10) |
-| `tier` | string | Filter by importance tier |
-| `minState` | string | Minimum active state: `HOT`, `WARM`, `COLD`, `DORMANT` |
-| `rerank` | boolean | Apply cross-encoder reranking |
-| `useDecay` | boolean | Apply FSRS decay to scores |
-| `intent` | string | Adjust channel weights for task type |
-| `mode` | string | `auto` or `deep` |
-| `min_quality_score` | number | Filter out low-quality results |
-
-```json
-{
-  "tool": "memory_search",
-  "arguments": {
-    "query": "database migration strategy",
-    "specFolder": "specs/010-db-refactor",
-    "rerank": true,
-    "limit": 5
-  }
-}
-```
-
----
-
-##### `memory_quick_search`
-
-The lightweight search option. Works like a preset: you provide a query and optional scope boundaries and it forwards to the full search tool with sensible defaults. Use this when you want fast results without setting lots of parameters.
-
-| Parameter | Type | Notes |
-|-----------|------|-------|
-| `query` | string | **Required.** Free-text search query |
-| `specFolder` | string | Scope to a folder |
-| `tenantId` | string | Tenant boundary |
-| `userId` | string | User boundary |
-| `agentId` | string | Agent boundary |
-| `limit` | number | 1-100 results (default 10) |
-
----
-
-##### `memory_match_triggers`
-
-The speed-first search option. Instead of doing a deep analysis of your question, it matches specific phrases against a list of known keywords, like a phone's autocomplete. Results come back almost instantly. Frequently used memories show up with full details. Older ones appear as lightweight pointers.
-
-| Parameter | Type | Notes |
-|-----------|------|-------|
-| `prompt` | string | **Required.** The user's current prompt text |
-| `limit` | number | Max matches to return |
-| `session_id` | string | Session context for co-activation |
-| `turnNumber` | number | Current conversation turn for attention decay |
-| `include_cognitive` | boolean | Include HOT/WARM tiered content injection |
-
-```json
-{
-  "tool": "memory_match_triggers",
-  "arguments": {
-    "prompt": "fix the token refresh bug in auth service",
-    "turnNumber": 3,
-    "include_cognitive": true
-  }
-}
-```
-
----
-
-##### `memory_save`
-
-This is how you add new knowledge to the system. Point it at a markdown file and it reads, validates, embeds and stores the content so it becomes searchable. Before storing, it checks whether the information already exists and decides whether to add it fresh, update an older version or skip it. Quality gates catch low-value content before it clutters the knowledge base.
-
-| Parameter | Type | Notes |
-|-----------|------|-------|
-| `filePath` | string | **Required.** Absolute path to the `.md` file to index |
-| `force` | boolean | Overwrite if already indexed |
-| `dryRun` | boolean | Preview validation without saving |
-| `skipPreflight` | boolean | Bypass quality gate (not recommended) |
-| `asyncEmbedding` | boolean | Return immediately, generate embedding in background |
-| `retentionPolicy` | string | `keep` (default), `ephemeral` |
-| `deleteAfter` | string | ISO date for automatic deletion |
-| `sessionId` | string | Session attribution |
-| `tenantId` | string | Governance: tenant scope |
-| `userId` | string | Governance: user attribution |
-| `agentId` | string | Governance: agent attribution |
-| `provenanceSource` | string | Audit source label |
-| `provenanceActor` | string | Audit actor label |
-| `governedAt` | string | ISO timestamp for governed ingest audit |
-
-```json
-{
-  "tool": "memory_save",
-  "arguments": {
-    "filePath": "/absolute/path/to/memory-file.md",
-    "dryRun": true
-  }
-}
-```
-
----
-
-#### L3: Discovery (4 tools)
-
-##### `memory_list`
-
-Browse what is stored. Like opening a filing cabinet and looking at the folder labels. Use this to discover what is in the index and find IDs for delete or update operations.
-
-| Parameter | Type | Notes |
-|-----------|------|-------|
-| `limit` | number | Max 100 per page |
-| `offset` | number | Pagination offset |
-| `specFolder` | string | Scope to a folder |
-| `sortBy` | string | `created_at`, `updated_at` or `importance_weight` |
-| `includeChunks` | boolean | Include chunk-level detail |
-
----
-
-##### `memory_stats`
-
-Get the big picture. How many memories are stored, when they were last updated, which folders have the most content and how the importance tiers are distributed. Think of it like a dashboard for your knowledge base.
-
-| Parameter | Type | Notes |
-|-----------|------|-------|
-| `folderRanking` | string | `count`, `recency`, `importance` or `composite` |
-| `excludePatterns` | string[] | Glob patterns to exclude |
-| `includeScores` | boolean | Include composite quality scores |
-| `includeArchived` | boolean | Include archived/test/scratch folders in folder-level stats |
-| `limit` | number | Max folders to return |
-
----
-
-##### `memory_health`
-
-Run a health check. This is the diagnostic tool for when search quality degrades or something feels off. It checks for stale indexes, divergent aliases, broken embeddings and other issues. It can also attempt automatic repairs.
-
-| Parameter | Type | Notes |
-|-----------|------|-------|
-| `reportMode` | string | `full` (default) or `divergent_aliases` |
-| `limit` | number | Max items to report |
-| `specFolder` | string | Scope to a folder |
-| `autoRepair` | boolean | Attempt automatic repairs |
-| `confirmed` | boolean | Confirm destructive repair operations |
-
----
-
-##### `session_health`
-
-Check session readiness: priming status, code graph freshness and time since last tool call. Returns `ok`, `warning` or `stale` with actionable hints. Call periodically during long sessions to detect context drift.
-
-| Parameter | Type | Notes |
-|-----------|------|-------|
-| _(none required)_ |  | Returns health status with hints |
-
----
-
-#### L4: Mutation (5 tools)
-
-##### `memory_delete`
-
-Remove a spec-doc record by ID, or clear an entire folder at once. Before a big deletion, the system can take a snapshot so you can undo it. Deletions are all-or-nothing: either everything you asked to remove is gone or nothing changes.
-
-| Parameter | Type | Notes |
-|-----------|------|-------|
-| `id` | number | Memory ID to delete (use OR with specFolder) |
-| `specFolder` | string | Delete all memories in folder (requires `confirm: true`) |
-| `confirm` | boolean | **Required when using specFolder** |
-
----
-
-##### `memory_update`
-
-Change a spec-doc record's title, keywords or importance without deleting and re-creating it. When you change the title, the search index updates automatically. If the update fails partway through, everything rolls back to the way it was before.
-
-| Parameter | Type | Notes |
-|-----------|------|-------|
-| `id` | number | **Required.** Memory ID to update |
-| `title` | string | Updated title |
-| `triggerPhrases` | string[] | Updated trigger phrases |
-| `importanceWeight` | number | Updated weight (0.0-1.0) |
-| `importanceTier` | string | `constitutional`, `critical`, `important`, `normal`, `temporary`, `deprecated` |
-| `allowPartialUpdate` | boolean | Update only provided fields (default false) |
-
----
-
-##### `memory_validate`
-
-Tell the system whether a search result was helpful. Helpful results get a confidence boost so they show up more often. Unhelpful results get demoted. Over time, the system learns which memories are genuinely useful, like training a recommendation engine with thumbs-up and thumbs-down.
-
-| Parameter | Type | Notes |
-|-----------|------|-------|
-| `id` | number | **Required.** Memory ID to validate |
-| `wasUseful` | boolean | **Required.** Was this memory helpful? |
-| `queryId` | string | Query that retrieved this memory |
-| `resultRank` | number | Position in results where this appeared |
-| `notes` | string | Why it was or was not useful |
-
----
-
-##### `memory_bulk_delete`
-
-The cleanup tool for large-scale housekeeping. Delete all outdated or temporary memories in one go based on their importance level, like clearing out the recycling bin. The most important memories get extra protection. A safety checkpoint is created first so you can restore if needed.
-
-| Parameter | Type | Notes |
-|-----------|------|-------|
-| `tier` | string | **Required.** Tier to delete: `temporary`, `deprecated`, `normal`, etc. |
-| `confirm` | boolean | **Required.** Must be `true` |
-| `specFolder` | string | Scope deletion to a folder |
-| `olderThanDays` | number | Only delete memories older than N days |
-| `skipCheckpoint` | boolean | Skip automatic checkpoint (not recommended) |
-
----
-
-##### `memory_retention_sweep`
-
-Sweep governed memories whose `delete_after` timestamp has expired. This is the retention-enforcement path for rows saved with `retentionPolicy: "ephemeral"` and a concrete `deleteAfter`. The sweep deletes expired `memory_index` rows through the standard memory deletion path, which keeps FTS/vector/ancillary indexes in sync, and records a governance audit entry with `reason: "retention_expired"` plus the original `delete_after` value.
-
-The server runs the same sweep on startup and then every hour by default. Set `SPECKIT_RETENTION_SWEEP=false` to disable the background interval, or set `SPECKIT_RETENTION_SWEEP_INTERVAL_MS` to change the interval. Manual invocation remains available even when the background interval is disabled.
-
-| Parameter | Type | Notes |
-|-----------|------|-------|
-| `dryRun` | boolean | Return expired candidates without deleting them |
-
-Example dry-run:
-
-```json
-{
-  "tool": "memory_retention_sweep",
-  "arguments": { "dryRun": true }
-}
-```
-
----
-
-#### L5: Lifecycle (4 tools)
-
-##### `checkpoint_create`
-
-Take a named snapshot of the current memory state. Like saving your game before a boss fight. Use before bulk operations or risky changes so you can restore if something goes wrong.
-
-| Parameter | Type | Notes |
-|-----------|------|-------|
-| `name` | string | **Required.** Checkpoint identifier |
-| `specFolder` | string | Scope to a folder |
-| `metadata` | object | Optional metadata to store with the checkpoint |
-
----
-
-##### `checkpoint_list`
-
-See all available checkpoints.
-
-| Parameter | Type | Notes |
-|-----------|------|-------|
-| `specFolder` | string | Scope to a folder |
-| `limit` | number | Max checkpoints to return |
-
----
-
-##### `checkpoint_restore`
-
-Go back in time by restoring from a named checkpoint. Replaces the current index with the snapshot.
-
-| Parameter | Type | Notes |
-|-----------|------|-------|
-| `name` | string | **Required.** Checkpoint name to restore |
-| `clearExisting` | boolean | Clear current memories before restoring |
-
----
-
-##### `checkpoint_delete`
-
-Delete a checkpoint. Requires you to type the name twice as a safety measure so you do not accidentally delete the wrong one.
-
-| Parameter | Type | Notes |
-|-----------|------|-------|
-| `name` | string | **Required.** Checkpoint name to delete |
-| `confirmName` | string | **Required.** Must exactly match `name` |
-
----
-
-#### L6: Analysis (8 tools)
-
-##### `task_preflight`
-
-Capture your starting knowledge before a task. Records how well you understand the domain, how uncertain you are and how much relevant context you have. These scores get compared to `task_postflight` to measure what you learned.
-
-| Parameter | Type | Notes |
-|-----------|------|-------|
-| `specFolder` | string | **Required.** Spec folder for this task |
-| `taskId` | string | **Required.** Unique task identifier |
-| `knowledgeScore` | number | **Required.** 0-100: domain understanding |
-| `uncertaintyScore` | number | **Required.** 0-100: how uncertain are you? |
-| `contextScore` | number | **Required.** 0-100: available relevant context |
-| `knowledgeGaps` | string[] | Known gaps before starting |
-| `sessionId` | string | Session identifier |
-
----
-
-##### `task_postflight`
-
-Capture your knowledge after a task. The system calculates a Learning Index by comparing these scores to the preflight baseline.
-
-**Formula:** `LI = (Knowledge Delta x 0.4) + (Uncertainty Reduction x 0.35) + (Context Improvement x 0.25)`
-
-| Parameter | Type | Notes |
-|-----------|------|-------|
-| `specFolder` | string | **Required.** Must match the preflight call |
-| `taskId` | string | **Required.** Must match the preflight call |
-| `knowledgeScore` | number | **Required.** Post-task knowledge score |
-| `uncertaintyScore` | number | **Required.** Post-task uncertainty score |
-| `contextScore` | number | **Required.** Post-task context score |
-| `gapsClosed` | string[] | Gaps resolved during the task |
-| `newGapsDiscovered` | string[] | New gaps found during the task |
-
----
-
-##### `memory_drift_why`
-
-Trace the causal chain for a spec-doc record. Answers "why was this decision made?" by following links between memories. Think of it like pulling on a thread: you start with one decision and follow the connections back to the events that caused it.
-
-| Parameter | Type | Notes |
-|-----------|------|-------|
-| `memoryId` | string | **Required.** Memory to trace from |
-| `maxDepth` | number | Max hops to follow (default 3, max 10) |
-| `direction` | string | `outgoing`, `incoming` or `both` |
-| `relations` | string[] | Filter to specific relationship types |
-| `includeMemoryDetails` | boolean | Include full memory content |
-
----
-
-##### `memory_causal_link`
-
-Connect two memories with a causal relationship. Use this to build decision lineage ("this refactor was caused by that bug report").
-
-| Parameter | Type | Notes |
-|-----------|------|-------|
-| `sourceId` | string | **Required.** Cause memory ID |
-| `targetId` | string | **Required.** Effect memory ID |
-| `relation` | string | **Required.** `caused`, `enabled`, `supersedes`, `contradicts`, `derived_from` or `supports` |
-| `strength` | number | Edge weight (0.0-1.0, default 1.0) |
-| `evidence` | string | Free-text evidence supporting this link |
-
----
-
-##### `memory_causal_stats`
-
-Get statistics about the causal graph: total edges, coverage percentage and breakdown by relationship type. Target coverage is 60% of memories linked.
-
-| Parameter | Type | Notes |
-|-----------|------|-------|
-| _(none required)_ | | Returns global stats |
-
----
-
-##### `memory_causal_unlink`
-
-Remove a causal relationship by edge ID.
-
-| Parameter | Type | Notes |
-|-----------|------|-------|
-| `edgeId` | string | **Required.** Edge ID from `memory_drift_why` results |
-
----
-
-##### `eval_run_ablation`
-
-Run a controlled experiment to test which search channels contribute most to finding the right results. Like a scientist removing one ingredient at a time to see which ones matter. Requires `SPECKIT_ABLATION=true` environment variable.
-
-| Parameter | Type | Notes |
-|-----------|------|-------|
-| `channels` | string[] | Channels to test: `vector`, `bm25`, `fts5`, `graph`, `trigger` |
-| `groundTruthQueryIds` | string[] | Query IDs with known-correct results |
-| `recallK` | number | K value for Recall@K metric |
-| `storeResults` | boolean | Persist results to eval database |
-| `includeFormattedReport` | boolean | Return human-readable report |
-
-The MCP handler scores chunk-backed hits against `parentMemoryId ?? row.id`, so eval rows stay attached to canonical parent memories. Before comparing runs after a DB rebuild or import, preview or refresh the live ground-truth mapping with `scripts/evals/map-ground-truth-ids.ts`; if token-budget overflow collapses a run below `recallK`, treat that run as investigation-only rather than a clean benchmark.
-
----
-
-##### `eval_reporting_dashboard`
-
-Generate a report showing search performance trends over time. Aggregates metrics by sprint and channel.
-
-| Parameter | Type | Notes |
-|-----------|------|-------|
-| `sprintFilter` | string | Filter by sprint ID |
-| `channelFilter` | string | Filter by channel name |
-| `metricFilter` | string | Filter by metric type |
-| `limit` | number | Max records to include |
-| `format` | string | `text` (default) or `json` |
-
----
-
-##### `code_graph_query`
-
-Query structural code relationships: `outline` (file symbols), `calls_from` and `calls_to` (call graph), `imports_from` and `imports_to` (dependency graph). Use this instead of Grep for structural queries. Supports multi-hop BFS traversal. Responses include a `readiness` block, and the handler may perform bounded inline selective reindex before answering when the graph is only lightly stale.
-
-When readiness requires a full scan that cannot run inline, `code_graph_query` returns the same explicit `status: "blocked"` payload as `code_graph_context` (with `data.blocked`, `graphAnswersOmitted`, `requiredAction: "code_graph_scan"`, `blockReason: "full_scan_required"`, readiness, and `lastPersistedAt`) instead of empty results. CALLS mode on ambiguous subjects (e.g. `handle*`) prefers callable implementation nodes over wrapper-shadow candidates and returns ambiguity / selected-candidate metadata so callers can audit the choice.
-
-| Parameter | Type | Notes |
-|-----------|------|-------|
-| `operation` | string | **Required.** `outline`, `calls_from`, `calls_to`, `imports_from`, `imports_to` |
-| `subject` | string | **Required.** File path, symbol name or `symbolId` |
-| `edgeType` | string | Filter by edge type |
-| `limit` | number | Max results (1-200, default 50) |
-| `includeTransitive` | boolean | Enable multi-hop BFS traversal |
-| `maxDepth` | number | Max traversal depth (1-10, default 3) |
-
----
-
-##### `code_graph_context`
-
-Get LLM-oriented compact graph neighborhoods. Accepts CocoIndex search results as seeds for structural expansion. Modes: `neighborhood` (1-hop calls plus imports), `outline` (file symbols), `impact` (reverse callers). Successful responses return `status: "ok"` plus readiness/trust metadata, resolved anchors, graph context, and `data.metadata.partialOutput` so callers can see whether deadline or token-budget pressure produced partial output. When the read path determines the graph needs a full scan, the tool returns an explicit `status: "blocked"` payload with `data.blocked`, `graphAnswersOmitted`, `requiredAction: "code_graph_scan"`, and the same readiness/trust metadata instead of partial graph answers.
-
-| Parameter | Type | Notes |
-|-----------|------|-------|
-| `input` | string | Natural language context query |
-| `queryMode` | string | `neighborhood` (default), `outline` or `impact` |
-| `subject` | string | Symbol name, fqName or `symbolId` |
-| `seeds` | array | Seeds from CocoIndex, manual input or graph lookups |
-| `budgetTokens` | number | Token budget for response (100-4000, default 1200) |
-| `profile` | string | Output density: `quick`, `research` or `debug` |
-| `includeTrace` | boolean | Include trace metadata for debugging |
-
-`data.metadata.partialOutput` is structured and stable: `isPartial`, `reasons`, `omittedSections`, `omittedAnchors`, and `truncatedText`. Use it to distinguish a complete answer from one shortened by deadline or token-budget limits. `data.metadata.deadlineMs` exposes the effective per-call deadline so callers can correlate `partialOutput.reasons` with the budget that produced them.
-
----
-
-#### L7: Maintenance (5 tools)
-
-##### `memory_index_scan`
-
-Scan the workspace for new or changed packet continuity docs and supporting generated context artifacts and add them to the index. Use after adding files manually or after a git pull. Processes three source families: constitutional rules, spec documents, and supporting generated context artifacts. Spec documents stay indexed by default; during scan they run through the save pipeline in warn-only quality mode so validation issues surface as warnings instead of silently bypassing retrieval.
-
-| Parameter | Type | Notes |
-|-----------|------|-------|
-| `specFolder` | string | Scope scan to a folder |
-| `force` | boolean | Re-index even if file hash unchanged |
-| `includeConstitutional` | boolean | Include constitutional rules directory |
-| `includeSpecDocs` | boolean | Include spec folder documents (default: true) |
-| `incremental` | boolean | Only process files changed since last scan |
-
----
-
-##### `memory_get_learning_history`
-
-View learning records (preflight/postflight pairs) for a spec folder. Shows how the Learning Index changed over time.
-
-| Parameter | Type | Notes |
-|-----------|------|-------|
-| `specFolder` | string | **Required.** Spec folder to query |
-| `sessionId` | string | Filter by session |
-| `limit` | number | Max records to return |
-| `onlyComplete` | boolean | Only return paired preflight+postflight records |
-| `includeSummary` | boolean | Include aggregated summary statistics |
-
----
-
-##### `memory_ingest_start`
-
-Start a bulk import job for multiple markdown files. Returns immediately with a job ID so you do not have to wait. Check progress with `memory_ingest_status`.
-
-| Parameter | Type | Notes |
-|-----------|------|-------|
-| `paths` | string[] | **Required.** Absolute file paths to import |
-| `specFolder` | string | Associate imported files with a spec folder |
-
----
-
-##### `memory_ingest_status`
-
-Check the progress of a running import job.
-
-| Parameter | Type | Notes |
-|-----------|------|-------|
-| `jobId` | string | **Required.** Job ID from `memory_ingest_start` |
-
----
-
-##### `memory_ingest_cancel`
-
-Cancel a running import job. The current file finishes processing before the job stops.
-
-| Parameter | Type | Notes |
-|-----------|------|-------|
-| `jobId` | string | **Required.** Job ID to cancel |
-
----
-
-##### `code_graph_scan`
-
-Scan workspace files and build the structural code graph index (functions, classes, imports, calls). Uses tree-sitter WASM for parsing with regex fallback. Supports incremental re-indexing via content hash. Use this explicitly when the graph is empty, when a read path reports `full_scan`, or when you want to rebuild more than the bounded inline refresh path will repair.
-
-| Parameter | Type | Notes |
-|-----------|------|-------|
-| `rootDir` | string | Root directory to scan (default: workspace root) |
-| `includeGlobs` | string[] | Glob patterns for files to include |
-| `excludeGlobs` | string[] | Additional glob patterns to exclude |
-| `incremental` | boolean | Skip unchanged files (default: true) |
-
----
-
-##### `code_graph_status`
-
-Report code graph index health: file count, node and edge counts by type, parse health summary, last scan timestamp, DB file size, schema version, readiness/trust fields for the current freshness probe, and `graphQualitySummary` so operators can inspect detector provenance plus edge-enrichment confidence instead of relying on counts alone.
-
-| Parameter | Type | Notes |
-|-----------|------|-------|
-| _(none required)_ |  | Returns health report |
-
----
-
-##### `detect_changes`
-
-Read-only preflight MCP tool backed by the handler at `code_graph/handlers/detect-changes.ts`. Maps a unified-diff input to the structural symbols it touches via line-range overlap, refusing to answer when the graph is stale. Registered in `code_graph/handlers/index.ts`, the dispatcher `code_graph/tools/code-graph-tools.ts`, the JSON schema catalog `tool-schemas.ts`, and the strict Zod validator in `schemas/tool-input-schemas.ts`. External clients call it as a top-level MCP tool alongside `code_graph_query` and `code_graph_context`.
-
-| Parameter | Type | Notes |
-|-----------|------|-------|
-| `diff` | string | **Required.** Unified diff in the subset `git diff` emits (`diff --git`, `--- a/<path>`, `+++ b/<path>`, `@@ -oldStart[,oldLines] +newStart[,newLines] @@`) |
-| `rootDir` | string | Workspace root override; canonicalized via `realpathSync` and rejected if it escapes the workspace via symlink |
-
-Response shape: `{ status, affectedSymbols[], affectedFiles[], blockedReason?, timestamp, readiness }`. The handler probes readiness via `ensureCodeGraphReady(rootDir, { allowInlineIndex: false, allowInlineFullScan: false })` BEFORE any diff parsing or graph lookup. Any `freshness !== 'fresh'` returns `status: 'blocked'` immediately with `affectedSymbols[]` empty (false-safe RISK-03 mitigation). Symbol attribution uses pure line-range overlap against `queryOutline(filePath)` rows; synthetic per-file `module` nodes are excluded so they don't drown per-symbol signal. Diff parsing returns `parse_error` on malformed input — see `code_graph/lib/diff-parser.ts` for the clean-room minimal parser and `rangesOverlap` helper.
-
----
-
-##### `ccc_status`
-
-Check CocoIndex availability, binary path and index status. Trigger: `/memory:manage ccc status` or direct `ccc_status` MCP call.
-
-| Parameter | Type | Notes |
-|-----------|------|-------|
-| _(none required)_ |  | Returns CocoIndex health |
-
----
-
-##### `ccc_reindex`
-
-Trigger CocoIndex incremental or full re-indexing of the workspace. Trigger: `/memory:manage ccc reindex [--full]` or direct `ccc_reindex` MCP call.
-
-| Parameter | Type | Notes |
-|-----------|------|-------|
-| `full` | boolean | Full re-index (slower) vs incremental (default: `false`) |
-
----
-
-##### `ccc_feedback`
-
-Submit quality feedback on CocoIndex search results to improve future searches. Trigger: `/memory:manage ccc feedback ...` or direct `ccc_feedback` MCP call.
-
-| Parameter | Type | Notes |
-|-----------|------|-------|
-| `query` | string | **Required.** The search query that was executed |
-| `rating` | string | **Required.** `helpful`, `not_helpful` or `partial` |
-| `resultFile` | string | File path from the result being rated |
-| `comment` | string | Optional free-form feedback |
-
-<!-- /ANCHOR:features -->
-<!-- /ANCHOR:name -->
-
----
-
-<!-- ANCHOR:structure -->
-## 4. STRUCTURE
-
-``` 
+```text
 mcp_server/
-├── context-server.ts          # MCP entry point and runtime bootstrap
-├── startup-checks.ts          # Startup diagnostics used before tool registration
-├── cli.ts                     # Admin/maintenance CLI surface
-├── tool-schemas.ts            # Tool definition source of truth
-├── api/                       # Stable public imports for eval, indexing, search, providers, storage
-├── core/                      # Runtime config, DB-state coordination, rebind hooks
-├── configs/                   # Cognitive config + search-weights reference data
-├── database/                  # Runtime SQLite artifacts and profile-specific DBs
-├── formatters/                # Search-result and token-metric formatting
-├── handlers/                  # MCP tool handlers plus save/index helper modules
-├── hooks/                     # Session-start/compaction surfacing, mutation feedback, token-count sync
-├── lib/                       # Retrieval, storage, eval, governance, scoring, and parsing internals
-├── matrix_runners/            # F1-F14 x CLI adapter manifest, per-CLI runners, and meta-runner
-├── schemas/                   # Zod tool-input schemas
-├── stress_test/               # Explicit stress, load, matrix-cell, and degraded-state suites
-├── tests/                     # Default Vitest unit, integration, handler, and regression suites
-├── tools/                     # Tool dispatch layer
-├── package.json               # Package metadata and scripts
-├── tsconfig.json              # TypeScript build config
-├── vitest.config.ts           # Vitest configuration
-├── INSTALL_GUIDE.md           # Full installation walkthrough
-└── README.md                  # This file
++-- context-server.ts        # MCP transport entrypoint
++-- tool-schemas.ts          # Public tool schema registry
++-- handlers/                # Top-level MCP tool handlers
++-- tools/                   # Tool definition groups and dispatcher helpers
++-- schemas/                 # Zod input schemas
++-- lib/                     # Memory, search, scoring, context, and utility code
++-- code_graph/              # Structural code graph scanner, query handlers, and tools
++-- skill_advisor/           # Native prompt-to-skill routing package
++-- hooks/                   # Runtime hook payload builders
++-- formatters/              # Response shaping for MCP payloads
++-- shared/                  # Shared algorithms and cross-package helpers
++-- configs/                 # Runtime tuning data
++-- scripts/                 # Maintenance and evaluation scripts
++-- database/                # Local SQLite databases
++-- tests/                   # Vitest and integration coverage
+`-- README.md
 ```
 
-### Key Files
+Allowed dependency direction:
 
-| File | What It Does |
-|------|-------------|
-| `context-server.ts` | Starts the MCP listener, performs runtime bootstrap, and registers the live tool registry. |
-| `startup-checks.ts` | Startup diagnostics and environment validation run before the server begins serving tools. |
-| `tool-schemas.ts` | Defines every tool name, description and parameter schema in one place. |
-| `handlers/memory-save.ts` | Runs the save pipeline: validates structure, checks dedup/quality gates, generates embeddings, and stores the result. |
-| `handlers/chunking-orchestrator.ts` | Handles chunked-save staging, safe-swap finalization, rollback cleanup, and delayed parent BM25 updates. |
-| `api/index.ts` | Stable external import surface for eval, indexing, search, provider, and discovery helpers. |
-| `matrix_runners/` | Packet-030 matrix adapters for cli-codex, cli-copilot, cli-gemini, cli-claude-code and cli-opencode, plus the manifest and meta-runner. |
-| `stress_test/` | Dedicated stress-test suites run by `npm run stress`; excluded from default `npm test`. |
-| `INSTALL_GUIDE.md` | Step-by-step installation with embedding providers and environment variables. |
-
-### Notable Modules
-
-| Module | What It Does |
-|--------|--------------|
-| `code_graph/lib/readiness-contract.ts` | Shared readiness helpers for code-graph handlers, including canonical readiness and trust-state projections |
-| `lib/context/caller-context.ts` | AsyncLocalStorage-based caller identity for transport-bound handler auth and audit metadata |
-| `hooks/shared-provenance.ts` | Shared recovered-payload sanitization and provenance wrapping for Claude, Gemini, and Copilot |
-| `hooks/copilot/compact-cache.ts` | Copilot compact-cache producer so Copilot matches Claude/Gemini recovery behavior |
-| `lib/enrichment/retry-budget.ts` | Retry exhaustion budget that stops repeated post-insert enrichment failures from looping forever |
-| `lib/utils/exhaustiveness.ts` | `assertNever` helper for exhaustive union handling in typed runtime code |
-
-### 7-Layer Tool Architecture
-
-Tools are organized into layers based on what they do. Lower layers handle everyday operations. Higher layers handle specialized tasks.
-
-| Layer | Name | Tools | Token Budget | Purpose |
-|-------|------|-------|-------------|---------|
-| L1 | Orchestration | 3 | 2,000 | Smart entry point that figures out what you need |
-| L2 | Core | 4 | 1,500 | The main search and save operations |
-| L3 | Discovery | 4 | 800 | Browse what is stored, check system health |
-| L4 | Mutation | 5 | 500 | Update, delete, validate, bulk cleanup, and retention sweep |
-| L5 | Lifecycle | 4 | 600 | Checkpoints and lifecycle snapshot management |
-| L6 | Analysis | 8 | 1,200 | Trace decisions, measure learning, run evaluations |
-| L7 | Maintenance | 5 | 1,000 | Re-index files, review history, run bulk imports |
-| L8 | Code Graph + Skill Graph + CocoIndex bridge + Skill Advisor | 17 | 1,400 | Code graph scan/query/status/context/verify plus `detect_changes`, skill graph + advisor (`advisor_recommend`/`advisor_rebuild`/`advisor_status`/`advisor_validate`), CocoIndex bridge (`ccc_status`/`ccc_reindex`/`ccc_feedback`) |
-| L9 | Coverage / Deep Loop Graph | 4 | 600 | `deep_loop_graph_upsert` / `_query` / `_status` / `_convergence` |
-| | **Total** | **54** | **9,600** | Canonical: `TOOL_DEFINITIONS.length` in `tool-schemas.ts`; deferred / not-yet-wired handlers do NOT count |
-
-Token budgets control how much content each tool can return per call. The budget prevents any single tool from flooding the AI's context window. When a response exceeds its budget, results are truncated from the bottom up until they fit.
-
-<!-- /ANCHOR:structure -->
-
----
-
-<!-- ANCHOR:configuration -->
-## 5. CONFIGURATION
-
-For the complete list of all environment variables with defaults and examples, see `../references/config/environment_variables.md`.
-
-Codex note: if the active Codex runtime cannot write inside the repository, point `SPEC_KIT_DB_DIR` at a writable directory (for example under your home directory or `/tmp`). Use `MEMORY_DB_PATH` only when you intentionally need one fixed sqlite file instead of letting the runtime derive a profile-specific filename automatically.
-
-### Embedding Providers
-
-The system needs an embedding provider to convert text into vectors for similarity search. Pick one:
-
-| Provider | Environment Variables | Notes |
-|----------|-----------------------|-------|
-| **Voyage AI** (recommended) | `EMBEDDINGS_PROVIDER=auto`, `VOYAGE_API_KEY=your-key` | Preferred automatically when the key is present; uses `voyage-4` embeddings and `rerank-2.5` |
-| **OpenAI** | `EMBEDDINGS_PROVIDER=auto`, `OPENAI_API_KEY=your-key` | Selected automatically when Voyage is unavailable and an OpenAI key is present |
-| **HuggingFace local** | `EMBEDDINGS_PROVIDER=auto` | Default fallback when no cloud API keys are present; stays fully local |
-
-### Representative Environment Variables
-
-The full source of truth lives in `../references/config/environment_variables.md`. The table below lists the variables most likely to matter during server bring-up and documentation audits.
-
-| Variable | Default | What It Controls |
-|------|---------|-----------------|
-| `SPEC_KIT_DB_DIR` / `SPECKIT_DB_DIR` | auto-detected | Preferred database-directory override; runtime derives a provider/model-specific sqlite filename inside it |
-| `MEMORY_DB_PATH` | unset | Explicit file override for the active memory database; use only when you intentionally want to pin one sqlite path |
-| `ENABLE_RERANKER` | `false` | Enable the experimental reranker path |
-| `ENABLE_TOOL_CACHE` | `true` | Enable tool-level result caching |
-| `SPECKIT_STRICT_SCHEMAS` | `true` | Strict Zod validation for MCP tool inputs |
-| `SPECKIT_RESPONSE_TRACE` | `false` | Include trace-rich scores/source metadata by default |
-| `SPECKIT_DYNAMIC_INIT` | `true` | Inject live startup memory/index summary into MCP init |
-| `SPECKIT_CONTEXT_HEADERS` | `true` | Prepend contextual tree headers to markdown results |
-| `SPECKIT_FILE_WATCHER` | `false` | Enable chokidar-based auto re-indexing |
-| `MCP_SESSION_RESUME_AUTH_MODE` | `strict` | Session-resume auth binding mode: `strict` rejects caller/session mismatches, `permissive` logs and continues |
-| `SPEC_KIT_BATCH_SIZE` | `5` | Batch size for `memory_index_scan` |
-| `SPEC_KIT_BATCH_DELAY_MS` | `100` | Delay between scan batches in milliseconds |
-
-Provider selection and the wider rollout-flag matrix drift more often than this overview. For current values, rely on:
-
-- `../references/config/environment_variables.md`
-- `configs/README.md`
-- `database/README.md`
-
-<!-- /ANCHOR:configuration -->
-
----
-
-<!-- ANCHOR:usage-examples -->
-## 6. USAGE EXAMPLES
-
-### Example 1: Find Context for a Feature Task
-
-Start a new feature and pull all relevant prior decisions:
-
-```json
-{
-  "tool": "memory_context",
-  "arguments": {
-    "input": "add rate limiting to the auth API",
-    "intent": "add_feature",
-    "specFolder": "specs/005-auth",
-    "mode": "deep",
-    "anchors": ["decisions", "state", "next-steps"]
-  }
-}
+```text
+context-server.ts → tool-schemas.ts / tools/ → handlers/
+handlers/ → lib/ / code_graph/ / skill_advisor/ / formatters/
+lib/ → shared/ / configs/ / database adapters
+hooks/ → lib/ / code_graph/ / skill_advisor/ read surfaces
+tests/ → public handlers, public helpers, and package-local fixtures
 ```
 
-**What happens**: Constitutional rules appear at the top. Then spec decisions, then prior auth notes. ANCHOR filtering pulls only the relevant subsections from large documents.
+Disallowed dependency direction:
+
+```text
+lib/ → handlers/
+shared/ → handlers/ or context-server.ts
+database/ → runtime modules
+dist/ → source imports
+```
+
+<!-- /ANCHOR:package-topology -->
 
 ---
 
-### Example 2: Save Canonical Packet Continuity
+<!-- ANCHOR:directory-tree -->
+## 4. DIRECTORY TREE
 
-After an architectural decision or implementation session, update the packet's canonical continuity surfaces and reindex the packet docs:
+```text
+mcp_server/
++-- api/                     # API-oriented helpers and route surfaces
++-- code_graph/              # Structural graph indexing and MCP handlers
++-- configs/                 # Search and cognitive configuration files
++-- core/                    # Core package support modules
++-- database/                # SQLite database files and local state
++-- formatters/              # Tool response formatters
++-- handlers/                # MCP handler modules
++-- hooks/                   # Runtime hook integration code
++-- lib/                     # Search, memory, context, scoring, and utility modules
++-- plugin_bridges/          # Runtime bridge packages
++-- schemas/                 # Runtime input validation schemas
++-- scripts/                 # Package maintenance scripts
++-- shared/                  # Shared code used across server zones
++-- skill_advisor/           # Native Skill Advisor package
++-- stress_test/             # Stress test support
++-- tests/                   # Package tests
++-- tools/                   # Tool definition and dispatcher modules
++-- utils/                   # General server utilities
++-- context-server.ts        # MCP server entrypoint
++-- startup-checks.ts        # Startup diagnostics
++-- tool-schemas.ts          # MCP tool schema definitions
+`-- README.md
+```
+
+<!-- /ANCHOR:directory-tree -->
+
+---
+
+<!-- ANCHOR:key-files -->
+## 5. KEY FILES
+
+| File | Responsibility |
+|---|---|
+| `context-server.ts` | Starts the MCP server and wires transport to the dispatcher. |
+| `tool-schemas.ts` | Defines the public MCP tool registry and schema metadata. |
+| `schemas/tool-input-schemas.ts` | Validates incoming tool arguments with strict schemas. |
+| `handlers/index.ts` | Collects handler modules for dispatcher use. |
+| `tools/` | Groups tool definitions by domain. |
+| `lib/search/` | Owns memory retrieval, vector index access, lexical search, fusion, and reranking. |
+| `code_graph/` | Owns structural scan, query, context, status, and diff attribution tools. |
+| `skill_advisor/` | Owns native skill recommendation scoring, freshness, and MCP handlers. |
+| `hooks/` | Builds runtime startup and prompt payloads. |
+| `formatters/` | Shapes search and response-profile output for clients. |
+| `ENV_REFERENCE.md` | Documents runtime environment variables. |
+| `INSTALL_GUIDE.md` | Documents package setup and MCP client registration. |
+
+<!-- /ANCHOR:key-files -->
+
+---
+
+<!-- ANCHOR:boundaries-flow -->
+## 6. BOUNDARIES AND FLOW
+
+| Boundary | Rule |
+|---|---|
+| Public API | MCP tools are exposed through `tool-schemas.ts`, `tools/`, and `context-server.ts`. |
+| Handler logic | Handler modules may call `lib/`, `code_graph/`, `skill_advisor/`, `formatters/`, and database adapters. |
+| Domain logic | `lib/` and `code_graph/` should not import top-level handlers. |
+| Storage | SQLite access stays behind package modules that own schema and migration rules. |
+| Build output | `dist/` is generated output and should not be a source dependency. |
+| Docs | This README documents current code layout only, not release packet history. |
+
+Main tool flow:
+
+```text
+╭──────────────────────────────────────────╮
+│ MCP client or runtime hook               │
+╰──────────────────────────────────────────╯
+                  │
+                  ▼
+┌──────────────────────────────────────────┐
+│ context-server.ts                         │
+└──────────────────────────────────────────┘
+                  │
+                  ▼
+┌──────────────────────────────────────────┐
+│ schema validation                         │
+└──────────────────────────────────────────┘
+                  │
+                  ▼
+┌──────────────────────────────────────────┐
+│ domain handler                            │
+└──────────────────────────────────────────┘
+                  │
+                  ▼
+┌──────────────────────────────────────────┐
+│ lib, code_graph, skill_advisor, database  │
+└──────────────────────────────────────────┘
+                  │
+                  ▼
+╭──────────────────────────────────────────╮
+│ typed MCP response                        │
+╰──────────────────────────────────────────╯
+```
+
+<!-- /ANCHOR:boundaries-flow -->
+
+---
+
+<!-- ANCHOR:entrypoints -->
+## 7. ENTRYPOINTS
+
+| Entrypoint | Type | Purpose |
+|---|---|---|
+| `context-server.ts` | Module | Starts the MCP server from source or compiled output. |
+| `dist/context-server.js` | Runtime artifact | Compiled MCP server used by client configuration. |
+| `tool-schemas.ts` | Module | Source of MCP tool schema definitions. |
+| `handlers/*` | Modules | Execute memory, graph, advisor, evaluation, and maintenance tools. |
+| `code_graph/handlers/*` | Modules | Execute structural graph scan, status, query, context, and diff tools. |
+| `skill_advisor/handlers/*` | Modules | Execute advisor recommend, rebuild, status, and validate tools. |
+| `hooks/*` | Modules | Produce startup, prompt, and compact-context payloads for runtime integrations. |
+| `npm run build` | Command | Builds TypeScript into `dist/`. |
+| `npm test` | Command | Runs package tests through the configured test runner. |
+
+<!-- /ANCHOR:entrypoints -->
+
+---
+
+<!-- ANCHOR:validation -->
+## 8. VALIDATION
+
+Run from `mcp_server/` unless noted.
 
 ```bash
-# 1. Update continuity from structured JSON
-node .opencode/skill/system-spec-kit/scripts/dist/memory/generate-context.js \
-  --json '{"specFolder":"005-auth","user_prompts":["Capture the auth decision"],"observations":["Documented the JWT rotation choice"],"recent_context":["Updated spec.md, decision-record.md, and implementation-summary.md"]}' \
-  specs/005-auth
-
-# 2. Reindex the packet docs
-```
-
-```json
-{
-  "tool": "memory_index_scan",
-  "arguments": {
-    "specFolder": "specs/005-auth"
-  }
-}
-```
-
-**What happens**: The packet's canonical continuity surfaces are updated, `description.json.lastUpdated` and `graph-metadata.json` derived fields refresh on the same save, the spec-folder docs are reindexed, and `/spec_kit:resume` can recover that work from `handover.md`, `_memory.continuity`, and packet docs on the next session.
-
----
-
-### Example 3: Trace a Decision's Origin
-
-Find out why a particular choice was made:
-
-```json
-{
-  "tool": "memory_drift_why",
-  "arguments": {
-    "memoryId": "mem_abc123",
-    "maxDepth": 4,
-    "direction": "incoming",
-    "relations": ["caused", "enabled"]
-  }
-}
-```
-
-**What happens**: Returns a causal chain showing which decisions, bugs or requirements led to this memory.
-
----
-
-### Example 4: Checkpoint Before Bulk Cleanup
-
-Before deleting old temporary memories, save your game:
-
-```json
-{
-  "tool": "checkpoint_create",
-  "arguments": {
-    "name": "before-temp-cleanup-2026-03-25",
-    "specFolder": "specs/022-hybrid-rag-fusion"
-  }
-}
-```
-
-Then clean up:
-
-```json
-{
-  "tool": "memory_bulk_delete",
-  "arguments": {
-    "tier": "temporary",
-    "confirm": true,
-    "specFolder": "specs/022-hybrid-rag-fusion",
-    "olderThanDays": 30
-  }
-}
-```
-
-If something goes wrong, restore:
-
-```json
-{
-  "tool": "checkpoint_restore",
-  "arguments": { "name": "before-temp-cleanup-2026-03-25" }
-}
-```
-
----
-
-### Example 5: Bulk Import Files
-
-When indexing many files at once, use async ingestion:
-
-```json
-{
-  "tool": "memory_ingest_start",
-  "arguments": {
-    "paths": [
-      "/absolute/path/to/file1.md",
-      "/absolute/path/to/file2.md",
-      "/absolute/path/to/file3.md"
-    ],
-    "specFolder": "specs/022-hybrid-rag-fusion"
-  }
-}
-```
-
-Returns `{ "jobId": "job_xyz789" }`. Check progress:
-
-```json
-{
-  "tool": "memory_ingest_status",
-  "arguments": { "jobId": "job_xyz789" }
-}
-```
-
----
-
-### Example 6: Measure Learning Across a Task
-
-Before starting a complex task, capture your baseline:
-
-```json
-{
-  "tool": "task_preflight",
-  "arguments": {
-    "specFolder": "specs/022-hybrid-rag-fusion",
-    "taskId": "implement-channel-fusion",
-    "knowledgeScore": 40,
-    "uncertaintyScore": 70,
-    "contextScore": 35,
-    "knowledgeGaps": ["RRF k-value tuning", "MPAB aggregation logic"]
-  }
-}
-```
-
-After finishing, capture what you learned:
-
-```json
-{
-  "tool": "task_postflight",
-  "arguments": {
-    "specFolder": "specs/022-hybrid-rag-fusion",
-    "taskId": "implement-channel-fusion",
-    "knowledgeScore": 85,
-    "uncertaintyScore": 25,
-    "contextScore": 80,
-    "gapsClosed": ["RRF k-value tuning", "MPAB aggregation logic"]
-  }
-}
-```
-
-**What happens**: Learning Index calculated as `(45 x 0.4) + (45 x 0.35) + (45 x 0.25) = 45 LI points`.
-
----
-
-### Common Patterns
-
-| What You Want To Do | Tool | How |
-|---------------------|------|-----|
-| Resume a session from scratch | `session_bootstrap` | Use as the first recovery call on session start or after `/clear` |
-| Inspect the detailed merged resume payload | `session_resume` | Use when you want direct resume details without the full bootstrap wrapper |
-| Repair an empty or broadly stale code graph | `code_graph_scan` | Use when readiness reports `full_scan` or the graph is missing |
-| Find a past decision | `memory_context` | Set `intent: "find_decision"` |
-| Search for specific terms | `memory_search` | Use `concepts: ["term1", "term2"]` for AND search |
-| Check triggers on every prompt | `memory_match_triggers` | Pass the user's prompt text |
-| See what is indexed | `memory_list` + `memory_stats` | Browse and count |
-| Diagnose search problems | `memory_health` | Set `reportMode: "full"` |
-| Test a save without committing | `memory_save` | Set `dryRun: true` |
-
-<!-- /ANCHOR:usage-examples -->
-
----
-
-<!-- ANCHOR:troubleshooting -->
-## 7. TROUBLESHOOTING
-
-For the feature flag rollback procedure, see `../references/workflows/rollback_runbook.md`.
-
-### Search Returns Low-Quality Results
-
-**What you see**: Irrelevant or low-scoring results from `memory_search` or `memory_context`.
-
-**Common causes**: Stale BM25 index, divergent aliases in FTS5 or memories with low quality scores surfacing.
-
-**Fix**: Run a health check with auto-repair, then retry with a higher quality floor:
-
-```json
-{ "tool": "memory_health", "arguments": { "reportMode": "full", "autoRepair": true } }
-```
-
-```json
-{ "tool": "memory_search", "arguments": { "query": "your query", "min_quality_score": 0.5 } }
-```
-
----
-
-### Save Rejected by Quality Gate
-
-**What you see**: Error like `PREFLIGHT_FAILED`, `INSUFFICIENT_CONTEXT_ABORT` or `Template contract validation failed`.
-
-**Common causes**: Too little real content, missing required structure (headings, metadata) or semantic duplicate.
-
-**Fix**: Preview what would happen with a dry run:
-
-```json
-{ "tool": "memory_save", "arguments": { "filePath": "/path/to/file.md", "dryRun": true } }
-```
-
-If it shows `INSUFFICIENT_CONTEXT_ABORT`, add more real evidence. If it shows a template-contract failure, fix the markdown structure. Do not lower quality thresholds to bypass legitimate rejections.
-
----
-
-### Embeddings Fail or Return Zeros
-
-**What you see**: Saved memories have zero vector scores. Semantic search returns nothing.
-
-**Cause**: Missing or invalid API key for the configured embedding provider.
-
-**Fix**: Check your environment:
-
-```bash
-echo $EMBEDDINGS_PROVIDER
-echo $VOYAGE_API_KEY
-```
-
-Switch to local HuggingFace if no API key is available: `EMBEDDINGS_PROVIDER=hf-local`
-
----
-
-### Memory Count Wrong After Bulk Operations
-
-**What you see**: `memory_stats` shows fewer memories than expected.
-
-**Fix**: Check if a checkpoint was created before the operation:
-
-```json
-{ "tool": "checkpoint_list", "arguments": {} }
-```
-
-Restore if needed:
-
-```json
-{ "tool": "checkpoint_restore", "arguments": { "name": "the-checkpoint-name" } }
-```
-
----
-
-### Server Fails to Start
-
-**What you see**: `node dist/context-server.js` exits with a module error or `SPEC_KIT_DB_DIR` / `MEMORY_DB_PATH` database-path error.
-
-**Fix**: Rebuild and check the database path:
-
-```bash
-cd .opencode/skill/system-spec-kit/mcp_server
 npm run build
-node --input-type=module -e "await import('./dist/context-server.js')" 2>&1 | head -20
+npm test
 ```
 
----
-
-### Quick Fixes
-
-| Problem | Fix |
-|---------|-----|
-| Search returning empty | Run `memory_index_scan` to re-index |
-| Tools not appearing in MCP client | Restart the MCP client after config changes |
-| BM25 index stale | Set `ENABLE_BM25=false` to fall back to FTS5 |
-| Slow responses on large index | Set `ENABLE_TOOL_CACHE=true` and review cache + trace settings before enabling heavier debug output |
-| Embedding API rate limit | Set `SPECKIT_EMBEDDING_RETRY_DELAY_MS=1000` |
-
-### Diagnostic Commands
+Focused documentation checks from the repository root:
 
 ```bash
-# Run full test suite
-cd .opencode/skill/system-spec-kit/mcp_server
-npx vitest run
-
-# Check database tables
-sqlite3 database/context-index.sqlite ".tables"
-
-# Count indexed memories
-sqlite3 database/context-index.sqlite "SELECT COUNT(*) FROM memory_index;"
+python3 .opencode/skill/sk-doc/scripts/validate_document.py .opencode/skill/system-spec-kit/mcp_server/README.md
+python3 .opencode/skill/sk-doc/scripts/extract_structure.py .opencode/skill/system-spec-kit/mcp_server/README.md
 ```
 
-```json
-{ "tool": "memory_health", "arguments": { "reportMode": "divergent_aliases", "limit": 20 } }
-```
+Expected result: build and tests exit 0, README validation reports no blocking issues, and structure extraction returns a README document profile.
 
-<!-- /ANCHOR:troubleshooting -->
+<!-- /ANCHOR:validation -->
 
 ---
 
-<!-- ANCHOR:faq -->
-## 8. FAQ
+<!-- ANCHOR:related -->
+## 9. RELATED
 
-**Q: Do I need an API key to use this?**
+- [`INSTALL_GUIDE.md`](./INSTALL_GUIDE.md)
+- [`ENV_REFERENCE.md`](./ENV_REFERENCE.md)
+- [`configs/README.md`](./configs/README.md)
+- [`hooks/README.md`](./hooks/README.md)
+- [`lib/search/README.md`](./lib/search/README.md)
+- [`skill_advisor/README.md`](./skill_advisor/README.md)
 
-No. The server runs with HuggingFace local embeddings out of the box whenever no cloud API key is present. Leave `EMBEDDINGS_PROVIDER=auto` for that fallback, or force `EMBEDDINGS_PROVIDER=hf-local` if you want to pin the local provider explicitly. Voyage AI gives better retrieval quality but is optional.
-
----
-
-**Q: What happens to my memories when I switch AI models?**
-
-Nothing. Memories live in the local SQLite database, not inside any AI's context. When you connect a different model to the same MCP server, it reads from the same database.
-
----
-
-**Q: How is this different from plain RAG with a vector database?**
-
-Three main differences. First, this system uses 5 search channels combined with rank fusion, beyond vector similarity. Second, it applies FSRS decay so recently accessed memories rank higher without manual curation. Third, the causal graph lets you answer "why was this decision made?" which no vector database supports natively.
-
----
-
-**Q: What is the constitutional tier and why does it always appear first?**
-
-Constitutional memories are rules that never change: coding standards, architectural constraints, project non-negotiables. They get the highest importance weight and appear in every search result regardless of score. Store things like "always use TypeScript strict mode" or "never commit secrets" at this tier.
-
----
-
-**Q: How much disk space does the database use?**
-
-A typical project with a few hundred indexed packet docs and generated continuity artifacts uses 10-50 MB. The vector table (1024-dimension float32 embeddings) is the largest contributor. Check with `memory_stats` using `includeScores: true`.
-
----
-
-**Q: What does FSRS decay mean in practice?**
-
-FSRS (Free Spaced Repetition Scheduler) is a spec-doc record model validated on 100M+ Anki users. A spec-doc record you accessed yesterday has a retrievability score near 1.0. A spec-doc record you have not accessed in months is near 0. Higher importance tiers decay more slowly. The formula is `R(t, S) = (1 + (19/81) x t/S)^(-0.5)` where `t` is time since last access and `S` is a stability parameter.
-
----
-
-**Q: How do I know which tool to call?**
-
-Start with `memory_context` for all retrieval tasks. It handles intent detection and routing automatically. Use `memory_search` when you want explicit control over channels. Use `memory_match_triggers` when processing a raw prompt at the start of each turn. Use L4-L7 tools only for mutation, analysis or maintenance.
-
----
-
-**Q: What does the dryRun parameter do on memory_save?**
-
-A dry run validates the file against the quality gate, estimates the token budget, checks for duplicates and returns a report, all without writing anything to the database. Use it to verify a file will pass before committing.
-
----
-
-**Q: How do I roll back a bad feature flag change?**
-
-Set the flag to `false` or `0` in your environment, restart the server and the pipeline falls back to the last working configuration. The full procedure is in `../references/workflows/rollback_runbook.md`. Use `eval_reporting_dashboard` to verify metrics returned to baseline.
-
-<!-- /ANCHOR:faq -->
-
----
-
-<!-- ANCHOR:related-documents -->
-## 9. RELATED DOCUMENTS
-
-### Internal Documentation
-
-| Document | What It Covers |
-|----------|---------------|
-| [INSTALL_GUIDE.md](./INSTALL_GUIDE.md) | Full installation: embedding providers, database setup, MCP client config, verification |
-| [lib/search/README.md](./lib/search/README.md) | Per-stage module mapping for the 4-stage search pipeline |
-| [hooks/README.md](./hooks/README.md) | Runtime hook overview, lifecycle/helper boundaries, and links to per-runtime registration docs |
-| [../references/hooks/skill-advisor-hook.md](../references/hooks/skill-advisor-hook.md) | Canonical cross-runtime Skill Advisor hook reference, capability matrix, and fallback contract |
-| [../references/hooks/skill-advisor-hook-validation.md](../references/hooks/skill-advisor-hook-validation.md) | Manual validation playbook for hook setup, smoke tests, and troubleshooting |
-| [../README.md](../README.md) | Parent skill README: system-spec-kit overview |
-| [../SKILL.md](../SKILL.md) | AI agent workflow instructions for this skill |
-| [../feature_catalog/feature_catalog.md](../feature_catalog/feature_catalog.md) | Complete feature inventory: 22 categories, 294 features with code references |
-| [code_graph/feature_catalog/feature_catalog.md](./code_graph/feature_catalog/feature_catalog.md) | Package-local code_graph runtime feature catalog |
-| [code_graph/manual_testing_playbook/manual_testing_playbook.md](./code_graph/manual_testing_playbook/manual_testing_playbook.md) | Package-local code_graph runtime manual testing playbook |
-| [../references/config/environment_variables.md](../references/config/environment_variables.md) | All environment variables with types, defaults and examples |
-| [../references/workflows/rollback_runbook.md](../references/workflows/rollback_runbook.md) | Feature flag rollback procedure |
-| [../../../../DEPLOYMENT.md](../../../../DEPLOYMENT.md) | Deployment notes, Docker anti-patterns, Copilot runtime notes, and session-resume auth rollout guidance |
-| [../../../changelog/system-spec-kit/v3.4.0.2.md](../../../changelog/system-spec-kit/v3.4.0.2.md) | Most recent shipped release notes |
-
-### External Resources
-
-| Resource | Description |
-|----------|-------------|
-| [Model Context Protocol Spec](https://modelcontextprotocol.io) | Official MCP specification and client documentation |
-| [FSRS Algorithm Paper](https://github.com/open-spaced-repetition/fsrs4anki/wiki/The-Algorithm) | The spec-doc record decay formula this server implements |
-| [sqlite-vec](https://github.com/asg017/sqlite-vec) | Vector similarity extension for embedding storage |
-| [Reciprocal Rank Fusion](https://dl.acm.org/doi/10.1145/1571941.1572114) | The fusion algorithm for combining channel results |
-
-<!-- /ANCHOR:related-documents -->
-
----
-
-*Documentation version: 3.1 | Last updated: 2026-04-29 | Server version: @spec-kit/mcp-server v1.8.0 | MCP SDK: @modelcontextprotocol/sdk ^1.24.3 | README covers the current retention, advisor rebuild, Codex freshness, matrix runner, stress-test, catalog, and playbook surfaces*
+<!-- /ANCHOR:related -->

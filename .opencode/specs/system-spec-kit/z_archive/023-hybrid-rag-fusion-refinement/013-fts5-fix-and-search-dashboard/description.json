@@ -1,5 +1,5 @@
 {
-  "specFolder": "system-spec-kit/023-hybrid-rag-fusion-refinement/013-fts5-fix-and-search-dashboard",
+  "specFolder": "system-spec-kit/z_archive/023-hybrid-rag-fusion-refinement/013-fts5-fix-and-search-dashboard",
   "description": "Feature Specification: FTS5 Fix, Search Dashboard, and DB Path Drift Fix",
   "keywords": [
     "feature",
@@ -11,11 +11,12 @@
     "path",
     "drift"
   ],
-  "lastUpdated": "2026-04-24T15:56:55.777Z",
+  "lastUpdated": "2026-05-02T10:39:49.271Z",
   "specId": "013",
   "folderSlug": "fts5-fix-and-search-dashboard",
   "parentChain": [
     "system-spec-kit",
+    "z_archive",
     "023-hybrid-rag-fusion-refinement"
   ],
   "memorySequence": 1,

@@ -1,1 +1,1 @@
-/Users/michelkerkmeester/MEGA/Development/Code_Environment/Barter/coder/AGENTS.md
+/Users/michelkerkmeester/MEGA/Development/Code_Environment/Public/barter/coder/AGENTS.md

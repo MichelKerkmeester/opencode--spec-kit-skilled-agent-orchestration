@@ -1,15 +1,23 @@
 {
-  "specFolder": "system-spec-kit/026-graph-and-context-optimization/000-release-cleanup/005-review-remediation/002-mcp-stress-cycle-cleanup",
-  "description": "Close the 6 P2 advisories surfaced by the 015-mcp-runtime-stress-remediation deep review (PASS verdict, hasAdvisories=true). Doc drift, navigation, and verdict-replayability fixes only.",
-  "keywords": ["mcp-runtime-stress", "doc-cleanup", "advisory", "P2", "review", "remediation", "v1.0.2"],
-  "lastUpdated": "2026-04-28T15:45:00.000Z",
+  "specFolder": "system-spec-kit/026-graph-and-context-optimization/000-release-cleanup/002-mcp-stress-cycle-cleanup",
+  "description": "Feature Specification: MCP Stress-Cycle Doc/Observability Cleanup",
+  "keywords": [
+    "feature",
+    "specification",
+    "mcp",
+    "stress-cycle",
+    "doc",
+    "observability",
+    "cleanup"
+  ],
+  "lastUpdated": "2026-05-02T10:39:47.859Z",
   "specId": "002",
   "folderSlug": "mcp-stress-cycle-cleanup",
   "parentChain": [
     "system-spec-kit",
     "026-graph-and-context-optimization",
-    "000-release-cleanup",
-    "005-review-remediation"
+    "000-release-cleanup"
   ],
-  "memorySequence": 1
+  "memorySequence": 1,
+  "memoryNameHistory": []
 }

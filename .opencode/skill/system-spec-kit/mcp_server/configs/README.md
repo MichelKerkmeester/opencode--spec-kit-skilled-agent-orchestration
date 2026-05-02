@@ -1,6 +1,6 @@
 ---
-title: "MCP Server Configuration Files"
-description: "Search-weight reference config, cognitive co-activation pattern config, and documented active/legacy sections for memory scoring behavior."
+title: "MCP Server Configuration"
+description: "Configuration files for memory ranking weights and cognitive co-activation regex settings."
 trigger_phrases:
   - "search weights"
   - "mcp config"
@@ -9,90 +9,118 @@ trigger_phrases:
   - "co-activation pattern"
 ---
 
+# MCP Server Configuration
 
-# MCP Server Configuration Files
+> Configuration inputs for memory search ranking and cognitive co-activation parsing.
 
 <!-- ANCHOR:table-of-contents -->
 ## TABLE OF CONTENTS
 
-- [1. OVERVIEW](#1-overview)
-- [2. IMPLEMENTED STATE](#2-implemented-state)
-- [3. HARDENING NOTES](#3-hardening-notes)
-- [4. VALIDATION](#4-validation)
-- [5. RELATED](#5-related)
+- [1. OVERVIEW](#1--overview)
+- [2. SURFACE](#2--surface)
+- [3. EXPORTS](#3--exports)
+- [4. ALLOWED IMPORTS](#4--allowed-imports)
+- [5. KEY FILES](#5--key-files)
+- [6. BOUNDARIES](#6--boundaries)
+- [7. ENTRYPOINTS](#7--entrypoints)
+- [8. VALIDATION](#8--validation)
+- [9. RELATED](#9--related)
 
 <!-- /ANCHOR:table-of-contents -->
 <!-- ANCHOR:overview -->
 ## 1. OVERVIEW
 
-This section provides an overview of the MCP Server Configuration Files directory.
+`mcp_server/configs/` stores configuration used by memory search and cognitive matching. JSON files hold data-only settings. TypeScript files validate environment-backed runtime settings before handlers and search modules consume them.
 
-`configs/` currently contains:
+Runtime scoring rules still live in the modules that execute scoring. This folder documents config inputs and export contracts only.
 
-- `search-weights.json` - scoring weights and document-type multipliers for memory search ranking. Partly active, partly reference. Inline notes are the source of truth for what is currently loaded at runtime.
-- `cognitive.ts` - cognitive co-activation pattern configuration. Loads regex pattern from environment variables (`SPECKIT_COGNITIVE_COACTIVATION_PATTERN`, `SPECKIT_COGNITIVE_COACTIVATION_FLAGS`) with Zod validation and regex safety checks. Exports `COGNITIVE_CONFIG` plus `loadCognitiveConfigFromEnv`/`safeParseCognitiveConfigFromEnv`; callers that need fresh environment values should prefer the loader functions over the import-time snapshot.
+Use this folder when changing static ranking defaults, trigger weight inputs, or cognitive regex environment parsing. Do not add runtime branching here unless the config file is the stable boundary and the caller owns behavior.
 
 <!-- /ANCHOR:overview -->
-<!-- ANCHOR:implemented-state -->
-## 2. IMPLEMENTED STATE
+<!-- ANCHOR:surface -->
+## 2. SURFACE
 
+| Surface | Purpose |
+|---|---|
+| `search-weights.json` | Ranking weights, document-type multipliers and trigger caps used by memory search paths. |
+| `cognitive.ts` | Environment-backed regex config for cognitive co-activation matching. |
+| Environment variables | `SPECKIT_COGNITIVE_COACTIVATION_PATTERN` and `SPECKIT_COGNITIVE_COACTIVATION_FLAGS`. |
 
-Current sections in `search-weights.json`:
+<!-- /ANCHOR:surface -->
+<!-- ANCHOR:exports -->
+## 3. EXPORTS
 
-- `documentTypeMultipliers`: active scoring reference for 10 document types (spec, decision_record, plan, tasks, implementation_summary, checklist, handover, memory, constitutional, scratch).
-- `maxTriggersPerMemory`: active cap used by trigger-related flows.
-- `smartRanking`: live config read by `vector-index-impl.ts` (weights: relevance 0.5, recency 0.3, access 0.2).
-- `rrfFusion` and `crossEncoder`: removed (P2-05 audit, 2026-02-08) as dead config with no .ts references.
+`cognitive.ts` exports:
 
-Active search tuning that does **not** live in `search-weights.json`:
+- `CognitiveConfig`
+- `COGNITIVE_CONFIG`
+- `loadCognitiveConfigFromEnv()`
+- `safeParseCognitiveConfigFromEnv()`
 
-- Adaptive fusion intent profiles live in `.opencode/skill/system-spec-kit/shared/algorithms/adaptive-fusion.ts`, including the internal continuity profile (`semantic 0.52`, `keyword 0.18`, `recency 0.07`, `graph 0.23`).
-- Stage 3 MMR intent lambdas live in `lib/search/intent-classifier.ts`, where continuity-oriented reranking now uses lambda `0.65`.
-- Stage 3 rerank gating lives in `lib/search/pipeline/stage3-rerank.ts`, where `MIN_RESULTS_FOR_RERANK = 4`.
-- Reranker cache behavior and telemetry live in `lib/search/cross-encoder.ts`; `getRerankerStatus()` exposes `hits`, `misses`, `staleHits`, and `evictions` alongside latency stats.
-- `applyLengthPenalty` remains on the reranker API for compatibility, but the current runtime length multiplier is always `1.0`, so document size no longer changes reranker scores.
+`search-weights.json` exports data through normal JSON imports or file reads. Keep the file valid JSON.
 
-Exports from `cognitive.ts`:
+<!-- /ANCHOR:exports -->
+<!-- ANCHOR:allowed-imports -->
+## 4. ALLOWED IMPORTS
 
-- `CognitiveConfig` interface and `COGNITIVE_CONFIG` singleton.
-- `loadCognitiveConfigFromEnv()` - throws on invalid env config.
-- `safeParseCognitiveConfigFromEnv()` - returns result object with success/errors.
+| Import | Rule |
+|---|---|
+| Zod | Allowed in `cognitive.ts` for environment validation. |
+| Config consumers | Search and cognitive modules may import `cognitive.ts` or read `search-weights.json`. |
+| Runtime constants | Keep runtime scoring constants in their owning search or scoring modules. |
+| Side effects | Do not add DB, file write, network, or handler execution side effects to this folder. |
 
-Important: canonical scoring behavior lives in TypeScript modules (not this README), primarily `lib/scoring/composite-scoring.ts`, `.opencode/skill/system-spec-kit/shared/algorithms/adaptive-fusion.ts`, and the Stage 3 rerank helpers.
-Important: feature-flag checks are resolved at runtime in the various `is*Enabled()` lookups under `lib/` and `handlers/`; do not treat this folder as a frozen startup snapshot of MCP behavior.
+<!-- /ANCHOR:allowed-imports -->
+<!-- ANCHOR:key-files -->
+## 5. KEY FILES
 
+| File | Responsibility |
+|---|---|
+| `search-weights.json` | Data-only ranking and trigger configuration for memory search paths. |
+| `cognitive.ts` | Regex config parsing, default values, validation errors and safety checks. |
+| `README.md` | Folder contract for config shape and import rules. |
 
-<!-- /ANCHOR:implemented-state -->
-<!-- ANCHOR:hardening-notes -->
-## 3. HARDENING NOTES
+<!-- /ANCHOR:key-files -->
+<!-- ANCHOR:boundaries -->
+## 6. BOUNDARIES
 
+| Boundary | Rule |
+|---|---|
+| Data ownership | Store portable search and cognitive config inputs here. |
+| Behavior ownership | Keep ranking, search execution and memory mutations in their owning modules. |
+| Runtime safety | Validate environment regex values before exposing them to callers. |
+| Side effects | Keep config loading free of writes, network calls and handler dispatch. |
 
-- Document-type multiplier coverage is aligned to schema/document-type indexing.
-- Dead/legacy config sections are documented to reduce ambiguity.
-- Treat this folder as config reference plus transition notes until legacy paths are fully removed.
-- Runtime behavior is source-of-truth in the resolver helpers, not in import-time constants. `search-weights.json` is read live where referenced, and environment-gated behavior should be documented against the resolver function that reads it.
+<!-- /ANCHOR:boundaries -->
+<!-- ANCHOR:entrypoints -->
+## 7. ENTRYPOINTS
 
+- Import `COGNITIVE_CONFIG` when a caller needs validated default cognitive matching settings.
+- Call `loadCognitiveConfigFromEnv()` when tests or startup code need explicit environment parsing.
+- Use `safeParseCognitiveConfigFromEnv()` when invalid regex input should return an error object instead of throwing.
+- Read `search-weights.json` from search-ranking code that needs stable scoring inputs.
 
-<!-- /ANCHOR:hardening-notes -->
+<!-- /ANCHOR:entrypoints -->
 <!-- ANCHOR:validation -->
-## 4. VALIDATION
+## 8. VALIDATION
 
+Run from the repository root:
 
 ```bash
 node -e "JSON.parse(require('fs').readFileSync('.opencode/skill/system-spec-kit/mcp_server/configs/search-weights.json', 'utf8'))"
+npm test -- --run .opencode/skill/system-spec-kit/mcp_server/tests/cognitive-config.vitest.ts
+python3 .opencode/skill/sk-doc/scripts/validate_document.py .opencode/skill/system-spec-kit/mcp_server/configs/README.md
 ```
 
+Expected result: JSON parsing succeeds, cognitive config tests pass and README validation exits `0` with no HVR issues.
 
 <!-- /ANCHOR:validation -->
 <!-- ANCHOR:related -->
-## 5. RELATED
+## 9. RELATED
 
+- [Scoring modules](../lib/scoring/README.md)
+- [Cognitive modules](../lib/cognitive/README.md)
+- [Search handlers](../handlers/README.md)
+- [Memory search reference](../../references/memory/memory_system.md)
 
-- `../lib/scoring/composite-scoring.ts`
-- `../../shared/algorithms/adaptive-fusion.ts`
-- `../lib/search/intent-classifier.ts`
-- `../lib/search/pipeline/stage3-rerank.ts`
-- `../lib/search/cross-encoder.ts`
-- `../handlers/memory-search.ts`
-- `../../references/memory/memory_system.md`
 <!-- /ANCHOR:related -->

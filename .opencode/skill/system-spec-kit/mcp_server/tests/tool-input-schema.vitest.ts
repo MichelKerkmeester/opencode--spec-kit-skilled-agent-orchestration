@@ -541,6 +541,7 @@ describe('code_graph schema coverage', () => {
         includeGlobs: ['**/*.ts'],
         excludeGlobs: ['**/*.test.ts'],
         incremental: true,
+        includeSkills: true,
       },
     },
     {
@@ -612,6 +613,20 @@ describe('code_graph schema coverage', () => {
   ];
 
   const rejectionCases: ToolSchemaCase[] = [
+    {
+      name: 'code_graph_scan rejects non-boolean includeSkills',
+      toolName: 'code_graph_scan',
+      args: {
+        includeSkills: 'true',
+      },
+    },
+    {
+      name: 'code_graph_scan rejects unexpected parameters',
+      toolName: 'code_graph_scan',
+      args: {
+        includeSkillInternals: true,
+      },
+    },
     {
       name: 'code_graph_query rejects unknown operations',
       toolName: 'code_graph_query',

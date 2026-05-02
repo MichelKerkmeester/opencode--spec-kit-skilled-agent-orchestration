@@ -1,16 +1,23 @@
 {
-  "specFolder": "026-graph-and-context-optimization/010-template-levels/003-template-greenfield-impl",
-  "description": "Feature Specification: [NAME]",
+  "specFolder": "system-spec-kit/026-graph-and-context-optimization/010-template-levels/003-template-greenfield-impl",
+  "description": "Feature Specification: Template Greenfield Implementation — C+F Hybrid Manifest-Driven (4 Phases)",
   "keywords": [
     "feature",
     "specification",
-    "name"
+    "template",
+    "greenfield",
+    "implementation",
+    "hybrid",
+    "manifest-driven",
+    "phases"
   ],
-  "lastUpdated": "2026-05-01T12:39:51.897Z",
-  "specId": "012",
+  "lastUpdated": "2026-05-02T10:39:48.807Z",
+  "specId": "003",
   "folderSlug": "template-greenfield-impl",
   "parentChain": [
-    "026-graph-and-context-optimization"
+    "system-spec-kit",
+    "026-graph-and-context-optimization",
+    "010-template-levels"
   ],
   "memorySequence": 0,
   "memoryNameHistory": []

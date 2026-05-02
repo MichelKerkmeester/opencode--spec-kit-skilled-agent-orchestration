@@ -1,6 +1,6 @@
 ---
 title: "Spec Folder Utilities"
-description: "TypeScript modules for spec folder detection and alignment validation."
+description: "TypeScript utilities for spec-folder detection, alignment checks, metadata generation and nested changelog output."
 trigger_phrases:
   - "spec folder detection"
   - "alignment validation"
@@ -9,290 +9,165 @@ trigger_phrases:
 
 # Spec Folder Utilities
 
-> TypeScript modules for spec folder detection and alignment validation.
+> TypeScript utilities that resolve spec folders, score folder alignment and generate packet metadata.
 
----
-
-## TABLE OF CONTENTS
 <!-- ANCHOR:table-of-contents -->
+## TABLE OF CONTENTS
 
-- [1. OVERVIEW](#1-overview)
-- [2. QUICK START](#2-quick-start)
-- [3. STRUCTURE](#3-structure)
-- [4. TROUBLESHOOTING](#4-troubleshooting)
-- [5. RELATED DOCUMENTS](#5-related-documents)
+- [1. OVERVIEW](#1--overview)
+- [2. PACKAGE TOPOLOGY](#2--package-topology)
+- [3. KEY FILES](#3--key-files)
+- [4. COMMANDS](#4--commands)
+- [5. BOUNDARIES](#5--boundaries)
+- [6. VALIDATION](#6--validation)
+- [7. RELATED](#7--related)
 
 <!-- /ANCHOR:table-of-contents -->
 
 ---
 
-## 1. OVERVIEW
 <!-- ANCHOR:overview -->
+## 1. OVERVIEW
 
-### What are Spec Folder Utilities?
+`scripts/spec-folder/` contains source modules used by memory save and spec-maintenance workflows. The utilities detect active spec folders, validate content-to-folder alignment, create required packet directories, generate `description.json`, and build nested changelog data for root specs or phase children.
 
-The `scripts/spec-folder/` directory contains TypeScript modules that handle intelligent spec folder detection, alignment validation, and packet-local changelog generation. These utilities ensure memory context is saved to the correct spec folder and that completion workflows can write consistent nested changelogs for root specs or phase children.
+Current state:
 
-In the Gate E model, that spec folder is also the canonical continuity home: `/spec_kit:resume` rebuilds context from `handover.md` -> `_memory.continuity` -> spec docs, while generated memory artifacts remain supporting only.
-
-### Key Features
-
-| Feature                     | Description                                                                         |
-| --------------------------- | ----------------------------------------------------------------------------------- |
-| **Smart Detection**         | Auto-detect appropriate spec folder when no explicit CLI target is supplied          |
-| **Alignment Validation**    | Calculate alignment scores between conversation topics and spec folder names        |
-| **Archive Filtering**       | Automatically exclude archived folders (z_, archive, old patterns)                  |
-| **Multi-Directory Support** | Handle both `specs/` and `.opencode/specs/` locations                               |
-| **Topic Extraction**        | Extract keywords from conversation context and observations                         |
-| **CLI Authority**           | Respect explicit CLI spec-folder targets without rerouting to session-learning picks |
-| **Phase Save Support**      | Preserve explicit phase-folder memory-save targets and write into the selected phase folder |
-| **Description Generation** | Generate per-folder `description.json` with identity + memory tracking metadata |
-| **Nested Changelog Output** | Generate canonical packet-local changelogs for root specs and phase child folders |
-
-### Requirements
-
-| Requirement | Minimum | Details                                                 |
-| ----------- | ------- | ------------------------------------------------------- |
-| Node.js     | 18+     | TypeScript support and async/await                      |
-| npm         | 8+      | Package manager                                         |
-| TypeScript  | 5.9+    | Source files are TypeScript, compiled output in `dist/` |
+- Source of truth is `scripts/spec-folder/*.ts`.
+- Compiled runtime output is `scripts/dist/spec-folder/*.js`.
+- Explicit CLI targets are authoritative when save workflows pass a spec-folder argument.
 
 <!-- /ANCHOR:overview -->
 
 ---
 
-## 2. QUICK START
-<!-- ANCHOR:quick-start -->
+<!-- ANCHOR:package-topology -->
+## 2. PACKAGE TOPOLOGY
 
-### Using in Memory Save Workflow
-
-```typescript
-// Within scripts workspace (relative import)
-import { detectSpecFolder, validateContentAlignment } from '../spec-folder';
-
-// Auto-detect spec folder from conversation context
-const specFolder = await detectSpecFolder(collectedData);
-
-// Explicit CLI targets stay authoritative when CONFIG.SPEC_FOLDER_ARG is set
-// Session-learning and alignment may log alternatives, but they do not reroute the save
-// Phase-folder targets are also preserved as explicit save destinations
-
-// Validate alignment between conversation and folder
-const alignment = await validateContentAlignment(
-  collectedData,
-  '042-feature-name',
-  '/path/to/specs'
-);
-
-console.log(`Alignment score: ${alignment.score}%`);
-```
-
-### Standalone Usage
-
-```typescript
-// Within scripts workspace (relative import)
-import {
-  filterArchiveFolders,
-  ensureSpecFolderExists,
-  buildNestedChangelogData,
-} from '../spec-folder';
-
-// Filter out archived folders
-const activeFolders = filterArchiveFolders([
-  '042-feature',
-  'z_old-feature',
-  '043-new-feature'
-]);
-// Returns: ['042-feature', '043-new-feature']
-
-// Validate a canonical packet path before downstream work
-await ensureSpecFolderExists('specs/<###-feature-name>');
-// Returns: absolute path to specs/<###-feature-name>
-
-// Legacy compat note:
-// setupContextDirectory remains exported only as an alias for older tests and callers.
-// New code should use ensureSpecFolderExists and route saves into canonical packet docs.
-
-const nestedChangelog = buildNestedChangelogData(
-  '.opencode/specs/system-spec-kit/024-compact-code-graph/029-review-remediation',
-  { mode: 'auto', outputPath: null }
-);
-// nestedChangelog.outputPath -> ".opencode/specs/.../024-compact-code-graph/changelog/changelog-024-029-review-remediation.md"
-```
-
-### Topic Extraction
-
-```typescript
-// Within scripts workspace (relative import)
-import { extractConversationTopics } from '../spec-folder';
-
-const topics = extractConversationTopics({
-  recent_context: [{
-    request: 'Fix authentication issues in login flow'
-  }],
-  observations: [
-    { title: 'Auth token validation error' }
-  ]
-});
-// Returns: ['authentication', 'login', 'flow', 'auth', 'token', 'validation', 'error']
-```
-
-<!-- /ANCHOR:quick-start -->
-
----
-
-## 3. STRUCTURE
-<!-- ANCHOR:structure -->
-
-```
+```text
 scripts/spec-folder/
-├── index.ts                     # Module exports and public API (source)
-├── folder-detector.ts           # Spec folder detection logic (source)
-├── alignment-validator.ts       # Topic alignment scoring (source)
-├── directory-setup.ts           # Directory creation and validation (source)
-├── generate-description.ts     # Per-folder description.json generator (source)
-├── nested-changelog.ts         # Root/phase nested changelog generator + CLI (source)
-└── README.md                    # This file
++-- index.ts                 # Public barrel for spec-folder utilities
++-- folder-detector.ts       # Spec-folder detection logic
++-- alignment-validator.ts   # Topic and folder alignment scoring
++-- directory-setup.ts       # Directory existence and setup helpers
++-- generate-description.ts  # description.json generator
++-- nested-changelog.ts      # Nested changelog data and CLI output
+`-- README.md
+```
 
-Compiled output (generated by tsc --build):
+Generated output:
+
+```text
 scripts/dist/spec-folder/
-├── index.js                     # Compiled module
-├── index.d.ts                   # TypeScript definitions
-├── folder-detector.js
-├── folder-detector.d.ts
-├── alignment-validator.js
-├── alignment-validator.d.ts
-├── directory-setup.js
-├── directory-setup.d.ts
-├── generate-description.js
-├── generate-description.d.ts
-├── nested-changelog.js
-└── nested-changelog.d.ts
++-- index.js
++-- folder-detector.js
++-- alignment-validator.js
++-- directory-setup.js
++-- generate-description.js
+`-- nested-changelog.js
 ```
 
-### Key Files
+Allowed direction:
 
-| File                     | Purpose                                                                             |
-| ------------------------ | ----------------------------------------------------------------------------------- |
-| `index.ts`               | Central export point for all spec-folder utilities                                  |
-| `folder-detector.ts`     | Detects appropriate spec folder from CLI args, prompts or context analysis          |
-| `alignment-validator.ts` | Validates alignment between conversation topics and folder names. Calculates scores |
-| `directory-setup.ts`     | Creates and validates `memory/` directory within spec folders                       |
-| `generate-description.ts` | Generates per-folder `description.json` with specId, folderSlug, parentChain, and memory tracking fields |
-| `nested-changelog.ts`    | Builds packet-local changelog payloads and can render or write root/phase changelog files |
+- Memory save workflows may import through `scripts/spec-folder/index.ts`.
+- CLI wrappers may run compiled output from `scripts/dist/spec-folder/` after build.
+- Metadata generation may write `description.json` for a selected packet.
 
-<!-- /ANCHOR:structure -->
+Disallowed direction:
+
+- Source modules should not import generated `dist/` files.
+- Detection logic should not override an explicit CLI target.
+- Spec-folder utilities should not own memory indexing or MCP server persistence.
+
+<!-- /ANCHOR:package-topology -->
 
 ---
 
-## 4. TROUBLESHOOTING
-<!-- ANCHOR:troubleshooting -->
+<!-- ANCHOR:key-files -->
+## 3. KEY FILES
 
-### Common Issues
+| File | Responsibility |
+|---|---|
+| `index.ts` | Exposes the public utility surface for script consumers. |
+| `folder-detector.ts` | Finds candidate spec folders from CLI data, prompts and context signals. |
+| `alignment-validator.ts` | Scores how well session topics match a target spec folder. |
+| `directory-setup.ts` | Ensures selected packet directories exist before downstream writes. |
+| `generate-description.ts` | Builds per-folder `description.json` metadata. |
+| `nested-changelog.ts` | Builds nested changelog payloads for root packets and phase children. |
 
-#### Spec folder detection fails
-
-**Symptom**: `Error: Spec folder not found: 042-feature`
-
-**Cause**: Spec folder doesn't exist or path format is incorrect
-
-**Solution**:
-```bash
-# Check available spec folders
-ls -la specs/
-
-# Use structured JSON for routine saves
-node scripts/dist/memory/generate-context.js /tmp/save-context-data-<session-id>.json specs/<###-feature-name>/
-# Direct positional mode is no longer supported; use structured JSON instead
-node scripts/dist/memory/generate-context.js /tmp/save-context-data-<session-id>.json .opencode/specs/<###-feature-name>/
-```
-
-#### Alignment score is low despite correct folder
-
-**Symptom**: Script suggests alternative folder when current is correct
-
-**Cause**: Conversation topics don't match folder name keywords
-
-**Solution**: Manually confirm correct folder when prompted or use an explicit CLI argument:
-```bash
-# Explicit CLI target is authoritative and is not rerouted
-node scripts/dist/memory/generate-context.js /tmp/context.json specs/<###-feature-name>/
-
-# Non-phase nested child paths stay authoritative
-node scripts/dist/memory/generate-context.js 003-parent/001-child
-
-# Phase-folder paths stay authoritative and save into that selected phase folder
-node scripts/dist/memory/generate-context.js .opencode/specs/system-spec-kit/022-hybrid-rag-fusion/012-code-audit-per-feature-catalog/021-remediation-revalidation
-```
-
-#### Multiple specs directories warning
-
-**Symptom**: `Multiple specs directories found`
-
-**Cause**: Both `specs/` and `.opencode/specs/` exist
-
-**Solution**: This is informational. The script uses priority order (specs/ first):
-```javascript
-// Priority order:
-// 1. specs/ (if exists)
-// 2. .opencode/specs/ (fallback)
-```
-
-### Quick Fixes
-
-| Problem                        | Quick Fix                                       |
-| ------------------------------ | ----------------------------------------------- |
-| Module not found               | `npm install` in project root                   |
-| Permission denied on memory/   | `chmod 755 specs/<###-feature-name>`                   |
-| Archive pattern false positive | Rename folder without z_, archive, old patterns |
-| Wrong folder selected          | Pass the exact CLI target; explicit args are authoritative |
-| Need phase-folder memory save  | Pass the exact phase-folder CLI target; memory writes stay in that selected phase folder |
-
-### Diagnostic Commands
-
-```bash
-# Check available specs directories
-ls -la specs/ .opencode/specs/
-
-# Check compiled output
-ls -la scripts/dist/spec-folder/
-
-# Rebuild TypeScript files if needed
-npx tsc -b .opencode/skill/system-spec-kit/scripts/tsconfig.json
-
-# Generate a nested changelog preview
-node .opencode/skill/system-spec-kit/scripts/dist/spec-folder/nested-changelog.js .opencode/specs/system-spec-kit/024-compact-code-graph/029-review-remediation
-
-# Test with actual generate-context script (which uses these utilities)
-node scripts/dist/memory/generate-context.js --help
-```
-
-<!-- /ANCHOR:troubleshooting -->
+<!-- /ANCHOR:key-files -->
 
 ---
 
-## 5. RELATED DOCUMENTS
+<!-- ANCHOR:commands -->
+## 4. COMMANDS
+
+Run from the repository root unless noted.
+
+```bash
+npm --prefix .opencode/skill/system-spec-kit/scripts run build
+```
+
+Expected result: TypeScript compiles and emits `scripts/dist/spec-folder/` files.
+
+```bash
+node .opencode/skill/system-spec-kit/scripts/dist/spec-folder/nested-changelog.js .opencode/specs/system-spec-kit/example-parent/example-child
+```
+
+Expected result: prints nested changelog data for the supplied packet path when the path exists.
+
+```bash
+node .opencode/skill/system-spec-kit/scripts/dist/memory/generate-context.js /tmp/save-context-data.json specs/<###-feature-name>/
+```
+
+Expected result: memory save workflow uses the explicit spec-folder target and supporting utilities from this folder.
+
+<!-- /ANCHOR:commands -->
+
+---
+
+<!-- ANCHOR:boundaries -->
+## 5. BOUNDARIES
+
+| Boundary | Rule |
+|---|---|
+| CLI authority | Explicit folder arguments remain the selected target even if alignment scoring finds alternatives. |
+| Archive filtering | Detection filters archived folders before ranking candidates. |
+| Metadata | `generate-description.ts` owns `description.json`. Graph metadata belongs to graph-specific tooling. |
+| Persistence | These utilities prepare paths and metadata. Memory indexing stays in memory and MCP modules. |
+
+<!-- /ANCHOR:boundaries -->
+
+---
+
+<!-- ANCHOR:validation -->
+## 6. VALIDATION
+
+Run the README validator after editing this file:
+
+```bash
+python3 .opencode/skill/sk-doc/scripts/validate_document.py .opencode/skill/system-spec-kit/scripts/spec-folder/README.md
+```
+
+Run build and a compiled-module smoke check after changing source files:
+
+```bash
+npm --prefix .opencode/skill/system-spec-kit/scripts run build
+node -e "import('./.opencode/skill/system-spec-kit/scripts/dist/spec-folder/index.js').then(m => console.log(Object.keys(m).length))"
+```
+
+Expected result: build passes and the compiled public barrel exports module members.
+
+<!-- /ANCHOR:validation -->
+
+---
+
 <!-- ANCHOR:related -->
+## 7. RELATED
 
-### Internal Documentation
-
-| Document                                                                                   | Purpose                                           |
-| ------------------------------------------------------------------------------------------ | ------------------------------------------------- |
-| [system-spec-kit/SKILL.md](../../SKILL.md)                                                 | Parent skill documentation                        |
-| [scripts/memory/generate-context.ts](../memory/generate-context.ts)                        | Main memory save script that uses these utilities |
-| [references/memory/save_workflow.md](../../references/memory/save_workflow.md)             | Memory save workflow reference                    |
-| [references/structure/folder_structure.md](../../references/structure/folder_structure.md) | Spec folder structure reference                   |
-
-### External Resources
-
-| Resource                                                          | Description                          |
-| ----------------------------------------------------------------- | ------------------------------------ |
-| [Node.js File System](https://nodejs.org/api/fs.html)             | Node.js fs/promises API              |
-| [TypeScript Handbook](https://www.typescriptlang.org/docs/)       | TypeScript documentation             |
-| [Node.js ES Modules](https://nodejs.org/api/esm.html)             | ES modules system reference          |
+- [`../memory/README.md`](../memory/README.md)
+- [`../core/README.md`](../core/README.md)
+- [`../spec/README.md`](../spec/README.md)
+- [`../../README.md`](../../README.md)
 
 <!-- /ANCHOR:related -->
-
----
-
-*Documentation version: 1.1 | Last updated: 2026-02-07 | Migrated to TypeScript with dist/ output*

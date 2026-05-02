@@ -1,164 +1,200 @@
 ---
-title: "MCP Server Test Suite"
-description: "Vitest-based unit, integration, handler, eval, and regression coverage for the MCP server."
+title: "MCP Server Tests: Vitest Coverage"
+description: "Vitest unit, integration, handler, eval, governance, and regression coverage for the MCP server."
 trigger_phrases:
   - "test suite"
   - "vitest"
   - "regression tests"
 ---
 
-# MCP Server Test Suite
+# MCP Server Tests: Vitest Coverage
 
 <!-- ANCHOR:table-of-contents -->
 ## TABLE OF CONTENTS
 
-- [1. OVERVIEW](#1-overview)
-- [2. QUICK START](#2-quick-start)
-- [3. STRUCTURE](#3-structure)
-- [4. NOTABLE COVERAGE](#4-notable-coverage)
-- [5. TROUBLESHOOTING](#5-troubleshooting)
-- [6. RUNNING VERIFICATION](#6-running-verification)
-- [7. RELATED](#7-related)
+- [1. OVERVIEW](#1--overview)
+- [2. PACKAGE TOPOLOGY](#2--package-topology)
+- [3. DIRECTORY TREE](#3--directory-tree)
+- [4. KEY FILES](#4--key-files)
+- [5. BOUNDARIES AND FLOW](#5--boundaries-and-flow)
+- [6. ENTRYPOINTS](#6--entrypoints)
+- [7. VALIDATION](#7--validation)
+- [8. RELATED](#8--related)
 
 <!-- /ANCHOR:table-of-contents -->
+
+---
+
 <!-- ANCHOR:overview -->
 ## 1. OVERVIEW
 
-The `tests/` directory is the default Vitest suite for the MCP server. It covers unit, integration, handler, fixture, regression, public API, and docs-parity behavior expected in normal verification. Dedicated stress, load, matrix-cell, degraded-state sweep, and performance validation lives in sibling `../stress_test/` and runs through `npm run stress`.
+`tests/` is the default Vitest coverage surface for the MCP server. It covers unit logic, integration paths, MCP handler contracts, retrieval behavior, governance, eval metrics, startup checks, and regression cases.
 
-The suite now verifies the Gate E continuity contract as well: `/spec_kit:resume` is the recovery surface, packet context rebuilds from `handover.md` -> `_memory.continuity` -> spec docs, and generated memory artifacts remain supporting only.
+Current responsibilities:
 
-What this suite covers:
-
-- Core cognitive behavior such as attention decay, working memory, co-activation, and tier handling.
-- Search, scoring, graph, and retrieval-pipeline behavior.
-- MCP handler dispatch, response envelopes, validation, and runtime startup behavior.
-- Save/index regressions including content-hash dedup, quality-loop behavior, and incremental-index edge cases.
-- Eval, governance, lineage, and public-API surfaces.
-
-Use the current file inventory and Vitest output as the source of truth:
-
-```bash
-rg --files tests -g '*.vitest.ts' | wc -l
-npx vitest run
-```
+- Verify cognitive retrieval behavior such as attention decay, tiering, co-activation, and session learning.
+- Verify search, ranking, graph, routing, response envelopes, and public API surfaces.
+- Verify save, index, checkpoint, governance, lineage, hook, and startup regressions.
+- Keep stress and load validation separate in sibling `../stress_test/`.
 
 <!-- /ANCHOR:overview -->
-<!-- ANCHOR:quick-start -->
-## 2. QUICK START
 
-```bash
-cd .opencode/skill/system-spec-kit/mcp_server
+---
 
-# Full suite
-npx vitest run
+<!-- ANCHOR:package-topology -->
+## 2. PACKAGE TOPOLOGY
 
-# Single file
-npx vitest run tests/attention-decay.vitest.ts
-
-# Pattern
-npx vitest run tests/handler-*.vitest.ts
+```text
+tests/
++-- *.vitest.ts          # Unit, integration, handler, eval, and regression suites
++-- fixtures/            # Sample documents and data for targeted tests
++-- continuity/          # Continuity-focused nested suites
+`-- README.md
 ```
 
-Representative focused runs:
+Allowed dependency direction:
 
-```bash
-# Docs/config parity and public API
-npx vitest run tests/feature-flag-reference-docs.vitest.ts tests/api-public-surfaces.vitest.ts
-
-# Save/index regressions
-npx vitest run tests/content-hash-dedup.vitest.ts tests/handler-memory-index-cooldown.vitest.ts tests/memory-save-pipeline-enforcement.vitest.ts
-
-# Governance surface
-npx vitest run tests/governance-e2e.vitest.ts tests/memory-governance.vitest.ts
+```text
+tests ───▶ mcp_server source modules
+tests ───▶ fixtures
 ```
 
-<!-- /ANCHOR:quick-start -->
-<!-- ANCHOR:structure -->
-## 3. STRUCTURE
+Disallowed dependency direction:
 
-This directory is too large for a byte-for-byte README listing, so treat the groups below as a live category map and rely on `rg --files` for the full inventory.
+```text
+mcp_server source modules ───▶ tests
+tests ───▶ shared temp state without explicit setup and cleanup
+```
 
-| Category | Representative Files | Notes |
+<!-- /ANCHOR:package-topology -->
+
+---
+
+<!-- ANCHOR:directory-tree -->
+## 3. DIRECTORY TREE
+
+```text
+tests/
++-- api-public-surfaces.vitest.ts          # Public export contract coverage
++-- feature-flag-reference-docs.vitest.ts  # Docs and config parity checks
++-- governance-e2e.vitest.ts               # Governed scope integration coverage
++-- handler-memory-search.vitest.ts        # MCP handler search contract coverage
++-- hybrid-search.vitest.ts                # Retrieval ranking coverage
++-- memory-save-integration.vitest.ts      # Save pipeline integration coverage
++-- scope-governance-normalizer-parity.vitest.ts
++-- fixtures/                              # Shared test fixtures
++-- continuity/                            # Continuity-specific suites
+`-- README.md
+```
+
+Use `rg --files tests -g '*.vitest.ts'` for the full live inventory.
+
+<!-- /ANCHOR:directory-tree -->
+
+---
+
+<!-- ANCHOR:key-files -->
+## 4. KEY FILES
+
+| Area | Representative Files | Responsibility |
 |---|---|---|
-| Cognitive and memory state | `attention-decay.vitest.ts`, `working-memory.vitest.ts`, `co-activation.vitest.ts`, `tier-classifier.vitest.ts`, `temporal-contiguity.vitest.ts` | Human-memory-inspired retrieval behavior |
-| Search and ranking | `hybrid-search.vitest.ts`, `bm25-index.vitest.ts`, `query-router.vitest.ts`, `dynamic-token-budget.vitest.ts`, `result-confidence-scoring.vitest.ts` | Retrieval, ranking, and profile/trace behavior |
-| Handler and protocol surface | `handler-memory-search.vitest.ts`, `handler-memory-save.vitest.ts`, `mcp-input-validation.vitest.ts`, `mcp-response-envelope.vitest.ts`, `startup-checks.vitest.ts` | MCP entrypoints and server-facing responses |
-| Save/index regressions | `content-hash-dedup.vitest.ts`, `memory-save-dedup-order.vitest.ts`, `handler-memory-index-cooldown.vitest.ts`, `chunking-orchestrator-swap.vitest.ts`, `memory-save-ux-regressions.vitest.ts` | Refinement work covered by this audit family |
-| Eval and reporting | `ablation-framework.vitest.ts`, `bm25-baseline.vitest.ts`, `reporting-dashboard.vitest.ts`, `eval-logger.vitest.ts`, `memory-state-baseline.vitest.ts` | Baselines, ablations, dashboard, and telemetry |
-| Governance and scope | `governance-e2e.vitest.ts`, `memory-governance.vitest.ts`, `scope-governance.vitest.ts` | Scope enforcement, actor auth, and governed lifecycle |
-| Public API and docs parity | `api-public-surfaces.vitest.ts`, `feature-flag-reference-docs.vitest.ts`, `hydra-spec-pack-consistency.vitest.ts` | Public imports and documentation alignment |
-| Infrastructure and utilities | `batch-processor.vitest.ts`, `tool-input-schema.vitest.ts`, `transaction-manager.vitest.ts`, `retry-manager-health.vitest.ts`, `vector-index-store-remediation.vitest.ts` | Shared helpers and runtime hardening |
+| Cognitive and memory state | `attention-decay.vitest.ts`, `working-memory.vitest.ts`, `tier-classifier.vitest.ts` | Retrieval state, scoring, and tier behavior. |
+| Search and routing | `hybrid-search.vitest.ts`, `query-plan-emission.vitest.ts`, `intent-routing.vitest.ts` | Query planning, ranking, fusion, and routing behavior. |
+| Handler and protocol surface | `handler-memory-search.vitest.ts`, `mcp-tool-dispatch.vitest.ts`, `mcp-error-format.vitest.ts` | MCP dispatch and response contracts. |
+| Save and index regressions | `memory-save-integration.vitest.ts`, `handler-memory-index.vitest.ts`, `content-router-cache.vitest.ts` | Save, scan, cache, and indexing behavior. |
+| Governance and scope | `governance-e2e.vitest.ts`, `memory-governance.vitest.ts`, `scope-governance-normalizer-parity.vitest.ts` | Scope enforcement and governed lifecycle behavior. |
+| Public API and docs parity | `api-public-surfaces.vitest.ts`, `feature-flag-reference-docs.vitest.ts` | Export and documentation alignment. |
 
-Support assets:
+<!-- /ANCHOR:key-files -->
 
-- `fixtures/` - sample documents and fixture data used by targeted suites.
+---
 
-<!-- /ANCHOR:structure -->
-<!-- ANCHOR:notable-coverage -->
-## 4. NOTABLE COVERAGE
+<!-- ANCHOR:boundaries-flow -->
+## 5. BOUNDARIES AND FLOW
 
-Recent/high-signal suites relevant to the spec-doc record database refinement work:
+| Boundary | Rule |
+|---|---|
+| Test ownership | `tests/` verifies MCP server behavior. It does not own production code paths. |
+| Fixtures | Fixture data belongs in `fixtures/` or suite-local setup. |
+| Environment | Tests that change database paths, temp folders, or feature flags must isolate state. |
+| Stress runs | Large stress and load checks belong in `../stress_test/`. |
 
-- `content-hash-dedup.vitest.ts` - same-path and cross-path content-hash dedup behavior.
-- `interference.vitest.ts` - interference scoring and retrieval penalty behavior.
-- `batch-processor.vitest.ts` - retry-aware batch helper semantics used by ingestion/index flows.
-- `quality-loop.vitest.ts` - verify-fix-verify scoring and rejection behavior.
-- `handler-memory-index-cooldown.vitest.ts` - scan cooldown, stale-delete behavior, and partial-failure handling.
-- `governance-e2e.vitest.ts` and `memory-governance.vitest.ts` - governed scope enforcement and actor-identity behavior.
-- `api-public-surfaces.vitest.ts` - public `api/` export contract.
-- `context-server-error-envelope.vitest.ts`, `envelope.vitest.ts`, and `response-profile-formatters.vitest.ts` - serialized response and profile behavior.
+Main flow:
 
-<!-- /ANCHOR:notable-coverage -->
-<!-- ANCHOR:troubleshooting -->
-## 5. TROUBLESHOOTING
-
-Common checks:
-
-```bash
-# Current test inventory
-rg --files tests -g '*.vitest.ts' | wc -l
-
-# Verify Vitest is available
-npx vitest --version
-
-# macOS temp-dir workaround used elsewhere in this repo
-TMPDIR=.tmp/vitest-tmp npx vitest run
+```text
+╭──────────────────────────────────────────╮
+│ Developer or CI command                  │
+╰──────────────────────────────────────────╯
+                  │
+                  ▼
+┌──────────────────────────────────────────┐
+│ npx vitest run [suite or pattern]        │
+└──────────────────────────────────────────┘
+                  │
+                  ▼
+┌──────────────────────────────────────────┐
+│ Suite setup creates isolated state       │
+└──────────────────────────────────────────┘
+                  │
+                  ▼
+┌──────────────────────────────────────────┐
+│ Source module or handler is exercised    │
+└──────────────────────────────────────────┘
+                  │
+                  ▼
+╭──────────────────────────────────────────╮
+│ Pass, fail, or focused regression signal │
+╰──────────────────────────────────────────╯
 ```
 
-Typical issues:
+<!-- /ANCHOR:boundaries-flow -->
 
-- DB path problems: set `MEMORY_DB_PATH` to a writable location.
-- Provider-dependent tests: export the needed embedding API key or run targeted suites that mock providers.
-- Large-suite flakiness: prefer targeted file/pattern runs first, then full-suite verification.
+---
 
-<!-- /ANCHOR:troubleshooting -->
-<!-- ANCHOR:verification -->
-## 6. RUNNING VERIFICATION
+<!-- ANCHOR:entrypoints -->
+## 6. ENTRYPOINTS
 
-Recommended documentation-adjacent verification for this README audit:
+| Entrypoint | Type | Purpose |
+|---|---|---|
+| `npx vitest run` | CLI | Runs the full MCP server test suite. |
+| `npx vitest run tests/<file>.vitest.ts` | CLI | Runs one focused suite. |
+| `rg --files tests -g '*.vitest.ts'` | CLI | Lists the current Vitest inventory. |
+| `fixtures/` | Directory | Shared fixture inputs for targeted suites. |
+
+<!-- /ANCHOR:entrypoints -->
+
+---
+
+<!-- ANCHOR:validation -->
+## 7. VALIDATION
+
+Run from `.opencode/skill/system-spec-kit/mcp_server`.
 
 ```bash
-cd .opencode/skill/system-spec-kit/mcp_server
-
-npx vitest run tests/api-public-surfaces.vitest.ts
-npx vitest run tests/feature-flag-reference-docs.vitest.ts
+npx vitest run
 ```
 
-Broader confidence runs:
+Focused examples:
 
 ```bash
+npx vitest run tests/api-public-surfaces.vitest.ts tests/feature-flag-reference-docs.vitest.ts
 npx vitest run tests/governance-e2e.vitest.ts tests/memory-governance.vitest.ts
-npx vitest run tests/content-hash-dedup.vitest.ts tests/quality-loop.vitest.ts tests/batch-processor.vitest.ts
+npx vitest run tests/handler-memory-search.vitest.ts tests/hybrid-search.vitest.ts
 ```
 
-<!-- /ANCHOR:verification -->
-<!-- ANCHOR:related -->
-## 7. RELATED
+Expected result: selected suites pass with isolated database and temp state.
 
-- `../README.md`
-- `../handlers/README.md`
-- `../api/README.md`
-- `../lib/README.md`
+<!-- /ANCHOR:validation -->
+
+---
+
+<!-- ANCHOR:related -->
+## 8. RELATED
+
+- [`../README.md`](../README.md)
+- [`../handlers/README.md`](../handlers/README.md)
+- [`../api/README.md`](../api/README.md)
+- [`../lib/README.md`](../lib/README.md)
+- [`../stress_test/README.md`](../stress_test/README.md)
 
 <!-- /ANCHOR:related -->

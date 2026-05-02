@@ -91,6 +91,7 @@ code-graph.sqlite
 # ───────────────────────────────────────────
 /a_nobel_en_zn
 /ai_systems
+/barter
 
 .opencode/specs/00--ai-systems
 .claude/specs/00--ai-systems

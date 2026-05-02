@@ -1,5 +1,5 @@
 {
-  "specFolder": "system-spec-kit/022-hybrid-rag-fusion/007-code-audit-per-feature-catalog",
+  "specFolder": "system-spec-kit/z_archive/022-hybrid-rag-fusion/007-code-audit-per-feature-catalog",
   "description": "Feature Specification: Code Audit per Feature Catalog",
   "keywords": [
     "feature",
@@ -9,11 +9,12 @@
     "per",
     "catalog"
   ],
-  "lastUpdated": "2026-04-27T13:33:11.717Z",
+  "lastUpdated": "2026-05-02T10:39:49.175Z",
   "specId": "007",
   "folderSlug": "code-audit-per-feature-catalog",
   "parentChain": [
     "system-spec-kit",
+    "z_archive",
     "022-hybrid-rag-fusion"
   ],
   "memorySequence": 3,

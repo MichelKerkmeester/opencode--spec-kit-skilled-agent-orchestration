@@ -1,18 +1,22 @@
 {
-  "specFolder": "system-spec-kit/026-graph-and-context-optimization/000-release-cleanup/005-review-remediation/032-release-readiness-deep-review-program/008-validator-spec-doc-integrity",
-  "description": "Deep-review angle 8 audits validator and spec-doc integrity for release readiness. It covers strict-mode false positives and false negatives, shell and TypeScript phase-parent detector parity, template header behavior, frontmatter memory compactness and link validation defaults.",
+  "specFolder": "system-spec-kit/026-graph-and-context-optimization/000-release-cleanup/032-release-readiness-deep-review-program/008-validator-spec-doc-integrity",
+  "description": "Feature Specification: 045-008 Validator Spec Doc Integrity",
   "keywords": [
-    "045-008-validator-spec-doc-integrity",
-    "validator audit",
-    "spec doc integrity review",
-    "phase-parent detection consistency"
+    "feature",
+    "specification",
+    "045-008",
+    "validator",
+    "spec",
+    "doc",
+    "integrity"
   ],
-  "lastUpdated": "2026-04-29T19:47:00.000Z",
+  "lastUpdated": "2026-05-02T10:39:48.559Z",
   "specId": "008",
   "folderSlug": "validator-spec-doc-integrity",
   "parentChain": [
     "system-spec-kit",
     "026-graph-and-context-optimization",
+    "000-release-cleanup",
     "032-release-readiness-deep-review-program"
   ],
   "memorySequence": 1,

@@ -1,19 +1,21 @@
 {
-  "specFolder": "system-spec-kit/026-graph-and-context-optimization/000-release-cleanup/005-review-remediation/027-evergreen-doc-packet-id-removal",
-  "description": "Adds the evergreen-doc no-packet-IDs rule to sk-doc skill (new reference + template hint). Audits recently touched evergreen docs for violations; applies fixes by replacing packet-ID references with feature-name + file:line citations or removing history sections that do not belong in runtime docs.",
+  "specFolder": "system-spec-kit/026-graph-and-context-optimization/000-release-cleanup/027-evergreen-doc-packet-id-removal",
+  "description": "Feature Specification: Evergreen Doc Packet ID Removal",
   "keywords": [
-    "027-evergreen-doc-packet-id-removal",
-    "evergreen doc rule",
-    "no packet ids in readmes",
-    "sk-doc evergreen rule",
-    "packet id audit"
+    "feature",
+    "specification",
+    "evergreen",
+    "doc",
+    "packet",
+    "removal"
   ],
-  "lastUpdated": "2026-04-29T18:40:39.132Z",
-  "specId": "040",
+  "lastUpdated": "2026-05-02T10:39:48.434Z",
+  "specId": "027",
   "folderSlug": "evergreen-doc-packet-id-removal",
   "parentChain": [
     "system-spec-kit",
-    "026-graph-and-context-optimization"
+    "026-graph-and-context-optimization",
+    "000-release-cleanup"
   ],
   "memorySequence": 2,
   "memoryNameHistory": [

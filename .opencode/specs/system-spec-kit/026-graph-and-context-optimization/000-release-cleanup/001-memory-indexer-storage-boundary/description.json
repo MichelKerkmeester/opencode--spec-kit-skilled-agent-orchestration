@@ -1,15 +1,21 @@
 {
-  "specFolder": "system-spec-kit/026-graph-and-context-optimization/000-release-cleanup/005-review-remediation/001-memory-indexer-storage-boundary",
-  "description": "Close the P1 constitutional README storage-boundary gap and 13 P2 advisories surfaced by the 005-memory-indexer-invariants deep review. Adds an SSOT predicate isIndexableConstitutionalMemoryPath() and wires it into every storage-layer mutation surface.",
-  "keywords": ["memory-indexer", "storage-boundary", "constitutional", "readme", "remediation", "P1", "review"],
-  "lastUpdated": "2026-04-28T15:15:00.000Z",
+  "specFolder": "system-spec-kit/026-graph-and-context-optimization/000-release-cleanup/001-memory-indexer-storage-boundary",
+  "description": "Feature Specification: Memory-Indexer Storage-Boundary Remediation",
+  "keywords": [
+    "feature",
+    "specification",
+    "memory-indexer",
+    "storage-boundary",
+    "remediation"
+  ],
+  "lastUpdated": "2026-05-02T10:39:47.855Z",
   "specId": "001",
   "folderSlug": "memory-indexer-storage-boundary",
   "parentChain": [
     "system-spec-kit",
     "026-graph-and-context-optimization",
-    "000-release-cleanup",
-    "005-review-remediation"
+    "000-release-cleanup"
   ],
-  "memorySequence": 1
+  "memorySequence": 1,
+  "memoryNameHistory": []
 }

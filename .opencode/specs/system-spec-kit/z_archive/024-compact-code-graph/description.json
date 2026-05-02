@@ -1,5 +1,5 @@
 {
-  "specFolder": "system-spec-kit/024-compact-code-graph",
+  "specFolder": "system-spec-kit/z_archive/024-compact-code-graph",
   "description": "Feature Specification: Hybrid Context Injection — Hook + Tool Architecture",
   "keywords": [
     "feature",
@@ -11,11 +11,12 @@
     "tool",
     "architecture"
   ],
-  "lastUpdated": "2026-04-27T14:15:10.418Z",
+  "lastUpdated": "2026-05-02T10:39:49.283Z",
   "specId": "024",
   "folderSlug": "compact-code-graph",
   "parentChain": [
-    "system-spec-kit"
+    "system-spec-kit",
+    "z_archive"
   ],
   "memorySequence": 12,
   "memoryNameHistory": [

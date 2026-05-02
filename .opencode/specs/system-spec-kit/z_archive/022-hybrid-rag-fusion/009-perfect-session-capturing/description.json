@@ -1,5 +1,5 @@
 {
-  "specFolder": "system-spec-kit/022-hybrid-rag-fusion/009-perfect-session-capturing",
+  "specFolder": "system-spec-kit/z_archive/022-hybrid-rag-fusion/009-perfect-session-capturing",
   "description": "Feature Specification: Perfect Session Capturing",
   "keywords": [
     "feature",
@@ -8,11 +8,12 @@
     "session",
     "capturing"
   ],
-  "lastUpdated": "2026-04-27T13:35:50.897Z",
+  "lastUpdated": "2026-05-02T10:39:49.196Z",
   "specId": "009",
   "folderSlug": "perfect-session-capturing",
   "parentChain": [
     "system-spec-kit",
+    "z_archive",
     "022-hybrid-rag-fusion"
   ],
   "memorySequence": 41,

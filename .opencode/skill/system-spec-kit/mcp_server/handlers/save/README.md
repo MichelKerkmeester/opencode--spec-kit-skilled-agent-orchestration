@@ -1,92 +1,270 @@
 ---
-title: "Save Handler Pipeline"
-description: "Decomposed pipeline modules for `memory_save` MCP tool handler, covering dedup, embedding, PE gating, record creation, reconsolidation and response assembly."
+title: "Save Handler: Memory Save Pipeline"
+description: "Code-folder guide for the memory_save handler modules that validate, arbitrate, persist, enrich and format memory saves."
 trigger_phrases:
   - "save handler"
   - "memory save pipeline"
-  - "save modules"
-  - "memory indexing"
+  - "memory_save handler"
+  - "atomic memory save"
 ---
 
+# Save Handler: Memory Save Pipeline
 
-# Save Handler Pipeline
+> Runtime stages for validating, arbitrating, persisting, enriching and formatting `memory_save` requests.
 
 <!-- ANCHOR:table-of-contents -->
 ## TABLE OF CONTENTS
 
 - [1. OVERVIEW](#1-overview)
-- [2. STRUCTURE](#2-structure)
-- [3. PIPELINE FLOW](#3-pipeline-flow)
-- [4. KEY CONCEPTS](#4-key-concepts)
-- [5. RELATED DOCUMENTS](#5-related-documents)
+- [2. ARCHITECTURE](#2-architecture)
+- [3. PACKAGE TOPOLOGY](#3-package-topology)
+- [4. DIRECTORY TREE](#4-directory-tree)
+- [5. KEY FILES](#5-key-files)
+- [6. BOUNDARIES AND FLOW](#6-boundaries-and-flow)
+- [7. ENTRYPOINTS](#7-entrypoints)
+- [8. VALIDATION](#8-validation)
+- [9. RELATED](#9-related)
 
 <!-- /ANCHOR:table-of-contents -->
+
+---
+
 <!-- ANCHOR:overview -->
 ## 1. OVERVIEW
 
-`handlers/save/` contains the decomposed pipeline for the `memory_save` MCP tool. Each file owns a single stage of the save flow, from deduplication through embedding generation, save quality gating, prediction-error gating, reconsolidation, record creation, post-insert enrichment, and final response assembly.
+`handlers/save/` owns the decomposed runtime path behind the `memory_save` MCP handler. The folder keeps save orchestration split into small stages for validation, duplicate detection, embedding, prediction-error arbitration, record creation, enrichment, atomic file promotion and response formatting.
 
-The barrel `index.ts` re-exports every module so consumers can import from `handlers/save` directly.
+Current responsibilities:
 
-Gate E alignment: this is the single canonical save pipeline. Successful writes update the current continuity model directly, with spec documents as the source of truth and `_memory.continuity` as supporting structured state. All save orchestration now converges on this one path.
+- Keep save-stage code below the top-level MCP tool handler and above storage/search adapters.
+- Preserve same-folder save ordering through `withSpecFolderLock()`.
+- Build rejection, dry-run, planner and success responses without leaking storage internals into callers.
+- Route persistence through `createMemoryRecord()` and storage/search helpers rather than direct SQL scattered across the handler.
 
 <!-- /ANCHOR:overview -->
-<!-- ANCHOR:structure -->
-## 2. STRUCTURE
 
-| File                        | Description                                                                                                          |
-| --------------------------- | -------------------------------------------------------------------------------------------------------------------- |
-| `types.ts`                  | Shared interfaces for the pipeline: `IndexResult`, `PeDecision`, `SimilarMemory` (carries `canonical_file_path` used by the cross-file PE guard), `SaveArgs`, `PostInsertMetadataFields` and related types. |
-| `index.ts`                  | Barrel re-export of all save sub-modules.                                                                            |
-| `dedup.ts`                  | Pre-save deduplication. `checkExistingRow` matches by file path but returns `unchanged` only for healthy rows (`success`, `pending`, `partial`); `checkContentHashDedup` matches by content hash and accepts chunked parents only when their status is valid `partial`. |
-| `embedding-pipeline.ts`     | Embedding generation with persistent cache. Cache keys hash normalized content, matching the main and chunked embedding paths. Checks the embedding cache first, falls back to the provider, and stores new embeddings for future re-index. Async/deferred mode is opt-in. |
-| `pe-orchestration.ts`       | Prediction-error (PE) gate orchestration. Finds similar spec-doc records, evaluates via `predictionErrorGate`, and applies REINFORCE, SUPERSEDE, UPDATE or CREATE_LINKED actions with mutation ledger logging. Cross-file guard (Packet 026/010/001): when the selected candidate's `canonical_file_path` differs from the current save target, lineage-bearing `UPDATE` and `REINFORCE` actions are downgraded to `CREATE` so sibling packet docs cannot drive cross-file lineage reuse (prevents the `E_LINEAGE` false-positive class). |
-| `reconsolidation-bridge.ts` | TM-06 reconsolidation bridge. When enabled and a checkpoint exists, delegates to the reconsolidation engine for merge/conflict resolution before falling through to normal creation. |
-| `create-record.ts`          | Core record creation. Inserts into vector index (or deferred index), applies post-insert metadata, links related memories and indexes into BM25 when enabled. |
-| `db-helpers.ts`             | Database utility functions: `applyPostInsertMetadata` builds a dynamic UPDATE for metadata columns, `hasReconsolidationCheckpoint` verifies TM-06 safety gate prerequisites. |
-| `post-insert.ts`            | Post-insert enrichment pipeline. Runs causal links processing, R10 entity extraction, R8 summary generation and S5 cross-document entity linking. Each step is feature-flag gated and independently error-guarded. |
-| `response-builder.ts`       | Final response assembly. `buildIndexResult` constructs the `IndexResult` with PE actions, causal links and warnings. `buildSaveResponse` wraps it in a standard MCP success envelope with hints, triggers post-mutation hooks and runs N3-lite consolidation. |
+---
 
-<!-- /ANCHOR:structure -->
-<!-- ANCHOR:pipeline-flow -->
-## 3. PIPELINE FLOW
+<!-- ANCHOR:architecture -->
+## 2. ARCHITECTURE
 
+```text
+╭──────────────────────────────────────────────────────────────────╮
+│                         HANDLERS / SAVE                          │
+╰──────────────────────────────────────────────────────────────────╯
+
+┌─────────────────┐      ┌──────────────────┐      ┌──────────────────┐
+│ MCP save tool   │ ───▶ │ save modules     │ ───▶ │ create-record.ts │
+│ memory_save     │      │ validation + PE  │      │ vector + BM25    │
+└────────┬────────┘      └────────┬─────────┘      └────────┬─────────┘
+         │                        │                         │
+         │                        ▼                         ▼
+         │              ┌──────────────────┐      ┌──────────────────┐
+         └──────────▶   │ atomic wrapper   │ ───▶ │ storage/search   │
+                        │ file promotion   │      │ adapters         │
+                        └────────┬─────────┘      └──────────────────┘
+                                 │
+                                 ▼
+                        ┌──────────────────┐
+                        │ response builder │
+                        └──────────────────┘
+
+Dependency direction:
+MCP tool handler ───▶ handlers/save ───▶ lib/storage + lib/search + lib/cognitive
+handlers/save does not import from MCP transport or spec-folder docs.
 ```
-1. dedup          -- Skip if unchanged or duplicate content hash
-2. embedding      -- Generate or retrieve cached embedding
-3. save-quality-gate -- Evaluate semantic/structural quality before persistence
-4. pe-orchestration -- Predict action via similarity comparison
-5. reconsolidation -- Merge/conflict handling (TM-06, flag-gated)
-6. create-record  -- Insert memory into vector + BM25 indexes
-7. db-helpers     -- Apply post-insert metadata columns
-8. post-insert    -- Enrich with entities, summaries, causal links
-9. response-builder -- Assemble MCP response envelope
+
+<!-- /ANCHOR:architecture -->
+
+---
+
+<!-- ANCHOR:package-topology -->
+## 3. PACKAGE TOPOLOGY
+
+```text
+handlers/save/
++-- index.ts                    # Test-facing export barrel
++-- types.ts                    # Shared contracts for save stages
++-- dedup.ts                    # Existing row and content-hash checks
++-- embedding-pipeline.ts       # Embedding cache and provider path
++-- pe-orchestration.ts         # Prediction-error decision routing
++-- reconsolidation-bridge.ts   # Optional reconsolidation pass
++-- create-record.ts            # Memory row creation and indexing
++-- db-helpers.ts               # Local metadata and checkpoint helpers
++-- post-insert.ts              # Entity, summary and causal enrichment
++-- response-builder.ts         # MCP result envelopes
++-- atomic-index-memory.ts      # Pending-file promotion and rollback wrapper
++-- markdown-evidence-builder.ts # Markdown evidence extraction for validation
++-- spec-folder-mutex.ts        # In-process and interprocess save lock
++-- validation-responses.ts     # Rejection, dry-run and planner builders
+`-- README.md
 ```
 
-<!-- /ANCHOR:pipeline-flow -->
-<!-- ANCHOR:key-concepts -->
-## 4. KEY CONCEPTS
+Allowed dependency direction:
 
-- **Prediction-Error (PE) Gate** -- Compares new content against existing spec-doc records to decide between CREATE, REINFORCE, UPDATE, SUPERSEDE or CREATE_LINKED actions.
-- **Cross-File PE Guard** -- `SimilarMemory.canonical_file_path` is carried through PE gating. When the candidate's canonical path differs from the current target, `UPDATE` / `REINFORCE` are forced back to `CREATE` to preserve same-file identity and prevent cross-file lineage reuse (Packet 026/010/001).
-- **`fromScan` Save Contract** -- Scan-originated saves (calls from `handleMemoryIndexScan` / `memory_index_scan`) are tagged with `fromScan: true`. The save handler uses this flag to skip only the transactional complement-recheck path that previously caused `candidate_changed` false-positives on scan-triggered reindexing; interactive (non-scan) saves retain the full recheck (Packet 026/010/001). An earlier forced `scanBatchSize = 1` serialization was rolled back in favor of this bypass, so the default `BATCH_SIZE` applies again.
-- **Index-Scope Invariants** -- The save path rejects excluded paths (`z_future/`, `/external/`) and downgrades non-constitutional `importanceTier: constitutional` to `important` before persistence, recording a `tier_downgrade_non_constitutional_path` governance-audit row. Shared policy lives in `../../lib/utils/index-scope.ts` (`shouldIndexForMemory()`, `resolveCanonicalPath()`). See the `lib/utils/` README for the full exported helper set (Packet 026/010/002).
-- **Deferred Indexing** -- When embedding generation fails or async mode is explicitly requested, the spec-doc record is stored with `embedding_status = 'pending'` and remains searchable via BM25/FTS5. Normal watcher/ingest reindex cache misses still run the eager provider path.
-- **Reconsolidation** -- Optional merge/conflict resolution pass that requires a pre-reconsolidation checkpoint (TM-06 safety gate).
-- **Mutation Ledger** -- Every create/update action appends to the mutation ledger for audit trail.
+```text
+handler entrypoint → handlers/save → lib/storage
+handler entrypoint → handlers/save → lib/search
+handler entrypoint → handlers/save → lib/cognitive
+handlers/save → handlers shared utilities
+```
 
-<!-- /ANCHOR:key-concepts -->
-<!-- ANCHOR:related-documents -->
-## 5. RELATED DOCUMENTS
+Disallowed dependency direction:
 
-- `../memory-crud-utils.ts` -- mutation ledger helpers used by PE orchestration and reconsolidation
-- `../pe-gating.ts` -- PE gate action functions (findSimilarMemories, reinforceExistingMemory, etc.)
-- `../mutation-hooks.ts` -- post-mutation hook runner called during response building
-- `../../lib/cognitive/prediction-error-gate.ts` -- core PE evaluation logic
-- `../../lib/cognitive/fsrs-scheduler.ts` -- FSRS stability/difficulty defaults
-- `../../lib/storage/reconsolidation.ts` -- reconsolidation engine
-- `../../lib/search/vector-index.ts` -- vector index operations
-- `../../lib/search/bm25-index.ts` -- BM25 full-text index
-- `../../lib/providers/embeddings.ts` -- embedding provider interface
+```text
+lib/storage → handlers/save
+lib/search → handlers/save
+handlers/save → spec packet files
+handlers/save → MCP transport internals
+```
 
-<!-- /ANCHOR:related-documents -->
+<!-- /ANCHOR:package-topology -->
+
+---
+
+<!-- ANCHOR:directory-tree -->
+## 4. DIRECTORY TREE
+
+```text
+handlers/save/
++-- atomic-index-memory.ts
++-- create-record.ts
++-- db-helpers.ts
++-- dedup.ts
++-- embedding-pipeline.ts
++-- index.ts
++-- markdown-evidence-builder.ts
++-- pe-orchestration.ts
++-- post-insert.ts
++-- reconsolidation-bridge.ts
++-- response-builder.ts
++-- spec-folder-mutex.ts
++-- types.ts
++-- validation-responses.ts
+`-- README.md
+```
+
+<!-- /ANCHOR:directory-tree -->
+
+---
+
+<!-- ANCHOR:key-files -->
+## 5. KEY FILES
+
+| File | Responsibility |
+|---|---|
+| `types.ts` | Shared interfaces for parsed memory, save arguments, PE decisions, planner payloads, atomic saves and post-insert metadata. |
+| `index.ts` | Export barrel for tests and controlled consumers. Production imports usually target concrete modules. |
+| `dedup.ts` | Detects unchanged paths and duplicate content hashes before heavier save work runs. |
+| `embedding-pipeline.ts` | Reads and writes embedding cache entries, calls the embedding provider when needed and supports pending embedding status. |
+| `pe-orchestration.ts` | Finds similar memories, runs prediction-error gating and applies create, update, reinforce, supersede or linked-create actions. |
+| `reconsolidation-bridge.ts` | Runs optional checkpoint-gated reconsolidation before normal record creation. |
+| `create-record.ts` | Inserts memory rows, records lineage/history, writes vector/BM25 data and applies post-insert metadata. |
+| `db-helpers.ts` | Applies guarded metadata updates and checks reconsolidation checkpoint prerequisites. |
+| `post-insert.ts` | Runs feature-flagged enrichment for causal links, entities, summaries and cross-document entity links. |
+| `response-builder.ts` | Converts save results and planner payloads into MCP success or error envelopes. |
+| `atomic-index-memory.ts` | Coordinates pending-file writes, file promotion, rollback, retry and save-result mapping for atomic save paths. |
+| `markdown-evidence-builder.ts` | Extracts headings, lists, tables and summary evidence from markdown for memory sufficiency checks. |
+| `spec-folder-mutex.ts` | Serializes saves per spec folder across local async chains and temporary interprocess lock directories. |
+| `validation-responses.ts` | Builds insufficiency rejections, template-contract rejections, dry-run summaries and planner diagnostics. |
+
+<!-- /ANCHOR:key-files -->
+
+---
+
+<!-- ANCHOR:boundaries-flow -->
+## 6. BOUNDARIES AND FLOW
+
+| Boundary | Rule |
+|---|---|
+| Imports | Save modules may call handler utilities plus `lib/storage`, `lib/search`, `lib/cognitive`, parsing and provider modules. |
+| Exports | `index.ts` exposes stable test and helper exports. Runtime code should prefer direct module imports when it owns a specific stage. |
+| Storage | Record persistence belongs in `create-record.ts`, `db-helpers.ts` or `lib/storage/*`, not in validation or response modules. |
+| Validation | Rejection builders stay pure. They receive parsed validation results and return `IndexResult` or planner objects without DB writes. |
+| Concurrency | Any atomic file save must run through `withSpecFolderLock()` before promotion and indexing. |
+
+Main flow:
+
+```text
+╭──────────────────────────────────────────╮
+│ memory_save request                      │
+╰──────────────────────────────────────────╯
+                  │
+                  ▼
+┌──────────────────────────────────────────┐
+│ parse and validate memory file            │
+└──────────────────────────────────────────┘
+                  │
+                  ▼
+┌──────────────────────────────────────────┐
+│ dedup and embedding pipeline              │
+└──────────────────────────────────────────┘
+                  │
+                  ▼
+┌──────────────────────────────────────────┐
+│ prediction-error and reconsolidation      │
+└──────────────────────────────────────────┘
+                  │
+                  ▼
+┌──────────────────────────────────────────┐
+│ create record and post-insert enrichment  │
+└──────────────────────────────────────────┘
+                  │
+                  ▼
+┌──────────────────────────────────────────┐
+│ response builder and mutation hooks       │
+└──────────────────────────────────────────┘
+                  │
+                  ▼
+╭──────────────────────────────────────────╮
+│ MCP response envelope                     │
+╰──────────────────────────────────────────╯
+```
+
+<!-- /ANCHOR:boundaries-flow -->
+
+---
+
+<!-- ANCHOR:entrypoints -->
+## 7. ENTRYPOINTS
+
+| Entrypoint | Type | Purpose |
+|---|---|---|
+| `createMemoryRecord()` | Function | Inserts a parsed memory and related index metadata after validation and PE routing. |
+| `generateOrCacheEmbedding()` | Function | Resolves the embedding vector or pending status for save/index flows. |
+| `evaluateAndApplyPeDecision()` | Function | Applies prediction-error decisions against similar memories. |
+| `runPostInsertEnrichment()` | Function | Runs optional enrichment steps after a row exists. |
+| `buildSaveResponse()` | Function | Produces the final MCP success payload for a save result. |
+| `withSpecFolderLock()` | Function | Wraps critical save sections with a per-spec-folder mutex. |
+| `atomicIndexMemory()` | Function | Coordinates pending file promotion and indexing for atomic file-save callers. |
+
+<!-- /ANCHOR:entrypoints -->
+
+---
+
+<!-- ANCHOR:validation -->
+## 8. VALIDATION
+
+Run from the repository root unless noted.
+
+```bash
+python3 .opencode/skill/sk-doc/scripts/extract_structure.py .opencode/skill/system-spec-kit/mcp_server/handlers/save/README.md
+```
+
+Expected result: the document is detected as a README and the extracted structure has no critical section or HVR issues.
+
+Focused code checks for this folder normally run through the package test suite that covers `handlers/save/*` exports.
+
+<!-- /ANCHOR:validation -->
+
+---
+
+<!-- ANCHOR:related -->
+## 9. RELATED
+
+- [`../README.md`](../README.md)
+- [`../../lib/storage/README.md`](../../lib/storage/README.md)
+- [`../../lib/search/README.md`](../../lib/search/README.md)
+- [`../../database/README.md`](../../database/README.md)
+
+<!-- /ANCHOR:related -->

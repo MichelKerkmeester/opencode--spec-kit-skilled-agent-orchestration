@@ -1,21 +1,21 @@
 {
-  "specFolder": "system-spec-kit/026-graph-and-context-optimization/000-release-cleanup/005-review-remediation/029-root-readme-refresh",
+  "specFolder": "system-spec-kit/026-graph-and-context-optimization/000-release-cleanup/029-root-readme-refresh",
   "description": "Feature Specification: 042 Root README Refresh",
   "keywords": [
-    "029-root-readme-refresh",
+    "feature",
+    "specification",
+    "042",
     "root",
     "readme",
-    "framework",
-    "tool",
-    "count",
     "refresh"
   ],
-  "lastUpdated": "2026-04-29T18:52:18.000Z",
-  "specId": "042",
+  "lastUpdated": "2026-05-02T10:39:48.453Z",
+  "specId": "029",
   "folderSlug": "root-readme-refresh",
   "parentChain": [
     "system-spec-kit",
-    "026-graph-and-context-optimization"
+    "026-graph-and-context-optimization",
+    "000-release-cleanup"
   ],
   "memorySequence": 0,
   "memoryNameHistory": []

@@ -8,7 +8,7 @@
     "per-packet verdict",
     "stress-test v1.0.2"
   ],
-  "specFolder": "system-spec-kit/026-graph-and-context-optimization/000-release-cleanup/005-review-remediation/015-mcp-runtime-stress-remediation/010-stress-test-rerun-v1-0-2",
+  "specFolder": "system-spec-kit/026-graph-and-context-optimization/000-release-cleanup/015-mcp-runtime-stress-remediation/010-stress-test-rerun-v1-0-2",
   "description": "Feature Specification: Stress-Test Rerun v1.0.2 — close-the-loop measurement",
   "keywords": [
     "feature",
@@ -18,12 +18,13 @@
     "close-the-loop",
     "measurement"
   ],
-  "lastUpdated": "2026-04-27T14:15:10.509Z",
+  "lastUpdated": "2026-05-02T10:39:48.106Z",
   "specId": "010",
   "folderSlug": "stress-test-rerun-v1-0-2",
   "parentChain": [
     "system-spec-kit",
     "026-graph-and-context-optimization",
+    "000-release-cleanup",
     "015-mcp-runtime-stress-remediation"
   ],
   "memorySequence": 0,

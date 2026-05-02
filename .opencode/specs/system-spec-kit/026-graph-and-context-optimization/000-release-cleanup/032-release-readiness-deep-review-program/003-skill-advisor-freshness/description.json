@@ -1,18 +1,22 @@
 {
-  "specFolder": "specs/system-spec-kit/026-graph-and-context-optimization/000-release-cleanup/005-review-remediation/032-release-readiness-deep-review-program/003-skill-advisor-freshness",
-  "description": "Deep-review angle 3: skill advisor freshness - daemon detection, status/rebuild split, scoring tables, brief cache, Codex cold-start fallback marker, and Python shim parity.",
+  "specFolder": "system-spec-kit/026-graph-and-context-optimization/000-release-cleanup/032-release-readiness-deep-review-program/003-skill-advisor-freshness",
+  "description": "Feature Specification: Skill Advisor Freshness Release-Readiness Audit",
   "keywords": [
-    "045-003-skill-advisor-freshness",
-    "advisor freshness audit",
-    "daemon freshness review",
-    "advisor rebuild review"
+    "feature",
+    "specification",
+    "skill",
+    "advisor",
+    "freshness",
+    "release-readiness",
+    "audit"
   ],
-  "lastUpdated": "2026-04-29T20:05:20.000Z",
+  "lastUpdated": "2026-05-02T10:39:48.511Z",
   "specId": "003",
   "folderSlug": "skill-advisor-freshness",
   "parentChain": [
     "system-spec-kit",
     "026-graph-and-context-optimization",
+    "000-release-cleanup",
     "032-release-readiness-deep-review-program"
   ],
   "memorySequence": 1,

@@ -1,249 +1,235 @@
 ---
-title: "Memory and Document Type Configuration"
-description: "Memory-type decay configuration plus document-type inference and defaults."
+title: "Config: Memory and Spec Document Classification"
+description: "Configuration modules for memory decay, spec document path detection and rollout flags."
 trigger_phrases:
   - "memory types"
   - "half-life configuration"
   - "type inference"
 ---
 
-# Memory and Document Type Configuration
+# Config: Memory and Spec Document Classification
 
-> Memory-type decay configuration plus document-type inference and defaults.
-
----
-
-## TABLE OF CONTENTS
 <!-- ANCHOR:table-of-contents -->
+## TABLE OF CONTENTS
 
-- [1. OVERVIEW](#1-overview)
-- [2. KEY CONCEPTS](#2-key-concepts)
-- [3. STRUCTURE](#3-structure)
-- [4. USAGE](#4-usage)
-- [5. RELATED RESOURCES](#5-related-resources)
+- [1. OVERVIEW](#1--overview)
+- [2. ARCHITECTURE](#2--architecture)
+- [3. DIRECTORY TREE](#3--directory-tree)
+- [4. KEY FILES](#4--key-files)
+- [5. BOUNDARIES AND FLOW](#5--boundaries-and-flow)
+- [6. ENTRYPOINTS](#6--entrypoints)
+- [7. VALIDATION](#7--validation)
+- [8. RELATED](#8--related)
 
 <!-- /ANCHOR:table-of-contents -->
 
 ---
 
-## 1. OVERVIEW
 <!-- ANCHOR:overview -->
+## 1. OVERVIEW
 
-### What is the Config Module?
+`lib/config/` owns memory type configuration, spec document path detection, document type inference and memory roadmap capability flags. These modules convert file paths, frontmatter, tiers and runtime environment variables into typed configuration values used by indexing and retrieval.
 
-The config module defines two related configuration layers: memory types (decay behavior) and spec document types (indexing and weighting behavior). This keeps retrieval aligned with both conversational memory state and spec-folder document structure.
-Canonical packet continuity still lives in `handover.md`, `_memory.continuity`, and the spec docs resumed through `/spec_kit:resume`; this module only configures how supporting artifacts are classified and weighted.
+Current state:
 
-### Key Features
-
-| Feature | Description |
-|---------|-------------|
-| **9 Memory Types** | From working (1-day half-life) to meta-cognitive (never decays) |
-| **10 Spec Document Types** | `spec`, `plan`, `tasks`, `checklist`, `decision_record`, `implementation_summary`, `research`, `handover`, `description_json`, `graph_metadata` |
-| **Automatic Inference** | Detect memory type from path, frontmatter, or keywords |
-| **Document Inference** | Detect `documentType` from spec-folder filenames and location |
-| **Tier Mapping** | Link importance tiers to appropriate memory types |
-| **Validation** | Verify type assignments and warn on mismatches |
-
-### Module Statistics
-
-| Category | Count | Details |
-|----------|-------|---------|
-| Memory Types | 9 | Cognitive categories with differentiated decay |
-| Spec Document Types | 10 | Canonical spec folder docs recognized by filename |
-| Path Patterns | 30+ | Regex patterns for type inference |
-| Keyword Mappings | 40+ | Title/trigger phrase to type mapping |
-| Half-Life Range | 1-365 days | Plus null for never-decay |
+- `memory-types.ts` defines memory decay types, spec document configs and document type helpers.
+- `type-inference.ts` resolves memory types from content, paths, tiers and keywords.
+- `spec-doc-paths.ts` filters canonical spec documents and graph metadata paths.
+- `capability-flags.ts` resolves memory roadmap rollout state and parser environment names.
 
 <!-- /ANCHOR:overview -->
 
 ---
 
-## 2. KEY CONCEPTS
-<!-- ANCHOR:key-concepts -->
+<!-- ANCHOR:architecture -->
+## 2. ARCHITECTURE
 
-### Memory Types and Half-Lives
+```text
+╭──────────────────────────────────────────────╮
+│ lib/config/                                  │
+│ Classification and rollout settings          │
+╰──────────────────────────────────────────────╯
+                    │
+                    ▼
+┌──────────────────────────────────────────────┐
+│ spec-doc-paths.ts                            │
+│ Path normalization and spec document gates   │
+└──────────────┬───────────────────────────────┘
+               │
+               ▼
+┌──────────────────────────────────────────────┐
+│ memory-types.ts                              │
+│ Decay config and document type config        │
+└──────────────┬───────────────────────────────┘
+               │
+               ▼
+┌──────────────────────────────────────────────┐
+│ type-inference.ts                            │
+│ Frontmatter, tier, path and keyword inference│
+└──────────────────────────────────────────────┘
 
-| Type | Half-Life | Auto-Expire | Description |
-|------|-----------|-------------|-------------|
-| **working** | 1 day | 7 days | Active session context, immediate task state |
-| **episodic** | 7 days | 30 days | Event-based: sessions, debugging, discoveries |
-| **prospective** | 14 days | 60 days | Future intentions: TODOs, next steps, plans |
-| **implicit** | 30 days | 120 days | Learned patterns: code styles, workflows |
-| **declarative** | 60 days | 180 days | Facts: implementations, APIs, technical details |
-| **procedural** | 90 days | 365 days | How-to: processes, procedures, guides |
-| **semantic** | 180 days | Never | Core concepts: architecture, design principles |
-| **autobiographical** | 365 days | Never | Project history: milestones, major decisions |
-| **meta-cognitive** | Never | Never | Rules about rules: constitutional, invariants |
+┌──────────────────────────────────────────────┐
+│ capability-flags.ts                          │
+│ Runtime roadmap and parser flags             │
+└──────────────────────────────────────────────┘
+```
 
-### Type Inference Priority
-
-The system infers memory type using this precedence:
-
-| Priority | Source | Confidence | Example |
-|----------|--------|------------|---------|
-| 1 | Frontmatter explicit | 1.0 | `memory_type: procedural` |
-| 2 | Importance tier | 0.9 | `importance_tier: constitutional` -> meta-cognitive |
-| 3 | File path pattern | 0.8 | `/scratch/` -> working |
-| 4 | Keyword analysis | 0.7 | Title contains "how to" -> procedural |
-| 5 | Default | 0.5 | Falls back to `declarative` |
-
-### Tier to Type Mapping
-
-| Importance Tier | Inferred Type | Rationale |
-|-----------------|---------------|-----------|
-| constitutional | meta-cognitive | Rules that never decay |
-| critical | semantic | Core concepts, high persistence |
-| important | declarative | Important facts |
-| normal | declarative | Standard content |
-| temporary | working | Session-scoped, fast decay |
-| deprecated | episodic | Historical, kept for reference |
-
-### Path Pattern Examples
-
-| Pattern | Type | Example Paths |
-|---------|------|---------------|
-| `/scratch/`, `/temp/` | working | `specs/<###-spec-name>/scratch/debug.md` |
-| `session-\d+`, `debug-log` | episodic | `.opencode/specs/<target-spec>/handover.md` |
-| `todo`, `next-steps` | prospective | `.opencode/specs/<target-spec>/tasks.md` |
-| `guide`, `checklist` | procedural | `docs/install-guide.md` |
-| `architecture`, `adr-\d+` | semantic | `docs/adr-001.md` |
-| `constitutional`, `claude.md` | meta-cognitive | `AGENTS.md`, `AGENTS.md` |
-
-<!-- /ANCHOR:key-concepts -->
+<!-- /ANCHOR:architecture -->
 
 ---
 
-## 3. STRUCTURE
-<!-- ANCHOR:structure -->
+<!-- ANCHOR:directory-tree -->
+## 3. DIRECTORY TREE
 
-```
+```text
 config/
-├── memory-types.ts       # 9 memory types with half-lives and patterns (~9KB)
-├── type-inference.ts     # Auto-detect type from path/content (~9KB)
-└── README.md             # This file
+├── capability-flags.ts       # Runtime rollout flags and parser env name
+├── memory-types.ts           # Memory decay and spec document config
+├── spec-doc-paths.ts         # Spec document path gates and extraction helpers
+├── type-inference.ts         # Memory type inference from content and metadata
+└── README.md                 # Developer orientation
 ```
 
-**Note:** `index.js` exists only as compiled JS in `dist/lib/config/` (never migrated to TypeScript source). It provides barrel re-exports for both modules.
-
-### Key Files
-
-| File | Purpose |
-|------|---------|
-| `memory-types.ts` | Type definitions, half-lives, path/keyword patterns |
-| `type-inference.ts` | Multi-source inference with confidence scoring |
-
-<!-- /ANCHOR:structure -->
+<!-- /ANCHOR:directory-tree -->
 
 ---
 
-## 4. USAGE
-<!-- ANCHOR:usage -->
+<!-- ANCHOR:key-files -->
+## 4. KEY FILES
 
-### Example 1: Get Type Configuration
+| File | Role |
+|---|---|
+| `memory-types.ts` | Defines `MemoryTypeName`, half-lives, document types, spec document configs and validation helpers |
+| `type-inference.ts` | Applies ordered inference from explicit frontmatter, spec document paths, importance tiers, path patterns and keywords |
+| `spec-doc-paths.ts` | Normalizes spec paths, excludes working artifacts and extracts spec folder labels |
+| `capability-flags.ts` | Resolves roadmap flags and exports `SPECKIT_PARSER_ENV` |
 
-```typescript
-import { getTypeConfig, getHalfLife, isDecayEnabled } from './memory-types';
+Imports used by this folder:
 
-const config = getTypeConfig('procedural');
-// Returns: { halfLifeDays: 90, autoExpireDays: 365, decayEnabled: true, description: '...' }
+| Import | Used By | Purpose |
+|---|---|---|
+| `./spec-doc-paths.js` | `memory-types.ts`, `type-inference.ts` | Spec document path checks |
+| `../utils/index-scope.js` | `spec-doc-paths.ts` | Memory indexing scope gate |
+| `../cognitive/rollout-policy.js` | `capability-flags.ts` | Feature flag rollout check |
 
-const halfLife = getHalfLife('working');
-// Returns: 1
-
-const decays = isDecayEnabled('meta-cognitive');
-// Returns: false
-```
-
-### Example 2: Infer Memory Type
-
-```typescript
-import { inferMemoryType } from './type-inference';
-
-// From file path
-const result1 = inferMemoryType({
-  filePath: 'specs/<###-spec-name>/scratch/debug.md',
-});
-// Returns: { type: 'working', source: 'file_path', confidence: 0.8 }
-
-// From frontmatter
-const result2 = inferMemoryType({
-  content: '---\nmemory_type: semantic\n---\n# Architecture Overview',
-});
-// Returns: { type: 'semantic', source: 'frontmatter_explicit', confidence: 1.0 }
-
-// From keywords
-const result3 = inferMemoryType({
-  title: 'How to configure authentication',
-  triggerPhrases: ['auth guide', 'setup steps'],
-});
-// Returns: { type: 'procedural', source: 'keywords', confidence: 0.7 }
-```
-
-### Example 3: Batch Inference
-
-```typescript
-import { inferMemoryTypesBatch } from './type-inference';
-
-const memories = [
-  { file_path: '.opencode/specs/123-example/handover.md', title: 'Debug Session' },
-  { file_path: '.opencode/specs/123-example/graph-metadata.json', title: 'Graph Metadata' },
-];
-
-const results = inferMemoryTypesBatch(memories);
-// Returns: Map { '.opencode/specs/123-example/handover.md' => { type: 'episodic', ... }, ... }
-```
-
-### Example 4: Validate Inferred Type
-
-```typescript
-import { validateInferredType } from './type-inference';
-
-const validation = validateInferredType('declarative', '/specs/scratch/temp.md');
-// Returns: { valid: false, warnings: ['Temporary file has slow-decay type'] }
-```
-
-### halfLife=0 Edge Case
-
-> **Warning:** `validateHalfLifeConfig()` in `memory-types.ts` checks `< 0` but not `=== 0`.
-> A half-life of 0 days would pass validation but cause division-by-zero in FSRS decay
-> calculations where stability (derived from half-life) is used as a denominator.
-> The error message states "must be positive number or null" but zero is accepted.
-> Callers should ensure halfLife values are strictly positive (> 0) or null.
-
-### Common Patterns
-
-| Pattern | Code | When to Use |
-|---------|------|-------------|
-| List valid types | `getValidTypes()` | Validation, UI dropdowns |
-| Check type valid | `isValidType('working')` | Input validation |
-| Get default | `getDefaultType()` | Fallback assignment |
-| Reset config | `getDefaultHalfLives()` | Config recovery |
-
-<!-- /ANCHOR:usage -->
+<!-- /ANCHOR:key-files -->
 
 ---
 
-## 5. RELATED RESOURCES
+<!-- ANCHOR:boundaries-and-flow -->
+## 5. BOUNDARIES AND FLOW
+
+Allowed imports:
+
+- Config modules may import path gates, index scope checks and rollout policy helpers.
+- Indexing, retrieval and scoring callers may import public config helpers directly from the owning file.
+
+Disallowed ownership:
+
+- Config does not read or write memory rows.
+- Config does not apply ranking scores. It only returns typed classification data.
+
+Inference flow:
+
+```text
+Memory or spec document metadata
+          │
+          ▼
+Normalize path and reject excluded working artifacts
+          │
+          ▼
+Resolve spec document type when path is canonical
+          │
+          ▼
+Apply explicit frontmatter, tier, path or keyword inference
+          │
+          ▼
+Return memory type, document type and confidence
+```
+
+<!-- /ANCHOR:boundaries-and-flow -->
+
+---
+
+<!-- ANCHOR:entrypoints -->
+## 6. ENTRYPOINTS
+
+Memory type imports:
+
+```typescript
+import {
+  getDefaultType,
+  getHalfLife,
+  getHalfLifeForType,
+  getSpecDocumentConfig,
+  getValidTypes,
+  inferDocumentTypeFromPath,
+  isDecayEnabled,
+  isValidType,
+  resolveSpecDocumentType,
+  validateHalfLifeConfig,
+} from './memory-types.js'
+
+import type {
+  DocumentType,
+  MemoryTypeConfig,
+  MemoryTypeName,
+  SpecDocumentConfig,
+} from './memory-types.js'
+```
+
+Inference and path imports:
+
+```typescript
+import {
+  extractSpecFolderFromGraphMetadataPath,
+  extractSpecFolderFromSpecDocumentPath,
+  inferMemoryType,
+  inferMemoryTypesBatch,
+  matchesSpecDocumentPath,
+  normalizeSpecPath,
+  validateInferredType,
+} from './type-inference.js'
+```
+
+Public surfaces:
+
+| File | Export Groups |
+|---|---|
+| `memory-types.ts` | `MEMORY_TYPES`, `HALF_LIVES_DAYS`, `PATH_TYPE_PATTERNS`, `KEYWORD_TYPE_MAP`, `SPEC_DOCUMENT_CONFIGS`, helper functions and public types |
+| `type-inference.ts` | Inference helpers, batch inference, detailed suggestions and validation |
+| `spec-doc-paths.ts` | Path normalization, spec document gates, graph metadata gates and spec folder extraction |
+| `capability-flags.ts` | Roadmap flag helpers, `CAPABILITY_ENV`, `SPECKIT_PARSER_ENV` and public rollout types |
+
+There is no source `index.ts` in this folder. Import from the file that owns the needed surface.
+
+<!-- /ANCHOR:entrypoints -->
+
+---
+
+<!-- ANCHOR:validation -->
+## 7. VALIDATION
+
+Run from the repository root after editing this README:
+
+```bash
+python3 .opencode/skill/sk-doc/scripts/validate_document.py .opencode/skill/system-spec-kit/mcp_server/lib/config/README.md
+```
+
+Use package TypeScript checks when changing any `.ts` module in this folder.
+
+<!-- /ANCHOR:validation -->
+
+---
+
 <!-- ANCHOR:related -->
+## 8. RELATED
 
-### Internal Documentation
-
-| Document | Purpose |
-|----------|---------|
-| [../scoring/README.md](../scoring/README.md) | Composite scoring with tier and document-type integration |
-| [../cognitive/README.md](../cognitive/README.md) | Attention decay using half-lives |
-| [../../configs/search-weights.json](../../configs/search-weights.json) | Runtime weight configuration |
-
-### Parent Module
-
-| Resource | Description |
-|----------|-------------|
-| [../../README.md](../../README.md) | MCP server overview |
-| [../../../SKILL.md](../../../SKILL.md) | System Spec Kit skill documentation |
+| Resource | Relationship |
+|---|---|
+| `../README.md` | Parent library map |
+| `../cognitive/README.md` | Rollout policy and decay consumers |
+| `../scoring/README.md` | Scoring consumers for type and tier data |
+| `../../configs/search-weights.json` | Runtime search weight configuration |
 
 <!-- /ANCHOR:related -->
-
----
-
-*Documentation version: 1.8.1 | Last updated: 2026-02-21*

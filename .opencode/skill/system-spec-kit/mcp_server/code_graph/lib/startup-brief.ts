@@ -5,7 +5,7 @@
 // from local code graph + hook state (no MCP round-trip).
 
 import { getStats, queryStartupHighlights, type StartupHighlight } from './code-graph-db.js';
-import { getGraphFreshness } from './ensure-ready.js';
+import { getGraphReadinessSnapshot } from './ensure-ready.js';
 import { loadMostRecentState, type HookStateScope } from '../../hooks/claude/hook-state.js';
 import { isCocoIndexAvailable } from '../../lib/utils/cocoindex-path.js';
 import {
@@ -187,7 +187,8 @@ export function buildStartupSharedPayloadTransport(
 function buildGraphOutline(highlightCount: number = 5): Pick<StartupBriefResult, 'graphOutline' | 'graphSummary' | 'graphQualitySummary' | 'graphState' | 'graphTrustState'> {
   try {
     const stats = getStats();
-    const freshness = getGraphFreshness(process.cwd());
+    const readinessSnapshot = getGraphReadinessSnapshot(process.cwd());
+    const freshness = readinessSnapshot.freshness;
     const graphSummary: StartupGraphSummary = {
       files: stats.totalFiles,
       nodes: stats.totalNodes,
@@ -226,7 +227,11 @@ function buildGraphOutline(highlightCount: number = 5): Pick<StartupBriefResult,
       `Last scan: ${stats.lastScanTimestamp ?? 'unknown'}`,
     ];
     if (freshness === 'stale') {
-      lines.push('Freshness: stale — first structural read may trigger bounded inline refresh or recommend code_graph_scan.');
+      if (readinessSnapshot.reason.includes('code graph scope changed')) {
+        lines.push('Freshness: stale - graph scope changed; run code_graph_scan with incremental:false.');
+      } else {
+        lines.push('Freshness: stale — first structural read may trigger bounded inline refresh or recommend code_graph_scan.');
+      }
     } else if (freshness === 'error') {
       // PR 4 / F71: ensure-ready probe crashed (DB unreachable, lock held,
       // etc). Surface as 'missing' graphState (V4 vocabulary) rather than

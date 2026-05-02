@@ -1,6 +1,6 @@
 ---
 title: "Memory Management Library"
-description: "Reserved folder for future batch-management utilities; no live TypeScript modules remain after the dead-code cleanup."
+description: "Reserved code folder for future batch-management utilities. No live TypeScript modules are present."
 trigger_phrases:
   - "memory management"
   - "batch maintenance"
@@ -9,84 +9,85 @@ trigger_phrases:
 
 # Memory Management Library
 
-> Reserved for future batch-management utilities. The former graph-authority helper was removed after the dead-code audit confirmed it was never wired into the live system.
+`lib/manage/` is a documented reserved folder. It has no runtime modules today. Keep new code out of this folder unless it is batch-oriented maintenance code rather than live retrieval code.
 
----
+## Table of Contents
 
-## TABLE OF CONTENTS
-<!-- ANCHOR:table-of-contents -->
-
-- [1. OVERVIEW](#1-overview)
-- [2. STRUCTURE](#2-structure)
-- [3. CURRENT STATE](#3-current-state)
-- [4. USAGE NOTES](#4-usage-notes)
-- [5. RELATED](#5-related)
-
-<!-- /ANCHOR:table-of-contents -->
-
----
+- [1. OVERVIEW](#1--overview)
+- [2. TOPOLOGY](#2--topology)
+- [3. KEY FILES](#3--key-files)
+- [4. BOUNDARIES](#4--boundaries)
+- [5. ENTRYPOINTS](#5--entrypoints)
+- [6. VALIDATION](#6--validation)
+- [7. RELATED](#7--related)
 
 ## 1. OVERVIEW
-<!-- ANCHOR:overview -->
 
-`lib/manage/` currently has no live TypeScript modules.
+The former graph-authority helper was removed after dead-code review. Active graph scoring now lives in search and graph modules. This folder remains only to record that no management library is wired into production.
 
-The former graph-authority helper was removed because the active retrieval pipeline uses typed-weighted degree scoring and graph signal helpers instead.
-Gate E continuity now resumes through `/spec_kit:resume` and `handover.md` -> `_memory.continuity` -> spec docs, with generated memory artifacts treated as supporting only.
+Runtime role:
 
-<!-- /ANCHOR:overview -->
+- None. No live request path imports from this folder.
 
----
+Maintenance role:
 
-## 2. STRUCTURE
-<!-- ANCHOR:structure -->
+- Reserved for future batch utilities if they are separate from retrieval execution.
+- Documents the absence of current batch-management code.
 
+## 2. TOPOLOGY
+
+```text
+┌────────────┐
+│ lib/manage │
+└─────┬──────┘
+      ▼
+┌────────────┐
+│ README.md  │
+└────────────┘
 ```
-lib/manage/
-+-- README.md      # This file
+
+## 3. KEY FILES
+
+| File | Role |
+| --- | --- |
+| `README.md` | Documents the reserved state and points readers to active graph and search modules. |
+
+## 4. BOUNDARIES
+
+Owns:
+
+- Documentation for the reserved folder state.
+- Future batch-management utilities only if they do not run in live retrieval.
+
+Does not own:
+
+- Graph scoring.
+- Retrieval ranking.
+- Memory indexing.
+- Handler or tool registration.
+
+## 5. ENTRYPOINTS
+
+There are no exported entrypoints in this folder.
+
+If future code is added, it should document:
+
+- The caller that starts the maintenance action.
+- Whether it writes to SQLite, files, or both.
+- The tests that prove it cannot affect live retrieval requests by accident.
+
+## 6. VALIDATION
+
+Run this check after README edits:
+
+```bash
+python3 .opencode/skill/sk-doc/scripts/validate_document.py .opencode/skill/system-spec-kit/mcp_server/lib/manage/README.md
 ```
 
-### File Inventory
+If TypeScript files are added later, add focused tests before listing the folder as active.
 
-| File | Purpose |
-|------|---------|
-| `README.md` | Documents the current reserved state of `lib/manage/` |
+## 7. RELATED
 
-<!-- /ANCHOR:structure -->
-
----
-
-## 3. CURRENT STATE
-<!-- ANCHOR:current-state -->
-
-### Reserved Surface
-
-**Purpose**: Keep the directory documented while no batch-management helpers are active.
-
-- No runtime exports remain in this folder.
-- No scheduled memory-management algorithms live here today.
-- Any future helpers added here should be batch-oriented and separate from the live retrieval path.
-
-<!-- /ANCHOR:current-state -->
-
----
-
-## 4. USAGE NOTES
-<!-- ANCHOR:usage-notes -->
-
-There are no direct code examples because this folder currently contains documentation only.
-
-When graph scoring behavior needs review, start with the active modules listed below instead of looking for helpers in `lib/manage/`.
-
-<!-- /ANCHOR:usage-notes -->
-
----
-
-## 5. RELATED
-<!-- ANCHOR:related -->
-
-- `../search/graph-search-fn.ts` — typed-weighted degree scoring used by the live retrieval path.
-- `../graph/graph-signals.ts` — graph signal aggregation used by active scoring.
-- `../README.md` — top-level module inventory.
-
-<!-- /ANCHOR:related -->
+- `../search/graph-search-fn.ts` contains typed-weighted degree scoring for the live retrieval path.
+- `../graph/graph-signals.ts` contains active graph signal aggregation.
+- `../README.md` lists top-level library folders.

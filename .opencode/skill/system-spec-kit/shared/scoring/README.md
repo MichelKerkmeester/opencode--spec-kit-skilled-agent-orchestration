@@ -1,27 +1,28 @@
 ---
-title: "Folder Scoring"
-description: "Computes composite relevance scores for spec folders based on their memories, used for ranking and resume-recent-work workflows."
+title: "Scoring"
+description: "Folder-level relevance scoring helpers for ranking spec folders from memory metadata."
 trigger_phrases:
   - "folder scoring"
   - "composite relevance score"
   - "memory folder ranking"
+  - "recency scoring"
 ---
 
-# Folder Scoring
+# Scoring
 
-> Computes composite relevance scores for spec folders based on their memories. Used by `memory_stats` to rank folders by relevance to the current session.
+> Shared scoring helpers for ranking spec folders from memory metadata. The package computes recency, importance, activity and validation signals without owning retrieval or resume workflows.
 
 ---
 
 <!-- ANCHOR:table-of-contents -->
 ## TABLE OF CONTENTS
 
-- [1. OVERVIEW](#1-overview)
-- [2. STRUCTURE](#2-structure)
-- [3. SCORING FORMULA](#3-scoring-formula)
-- [4. KEY EXPORTS](#4-key-exports)
-- [5. DESIGN DECISIONS](#5-design-decisions)
-- [6. RELATED](#6-related)
+- [1. OVERVIEW](#1--overview)
+- [2. STRUCTURE](#2--structure)
+- [3. STABLE API](#3--stable-api)
+- [4. BOUNDARIES](#4--boundaries)
+- [5. VALIDATION](#5--validation)
+- [6. RELATED DOCUMENTS](#6--related-documents)
 
 <!-- /ANCHOR:table-of-contents -->
 
@@ -30,9 +31,13 @@ trigger_phrases:
 <!-- ANCHOR:overview -->
 ## 1. OVERVIEW
 
-Computes **composite relevance scores** for spec folders based on their memories. Used by `memory_stats` to rank folders by how relevant they are to the current session.
+The scoring package computes composite relevance scores for spec folders. It is used by memory statistics and ranking surfaces that need a deterministic way to compare folders from memory records.
 
-Gate E alignment: these scores are a secondary ranking signal only. Canonical recovery still starts with `/spec_kit:resume` and the `handover.md -> _memory.continuity -> spec docs` chain. Folder scoring helps rank candidate folders after those source-of-truth surfaces are known.
+The main formula combines recency, importance, activity and validation, then applies a multiplier for archive, scratch, test and prototype paths so active spec work ranks above fallback evidence.
+
+```text
+score = (recency * 0.40 + importance * 0.30 + activity * 0.20 + validation * 0.10) * archiveMultiplier
+```
 
 <!-- /ANCHOR:overview -->
 
@@ -41,111 +46,83 @@ Gate E alignment: these scores are a secondary ranking signal only. Canonical re
 <!-- ANCHOR:structure -->
 ## 2. STRUCTURE
 
-```
+```text
 scoring/
-├── README.md              # This file
-└── folder-scoring.ts      # All scoring logic, constants and utilities
+├── README.md
+└── folder-scoring.ts
 ```
+
+| File | Purpose |
+| ---- | ------- |
+| `folder-scoring.ts` | Folder scoring constants, archive detection and score calculators |
 
 <!-- /ANCHOR:structure -->
 
 ---
 
-<!-- ANCHOR:scoring-formula -->
-## 3. SCORING FORMULA
+<!-- ANCHOR:stable-api -->
+## 3. STABLE API
 
-```
-score = (recency * 0.40 + importance * 0.30 + activity * 0.20 + validation * 0.10) * archiveMultiplier
-```
+| Export | Kind | Purpose |
+| ------ | ---- | ------- |
+| `computeFolderScores` | Function | Score and sort folders from memory input records |
+| `computeSingleFolderScore` | Function | Score one folder from its related memories |
+| `computeRecencyScore` | Function | Compute inverse time decay with constitutional-tier exemption |
+| `isArchived` | Function | Check whether a folder matches deprioritized path patterns |
+| `getArchiveMultiplier` | Function | Return the scoring multiplier for a folder path |
+| `simplifyFolderPath` | Function | Produce display-friendly folder labels |
+| `findTopTier` | Function | Find the highest importance tier in a memory set |
+| `findLastActivity` | Function | Find the newest timestamp in a memory set |
+| `ARCHIVE_PATTERNS` | Constant | Public archive pattern list for callers that need matching context |
+| `TIER_WEIGHTS` | Constant | Importance tier weights aligned with shared tier semantics |
+| `SCORE_WEIGHTS` | Constant | Composite score weights that sum to `1.0` |
+| `FolderMemoryInput` | Type | Loose input type for camelCase, snake_case and enriched memory records |
 
-| Component        | Weight | Calculation                                                    |
-| ---------------- | ------ | -------------------------------------------------------------- |
-| **Recency**      | 0.40   | Inverse decay: `1 / (1 + days * 0.10)`, best score in folder  |
-| **Importance**   | 0.30   | Weighted average of memory tier values                         |
-| **Activity**     | 0.20   | `min(1, memoryCount / 5)`                                      |
-| **Validation**   | 0.10   | Placeholder `0.5` (real feedback tracking planned)             |
-
-`archiveMultiplier` is the internal helper name for deprioritized-folder weighting. In practice it keeps scratch, test, and history-style folders in fallback-evidence territory instead of letting them outrank canonical spec-doc work.
-
-| Folder Type   | Multiplier |
-| ------------- | ---------- |
-| `z_archive/`  | 0.1        |
-| `scratch/`    | 0.2        |
-| `test-` / `-test/` | 0.2  |
-| `prototype/`  | 0.2        |
-| Normal        | 1.0        |
-
-**Recency decay examples** (at rate 0.10):
-
-| Days Since Update | Score |
-| ----------------- | ----- |
-| 0                 | 1.00  |
-| 7                 | 0.59  |
-| 10                | 0.50  |
-| 30                | 0.25  |
-
-Constitutional-tier memories are **exempt from decay** (always 1.0).
-
-<!-- /ANCHOR:scoring-formula -->
+<!-- /ANCHOR:stable-api -->
 
 ---
 
-<!-- ANCHOR:key-exports -->
-## 4. KEY EXPORTS
+<!-- ANCHOR:boundaries -->
+## 4. BOUNDARIES
 
-### Functions
+Import direction should flow from ranking consumers into `shared/scoring`:
 
-| Function                   | Signature                                                              | Description                                    |
-| -------------------------- | ---------------------------------------------------------------------- | ---------------------------------------------- |
-| `computeFolderScores`      | `(memories, options?) => FolderScore[]`                                 | Main entry: scores and ranks all folders        |
-| `computeSingleFolderScore` | `(folderPath, memories) => SingleFolderScore`                           | Composite score for one folder                  |
-| `computeRecencyScore`      | `(timestamp, tier?, decayRate?) => number`                              | Inverse decay with constitutional exemption     |
-| `isArchived`               | `(folderPath) => boolean`                                               | Check if path matches deprioritized history/fallback folder patterns |
-| `getArchiveMultiplier`     | `(folderPath) => number`                                                | Get the downgrade multiplier for fallback-evidence folders |
-| `simplifyFolderPath`       | `(fullPath) => string`                                                  | Extract leaf name and annotate deprioritized-history folders |
-| `findTopTier`              | `(memories) => string`                                                  | Highest importance tier in a set of memories    |
-| `findLastActivity`         | `(memories) => string`                                                  | Most recent timestamp (ISO string)              |
+- Memory stats, resume ranking and search support code may import scoring helpers.
+- Scoring imports shared types from `../types.ts` only.
+- Scoring should not import database adapters, MCP endpoints, memory search implementations or spec workflow code.
+- Keep new ranking math in `folder-scoring.ts` unless a second independent scoring domain appears.
 
-### Constants
+This package returns scores and metadata. Callers decide how to display, filter or combine those results with retrieval evidence.
 
-| Constant           | Type                  | Description                                   |
-| ------------------ | --------------------- | --------------------------------------------- |
-| `ARCHIVE_PATTERNS` | `readonly RegExp[]`   | Regex patterns for fallback-evidence folder detection |
-| `TIER_WEIGHTS`     | `TierWeights`         | Importance tier to weight mapping (0.1-1.0)    |
-| `SCORE_WEIGHTS`    | `ScoreWeights`        | Composite formula weights (sum = 1.0)          |
-| `DECAY_RATE`       | `number`              | Recency decay rate (`0.10`)                    |
-| `TIER_ORDER`       | `readonly string[]`   | Priority order, highest to lowest              |
-
-### Types
-
-| Type               | Definition                                     | Description                              |
-| ------------------ | ---------------------------------------------- | ---------------------------------------- |
-| `FolderMemoryInput`| `Partial<Memory> & Record<string, unknown>`    | Accepts camelCase and snake_case fields   |
-
-<!-- /ANCHOR:key-exports -->
+<!-- /ANCHOR:boundaries -->
 
 ---
 
-<!-- ANCHOR:design-decisions -->
-## 5. DESIGN DECISIONS
+<!-- ANCHOR:validation -->
+## 5. VALIDATION
 
-| ID  | Decision                    | Rationale                                            |
-| --- | --------------------------- | ---------------------------------------------------- |
-| D1  | Composite weights           | Recency highest (0.40). Supports recent-work ranking after canonical continuity recovery |
-| D2  | Archive patterns            | Deprioritize scratch/test/history folders so fallback evidence does not outrank active spec work |
-| D4  | Inverse decay               | Smooth curve, never reaches zero                      |
-| D7  | Tier weights                | Aligned with `importance-tiers.js` authoritative values |
-| D8  | Constitutional exemption    | Constitutional memories always score max recency      |
+Run scoring tests or TypeScript checks after behavior changes:
 
-<!-- /ANCHOR:design-decisions -->
+```bash
+npm test -- --runInBand folder-scoring
+npx tsc --noEmit
+python3 .opencode/skill/sk-doc/scripts/validate_document.py .opencode/skill/system-spec-kit/shared/scoring/README.md
+```
+
+For README-only edits, `validate_document.py` is the required file-level check.
+
+<!-- /ANCHOR:validation -->
 
 ---
 
 <!-- ANCHOR:related -->
-## 6. RELATED
+## 6. RELATED DOCUMENTS
 
-- **Types**: `../types` contains `ArchivePattern`, `FolderScore`, `FolderScoreOptions`, `Memory`, `ScoreWeights`, `TierWeights`
-- **Consumers**: `memory_stats` endpoint
+| Document | Purpose |
+| -------- | ------- |
+| [shared/README.md](../README.md) | Parent shared library overview |
+| [shared/types.ts](../types.ts) | `ArchivePattern`, `FolderScore`, `Memory`, `ScoreWeights` and `TierWeights` |
+| [shared/algorithms/README.md](../algorithms/README.md) | Retrieval ranking algorithms separate from folder scoring |
 
 <!-- /ANCHOR:related -->
 

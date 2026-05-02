@@ -7,69 +7,80 @@ trigger_phrases:
   - "context loading"
 ---
 
-
 # Data Loaders
 
 <!-- ANCHOR:table-of-contents -->
 ## TABLE OF CONTENTS
 
 - [1. OVERVIEW](#1-overview)
-- [2. CURRENT INVENTORY](#2-current-inventory)
-- [3. SOURCE PRIORITY](#3-source-priority)
-- [4. SECURITY AND PATH HANDLING](#4-security-and-path-handling)
-- [5. QUICK USAGE](#5-quick-usage)
+- [2. SCRIPT IO](#2-script-io)
+- [3. ENTRYPOINTS](#3-entrypoints)
+- [4. VALIDATION FROM REPO ROOT](#4-validation-from-repo-root)
+- [5. KEY FILES](#5-key-files)
+- [6. BOUNDARIES](#6-boundaries)
+- [7. RELATED](#7-related)
 
 <!-- /ANCHOR:table-of-contents -->
 <!-- ANCHOR:overview -->
 ## 1. OVERVIEW
 
-The `loaders/` directory provides the ingestion layer for memory generation.
-
-Gate E alignment: loader output now feeds the canonical continuity contract only. Structured JSON, native capture normalization, and downstream save orchestration all converge on spec-doc continuity plus supporting `_memory.continuity`, not a separate side-memory workflow.
+`scripts/loaders/` is the script-side ingestion layer for context generation. It loads explicit JSON input or normalized native capture data, validates that usable session data exists, and returns a consistent object for extractors and renderers.
 
 <!-- /ANCHOR:overview -->
-<!-- ANCHOR:current-inventory -->
-## 2. CURRENT INVENTORY
+<!-- ANCHOR:script-io -->
+## 2. SCRIPT IO
 
+| Source | Input | Output |
+| --- | --- | --- |
+| Explicit JSON | `dataFile` option | Parsed and normalized session data |
+| Preferred capture | `preferredCaptureSource` option or `SYSTEM_SPEC_KIT_CAPTURE_SOURCE` | Normalized native capture data |
+| Capture fallback | OpenCode, Claude Code, Codex CLI, Copilot CLI, Gemini CLI | First usable native capture payload |
+| No data | Empty or unusable sources | `NO_DATA_AVAILABLE` hard stop |
 
-- `data-loader.ts` - source loading, path checks, normalization, and explicit no-data failure handling
-- `index.ts` - public exports for loader API
+<!-- /ANCHOR:script-io -->
+<!-- ANCHOR:entrypoints -->
+## 3. ENTRYPOINTS
 
+- `loadData()` loads explicit or captured data and enforces the no-data hard stop.
+- `loadFromJsonFile()` reads and validates explicit JSON data files.
+- `loadFromNativeCapture()` loads normalized data from supported CLI capture sources.
+- `index.ts` re-exports the public loader API for script consumers.
 
-<!-- /ANCHOR:current-inventory -->
-<!-- ANCHOR:source-priority -->
-## 3. SOURCE PRIORITY
+<!-- /ANCHOR:entrypoints -->
+<!-- ANCHOR:validation-from-repo-root -->
+## 4. VALIDATION FROM REPO ROOT
 
-
-`data-loader.ts` loads in this order:
-1. Explicit JSON data file when `dataFile` is provided
-2. Preferred native capture source when `preferredCaptureSource` or `SYSTEM_SPEC_KIT_CAPTURE_SOURCE` is set
-3. Native capture fallback order:
-   - OpenCode
-   - Claude Code
-   - Codex CLI
-   - Copilot CLI
-   - Gemini CLI
-4. Hard-stop with `NO_DATA_AVAILABLE` when neither explicit data nor any native capture source produces usable session data
-
-
-<!-- /ANCHOR:source-priority -->
-<!-- ANCHOR:security-and-path-handling -->
-## 4. SECURITY AND PATH HANDLING
-
-
-- Path checks restrict data file access to expected safe base locations.
-- macOS `/tmp` and `/private/tmp` handling is normalized.
-- Invalid or unsafe paths fail fast instead of silently falling through.
-- Explicit JSON mode surfaces `EXPLICIT_DATA_FILE_LOAD_FAILED: ...` for missing files, invalid JSON, and validation failures.
-
-
-<!-- /ANCHOR:security-and-path-handling -->
-<!-- ANCHOR:quick-usage -->
-## 5. QUICK USAGE
-
+Run loader validation from the repository root:
 
 ```bash
-node -e "const l=require('./.opencode/skill/system-spec-kit/scripts/dist/loaders'); console.log(Object.keys(l))"
+npm --prefix .opencode/skill/system-spec-kit/scripts run build
+node -e "const loaders=require('./.opencode/skill/system-spec-kit/scripts/dist/loaders'); console.log(Object.keys(loaders).sort())"
+python3 .opencode/skill/sk-code-opencode/scripts/verify_alignment_drift.py --root .opencode/skill/system-spec-kit/scripts/loaders
 ```
-<!-- /ANCHOR:quick-usage -->
+
+<!-- /ANCHOR:validation-from-repo-root -->
+<!-- ANCHOR:key-files -->
+## 5. KEY FILES
+
+| File | Purpose |
+| --- | --- |
+| `data-loader.ts` | Loads explicit data, applies path checks, normalizes capture data, and throws clear no-data errors |
+| `index.ts` | Barrel export for the loader API |
+
+<!-- /ANCHOR:key-files -->
+<!-- ANCHOR:boundaries -->
+## 6. BOUNDARIES
+
+- Loaders do not extract decisions, files, diagrams, or implementation facts.
+- Loaders do not render markdown or update spec documents.
+- Path checks must stay inside the loader before any explicit file content is trusted.
+
+<!-- /ANCHOR:boundaries -->
+<!-- ANCHOR:related -->
+## 7. RELATED
+
+- `../extractors/README.md`
+- `../renderers/README.md`
+- `../utils/README.md`
+
+<!-- /ANCHOR:related -->

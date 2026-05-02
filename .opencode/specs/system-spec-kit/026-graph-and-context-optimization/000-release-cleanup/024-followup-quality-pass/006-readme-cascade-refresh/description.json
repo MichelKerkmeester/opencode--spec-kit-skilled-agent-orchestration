@@ -1,19 +1,22 @@
 {
-  "specFolder": "system-spec-kit/026-graph-and-context-optimization/000-release-cleanup/005-review-remediation/024-followup-quality-pass/006-readme-cascade-refresh",
-  "description": "Cascade-refreshes first-party READMEs and parent skill docs after packets 031-036 and 037/001-005. Tool counts, structure trees, version tags, and cross-references are current.",
+  "specFolder": "system-spec-kit/026-graph-and-context-optimization/000-release-cleanup/024-followup-quality-pass/006-readme-cascade-refresh",
+  "description": "Feature Specification: 037/006 README Cascade Refresh",
   "keywords": [
-    "037-006-readme-cascade-refresh",
-    "README cascade",
-    "README refresh",
-    "mcp_server README update",
-    "parent skill README"
+    "feature",
+    "specification",
+    "037",
+    "006",
+    "readme",
+    "cascade",
+    "refresh"
   ],
-  "lastUpdated": "2026-04-29T18:39:49.385Z",
+  "lastUpdated": "2026-05-02T10:39:48.415Z",
   "specId": "006",
   "folderSlug": "readme-cascade-refresh",
   "parentChain": [
     "system-spec-kit",
     "026-graph-and-context-optimization",
+    "000-release-cleanup",
     "024-followup-quality-pass"
   ],
   "memorySequence": 2,

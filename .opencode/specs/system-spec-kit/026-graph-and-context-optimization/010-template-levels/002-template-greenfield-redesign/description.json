@@ -1,5 +1,5 @@
 {
-  "specFolder": "026-graph-and-context-optimization/010-template-levels/002-template-greenfield-redesign",
+  "specFolder": "system-spec-kit/026-graph-and-context-optimization/010-template-levels/002-template-greenfield-redesign",
   "description": "Feature Specification: Template Backend Greenfield Redesign",
   "keywords": [
     "feature",
@@ -9,11 +9,13 @@
     "greenfield",
     "redesign"
   ],
-  "lastUpdated": "2026-05-01T10:23:37.636Z",
-  "specId": "011",
+  "lastUpdated": "2026-05-02T10:39:48.795Z",
+  "specId": "002",
   "folderSlug": "template-greenfield-redesign",
   "parentChain": [
-    "026-graph-and-context-optimization"
+    "system-spec-kit",
+    "026-graph-and-context-optimization",
+    "010-template-levels"
   ],
   "memorySequence": 0,
   "memoryNameHistory": []

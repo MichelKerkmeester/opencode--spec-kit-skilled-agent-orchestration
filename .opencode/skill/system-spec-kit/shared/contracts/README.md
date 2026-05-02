@@ -1,27 +1,25 @@
 ---
 title: "Contracts"
-description: "Typed contracts for the retrieval pipeline, providing trace stages, degraded-mode handling and context envelope wrappers for end-to-end type safety."
+description: "Typed retrieval trace and response envelope contracts for shared retrieval code."
 trigger_phrases:
   - "retrieval trace"
-  - "pipeline trace"
   - "context envelope"
   - "degraded mode contract"
-  - "trace entry"
 ---
 
 # Contracts
 
-> Typed contracts for the retrieval pipeline that enforce end-to-end type safety. Defines trace stages, degraded-mode fallback handling and generic context envelopes for wrapping pipeline results with observability metadata.
-
----
-
 <!-- ANCHOR:table-of-contents -->
 ## TABLE OF CONTENTS
 
-- [1. OVERVIEW](#1-overview)
-- [2. STRUCTURE](#2-structure)
-- [3. KEY EXPORTS](#3-key-exports)
-- [4. RELATED DOCUMENTS](#4-related-documents)
+- [1. OVERVIEW](#1--overview)
+- [2. PACKAGE TOPOLOGY](#2--package-topology)
+- [3. KEY FILES](#3--key-files)
+- [4. STABLE API](#4--stable-api)
+- [5. BOUNDARIES](#5--boundaries)
+- [6. ENTRYPOINTS](#6--entrypoints)
+- [7. VALIDATION](#7--validation)
+- [8. RELATED](#8--related)
 
 <!-- /ANCHOR:table-of-contents -->
 
@@ -30,75 +28,140 @@ trigger_phrases:
 <!-- ANCHOR:overview -->
 ## 1. OVERVIEW
 
-This folder contains the typed contract definitions that the retrieval pipeline uses for instrumentation and error handling. The contracts serve two purposes. They describe supporting retrieval flows around the canonical packet continuity path resumed via `/spec_kit:resume` from `handover.md -> _memory.continuity -> spec docs`:
+`contracts/` owns typed data shapes for retrieval tracing and degraded-mode reporting. The folder is intentionally small so retrieval code can share trace metadata without importing handlers or response adapters.
 
-1. **Observability** -- Every retrieval request produces a `RetrievalTrace` capturing each pipeline stage (candidate, filter, fusion, rerank, fallback, final-rank) with timing, input/output counts and optional metadata. Traces are wrapped in a generic `ContextEnvelope<T>` for transport.
+Current state:
 
-2. **Degraded-mode handling** -- When a pipeline stage fails, a `DegradedModeContract` records what failed, what fallback was used, the confidence impact and a retry recommendation. This lets callers make informed decisions about result quality.
-
-Factory functions (`createTrace`, `addTraceEntry`, `createEnvelope`, `createDegradedContract`) provide validated construction with clamped confidence values and auto-generated trace IDs.
+- `RetrievalTrace` records stage timing, counts and final result count.
+- `DegradedModeContract` records fallback behavior and confidence impact.
+- `ContextEnvelope<T>` wraps data with trace, metadata and optional degraded-mode details.
+- Factory functions create and update these shapes with predictable defaults.
 
 <!-- /ANCHOR:overview -->
 
 ---
 
-<!-- ANCHOR:structure -->
-## 2. STRUCTURE
+<!-- ANCHOR:package-topology -->
+## 2. PACKAGE TOPOLOGY
 
-```
+```text
 contracts/
-├── README.md              # This file
-└── retrieval-trace.ts     # All trace types, envelope types and factory functions
++-- retrieval-trace.ts     # Trace, envelope and degraded-mode contracts
+`-- README.md
 ```
 
-| File                  | LOC  | Description                                                          |
-| --------------------- | ---- | -------------------------------------------------------------------- |
-| `retrieval-trace.ts`  | 197  | Pipeline trace types, context envelope, degraded-mode contract, factories |
+Allowed dependency direction:
 
-<!-- /ANCHOR:structure -->
+```text
+retrieval callers -> contracts/retrieval-trace.ts
+contracts/retrieval-trace.ts -> local helpers only
+```
+
+Disallowed dependency direction:
+
+```text
+contracts/* -> MCP handlers
+contracts/* -> response adapters
+contracts/* -> algorithm modules
+contracts/* -> storage modules
+```
+
+<!-- /ANCHOR:package-topology -->
 
 ---
 
-<!-- ANCHOR:key-exports -->
-## 3. KEY EXPORTS
+<!-- ANCHOR:key-files -->
+## 3. KEY FILES
 
-### Types and Interfaces
+| File | Responsibility |
+|---|---|
+| `retrieval-trace.ts` | Defines trace stages, trace entries, envelopes, degraded-mode data and factory functions. |
 
-| Export                  | Kind       | Description                                                    |
-| ----------------------- | ---------- | -------------------------------------------------------------- |
-| `RetrievalStage`        | Type       | Union of pipeline stages: candidate, filter, fusion, rerank, fallback, final-rank |
-| `TraceEntry`            | Interface  | Single stage record with timing, counts and metadata           |
-| `RetrievalTrace`        | Interface  | Full trace with traceId, query, stages array and total duration |
-| `DegradedModeContract`  | Interface  | Failure description with fallback mode, confidence impact and retry guidance |
-| `EnvelopeMetadata`      | Interface  | Version string, generation timestamp and optional server version |
-| `ContextEnvelope<T>`    | Interface  | Generic wrapper: data payload + trace + optional degraded mode |
+<!-- /ANCHOR:key-files -->
 
-### Factory Functions
+---
 
-| Export                   | Signature                                              | Description                                      |
-| ------------------------ | ------------------------------------------------------ | ------------------------------------------------ |
-| `createTrace`            | `(query, sessionId?, intent?) => RetrievalTrace`       | Initialize a new trace with auto-generated ID    |
-| `addTraceEntry`          | `(trace, stage, in, out, ms, meta?) => RetrievalTrace` | Append a stage entry, update totals (mutates)    |
-| `createEnvelope`         | `(data, trace, degraded?, version?) => ContextEnvelope<T>` | Wrap results with trace and metadata         |
-| `createDegradedContract` | `(failure, fallback, confidence, retry, stages) => DegradedModeContract` | Build a clamped degraded-mode record |
+<!-- ANCHOR:stable-api -->
+## 4. STABLE API
 
-### Constants
+| Export | Kind | Contract |
+|---|---|---|
+| `RetrievalStage` | Type | One of `candidate`, `filter`, `fusion`, `rerank`, `fallback` or `final-rank`. |
+| `TraceEntry` | Interface | One trace stage with timestamp, counts, duration and optional metadata. |
+| `RetrievalTrace` | Interface | Full trace for one query, including stages and final result count. |
+| `DegradedModeContract` | Interface | Failure mode, fallback mode, confidence impact, retry guidance and affected stages. |
+| `ContextEnvelope<T>` | Interface | Generic response wrapper with `data`, `trace`, `metadata` and optional `degradedMode`. |
+| `createTrace(query, sessionId, intent)` | Function | Creates an empty trace with generated `traceId`. |
+| `addTraceEntry(trace, stage, in, out, ms, meta)` | Function | Adds one stage to a trace and updates totals. |
+| `createEnvelope(data, trace, degraded, version)` | Function | Wraps data with trace metadata. |
+| `createDegradedContract(failure, fallback, confidence, retry, stages)` | Function | Builds a degraded-mode record and clamps confidence impact. |
 
-| Export              | Value    | Description                        |
-| ------------------- | -------- | ---------------------------------- |
-| `ENVELOPE_VERSION`  | `1.0.0`  | Current context envelope version   |
+Treat these shapes as shared contracts. Add fields only when every caller can tolerate the extra data.
 
-<!-- /ANCHOR:key-exports -->
+<!-- /ANCHOR:stable-api -->
+
+---
+
+<!-- ANCHOR:boundaries -->
+## 5. BOUNDARIES
+
+| Boundary | Rule |
+|---|---|
+| Imports | Keep this folder free of runtime package imports. |
+| Exports | Export typed contracts and small constructors only. |
+| State | Do not store trace state outside values passed by callers. |
+| Mutation | `addTraceEntry` mutates the trace passed to it and returns the same object. |
+| Ownership | Response rendering belongs to callers, not this folder. |
+
+Main flow:
+
+```text
+retrieval caller
+  -> createTrace
+  -> addTraceEntry per stage
+  -> createDegradedContract when fallback runs
+  -> createEnvelope for typed transport
+```
+
+<!-- /ANCHOR:boundaries -->
+
+---
+
+<!-- ANCHOR:entrypoints -->
+## 6. ENTRYPOINTS
+
+| Entrypoint | Type | Purpose |
+|---|---|---|
+| `retrieval-trace.ts` | Module | Complete public surface for retrieval contracts. |
+| `createTrace` | Function | Starts trace collection. |
+| `addTraceEntry` | Function | Records one retrieval stage. |
+| `createEnvelope` | Function | Produces a typed envelope for callers. |
+| `createDegradedContract` | Function | Records fallback behavior. |
+
+<!-- /ANCHOR:entrypoints -->
+
+---
+
+<!-- ANCHOR:validation -->
+## 7. VALIDATION
+
+Run from the repository root:
+
+```bash
+python3 .opencode/skill/sk-doc/scripts/validate_document.py .opencode/skill/system-spec-kit/shared/contracts/README.md
+```
+
+Expected result: the validator exits with code `0`.
+
+<!-- /ANCHOR:validation -->
 
 ---
 
 <!-- ANCHOR:related -->
-## 4. RELATED DOCUMENTS
+## 8. RELATED
 
-- **Algorithms**: `../algorithms/` consumes `DegradedModeContract` pattern in adaptive fusion fallback paths
-- **MCP Server**: `../mcp_server/` uses `ContextEnvelope` and `RetrievalTrace` for instrumented responses
-- **Types**: `../types.ts` defines scoring types used alongside trace contracts
+- [`../README.md`](../README.md)
+- [`../algorithms/README.md`](../algorithms/README.md)
+- [`../types.ts`](../types.ts)
 
 <!-- /ANCHOR:related -->
-
----

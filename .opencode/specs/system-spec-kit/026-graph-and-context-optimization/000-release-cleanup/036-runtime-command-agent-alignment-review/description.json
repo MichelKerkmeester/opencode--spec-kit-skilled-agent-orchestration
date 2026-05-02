@@ -1,12 +1,33 @@
 {
   "title": "049 Runtime Command Agent Alignment Review",
-  "description": "Audits all commands in .opencode/command/ and agents in .opencode/agent/, .claude/agents/, .codex/agents/, .gemini/agents/ for current-reality alignment after 031-048. Surfaces tool/path/count/capability drift; applies fixes; cross-checks runtime-equivalent agents for consistency.",
-  "contextType": "implementation",
-  "importance_tier": "important",
   "trigger_phrases": [
     "036-runtime-command-agent-alignment-review",
     "runtime command audit",
     "agent alignment review",
     "cross-runtime agent consistency"
-  ]
+  ],
+  "contextType": "implementation",
+  "importance_tier": "important",
+  "specFolder": "system-spec-kit/026-graph-and-context-optimization/000-release-cleanup/036-runtime-command-agent-alignment-review",
+  "description": "Feature Specification: 049 Runtime Command Agent Alignment Review",
+  "keywords": [
+    "feature",
+    "specification",
+    "049",
+    "runtime",
+    "command",
+    "agent",
+    "alignment",
+    "review"
+  ],
+  "lastUpdated": "2026-05-02T10:39:48.612Z",
+  "specId": "036",
+  "folderSlug": "runtime-command-agent-alignment-review",
+  "parentChain": [
+    "system-spec-kit",
+    "026-graph-and-context-optimization",
+    "000-release-cleanup"
+  ],
+  "memorySequence": 0,
+  "memoryNameHistory": []
 }
