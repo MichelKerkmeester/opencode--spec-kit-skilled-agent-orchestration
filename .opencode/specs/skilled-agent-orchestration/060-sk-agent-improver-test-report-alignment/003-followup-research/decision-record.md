@@ -30,7 +30,7 @@ Match 060/001 + 059 + 060/002 success pattern. High reasoning via ~/.copilot/set
 Same shape as 060/001. Convergence rarely fires before iter 5; 10 is comfortable headroom.
 
 ## ADR-3: Research-only scope
-This packet produces recommendations. No source-file edits. Implementation lives in 063 + 064.
+This packet produces recommendations. No source-file edits. Implementation lives in 061 + 062.
 
 ## ADR-4: Build on 002 R1 transcripts as primary evidence
 Don't re-run CP-040..CP-045. The transcripts in 002/stress-runs/ are the input to this research, not the target.

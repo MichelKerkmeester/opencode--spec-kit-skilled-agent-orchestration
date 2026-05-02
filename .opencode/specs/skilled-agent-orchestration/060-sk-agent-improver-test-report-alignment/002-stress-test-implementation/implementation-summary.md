@@ -14,14 +14,14 @@ _memory:
     last_updated_at: "2026-05-02T12:25:00Z"
     last_updated_by: "codex-gpt-5"
     recent_action: "Closed 060/002 with final R1 results and methodology finding"
-    next_safe_action: "Commit + push 060; create follow-on 063 for command-flow stress tests"
+    next_safe_action: "Commit + push 060; create follow-on 061 for command-flow stress tests"
     blockers: []
     key_files:
       - .opencode/specs/skilled-agent-orchestration/060-sk-agent-improver-test-report-alignment/002-stress-test-implementation/test-report.md
       - .opencode/specs/skilled-agent-orchestration/060-sk-agent-improver-test-report-alignment/002-stress-test-implementation/stress-runs/stage4-summary.md
     completion_pct: 100
     open_questions:
-      - "Should follow-on packet 063 preserve CP-040..CP-045 IDs or clone them as command-flow variants?"
+      - "Should follow-on packet 061 preserve CP-040..CP-045 IDs or clone them as command-flow variants?"
     answered_questions:
       - "Rounds run → 1 (R1 only)"
       - "Final score → PASS 0 / PARTIAL 2 / FAIL 4 out of 6"
@@ -92,7 +92,7 @@ Tripwire-dirty verdicts are false positives for scenario mutation. They reflect 
 <!-- ANCHOR:handoff -->
 ## Hand-off Notes
 
-Recommended follow-on packet: `063-improve-agent-command-flow-stress-tests`.
+Recommended follow-on packet: `061-improve-agent-command-flow-stress-tests`.
 
 The deferred work is not "fix CP-040..CP-045 wording." The real task is to restructure Call B so it invokes `/improve:agent` through the command/YAML workflow. Evidence should come from command logs, generated `improvement/` artifacts, scorer JSON, and `improvement-journal.jsonl`, not only the prepended agent-body transcript.
 

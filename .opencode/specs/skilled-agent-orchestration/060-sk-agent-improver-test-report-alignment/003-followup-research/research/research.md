@@ -10,13 +10,13 @@ _memory:
     last_updated_at: "2026-05-02T13:41:52+02:00"
     last_updated_by: "codex-gpt-5"
     recent_action: "Synthesized 10 cli-copilot deep-research iterations into final research.md"
-    next_safe_action: "Use handover.md to start packet 063 or 064"
+    next_safe_action: "Use handover.md to start packet 061 or 062"
     blockers: []
     key_files:
       - .opencode/specs/skilled-agent-orchestration/060-sk-agent-improver-test-report-alignment/003-followup-research/research/research.md
     completion_pct: 100
     open_questions:
-      - "Whether 064 includes the GREEN rerun or leaves it to optional 065"
+      - "Whether 062 includes the GREEN rerun or leaves it to optional 063"
     answered_questions:
       - "RQ-1 through RQ-7 answered"
 ---
@@ -26,7 +26,7 @@ _memory:
 <!-- ANCHOR:synthesis -->
 ## 1. EXECUTIVE SUMMARY
 
-The main recommendation is to split the next work by proof layer. Packet 063 should prove the corrected command-flow harness and classify remaining failures honestly; packet 064 should wire the executable producers and consumers needed for a product GREEN. Iterations 6, 8, 9, and 10 converged on that split: 063 owns command-flow methodology and/or active CP contract correction, while 064 owns benchmark materialization, nested legal-stop shape, stop vocabulary, YAML parity, and native runtime-truth reconciliation [iteration-006.md:72-78; iteration-008.md:123-154; iteration-009.md:28-35; iteration-010.md:42-50].
+The main recommendation is to split the next work by proof layer. Packet 061 should prove the corrected command-flow harness and classify remaining failures honestly; packet 062 should wire the executable producers and consumers needed for a product GREEN. Iterations 6, 8, 9, and 10 converged on that split: 061 owns command-flow methodology and/or active CP contract correction, while 062 owns benchmark materialization, nested legal-stop shape, stop vocabulary, YAML parity, and native runtime-truth reconciliation [iteration-006.md:72-78; iteration-008.md:123-154; iteration-009.md:28-35; iteration-010.md:42-50].
 
 R1 did not show that `sk-improve-agent` is hopeless. It showed that CP-040..CP-045 used the wrong authority source for several claims. The old Call B prepended the `@improve-agent` body and hit the proposal-only mutator, while the expected evidence lived in `/improve:agent`, YAML steps, helper scripts, journals, reducers, and benchmark artifacts [002/test-report.md:75-98; 002/test-report.md:144-185; 002/test-report.md:246-253]. The follow-on test must therefore invoke the command layer when asserting command-owned evidence.
 
@@ -38,7 +38,7 @@ The reusable lesson is sharper than "use the right prompt." Every CP authoring p
 
 This synthesis treats `research/iterations/iteration-001.md` through `iteration-010.md` as the canonical research record. The loop ran 10 cli-copilot iterations on gpt-5.5 with fresh-per-iteration prompts, and each iteration produced a markdown narrative with focused RQ coverage. Iteration 9 effectively reached synthesis-readiness by producing the convergence table and downstream packet split; iteration 10 continued to the cap and added the final source-authority guardrail [iteration-009.md:59-75; iteration-010.md:22-36; iteration-010.md:110-116].
 
-The inputs were the 060/003 spec RQs, the 060/002 R1 test report, the prior 060/001 synthesis, the active CP-040..CP-045 playbook files, the `@improve-agent` body, the `/improve:agent` command/YAML surfaces, helper scripts, reducer consumers, benchmark assets, and the other meta-agent bodies. The spec itself required research-only synthesis and handoff notes, not source edits, CP reruns, 063 playbook-entry design, or constitutional changes [spec.md:93-107; spec.md:127-134; iteration-010.md:38-42].
+The inputs were the 060/003 spec RQs, the 060/002 R1 test report, the prior 060/001 synthesis, the active CP-040..CP-045 playbook files, the `@improve-agent` body, the `/improve:agent` command/YAML surfaces, helper scripts, reducer consumers, benchmark assets, and the other meta-agent bodies. The spec itself required research-only synthesis and handoff notes, not source edits, CP reruns, 061 playbook-entry design, or constitutional changes [spec.md:93-107; spec.md:127-134; iteration-010.md:38-42].
 
 Where iterations disagreed, the later evidence wins only when it explained a narrower layer or governance constraint. Example: iterations 1-4 said Call B should invoke `/improve:agent`; iteration 7 refined that to "command-flow for command-owned evidence, leaf/body for CP-041/042." Iterations 6 and 7 also looked contradictory on CP IDs, but iteration 9 reconciled them: expected-RED methodology evidence should stay spec-local, while active playbook corrections should reuse stable CP-040..CP-045 IDs only when the resulting contracts can be graded under PASS/PARTIAL/FAIL/SKIP [iteration-007.md:47-65; iteration-009.md:22-35].
 
@@ -49,32 +49,32 @@ Where iterations disagreed, the later evidence wins only when it explained a nar
 **Status:** ANSWERED
 **Answer:** Three areas are functionally complete enough to test as shipped: proposal-only mutator boundary, active Critic wording, and baseline/current scorer output. The low-risk mirror-path correction is also mostly complete. The further-iteration targets are benchmark execution/assets/materialization, legal-stop producer/consumer shape, event and stop-reason vocabulary, auto/confirm YAML parity, and native RT/playbook oracle alignment.
 **Evidence:** Iteration 1 split body/scorer/mirror changes from open YAML/legal-stop/benchmark/methodology seams [iteration-001.md:89-101]. Iteration 2 reached the same split and added event vocabulary drift [iteration-002.md:59-72]. Iteration 5 found the benchmark-profile/fixture/output precondition [iteration-005.md:22-46]. Iteration 8 added auto/confirm parity, stop-reason conflict, and native RT drift [iteration-008.md:22-81].
-**Recommended action:** Put no more wording-only effort into the `@improve-agent` proposal-only body before command-flow evidence exists. Assign 064 the executable joins: benchmark command invocation, benchmark assets, materializer, nested `details.gateResults`, stop enum truth, docs/tests parity, and RT-028/RT-032 reconciliation.
+**Recommended action:** Put no more wording-only effort into the `@improve-agent` proposal-only body before command-flow evidence exists. Assign 062 the executable joins: benchmark command invocation, benchmark assets, materializer, nested `details.gateResults`, stop enum truth, docs/tests parity, and RT-028/RT-032 reconciliation.
 
-### RQ-2: Exact dispatch shape for 063 Call B?
+### RQ-2: Exact dispatch shape for 061 Call B?
 
 **Status:** ANSWERED
 **Answer:** The command-owned Call B is:
 
 ```text
-/improve:agent ".opencode/agent/cp-improve-target.md" :auto --spec-folder=/tmp/cp-063-spec --iterations=1
+/improve:agent ".opencode/agent/cp-improve-target.md" :auto --spec-folder=/tmp/cp-061-spec --iterations=1
 ```
 
 It must run from a command-capable temp project root containing `.opencode/command/improve`, `.opencode/skill/sk-improve-agent`, the fixture target under `.opencode/agent/`, mirrors, and any benchmark/profile assets. YAML-step-by-step prompts are internal evidence only, not the external Call B. A bare fixture cwd and repo-root plus `--add-dir` are both under-specified for the command's relative path assumptions.
 **Evidence:** Iteration 1 rejected YAML-step-by-step as external Call B and sketched the command form [iteration-001.md:42-54; iteration-001.md:118-136]. Iteration 3 refined the cwd requirement and command-capable sandbox shape [iteration-003.md:22-34; iteration-003.md:97-117]. Iteration 7 narrowed the command-flow lane to CP-040/043/044/045, with CP-041/042 allowed as body-layer tests if inputs exist [iteration-007.md:26-38].
-**Recommended action:** 063 should create a command-capable temp root, invoke the command form above for command-owned CPs, and reserve direct `@improve-agent` leaf dispatch only for CP-041/042-style body-owned checks with the full five-input bundle.
+**Recommended action:** 061 should create a command-capable temp root, invoke the command form above for command-owned CPs, and reserve direct `@improve-agent` leaf dispatch only for CP-041/042-style body-owned checks with the full five-input bundle.
 
-### RQ-3: Grep contract for 063 Call B verdict?
+### RQ-3: Grep contract for 061 Call B verdict?
 
 **Status:** ANSWERED
 **Answer:** The contract needs three lanes:
 
 1. Leaf/body GREEN for CP-041/042: required inputs exist, packet-local candidate path exists, canonical/mirror files stay clean, and Critic labels appear where relevant.
-2. Command-flow RED/PARTIAL for 063 methodology: command entry and artifact roots are proven, and known producer/consumer gaps are causally classified.
-3. Command-flow GREEN after 064: structured helper outputs, benchmark report/state rows, nested legal-stop gates, reducer-visible summaries, and session stop ordering all pass.
+2. Command-flow RED/PARTIAL for 061 methodology: command entry and artifact roots are proven, and known producer/consumer gaps are causally classified.
+3. Command-flow GREEN after 062: structured helper outputs, benchmark report/state rows, nested legal-stop gates, reducer-visible summaries, and session stop ordering all pass.
 
 **Evidence:** Iteration 1 listed minimum artifact roots and command-flow events, then warned that event-name greps are insufficient when the reducer consumes a different JSON shape [iteration-001.md:56-87]. Iteration 3 added benchmark report/state assertions [iteration-003.md:36-53; iteration-003.md:119-136]. Iteration 5 specified `--outputs-dir` and benchmark profile/fixture materialization [iteration-005.md:22-38; iteration-005.md:129-157]. Iteration 7 split grep contracts by owning layer [iteration-007.md:84-92]. Iteration 8 made structured consumer shape mandatory [iteration-008.md:94-107].
-**Recommended action:** 063 should implement the RED/PARTIAL command-flow methodology lane by default and avoid claiming product GREEN. 064 should own the GREEN lane and the material producers that make it meaningful.
+**Recommended action:** 061 should implement the RED/PARTIAL command-flow methodology lane by default and avoid claiming product GREEN. 062 should own the GREEN lane and the material producers that make it meaningful.
 
 ### RQ-4: Other meta-agents with command-orchestrator pattern?
 
@@ -95,7 +95,7 @@ It must run from a command-capable temp project root containing `.opencode/comma
 **Status:** ANSWERED
 **Answer:** The 5-dim Coder Acceptance Rubric is a useful ancestor but must be adapted for meta-agent pipelines. The final rubric is command-orchestrator-specific: entry-point fidelity, ordered artifact/journal truth, producer/consumer compatibility, governance/stop semantics, sandbox containment, evaluator asset completeness, verdict-mode honesty, scenario layer partition, cross-playbook oracle check, release-surface honesty, and evidence source authority.
 **Evidence:** Iteration 2 replaced implementation-output scoring with a five-dimension command-orchestrator rubric [iteration-002.md:22-38; iteration-002.md:95-118]. Iteration 5 added evaluator asset completeness [iteration-005.md:78-94]. Iteration 6 added verdict-mode honesty [iteration-006.md:46-62]. Iteration 7 added scenario layer partition [iteration-007.md:67-82]. Iteration 8 added cross-playbook oracle checks and structured shape assertions [iteration-008.md:77-107]. Iterations 9 and 10 added release-surface honesty and evidence source authority [iteration-009.md:45-57; iteration-010.md:30-36].
-**Recommended action:** Use this rubric for 063/064 and turn the P0 items into scenario preflight questions, not after-the-fact report commentary.
+**Recommended action:** Use this rubric for 061/062 and turn the P0 items into scenario preflight questions, not after-the-fact report commentary.
 
 ### RQ-7: Reusable test-layer-selection template?
 
@@ -104,28 +104,28 @@ It must run from a command-capable temp project root containing `.opencode/comma
 **Evidence:** Iteration 2 produced the initial preflight with unit under test, natural entry point, evidence owner, consumer check, dependency order, negative control, containment, and P0 failures [iteration-002.md:40-57; iteration-002.md:120-138]. Iteration 4 converted that into a layer-owned evidence matrix [iteration-004.md:73-88; iteration-004.md:144-157]. Iteration 5 added evaluator asset preflight [iteration-005.md:96-113]. Iteration 10 added the authority ladder and stale-state guard [iteration-010.md:52-74].
 **Recommended action:** Constitutionalize a lightweight version of the test-layer-selection rule as feedback memory or an authoring checklist. Keep the full matrix in packet templates/manual playbooks rather than hard-coding all packet-specific details into global instructions.
 
-## 4. PACKET 063 SKETCH (Command-Flow Stress Tests)
+## 4. PACKET 061 SKETCH (Command-Flow Stress Tests)
 
-- **Packet name suggestion:** `063-improve-agent-command-flow-stress-tests` for the follow-on named in 002. If the packet is methodology-only, use a subtitle such as "spec-local RED/PARTIAL command-flow proof" to avoid implying product GREEN [002/test-report.md:373-383; iteration-009.md:28-35].
-- **Spec scope:** In scope: command-capable temp root, `/improve:agent` Call B, artifact-root checks, layer-specific CP lanes, RED/PARTIAL classification for known executable seams, and handoff to 064. Out of scope unless explicitly expanded: benchmark materializer, YAML auto/confirm parity patches, stop enum reconciliation, native RT repair, and GREEN rerun [iteration-006.md:72-78; iteration-009.md:134-148].
-- **Call B dispatch shape:** `/improve:agent ".opencode/agent/cp-improve-target.md" :auto --spec-folder=/tmp/cp-063-spec --iterations=1`, run from a temp project root containing command files, skill scripts, target agent, mirrors, fixture data, and allowed external spec/log paths [iteration-003.md:22-34; iteration-003.md:97-117].
+- **Packet name suggestion:** `061-improve-agent-command-flow-stress-tests` for the follow-on named in 002. If the packet is methodology-only, use a subtitle such as "spec-local RED/PARTIAL command-flow proof" to avoid implying product GREEN [002/test-report.md:373-383; iteration-009.md:28-35].
+- **Spec scope:** In scope: command-capable temp root, `/improve:agent` Call B, artifact-root checks, layer-specific CP lanes, RED/PARTIAL classification for known executable seams, and handoff to 062. Out of scope unless explicitly expanded: benchmark materializer, YAML auto/confirm parity patches, stop enum reconciliation, native RT repair, and GREEN rerun [iteration-006.md:72-78; iteration-009.md:134-148].
+- **Call B dispatch shape:** `/improve:agent ".opencode/agent/cp-improve-target.md" :auto --spec-folder=/tmp/cp-061-spec --iterations=1`, run from a temp project root containing command files, skill scripts, target agent, mirrors, fixture data, and allowed external spec/log paths [iteration-003.md:22-34; iteration-003.md:97-117].
 - **CP IDs:** Reuse CP-040..CP-045 for active playbook corrections. Use CP-046..CP-051 only for a spec-local experimental suite or if CP-040..CP-045 are explicitly archived/deprecated from the active root index [iteration-007.md:47-65; iteration-007.md:100-115; iteration-009.md:22-35].
 - **Verdict grep contract:** Require command entry, `improvement/` roots, `integration-report.json`, `dynamic-profile.json`, candidate path under `improvement/candidates`, `candidate_generated`, `score-candidate.cjs`, `candidate_scored`, score JSON with `baselineScore`, `delta`, `thresholdDelta`, `recommendation`, `legal_stop_evaluated`, `blocked_stop`, reducer output, and for GREEN only `details.gateResults.*`, benchmark report `status:"benchmark-complete"`, `benchmark_run` state row, and ordered `session_end` [iteration-001.md:56-87; iteration-003.md:36-53; iteration-004.md:33-42; iteration-008.md:94-107].
-- **RED/GREEN methodology:** 063 may PASS as a methodology packet if it proves the corrected harness reaches the owning layer and classifies failures against known producer/consumer gaps. It must not count expected RED as product GREEN. GREEN product proof belongs after 064 wiring [iteration-004.md:22-31; iteration-006.md:46-62; iteration-008.md:147-154].
-- **Pre-flight requirements:** Build a command-capable sandbox root; materialize the fixture target under `.opencode/agent/`; keep spec artifacts under `/tmp/cp-063-spec/improvement`; include Layer-Owned Evidence Matrix and Evaluator Asset Preflight; define expected GREEN/RED/PARTIAL before execution [iteration-003.md:61-72; iteration-005.md:96-113; iteration-006.md:100-115].
-- **Score-progression target:** For active release scenarios, do not install expected-RED contracts that make the release surface fail unless the packet explicitly accepts release-not-ready. The progression target is 063 methodology PASS with RED/PARTIAL product findings, then 064 GREEN product PASS, with optional 065 rerun if 064 is too large [iteration-008.md:147-154; iteration-009.md:45-57; iteration-010.md:44-48].
+- **RED/GREEN methodology:** 061 may PASS as a methodology packet if it proves the corrected harness reaches the owning layer and classifies failures against known producer/consumer gaps. It must not count expected RED as product GREEN. GREEN product proof belongs after 062 wiring [iteration-004.md:22-31; iteration-006.md:46-62; iteration-008.md:147-154].
+- **Pre-flight requirements:** Build a command-capable sandbox root; materialize the fixture target under `.opencode/agent/`; keep spec artifacts under `/tmp/cp-061-spec/improvement`; include Layer-Owned Evidence Matrix and Evaluator Asset Preflight; define expected GREEN/RED/PARTIAL before execution [iteration-003.md:61-72; iteration-005.md:96-113; iteration-006.md:100-115].
+- **Score-progression target:** For active release scenarios, do not install expected-RED contracts that make the release surface fail unless the packet explicitly accepts release-not-ready. The progression target is 061 methodology PASS with RED/PARTIAL product findings, then 062 GREEN product PASS, with optional 063 rerun if 062 is too large [iteration-008.md:147-154; iteration-009.md:45-57; iteration-010.md:44-48].
 
-## 5. PACKET 064 SKETCH (If Applicable)
+## 5. PACKET 062 SKETCH (If Applicable)
 
-064 is applicable. The iterations consistently found executable gaps that a command-faithful 063 will expose but cannot honestly turn GREEN without code/doc/test changes.
+062 is applicable. The iterations consistently found executable gaps that a command-faithful 061 will expose but cannot honestly turn GREEN without code/doc/test changes.
 
 - **Scope:** Patch both auto and confirm YAML unless one mode is explicitly deferred. Replace benchmark `action` prose with a concrete command/helper call; emit `benchmark_completed` only after the report exists; emit `legal_stop_evaluated.details.gateResults.*`; preserve confirm `gateDecision` as supplemental detail, not a schema fork [iteration-008.md:22-38; iteration-008.md:123-145].
-- **Benchmark assets/materialization:** Choose packet-local assets or static skill assets. Provide benchmark profile JSON with real `benchmark.fixtureDir`, fixture JSON files, and a materializer that writes `{outputsDir}/{fixture.id}.md` before `run-benchmark.cjs` runs [iteration-005.md:22-38; iteration-005.md:129-157; iteration-008.md:40-57].
+- **Benchmark assets/materialization:** **DECIDED — use static skill assets** under `.opencode/skill/sk-improve-agent/assets/benchmark-profiles/` + `assets/benchmark-fixtures/` (versioned with the skill, reused across runs). Provide benchmark profile JSON with real `benchmark.fixtureDir`, fixture JSON files, and a materializer that writes `{outputsDir}/{fixture.id}.md` before `run-benchmark.cjs` runs [iteration-005.md:22-38; iteration-005.md:129-157; iteration-008.md:40-57].
 - **Journal/reducer contract:** Standardize GREEN proof on nested `details.gateResults` and reducer-visible `latestLegalStop.gateResults`; optionally keep flat-field reducer tolerance only for migration compatibility [iteration-005.md:58-76; iteration-008.md:94-107].
 - **Stop vocabulary:** Resolve the SKILL/helper/test conflict around `plateau` and `benchmarkPlateau`. Either remove them from helper/tests to match the narrow SKILL enum, or document them as compatibility stop reasons and update docs/verdict greps [iteration-008.md:59-75].
 - **Native oracle repair:** Reconcile RT-028/RT-032 command names, target agent, event vocabulary, and expected signal lists before using them as hard GREEN gates [iteration-008.md:77-92; iteration-009.md:37-43].
 - **Lockstep checklist:** Update YAML, command docs, SKILL docs, journal tests, reducer assertions, native RT scenarios, and cli-copilot CP contracts together so no single surface becomes the stale oracle [iteration-008.md:123-145].
-- **Conflicts to resolve:** Stop-reason helper/test vs SKILL conflict; auto-only vs confirm parity; packet-local vs static benchmark assets; materializer location; RT `/improve:improve-agent` naming drift; whether 064 includes GREEN rerun or leaves it to optional 065 [iteration-008.md:109-119; iteration-009.md:77-87; iteration-010.md:76-78].
+- **Conflicts to resolve:** Stop-reason helper/test vs SKILL conflict; auto-only vs confirm parity; ~~packet-local vs static benchmark assets~~ **(decided: static skill assets)**; ~~materializer location~~ **(decided: ship alongside `run-benchmark.cjs`)**; RT `/improve:improve-agent` naming drift; whether 062 includes GREEN rerun or leaves it to optional 063 [iteration-008.md:109-119; iteration-009.md:77-87; iteration-010.md:76-78].
 
 ## 6. OTHER META-AGENT AUDIT (RQ-4 Detail)
 
@@ -195,20 +195,20 @@ The authoring preflight every CP-XXX scenario author must answer BEFORE writing 
 | `legal_stop_evaluated` event | Command/YAML legal-stop step | journal JSONL [iteration-001.md:70-85] |
 | `legal_stop_evaluated.details.gateResults` 5-gate bundle | Command/YAML producer; reducer consumer | journal JSONL and reducer/dashboard `latestLegalStop.gateResults` [iteration-005.md:58-76; iteration-008.md:98-107] |
 | `blocked_stop.failedGates` | Command legal-stop gate | journal JSONL when any gate fails [iteration-001.md:71-72] |
-| `session_end.stopReason` / `sessionOutcome` | Journal helper plus command stop logic | journal JSONL after legal-stop evidence; stop enum truth must be resolved in 064 [iteration-008.md:59-75] |
-| Native RT-028/RT-032 oracle | Native sk-improve-agent playbook | use as 064 repair target, not hard 063 gate [iteration-009.md:37-43] |
+| `session_end.stopReason` / `sessionOutcome` | Journal helper plus command stop logic | journal JSONL after legal-stop evidence; stop enum truth must be resolved in 062 [iteration-008.md:59-75] |
+| Native RT-028/RT-032 oracle | Native sk-improve-agent playbook | use as 062 repair target, not hard 061 gate [iteration-009.md:37-43] |
 | Release readiness verdict | cli-copilot root playbook | active playbook only; expected RED belongs spec-local unless release-not-ready is intended [iteration-009.md:22-35; iteration-009.md:45-57] |
 
 ## 9. HAND-OFF NOTES
 
-### To packet 063 (command-flow stress tests)
+### To packet 061 (command-flow stress tests)
 
 Recommended starting prompt:
 
 ```text
-Create 063-improve-agent-command-flow-stress-tests. Build a command-capable temp project root containing .opencode/command/improve, .opencode/skill/sk-improve-agent, and the cp-improve-target fixture. For command-owned scenarios, invoke:
+Create 061-improve-agent-command-flow-stress-tests. Build a command-capable temp project root containing .opencode/command/improve, .opencode/skill/sk-improve-agent, and the cp-improve-target fixture. For command-owned scenarios, invoke:
 
-/improve:agent ".opencode/agent/cp-improve-target.md" :auto --spec-folder=/tmp/cp-063-spec --iterations=1
+/improve:agent ".opencode/agent/cp-improve-target.md" :auto --spec-folder=/tmp/cp-061-spec --iterations=1
 
 Use a layer-owned evidence matrix per CP. Keep expected-RED/PARTIAL methodology evidence spec-local unless active CP-040..CP-045 contracts can honestly pass under the cli-copilot PASS/PARTIAL/FAIL/SKIP release model. Reuse CP-040..CP-045 for active corrections; use successor IDs only for spec-local experiments or explicit archival.
 ```
@@ -219,16 +219,16 @@ Use a layer-owned evidence matrix per CP. Keep expected-RED/PARTIAL methodology 
 2. Partition CP-040..CP-045 by owning layer.
 3. Run command-flow lane for CP-040/043/044/045 and leaf/body lane for CP-041/042 where appropriate.
 4. Grade RED/PARTIAL failures against known producer/consumer gaps.
-5. Emit a 064 handoff checklist instead of claiming product GREEN.
+5. Emit a 062 handoff checklist instead of claiming product GREEN.
 
-Score-progression target: 063 methodology PASS with honest RED/PARTIAL product findings; 064 GREEN product PASS after wiring; optional 065 GREEN rerun if the 064 diff is large [iteration-006.md:72-78; iteration-008.md:147-154; iteration-010.md:44-48].
+Score-progression target: 061 methodology PASS with honest RED/PARTIAL product findings; 062 GREEN product PASS after wiring; optional 063 GREEN rerun if the 062 diff is large [iteration-006.md:72-78; iteration-008.md:147-154; iteration-010.md:44-48].
 
-### To packet 064 (further sk-improve-agent edits, if recommended)
+### To packet 062 (further sk-improve-agent edits, if recommended)
 
 Recommended starting prompt:
 
 ```text
-Implement 064 executable wiring for sk-improve-agent command-flow GREEN proof. Patch auto and confirm YAML in lockstep or explicitly defer confirm parity. Add benchmark profile/fixture/materializer support, wire run-benchmark.cjs with required CLI args, emit benchmark_completed only after report creation, standardize legal_stop_evaluated.details.gateResults, resolve stop-reason enum truth, update SKILL/command/docs/tests, reconcile native RT-028/RT-032, then rerun command-flow scenarios or hand off optional 065 if too large.
+Implement 062 executable wiring for sk-improve-agent command-flow GREEN proof. Patch auto and confirm YAML in lockstep or explicitly defer confirm parity. Add benchmark profile/fixture/materializer support, wire run-benchmark.cjs with required CLI args, emit benchmark_completed only after report creation, standardize legal_stop_evaluated.details.gateResults, resolve stop-reason enum truth, update SKILL/command/docs/tests, reconcile native RT-028/RT-032, then rerun command-flow scenarios or hand off optional 063 if too large.
 ```
 
 Diff order:
