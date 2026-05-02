@@ -17,7 +17,7 @@ import { statSync } from 'node:fs';
 import { resolve as resolvePath } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
-import { tool } from '@opencode-ai/plugin';
+import { tool } from '@opencode-ai/plugin/tool';
 
 // ─────────────────────────────────────────────────────────────────────────────
 // 2. CONSTANTS

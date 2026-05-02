@@ -1,0 +1,38 @@
+{
+  "schema_version": 1,
+  "packet_id": "system-spec-kit/026-graph-and-context-optimization/000-release-cleanup/052-missing-code-readmes-resource-map",
+  "spec_folder": "system-spec-kit/026-graph-and-context-optimization/000-release-cleanup/052-missing-code-readmes-resource-map",
+  "parent_id": null,
+  "children_ids": [],
+  "manual": {
+    "depends_on": [],
+    "supersedes": [],
+    "related_to": []
+  },
+  "derived": {
+    "trigger_phrases": [
+      "65 target readme manifest",
+      "missing code readmes",
+      "task 36 readme batches",
+      "readme folders b01 b17",
+      "validated target readmes"
+    ],
+    "key_topics": [
+      "missing README manifest",
+      "65 existing folders",
+      "B01-B17 batches",
+      "file-path mappings",
+      "README implementation"
+    ],
+    "importance_tier": "important",
+    "status": "implemented",
+    "key_files": ["spec.md","plan.md","tasks.md","checklist.md","implementation-summary.md","resource-map.md"],
+    "entities": [],
+    "causal_summary": "Phase 052 records and implements the exact Task #36 manifest: 65 existing folders that lacked README.md at audit time, with B01-B17 batches and three file-path mappings to mcp_server/lib/description.",
+    "created_at": "2026-05-02T13:46:02Z",
+    "last_save_at": "2026-05-02T16:20:00Z",
+    "save_lineage": "graph_only",
+    "last_accessed_at": null,
+    "source_docs": ["spec.md","plan.md","tasks.md","checklist.md","implementation-summary.md","resource-map.md"]
+  }
+}

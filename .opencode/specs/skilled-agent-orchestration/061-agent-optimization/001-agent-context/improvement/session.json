@@ -1,0 +1,12 @@
+{
+  "session_id": "imp-context-20260502T161617Z",
+  "started_at": "2026-05-02T16:16:17Z",
+  "target_path": ".opencode/agent/context.md",
+  "agent_name": "context",
+  "spec_folder": "specs/skilled-agent-orchestration/061-agent-optimization/001-agent-context",
+  "executor": "cli-copilot",
+  "executor_model": "gpt-5.5",
+  "execution_mode": "AUTONOMOUS",
+  "max_iterations": 5,
+  "scoring_mode": "dynamic"
+}

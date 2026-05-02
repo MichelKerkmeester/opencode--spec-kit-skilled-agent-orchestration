@@ -1,0 +1,21 @@
+{
+  "spec_id": "026/007/010",
+  "title": "Fix-Iteration Quality Meta-Research — root causes of multi-round fix trajectories",
+  "level": 3,
+  "spec_kind": "research",
+  "status": "in-progress",
+  "topic": "Why iterative LEAF-agent fixes accumulate gaps despite individual-fix verification, and what changes to FIX prompt + sk-code-review + sk-deep-review would compress the cycle",
+  "trigger_phrases": [
+    "fix iteration quality",
+    "class of bug vs finding",
+    "LEAF agent fix narrowness",
+    "cross-cutting consumer detection",
+    "error redaction algorithm patterns",
+    "precedence policy pattern",
+    "fix completeness checklist",
+    "multi-round fix cost"
+  ],
+  "importance_tier": "important",
+  "created_at": "2026-05-02T15:35:00Z",
+  "last_updated_at": "2026-05-02T15:35:00Z"
+}

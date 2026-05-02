@@ -1,0 +1,20 @@
+{
+  "topic": "Fix-iteration narrowness — root causes and remediation patterns (009 packet 4-round trajectory analysis)",
+  "mode": "research",
+  "sessionId": "2026-05-02T15:44:50.196Z",
+  "generation": 1,
+  "lineageMode": "new",
+  "maxIterations": 5,
+  "convergenceThreshold": 0.05,
+  "specFolder": ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/007-code-graph/010-fix-iteration-quality-meta-research",
+  "executor": {
+    "kind": "cli-codex",
+    "model": "gpt-5.5",
+    "reasoningEffort": "xhigh",
+    "serviceTier": "fast",
+    "timeoutSeconds": 1800
+  },
+  "createdAt": "2026-05-02T15:44:50.198Z",
+  "status": "initialized",
+  "executionMode": "auto"
+}

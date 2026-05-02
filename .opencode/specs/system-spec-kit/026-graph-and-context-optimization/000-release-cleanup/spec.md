@@ -102,6 +102,7 @@ Keep this phase-parent packet validator-compliant as a lean manifest that preser
 | 4 | `004-dead-code-pruning/` | Apply 13 high-confidence dead-code deletes from 003-audit; cascade-orphan cleanup; verify by tsc + vitest. | complete |
 | 5 | `005-review-remediation/` | Coordinated remediation for 026 release-readiness deep-review findings, including post-program cleanup. | in_progress |
 
+| 52 | `052-missing-code-readmes-resource-map/` | Implement exact missing code README manifest: 65 target README files created and validated from B01-B17. | complete |
 ### Phase Transition Rules
 
 - Each phase MUST pass `validate.sh` independently before the next phase begins.
@@ -117,6 +118,7 @@ Keep this phase-parent packet validator-compliant as a lean manifest that preser
 | `002-sk-code-opencode-alignment` | `003-dead-code-audit` | `sk-code-opencode` standards alignment is planned before later cleanup packets rely on those standards | Parent phase map and graph metadata child list both include `003-dead-code-audit` |
 | `003-dead-code-audit` | `004-dead-code-pruning` | `003-dead-code-audit` ships the audit report with 13 high-confidence deletes; pruning packet applies them | Parent phase map and graph metadata child list both include `004-dead-code-pruning` |
 | `004-dead-code-pruning` | `005-review-remediation` | Release-readiness review remediation follows cleanup/pruning so source-packet findings can be closed against current topology | Parent phase map and graph metadata child list both include `005-review-remediation` |
+| `051-readme-code-template` | `052-missing-code-readmes-resource-map` | README template guidance exists before implementing remaining code-folder README coverage | Phase 052 strict validation exits 0 and the exact 65 target README files validate cleanly |
 <!-- /ANCHOR:phase-map -->
 
 ---

@@ -51,7 +51,7 @@ Current state:
 
 ┌──────────────┐      ┌────────────────┐      ┌────────────────┐
 │ Operator     │ ───▶ │ Entry scripts  │ ───▶ │ Spec, memory   │
-│ or command   │      │ spec, memory   │      │ or graph files │
+│ or command   │      │ spec, memory   │      │ or graph files  │
 └──────┬───────┘      └───────┬────────┘      └────────────────┘
        │                      │
        │                      ▼
@@ -63,7 +63,7 @@ Current state:
                              ▼
                       ┌──────────────┐       ┌────────────────┐
                       │ lib, utils   │ ───▶  │ tests and evals│
-                      │ shared code  │       │ verification   │
+                      │ shared code  │       │ verification    │
                       └──────────────┘       └────────────────┘
 
 Dependency direction: entrypoints ───▶ source modules ───▶ lib and utils

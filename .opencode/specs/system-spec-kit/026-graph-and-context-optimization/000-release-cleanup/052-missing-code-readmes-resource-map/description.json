@@ -1,0 +1,21 @@
+{
+  "specFolder": "000-release-cleanup/052-missing-code-readmes-resource-map",
+  "description": "Exact 65-folder README implementation for Phase 052",
+  "keywords": [
+    "phase",
+    "missing-code-readmes-resource-map",
+    "65-folder-readme-manifest",
+    "task-36-batches",
+    "readme-implementation",
+    "validated-readmes"
+  ],
+  "lastUpdated": "2026-05-02T16:15:00.000Z",
+  "specId": "052",
+  "folderSlug": "missing-code-readmes-resource-map",
+  "parentChain": [
+    "000-release-cleanup"
+  ],
+  "memorySequence": 0,
+  "memoryNameHistory": [],
+  "level": "2"
+}

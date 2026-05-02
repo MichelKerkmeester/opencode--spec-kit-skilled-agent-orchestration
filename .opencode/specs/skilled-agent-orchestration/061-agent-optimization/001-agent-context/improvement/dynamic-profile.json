@@ -1,0 +1,181 @@
+{
+  "id": "context",
+  "family": "derived",
+  "targetPath": ".opencode/agent/context.md",
+  "outputKind": "markdown",
+  "promotionEligible": false,
+  "generated": true,
+  "generatedAt": "2026-05-02T16:15:22.008Z",
+  "agentMeta": {
+    "name": "context",
+    "mode": "subagent",
+    "temperature": 0.1,
+    "permissionSummary": {
+      "allowed": [
+        "read",
+        "grep",
+        "glob",
+        "memory",
+        "list",
+        "external_directory"
+      ],
+      "denied": [
+        "write",
+        "edit",
+        "bash",
+        "webfetch",
+        "chrome_devtools",
+        "task",
+        "patch"
+      ]
+    }
+  },
+  "derivedChecks": {
+    "structural": [
+      {
+        "id": "has-core-workflow",
+        "description": "Agent has CORE WORKFLOW section",
+        "weight": 10
+      },
+      {
+        "id": "has-output-verification",
+        "description": "Agent has OUTPUT VERIFICATION section",
+        "weight": 10
+      },
+      {
+        "id": "has-anti-patterns",
+        "description": "Agent has ANTI section",
+        "weight": 5
+      },
+      {
+        "id": "has-rules",
+        "description": "Agent has RULES section",
+        "weight": 10
+      },
+      {
+        "id": "has-related-resources",
+        "description": "Agent has RELATED RESOURCES section",
+        "weight": 10
+      }
+    ],
+    "ruleCoherence": [
+      {
+        "id": "always-rule-0",
+        "rule": "Cite sources for every finding (`file:line` or memory ID)",
+        "type": "always",
+        "weight": 8
+      },
+      {
+        "id": "always-rule-1",
+        "rule": "State what was NOT found (gaps are valuable context)",
+        "type": "always",
+        "weight": 8
+      },
+      {
+        "id": "always-rule-2",
+        "rule": "Use all 3 retrieval layers for every exploration",
+        "type": "always",
+        "weight": 8
+      },
+      {
+        "id": "always-rule-3",
+        "rule": "Include all 6 Context Package sections in output",
+        "type": "always",
+        "weight": 8
+      },
+      {
+        "id": "always-rule-4",
+        "rule": "Respect the 10-20 tool call budget",
+        "type": "always",
+        "weight": 8
+      },
+      {
+        "id": "never-rule-0",
+        "rule": "Return raw file contents (summarize with `file:line` references)",
+        "type": "never",
+        "weight": 8
+      },
+      {
+        "id": "never-rule-1",
+        "rule": "Exceed ~4K tokens output size",
+        "type": "never",
+        "weight": 8
+      },
+      {
+        "id": "never-rule-2",
+        "rule": "Search beyond the requested scope",
+        "type": "never",
+        "weight": 8
+      },
+      {
+        "id": "never-rule-3",
+        "rule": "Provide implementation advice or code suggestions",
+        "type": "never",
+        "weight": 8
+      },
+      {
+        "id": "never-rule-4",
+        "rule": "Dispatch any sub-agents (nested dispatch is illegal)",
+        "type": "never",
+        "weight": 8
+      },
+      {
+        "id": "never-rule-5",
+        "rule": "Skip the indexed-continuity check (Layer 1)",
+        "type": "never",
+        "weight": 8
+      },
+      {
+        "id": "never-rule-6",
+        "rule": "Claim \"nothing found\" without actually searching",
+        "type": "never",
+        "weight": 8
+      },
+      {
+        "id": "never-rule-7",
+        "rule": "Omit sections from the Context Package",
+        "type": "never",
+        "weight": 8
+      },
+      {
+        "id": "escalate-0",
+        "rule": "Memory system is unavailable (report and continue with codebase only)",
+        "type": "escalate",
+        "weight": 3
+      },
+      {
+        "id": "escalate-1",
+        "rule": "Requested topic spans 5+ unrelated domains (suggest splitting)",
+        "type": "escalate",
+        "weight": 3
+      },
+      {
+        "id": "escalate-2",
+        "rule": "Findings contradict each other (report contradiction, don't resolve)",
+        "type": "escalate",
+        "weight": 3
+      }
+    ],
+    "outputChecks": [],
+    "forbiddenBehaviors": [],
+    "integrationPoints": {
+      "commands": [],
+      "skills": [
+        "system-spec-kit",
+        "mcp-coco-index"
+      ],
+      "agents": [
+        "deep-research",
+        "general",
+        "Spec authoring"
+      ]
+    },
+    "capabilityMismatches": []
+  },
+  "benchmark": {
+    "fixtureDir": null,
+    "requiredAggregateScore": 75,
+    "minimumFixtureScore": 60,
+    "repeatabilityTolerance": 0
+  }
+}

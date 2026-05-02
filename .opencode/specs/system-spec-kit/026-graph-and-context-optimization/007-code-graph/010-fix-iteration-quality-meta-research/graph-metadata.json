@@ -1,0 +1,22 @@
+{
+  "spec_id": "026/007/010",
+  "level": 3,
+  "spec_kind": "research",
+  "status": "in-progress",
+  "importance_tier": "important",
+  "derived": {
+    "status": "in-progress",
+    "completion_pct": 5,
+    "last_updated_at": "2026-05-02T15:35:00Z"
+  },
+  "parent_id": "026/007",
+  "topology": "leaf",
+  "trigger_phrases": [
+    "fix iteration quality",
+    "class of bug vs finding",
+    "LEAF agent fix narrowness",
+    "cross-cutting consumer detection",
+    "error redaction algorithm patterns",
+    "fix completeness checklist"
+  ]
+}

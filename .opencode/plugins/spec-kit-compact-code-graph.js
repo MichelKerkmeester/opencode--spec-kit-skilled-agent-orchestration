@@ -21,7 +21,7 @@ import { randomUUID } from 'node:crypto';
 import { execFile } from 'node:child_process';
 import { fileURLToPath } from 'node:url';
 
-import { tool } from '@opencode-ai/plugin';
+import { tool } from '@opencode-ai/plugin/tool';
 import {
   createSyntheticTextPart,
   hasUnsafeMessageTransformParts,
