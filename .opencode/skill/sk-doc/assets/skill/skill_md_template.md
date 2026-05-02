@@ -220,6 +220,12 @@ assets/[domain]/...
 
 ### Smart Router Pseudocode
 
+#### Smart Router (Resilience Pattern)
+
+> Pattern: see [sk-doc smart-router resilience template](./skill_smart_router.md) for the full runtime discovery, guarded load, routing-key, and fallback reference.
+
+New skills fill in the domain-specific `INTENT_MODEL`, `RESOURCE_MAP`, loading levels, and routing key detector while keeping the resilience mechanics unchanged: discover resources at runtime, guard every path before loading, derive a routing key from the task or runtime, and return an `UNKNOWN_FALLBACK` checklist when confidence is too low.
+
 ```python
 from pathlib import Path
 
@@ -245,6 +251,13 @@ LOAD_LEVELS = {
     "VERIFICATION": "MINIMAL",
 }
 
+UNKNOWN_FALLBACK_CHECKLIST = [
+    "Confirm the routing key or runtime surface",
+    "Confirm the task intent",
+    "Provide one concrete input, error, or expected output",
+    "Confirm verification expectations before completion",
+]
+
 AMBIGUITY_DELTA = 1
 
 def _guard_in_skill(relative_path: str) -> str:
@@ -260,6 +273,12 @@ def discover_markdown_resources() -> set[str]:
         if base.exists():
             docs.extend(path for path in base.rglob("*.md") if path.is_file())
     return {doc.relative_to(SKILL_ROOT).as_posix() for doc in docs}
+
+def get_routing_key(task, intents: list[str]) -> str:
+    override = str(getattr(task, "routing_key", "")).strip().lower()
+    if override:
+        return override
+    return (intents[0] if intents else "unknown").lower()
 
 def classify_intents(user_request, task=None):
     text = (user_request or "").lower()
@@ -283,6 +302,7 @@ def route_[skill_name]_resources(user_request, task=None):
     inventory = discover_markdown_resources()
     primary, secondary, scores = classify_intents(user_request, task)
     intents = [primary] + ([secondary] if secondary else [])
+    routing_key = get_routing_key(task, intents)
     loaded = []
     seen = set()
 
@@ -294,11 +314,25 @@ def route_[skill_name]_resources(user_request, task=None):
             seen.add(guarded)
 
     load_if_available(DEFAULT_RESOURCE)
+    if max(scores.values() or [0]) < 0.5:
+        return {
+            "routing_key": routing_key,
+            "intents": intents,
+            "intent_scores": scores,
+            "load_level": "UNKNOWN_FALLBACK",
+            "needs_disambiguation": True,
+            "disambiguation_checklist": UNKNOWN_FALLBACK_CHECKLIST,
+            "resources": loaded,
+        }
+
     for intent in intents:
         for relative_path in RESOURCE_MAP.get(intent, []):
             load_if_available(relative_path)
 
-    return {"intents": intents, "intent_scores": scores, "resources": loaded}
+    if not loaded:
+        load_if_available(DEFAULT_RESOURCE)
+
+    return {"routing_key": routing_key, "intents": intents, "intent_scores": scores, "resources": loaded}
 ```
 
 ---

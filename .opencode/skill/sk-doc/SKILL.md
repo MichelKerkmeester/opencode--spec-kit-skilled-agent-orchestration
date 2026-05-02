@@ -150,6 +150,8 @@ Create feature catalogs with a rooted capability inventory, numbered category se
 
 ## 2. SMART ROUTING
 
+> Pattern: see [sk-doc smart-router resilience template](./assets/skill/skill_smart_router.md).
+
 ### Resource Domains
 
 The router discovers markdown resources recursively from `references/` and `assets/` and then applies intent scoring from `RESOURCE_MAP`. Keep this section domain-focused rather than static file inventories.
@@ -213,6 +215,13 @@ LOADING_LEVELS = {
     "ON_DEMAND": ["assets/documentation/frontmatter_templates.md"],
 }
 
+UNKNOWN_FALLBACK_CHECKLIST = [
+    "Confirm whether this is document quality, component creation, flowchart, install guide, playbook, or catalog work",
+    "Confirm the expected output file or component type",
+    "Provide one example input or target document",
+    "Confirm whether full templates or a quick reference are needed",
+]
+
 def _task_text(task) -> str:
     return " ".join([
         str(getattr(task, "text", "")),
@@ -255,7 +264,8 @@ def select_intents(scores: dict[str, float], ambiguity_delta: float = 1.0, max_i
 
 def route_documentation_resources(task):
     inventory = discover_markdown_resources()
-    intents = select_intents(score_intents(task), ambiguity_delta=1.0)
+    scores = score_intents(task)
+    intents = select_intents(scores, ambiguity_delta=1.0)
     loaded = []
     seen = set()
 
@@ -268,9 +278,24 @@ def route_documentation_resources(task):
 
     for relative_path in LOADING_LEVELS["ALWAYS"]:
         load_if_available(relative_path)
+
+    if max(scores.values() or [0]) < 0.5:
+        return {
+            "intents": intents,
+            "intent_scores": scores,
+            "load_level": "UNKNOWN_FALLBACK",
+            "needs_disambiguation": True,
+            "disambiguation_checklist": UNKNOWN_FALLBACK_CHECKLIST,
+            "resources": loaded,
+        }
+
+    matched_intents = []
     for intent in intents:
+        before_count = len(loaded)
         for relative_path in RESOURCE_MAP.get(intent, []):
             load_if_available(relative_path)
+        if len(loaded) > before_count:
+            matched_intents.append(intent)
 
     text = _task_text(task)
     if any(keyword in text for keyword in LOADING_LEVELS["ON_DEMAND_KEYWORDS"]):
@@ -280,7 +305,10 @@ def route_documentation_resources(task):
     if not loaded:
         load_if_available(DEFAULT_RESOURCE)
 
-    return {"intents": intents, "resources": loaded}
+    result = {"intents": intents, "intent_scores": scores, "resources": loaded}
+    if not matched_intents:
+        result["notice"] = f"No knowledge base found for intent(s): {', '.join(intents)}"
+    return result
 ```
 
 ---
@@ -327,6 +355,10 @@ scripts/extract_structure.py path/to/document.md
 
 1. Define scope using [skill_creation.md](./references/specific/skill_creation.md) (Section 9)
 4. Use [skill_reference_template.md](./assets/skill/skill_reference_template.md) to keep supplemental docs consistent
+
+#### Smart Router (Resilience Pattern)
+
+Newly scaffolded skills include the resilient smart-router skeleton by default. Fill in the skill-specific intent model, resource map, loading levels, and routing key while preserving runtime markdown discovery, `_guard_in_skill()` path sandboxing, `load_if_available()` existence checks, `UNKNOWN_FALLBACK` disambiguation, and a helpful notice when keyed resources are absent. Full reference: [skill_smart_router.md](./assets/skill/skill_smart_router.md).
 
 **After packaging**: Run `extract_structure.py` on SKILL.md for final quality review.
 

@@ -1,119 +1,203 @@
 ---
-title: "Feature Specification: Smart-Router Resilience Pattern in sk-doc Template + Repo-Wide Adoption"
-description: "Promote the Barter coder repo's resilient smart-router pattern (runtime discovery + existence-check load + git-remote project key + 3-tier fallback) into sk-doc as the default skill SKILL.md template. Add a dedicated assets/ file for the router. Then update all 19 existing skills in this repo that have a smart-router with the new pattern."
-template_source: "SPECKIT_TEMPLATE_SOURCE: spec-core | v2.2"
+title: "Feature Specification: Smart-Router Resilience Pattern in sk-doc Template and Repo-Wide Adoption"
+description: "Promote the resilient smart-router pattern into sk-doc as the canonical skill template asset, then align every existing skill smart-router with the same discovery, guarded loading, extensible routing, and fallback behavior."
 trigger_phrases:
   - "smart router resilience"
   - "skill router pattern"
   - "runtime discovery router"
   - "sk-doc router template"
   - "smart routing fallback"
-  - "barter router pattern"
-spec_id: "026/012"
+importance_tier: "important"
+contextType: "general"
 level: 2
-spec_kind: implementation
-status: in-progress
-importance_tier: important
+status: complete
 _memory:
-  spec_id: 026/012
-  level: 2
-  spec_kind: implementation
-  status: in-progress
-  topic: "sk-doc smart-router resilience template + repo-wide adoption"
-  importance_tier: important
   continuity:
-    last_updated_at: "2026-05-02T20:35:00Z"
-    completion_pct: 5
-    recent_action: "Spec scaffolded for cli-opencode + github-copilot/gpt-5.5 implementation"
-    next_safe_action: "Dispatch cli-opencode agent (uses different quota pool than direct cli-copilot)"
+    packet_pointer: "026-graph-and-context-optimization/012-sk-doc-smart-router-resilience-template"
+    last_updated_at: "2026-05-03T00:58:00+02:00"
+    last_updated_by: "codex"
+    recent_action: "Finished IMPL-012 mop-up."
+    next_safe_action: "Review the final diff if desired; no commit has been made."
+    blockers: []
+    key_files:
+      - ".opencode/skill/sk-deep-review/SKILL.md"
+      - ".opencode/skill/sk-doc/assets/skill/skill_smart_router.md"
+    session_dedup:
+      fingerprint: "sha256:1111111111111111111111111111111111111111111111111111111111111111"
+      session_id: "impl-012-finisher"
+      parent_session_id: null
+    completion_pct: 100
+    open_questions: []
+    answered_questions:
+      - "Gate 3 folder supplied by user."
 ---
-
 # Feature Specification: Smart-Router Resilience Pattern in sk-doc Template
 
-<!-- ANCHOR:metadata -->
-## METADATA
+<!-- SPECKIT_LEVEL: 2 -->
+<!-- SPECKIT_TEMPLATE_SOURCE: spec-core | v2.2 -->
 
-- **Spec ID:** 026/012
-- **Level:** 2 (template + asset addition + repo-wide propagation; small surface but many touch points)
-- **Status:** in-progress
-- **Created:** 2026-05-02
-- **Source pattern:** `/Users/michelkerkmeester/MEGA/Development/Code_Environment/Public/barter/coder/.opencode/skill/sk-code/SKILL.md` §2 SMART ROUTING
+---
+
+<!-- ANCHOR:metadata -->
+## 1. METADATA
+
+| Field | Value |
+|-------|-------|
+| **Level** | 2 |
+| **Priority** | P1 |
+| **Status** | Complete |
+| **Created** | 2026-05-02 |
+| **Branch** | `main` |
+<!-- /ANCHOR:metadata -->
+
+---
 
 <!-- ANCHOR:problem -->
-## 1. PROBLEM
+## 2. PROBLEM & PURPOSE
 
-Skills in this repo with smart routers have hardcoded paths or static resource lists. When references/assets change (rename, move, delete, new project added), the router breaks or silently degrades. The Barter coder repo's `sk-code` skill solved this with a 4-pattern resilience design that has been battle-tested across 8 projects and 84 markdown files.
+### Problem Statement
 
-This pattern needs to:
-1. Become the **default** in sk-doc's skill template (so any new skill scaffolded via sk-doc inherits it)
-2. Live as a **separate asset** in sk-doc (so it can evolve independently and be referenced by multiple templates)
-3. Be **propagated to all 19 existing smart routers** in this repo
+Skills with smart-router sections can drift when resource paths move, references are deleted, or new folders appear. IMPL-012 had already aligned most skills but stopped before the final `sk-deep-review` pattern patch and eight cross-link additions.
+
+### Purpose
+
+Finish the remaining IMPL-012 work so all 19 skill smart-router sections expose the canonical resilience asset and all 19 are counted by the marker scan.
+<!-- /ANCHOR:problem -->
+
+---
 
 <!-- ANCHOR:scope -->
-## 2. SCOPE (FROZEN)
+## 3. SCOPE
 
-### IN scope
+### In Scope
 
-**A. sk-doc template + asset**
-- Update sk-doc's SKILL.md template (the one used when generating new skills) to include the smart-router pattern by default
-- Create new asset: `.opencode/skill/sk-doc/assets/skill_template/smart-router.md` (or similar — codex picks the right path) containing the canonical router pseudocode + design rationale
-- Cross-link from SKILL.md template to the asset
+- Add the smart-router resilience pattern to `.opencode/skill/sk-deep-review/SKILL.md`.
+- Add the canonical asset cross-link to the eight already-patterned skills that were missing it.
+- Preserve existing per-skill intent scoring and load levels.
+- Run the requested count checks and workflow-invariance test.
 
-**B. Repo-wide propagation (19 skills)**
-- `cli-claude-code`, `cli-codex`, `cli-copilot`, `cli-gemini`, `cli-opencode`
-- `mcp-chrome-devtools`, `mcp-coco-index`, `mcp-code-mode`, `mcp-figma`
-- `sk-code-opencode`, `sk-code-review`, `sk-code`, `sk-deep-research`, `sk-deep-review`, `sk-doc`, `sk-git`, `sk-improve-agent`, `sk-improve-prompt`
-- `system-spec-kit`
+### Out of Scope
 
-For each: update its existing smart-router section with the resilience pattern OR add one if absent. Don't break existing routing logic — preserve domain-specific intent scoring + load levels; only swap the **discovery + load** mechanics.
+- Git commits or branch changes.
+- Reworking unrelated skill routing behavior.
+- Changing the canonical smart-router asset.
 
-### OUT of scope
+### Files to Change
 
-- Changing the underlying intent classification logic of any skill
-- Adding NEW skills (only updating existing ones)
-- Changing the Barter pattern itself (it's the source of truth)
+| File Path | Change Type | Description |
+|-----------|-------------|-------------|
+| `.opencode/skill/sk-deep-review/SKILL.md` | Modify | Add cross-link plus discovery, guarded loading, routing, and fallback pattern. |
+| `.opencode/skill/sk-code/SKILL.md` | Modify | Add canonical smart-router asset cross-link. |
+| `.opencode/skill/sk-code-opencode/SKILL.md` | Modify | Add canonical smart-router asset cross-link. |
+| `.opencode/skill/sk-code-review/SKILL.md` | Modify | Add canonical smart-router asset cross-link. |
+| `.opencode/skill/sk-deep-research/SKILL.md` | Modify | Add canonical smart-router asset cross-link. |
+| `.opencode/skill/sk-git/SKILL.md` | Modify | Add canonical smart-router asset cross-link. |
+| `.opencode/skill/sk-improve-agent/SKILL.md` | Modify | Add canonical smart-router asset cross-link. |
+| `.opencode/skill/sk-improve-prompt/SKILL.md` | Modify | Add canonical smart-router asset cross-link. |
+| `.opencode/skill/system-spec-kit/SKILL.md` | Modify | Add canonical smart-router asset cross-link. |
+<!-- /ANCHOR:scope -->
+
+---
 
 <!-- ANCHOR:requirements -->
-## 3. REQUIREMENTS
+## 4. REQUIREMENTS
 
-### Functional Requirements
+### P0 - Blockers (MUST complete)
 
-**F1.** Reproduce the 4 Barter resilience patterns in sk-doc's asset:
-1. Runtime discovery via `rglob("*.md")` (no hardcoded file lists)
-2. Existence-check before load (`if guarded in inventory`)
-3. Routing key from extensible identifier (e.g., git remote, intent label, stack marker)
-4. Multi-tier graceful fallback (UNKNOWN → notice → happy path)
+| ID | Requirement | Acceptance Criteria |
+|----|-------------|---------------------|
+| REQ-001 | `sk-deep-review` has the resilience pattern markers. | `rg -l "load_if_available\|discover_markdown_resources\|UNKNOWN_FALLBACK" .opencode/skill/*/SKILL.md \| wc -l` returns 19. |
+| REQ-002 | All 19 skills link to the canonical smart-router asset. | `rg -l "skill_smart_router\\.md" .opencode/skill/*/SKILL.md \| wc -l` returns 19. |
+| REQ-003 | Workflow-invariance test remains green. | The vitest command for `workflow-invariance.vitest.ts` exits 0. |
 
-**F2.** sk-doc's skill template embeds the pattern by default in newly-scaffolded skills (not a separate add-on).
+### P1 - Required (complete OR user-approved deferral)
 
-**F3.** All 19 existing smart routers updated to use the pattern. For each: discovery + load + fallback semantics adopt the new pattern; per-skill intent scoring preserved.
+| ID | Requirement | Acceptance Criteria |
+|----|-------------|---------------------|
+| REQ-004 | Existing skill intent routing remains recognizable. | `sk-deep-review` keeps its review setup, iteration, convergence, and report signals plus its load levels. |
+<!-- /ANCHOR:requirements -->
 
-**F4.** Cross-links: the new asset is referenced from sk-doc/SKILL.md AND from each of the 19 skills' SKILL.md (so future maintainers see the canonical source).
-
-### Quality Requirements
-
-- All 19 skills' SKILL.md still parses cleanly (no broken markdown)
-- workflow-invariance vitest still passes
-- Each skill's SKILL.md remains self-contained enough to be useful (the asset is reference; SKILL.md doesn't depend on dynamic loading at advisor time)
+---
 
 <!-- ANCHOR:success-criteria -->
-## 4. SUCCESS CRITERIA
+## 5. SUCCESS CRITERIA
 
-- **SC-001:** sk-doc/assets/ contains the new smart-router asset; sk-doc/SKILL.md template references it
-- **SC-002:** All 19 listed skills have smart-router sections updated with the 4-pattern design
-- **SC-003:** workflow-invariance vitest passes
-- **SC-004:** Spot-check: pick 3 random skills, confirm their router section includes the discovery + existence-check + fallback patterns
+- **SC-001**: Pattern marker count is 19.
+- **SC-002**: Cross-link count is 19.
+- **SC-003**: Workflow-invariance test passes.
+- **SC-004**: No git commit is created.
+<!-- /ANCHOR:success-criteria -->
+
+---
 
 <!-- ANCHOR:risks -->
-## 5. RISKS
+## 6. RISKS & DEPENDENCIES
 
-- **R1 [P1]** — 19 skills × manual edit = high token cost. Mitigation: cli-opencode agent batches the work in one session.
-- **R2 [P1]** — Per-skill intent scoring is bespoke. Naive swap could break domain-specific routing. Mitigation: preserve existing INTENT_MODEL/RESOURCE_MAP per skill; only swap discovery+load+fallback mechanics.
-- **R3 [P2]** — Markdown rendering: large pseudocode blocks may break some skills' table-of-contents. Mitigation: agent verifies SKILL.md still parses (basic markdown lint).
+| Type | Item | Impact | Mitigation |
+|------|------|--------|------------|
+| Dependency | Existing canonical asset path | Cross-links fail if path format is inconsistent | Mirror the already-linked sibling skill format. |
+| Risk | Overwriting bespoke review routing intent | `sk-deep-review` could lose useful review-specific behavior | Preserve the existing intent signals, synonyms, resource map shape, and load levels while swapping routing mechanics. |
+| Risk | Markdown rendering regression | Skill docs may render poorly | Keep the cross-link as a single blockquote line and preserve fenced Python blocks. |
+<!-- /ANCHOR:risks -->
 
-<!-- ANCHOR:related-documents -->
-## 6. RELATED DOCUMENTS
+---
 
-- Source pattern: `/Users/michelkerkmeester/MEGA/Development/Code_Environment/Public/barter/coder/.opencode/skill/sk-code/SKILL.md` §2 SMART ROUTING (lines 75-457)
-- sk-doc skill: `.opencode/skill/sk-doc/`
-- All 19 skills: `.opencode/skill/<name>/SKILL.md`
+<!-- ANCHOR:nfr -->
+## L2: NON-FUNCTIONAL REQUIREMENTS
+
+### Performance
+
+- **NFR-P01**: The verification scans must stay simple `rg` checks over `.opencode/skill/*/SKILL.md`.
+
+### Security
+
+- **NFR-S01**: No secrets, credentials, or environment files are touched.
+
+### Reliability
+
+- **NFR-R01**: Missing markdown resources are skipped by guarded loading instead of crashing the router pseudocode.
+<!-- /ANCHOR:nfr -->
+
+---
+
+<!-- ANCHOR:edge-cases -->
+## L2: EDGE CASES
+
+### Data Boundaries
+
+- Empty router inventory: load the default quick reference if available and return fallback guidance.
+- Non-markdown assets: keep them as explicit references, not router-loaded markdown resources.
+- Duplicate paths: suppress duplicate loads with a `seen` set.
+
+### Error Scenarios
+
+- Missing canonical asset cross-link: count check catches the gap.
+- Workflow-invariance regression: vitest exits non-zero and blocks completion.
+- Stale spec folder structure: strict spec validation catches missing docs or anchors.
+
+### State Transitions
+
+- Partial completion: marker and cross-link counts identify exactly what remains.
+- Completion: counts reach 19/19 and the workflow-invariance test passes.
+<!-- /ANCHOR:edge-cases -->
+
+---
+
+<!-- ANCHOR:complexity -->
+## L2: COMPLEXITY ASSESSMENT
+
+| Dimension | Score | Notes |
+|-----------|-------|-------|
+| Scope | 10/25 | Nine skill files plus packet documentation repair. |
+| Risk | 8/25 | Mostly markdown edits, with one larger pseudocode section. |
+| Research | 4/20 | Existing linked examples and canonical asset gave the pattern. |
+| **Total** | **22/70** | **Level 2** |
+<!-- /ANCHOR:complexity -->
+
+---
+
+<!-- ANCHOR:questions -->
+## 10. OPEN QUESTIONS
+
+- None.
+<!-- /ANCHOR:questions -->

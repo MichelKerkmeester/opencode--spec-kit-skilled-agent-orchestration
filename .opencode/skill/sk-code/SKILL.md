@@ -74,6 +74,8 @@ For formal findings-first code review output, use `sk-code-review` as the baseli
 
 ## 2. SMART ROUTING
 
+> Pattern: see [sk-doc smart-router resilience template](../sk-doc/assets/skill/skill_smart_router.md).
+
 ### Stack Detection (FIRST — gates all downstream resource loading)
 
 Stack detection is explicit and ordered. **First match wins.** Webflow / vanilla animation web is checked first because such projects often carry `package.json` for build tooling but should NOT mistakenly route to NEXTJS.

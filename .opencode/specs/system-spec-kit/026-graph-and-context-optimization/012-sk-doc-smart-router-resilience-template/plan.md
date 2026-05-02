@@ -1,96 +1,217 @@
 ---
-title: "Implementation Plan: Smart-Router Resilience Pattern + Repo-Wide Adoption"
-description: "Two-phase implementation: (1) sk-doc template + asset with the canonical pattern, (2) propagate to 19 existing skills."
-template_source: "SPECKIT_TEMPLATE_SOURCE: plan-core | v2.2"
-spec_id: "026/012"
+title: "Implementation Plan: Smart-Router Resilience Pattern and Repo-Wide Adoption"
+description: "Finish the remaining IMPL-012 markdown edits by patching sk-deep-review, adding the eight missing cross-links, and verifying the counts plus workflow-invariance test."
+trigger_phrases:
+  - "implementation"
+  - "smart router"
+  - "skill cross-links"
+  - "workflow invariance"
+importance_tier: "important"
+contextType: "general"
 level: 2
-spec_kind: implementation
-status: in-progress
-importance_tier: important
+status: complete
+_memory:
+  continuity:
+    packet_pointer: "026-graph-and-context-optimization/012-sk-doc-smart-router-resilience-template"
+    last_updated_at: "2026-05-03T00:58:00+02:00"
+    last_updated_by: "codex"
+    recent_action: "Finished IMPL-012 mop-up edits and verification."
+    next_safe_action: "Review diff or commit manually outside this task."
+    blockers: []
+    key_files:
+      - ".opencode/skill/sk-deep-review/SKILL.md"
+      - ".opencode/skill/system-spec-kit/SKILL.md"
+    session_dedup:
+      fingerprint: "sha256:2222222222222222222222222222222222222222222222222222222222222222"
+      session_id: "impl-012-finisher"
+      parent_session_id: null
+    completion_pct: 100
+    open_questions: []
+    answered_questions: []
 ---
-
 # Implementation Plan: Smart-Router Resilience Pattern
 
-<!-- ANCHOR:metadata -->
-## METADATA
+<!-- SPECKIT_LEVEL: 2 -->
+<!-- SPECKIT_TEMPLATE_SOURCE: plan-core | v2.2 -->
 
-- **Spec ID:** 026/012
-- **Executor:** cli-opencode + github-copilot/gpt-5.5 provider (different quota pool than direct cli-copilot)
-- **Time budget:** ~60-90 min wall-clock
+---
 
-<!-- ANCHOR:context -->
-## 1. CONTEXT
+<!-- ANCHOR:summary -->
+## 1. SUMMARY
 
-Barter coder repo's `sk-code` skill (834-line SKILL.md) implements a smart-router that survives reference/asset changes via 4 patterns:
+### Technical Context
 
-1. **Runtime discovery** — `discover_markdown_resources()` uses `rglob("*.md")` to build inventory at every routing call. No hardcoded file lists.
-2. **Existence-check before load** — `load_if_available()` checks `if guarded in inventory and guarded not in seen` before `load()`. Missing files just don't load; no crash.
-3. **Routing key from extensible identifier** — for sk-code that's `get_project_remote()` (git remote URL). Generalizes to: any runtime-derived key (intent, stack marker, env var, etc.) that selects a `<key>/` subdir under `references/`/`assets/`.
-4. **Multi-tier graceful fallback** — Tier 1 UNKNOWN_FALLBACK with disambiguation checklist when intent scores < 0.5; Tier 2 helpful "no knowledge base for X" notice when project-specific resources missing; Tier 3 happy path.
+| Aspect | Value |
+|--------|-------|
+| **Language/Stack** | Markdown skill documentation with Python pseudocode |
+| **Framework** | OpenCode skill docs |
+| **Storage** | Filesystem only |
+| **Testing** | `rg` count checks, vitest workflow-invariance, spec validation |
 
-Plus structural safeguards: `_guard_in_skill()` sandboxes paths to skill root + rejects non-`.md`; `RESOURCE_BASES` filtered by `if base.exists()`; `_filter_paths()` returns input on empty keywords.
+### Overview
+
+The work is a focused markdown repair: add the canonical asset link to eight skills and patch the final missing `sk-deep-review` smart-router section with runtime discovery, guarded loading, extensible routing, and fallback behavior. The plan optimizes for minimal drift from existing skill intent maps and load levels.
+<!-- /ANCHOR:summary -->
+
+---
+
+<!-- ANCHOR:quality-gates -->
+## 2. QUALITY GATES
+
+### Definition of Ready
+
+- [x] Spec folder supplied by user.
+- [x] Canonical asset path identified at `.opencode/skill/sk-doc/assets/skill/skill_smart_router.md`.
+- [x] Existing linked format identified from sibling skills.
+
+### Definition of Done
+
+- [x] All requested SKILL.md edits completed.
+- [x] Pattern marker count is 19.
+- [x] Cross-link count is 19.
+- [x] Workflow-invariance test passes.
+- [x] Spec docs updated for strict validation.
+<!-- /ANCHOR:quality-gates -->
+
+---
+
+<!-- ANCHOR:architecture -->
+## 3. ARCHITECTURE
+
+### Pattern
+
+Markdown documentation update with skill-local router pseudocode.
+
+### Key Components
+
+- **Canonical asset**: `.opencode/skill/sk-doc/assets/skill/skill_smart_router.md` remains the source pattern.
+- **Skill smart-router sections**: each skill links back to the canonical asset.
+- **`sk-deep-review` router**: keeps review intent scoring and load levels while adopting discovery, load guard, routing key, and fallback mechanics.
+
+### Data Flow
+
+Users read a skill's SMART ROUTING section, follow the cross-link to the canonical asset when they need the full pattern, and use the local pseudocode for skill-specific routing behavior.
+<!-- /ANCHOR:architecture -->
+
+---
+
+<!-- ANCHOR:affected-surfaces -->
+## FIX ADDENDUM: AFFECTED SURFACES
+
+| Surface | Current Role | Action | Verification |
+|---------|--------------|--------|--------------|
+| `.opencode/skill/sk-deep-review/SKILL.md` | Final skill missing pattern markers | Add resilient router pseudocode and cross-link | Pattern marker count returns 19. |
+| Eight listed skill files | Already had markers, missing asset link | Add sibling-path cross-link near SMART ROUTING heading | Cross-link count returns 19. |
+| Workflow-invariance test | Guards user-facing wording rules | Run requested vitest command | Test exits 0. |
+<!-- /ANCHOR:affected-surfaces -->
+
+---
 
 <!-- ANCHOR:phases -->
-## 2. PHASES
+## 4. IMPLEMENTATION PHASES
 
-### Phase 1: sk-doc template + asset (foundation)
+### Phase 1: Inspect Existing Pattern
 
-**Goal:** establish canonical pattern in sk-doc so future skills inherit it.
+- [x] Read canonical smart-router asset.
+- [x] Find existing cross-link format in already-linked skills.
+- [x] Read `sk-deep-review` SMART ROUTING section.
 
-Steps:
+### Phase 2: Apply Skill Edits
 
-1. Read `/Users/michelkerkmeester/MEGA/Development/Code_Environment/Public/barter/coder/.opencode/skill/sk-code/SKILL.md` §2 SMART ROUTING (lines 75-457) to confirm exact pseudocode.
+- [x] Add `sk-deep-review` cross-link and resilient router pseudocode.
+- [x] Add cross-links to `sk-code`, `sk-code-opencode`, `sk-code-review`, `sk-deep-research`, `sk-git`, `sk-improve-agent`, `sk-improve-prompt`, and `system-spec-kit`.
 
-2. Create new asset: `.opencode/skill/sk-doc/assets/skill_template/smart-router-resilience.md` (or wherever sk-doc's skill template assets live — investigate). Contents:
-   - **Section A: Why this pattern** (1 paragraph explaining failure modes prevented)
-   - **Section B: 4 patterns** (with pseudocode for each)
-   - **Section C: Generalization guide** — how to adapt the routing key (sk-code uses git remote; other skills might use intent label, stack, env var, etc.)
-   - **Section D: Structural safeguards** (`_guard_in_skill`, base existence check, etc.)
-   - **Section E: Anti-patterns** (hardcoded file lists, raw `load()` without check, etc.)
+### Phase 3: Verification
 
-3. Update sk-doc's SKILL.md skill-creation template (the one referenced when generating new skills via `/create:sk-skill`):
-   - Add a "Smart Router (Resilience Pattern)" subsection
-   - Include a pseudocode skeleton with placeholders the new skill fills in (intent model, resource map, routing key)
-   - Cross-link to the new asset for full pattern reference
+- [x] Run pattern marker count.
+- [x] Run cross-link count.
+- [x] Run workflow-invariance test.
+- [x] Run strict spec validation.
+<!-- /ANCHOR:phases -->
 
-4. Verify sk-doc's SKILL.md still validates per existing sk-doc rules.
+---
 
-### Phase 2: Repo-wide propagation (19 skills)
+<!-- ANCHOR:testing -->
+## 5. TESTING STRATEGY
 
-**Goal:** every existing smart router in this repo uses the resilience pattern.
+| Test Type | Scope | Tools |
+|-----------|-------|-------|
+| Search count | Pattern markers across 19 skills | `rg`, `wc` |
+| Search count | Canonical asset cross-links across 19 skills | `rg`, `wc` |
+| Regression | Workflow-invariance wording guard | `vitest` |
+| Documentation | Established spec folder strict validation | `validate.sh --strict` |
+<!-- /ANCHOR:testing -->
 
-Skills (19 total):
-- `cli-claude-code`, `cli-codex`, `cli-copilot`, `cli-gemini`, `cli-opencode`
-- `mcp-chrome-devtools`, `mcp-coco-index`, `mcp-code-mode`, `mcp-figma`
-- `sk-code-opencode`, `sk-code-review`, `sk-code`, `sk-deep-research`, `sk-deep-review`, `sk-doc`, `sk-git`, `sk-improve-agent`, `sk-improve-prompt`
-- `system-spec-kit`
+---
 
-For EACH skill (single batched session):
+<!-- ANCHOR:dependencies -->
+## 6. DEPENDENCIES
 
-1. Read its current SKILL.md → identify the smart-router section (look for "smart routing", "routing", "router pseudocode", "load_if_available", or domain-specific equivalents)
-2. Determine which of the 4 patterns are missing or weak
-3. Update the section with the resilience pattern, **preserving domain-specific intent scoring + load levels** (only swap discovery + load + fallback mechanics)
-4. Cross-link to the new sk-doc asset
+| Dependency | Type | Status | Impact if Blocked |
+|------------|------|--------|-------------------|
+| Canonical smart-router asset | Internal file | Available | Cross-link target must exist. |
+| `vitest` under system-spec-kit | Internal test runner | Available | Required workflow-invariance check could not run without it. |
+<!-- /ANCHOR:dependencies -->
 
-5. After all 19: run `rg -l "load_if_available\|discover_markdown_resources\|UNKNOWN_FALLBACK" .opencode/skill/*/SKILL.md` and confirm at least 19 hits.
+---
 
-<!-- ANCHOR:critical-path -->
-## 3. CRITICAL PATH
+<!-- ANCHOR:rollback -->
+## 7. ROLLBACK PLAN
 
-Phase 1 must complete before Phase 2 (Phase 2 cross-links to Phase 1's asset). Within Phase 2, the 19 skill updates are independent — agent can batch them.
+- **Trigger**: Marker count, cross-link count, or workflow-invariance test fails.
+- **Procedure**: Reopen the changed SMART ROUTING sections, restore the missing pattern or link, and rerun the same verification commands.
+<!-- /ANCHOR:rollback -->
 
-<!-- ANCHOR:risks-mitigations -->
-## 4. RISKS & MITIGATIONS
+---
 
-- **Naive replacement breaks domain logic** → preserve INTENT_MODEL + RESOURCE_MAP; only swap mechanics.
-- **Agent runs out of context across 19 skills** → cli-opencode session has full plugin/skill/MCP context; should be enough.
-- **Markdown lint regression** → agent verifies each modified SKILL.md still parses.
+<!-- ANCHOR:phase-deps -->
+## L2: PHASE DEPENDENCIES
 
-<!-- ANCHOR:cost-estimates -->
-## 5. COST ESTIMATES
+```text
+Inspect pattern -> Apply skill edits -> Verify counts and test -> Validate spec docs
+```
 
-| Phase | Files | Hours wall-clock |
-|---|---|---|
-| Phase 1 | 2-3 (sk-doc template + new asset + cross-links) | ~15-20 min |
-| Phase 2 | 19 SKILL.md edits | ~40-60 min |
-| **Total** | **~22 files** | **~60-80 min** |
+| Phase | Depends On | Blocks |
+|-------|------------|--------|
+| Inspect | None | Skill edits |
+| Skill edits | Inspect | Verification |
+| Verification | Skill edits | Completion |
+| Spec validation | Packet docs present | Completion |
+<!-- /ANCHOR:phase-deps -->
+
+---
+
+<!-- ANCHOR:effort -->
+## L2: EFFORT ESTIMATION
+
+| Phase | Complexity | Estimated Effort |
+|-------|------------|------------------|
+| Inspect | Low | 5 minutes |
+| Skill edits | Medium | 10 minutes |
+| Verification | Low | 5 minutes |
+| Spec validation repair | Medium | 15 minutes |
+| **Total** | | **35 minutes** |
+<!-- /ANCHOR:effort -->
+
+---
+
+<!-- ANCHOR:enhanced-rollback -->
+## L2: ENHANCED ROLLBACK
+
+### Pre-deployment Checklist
+
+- [x] No branch switch.
+- [x] No commit.
+- [x] Existing unrelated worktree changes preserved.
+
+### Rollback Procedure
+
+1. Revert only the nine target skill doc edits if verification identifies a bad patch.
+2. Reapply the cross-link or router section using the canonical asset.
+3. Rerun all requested checks.
+
+### Data Reversal
+
+- **Has data migrations?** No.
+- **Reversal procedure**: Git diff review is sufficient because changes are markdown-only.
+<!-- /ANCHOR:enhanced-rollback -->

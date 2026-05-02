@@ -45,6 +45,8 @@ Orchestrate Google's Gemini CLI for tasks that benefit from a second AI perspect
 
 ## 2. SMART ROUTING
 
+> Pattern: see [sk-doc smart-router resilience template](../sk-doc/assets/skill/skill_smart_router.md).
+
 ### Prerequisite Detection
 
 ```bash
@@ -132,12 +134,12 @@ UNKNOWN_FALLBACK_CHECKLIST = [
 
 **Call sequence** (using shared helpers from `shared_smart_router.md`):
 
-1. `discover_markdown_resources()` — enumerate available `.md` files under `references/` and `assets/`
-2. `score_intents(task)` — keyword-weight match against `INTENT_SIGNALS`
-3. `select_intents(scores, ambiguity_delta=1.0)` — top-1 or top-2 if scores within delta
-4. ALWAYS-load `LOADING_LEVELS["ALWAYS"]`, then UNKNOWN-fallback if max score == 0
-5. CONDITIONAL-load `RESOURCE_MAP[intent]` for each selected intent
-6. ON_DEMAND-load if any `ON_DEMAND_KEYWORDS` match the task text
+1. `discover_markdown_resources()` — recursively enumerate current `.md` files under existing `references/` and `assets/` folders at routing time.
+2. `_guard_in_skill()` + `load_if_available()` — sandbox paths to this skill, reject non-markdown loads, skip missing files, and suppress duplicates.
+3. `score_intents(task)` and `select_intents(scores, ambiguity_delta=1.0)` — preserve provider-specific weighted intent scoring and top-2 ambiguity handling.
+4. `get_routing_key(task, intents)` — derive the provider routing key from task/provider context, then fall back to `gemini`.
+5. ALWAYS-load `LOADING_LEVELS["ALWAYS"]`, then return `UNKNOWN_FALLBACK` with `UNKNOWN_FALLBACK_CHECKLIST` when max score is 0.
+6. CONDITIONAL-load `RESOURCE_MAP[intent]`, ON_DEMAND-load keyword matches, and return a notice when no provider-specific knowledge base is available beyond always-load resources.
 
 The `route_gemini_resources(task)` function body lives in [`shared_smart_router.md`](../system-spec-kit/references/cli/shared_smart_router.md) — substitute `<PROVIDER>` = `gemini`.
 
@@ -409,4 +411,3 @@ Key integrations:
 See Section 5 REFERENCES for the canonical reference, asset, shared, and external link list.
 
 ---
-

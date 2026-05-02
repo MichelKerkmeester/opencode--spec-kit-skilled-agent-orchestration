@@ -41,6 +41,8 @@ Use this skill when:
 
 ## 2. SMART ROUTING
 
+> Pattern: see [sk-doc smart-router resilience template](../sk-doc/assets/skill/skill_smart_router.md).
+
 ### Primary Detection Signal
 
 Review behavior follows a baseline+overlay model:

@@ -93,6 +93,10 @@ Router parity checklist for modern skills:
 - Explicit loading levels with ON_DEMAND triggers
 - Optional `UNKNOWN_FALLBACK_CHECKLIST` for low-confidence requests
 
+Smart-router resilience reference:
+- Use [skill_smart_router.md](../../assets/skill/skill_smart_router.md) as the canonical pattern for runtime markdown discovery, guarded existence-checked loading, extensible routing keys, and multi-tier fallback behavior.
+- Preserve each skill's domain-specific intent model, resource map, and loading levels; only standardize discovery, loading, routing-key, and fallback mechanics.
+
 **Section Boundary Rules:**
 ```
 ❌ WRONG: File references or routing logic in "WHEN TO USE"

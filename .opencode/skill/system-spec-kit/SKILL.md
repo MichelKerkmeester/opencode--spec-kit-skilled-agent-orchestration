@@ -77,6 +77,8 @@ Any agent writing authored spec folder docs (`spec.md`, `plan.md`, `tasks.md`, `
 
 ## 2. SMART ROUTING
 
+> Pattern: see [sk-doc smart-router resilience template](../sk-doc/assets/skill/skill_smart_router.md).
+
 ### Resource Domains
 
 The router discovers markdown resources recursively from `references/` and `assets/` and then applies intent scoring from `RESOURCE_MAP`. Keep this section domain-focused rather than static file inventories.

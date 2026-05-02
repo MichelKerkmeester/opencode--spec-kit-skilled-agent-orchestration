@@ -7,6 +7,8 @@ description: Canonical helper-function bodies (_task_text, _guard_in_skill, disc
 
 The five cli-* sibling skills (`cli-claude-code`, `cli-codex`, `cli-copilot`, `cli-gemini`, `cli-opencode`) share an identical smart-router structure. The helper bodies below are byte-identical across all five files (except the `route_<provider>_resources` function name). Each cli-* SKILL.md provides its own provider-specific dictionaries (`INTENT_SIGNALS`, `RESOURCE_MAP`, `LOADING_LEVELS`, `UNKNOWN_FALLBACK_CHECKLIST`) inline; this reference holds the shared procedural code.
 
+> Pattern: see [sk-doc smart-router resilience template](../../sk-doc/assets/skill/skill_smart_router.md).
+
 ---
 
 ## 1. OVERVIEW
@@ -63,10 +65,17 @@ def select_intents(scores: dict[str, float], ambiguity_delta: float = 1.0, max_i
         selected.append(ranked[1][0])
     return selected[:max_intents]
 
+def get_routing_key(task, intents: list[str]) -> str:
+    explicit = str(getattr(task, "provider", "")).strip().lower()
+    if explicit:
+        return explicit
+    return "<PROVIDER>" if intents else "unknown"
+
 def route_<PROVIDER>_resources(task):
     inventory = discover_markdown_resources()
     scores = score_intents(task)
     intents = select_intents(scores, ambiguity_delta=1.0)
+    routing_key = get_routing_key(task, intents)
     loaded = []
     seen = set()
 
@@ -85,6 +94,7 @@ def route_<PROVIDER>_resources(task):
     if max(scores.values()) == 0:
         return {
             "intents": ["UNKNOWN"],
+            "routing_key": routing_key,
             "load_level": "UNKNOWN_FALLBACK",
             "needs_disambiguation": True,
             "disambiguation_checklist": UNKNOWN_FALLBACK_CHECKLIST,
@@ -106,7 +116,10 @@ def route_<PROVIDER>_resources(task):
     if not loaded:
         load_if_available(DEFAULT_RESOURCE)
 
-    return {"intents": intents, "intent_scores": scores, "resources": loaded}
+    result = {"intents": intents, "routing_key": routing_key, "intent_scores": scores, "resources": loaded}
+    if len(loaded) <= len(LOADING_LEVELS["ALWAYS"]):
+        result["notice"] = f"No knowledge base found for routing key '{routing_key}' beyond always-load resources"
+    return result
 ```
 
 Replace `<PROVIDER>` with the provider slug (`claude_code`, `codex`, `copilot`, `gemini`, `opencode`).
@@ -152,4 +165,3 @@ Each cli-* SKILL.md provides its own:
 See the per-skill SKILL.md §2 Smart Routing for these inline dictionaries.
 
 ---
-

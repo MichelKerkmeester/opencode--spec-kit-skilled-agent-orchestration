@@ -147,6 +147,8 @@ See `references/loop_protocol.md §Lifecycle Branches` for the canonical event c
 
 ## 2. SMART ROUTING
 
+> Pattern: see [sk-doc smart-router resilience template](../sk-doc/assets/skill/skill_smart_router.md).
+
 ### Resource Loading Levels
 
 | Level | When to Load | Resources |

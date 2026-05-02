@@ -49,6 +49,8 @@ Transform vague requests into structured prompts using RCAF, COSTAR, RACE, CIDI,
 
 ## 2. SMART ROUTING
 
+> Pattern: see [sk-doc smart-router resilience template](../sk-doc/assets/skill/skill_smart_router.md).
+
 <!-- CRITICAL: Keep one authoritative Smart Router Pseudocode block in this section.
      Detection context may appear before pseudocode. Do NOT duplicate routing logic in separate lookup tables. -->
 
@@ -462,4 +464,3 @@ Key integrations:
 - `sk-doc` - Documentation quality and component creation
 
 ---
-

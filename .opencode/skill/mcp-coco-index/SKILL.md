@@ -54,6 +54,8 @@ Natural language code search through two complementary approaches: CLI (ccc) for
 
 ## 2. SMART ROUTING
 
+> Pattern: see [sk-doc smart-router resilience template](../sk-doc/assets/skill/skill_smart_router.md).
+
 ### Resource Loading Levels
 
 | Level       | When to Load             | Resources                                   |
@@ -146,7 +148,8 @@ def select_intents(scores: dict[str, float], ambiguity_delta: float = 1.0, max_i
 
 def route_cocoindex_code_resources(task):
     inventory = discover_markdown_resources()
-    intents = select_intents(score_intents(task), ambiguity_delta=1.0)
+    scores = score_intents(task)
+    intents = select_intents(scores, ambiguity_delta=1.0)
     loaded = []
     seen = set()
 
@@ -159,9 +162,25 @@ def route_cocoindex_code_resources(task):
 
     for relative_path in LOADING_LEVELS["ALWAYS"]:
         load_if_available(relative_path)
+
+    if max(scores.values() or [0]) < 0.5:
+        return {
+            "routing_key": "cocoindex-code",
+            "intents": intents,
+            "intent_scores": scores,
+            "load_level": "UNKNOWN_FALLBACK",
+            "needs_disambiguation": True,
+            "disambiguation_checklist": ["Confirm search vs index/setup/status", "Confirm exact code-search goal", "Provide language/path filters if known"],
+            "resources": loaded,
+        }
+
+    matched_intents = []
     for intent in intents:
+        before_count = len(loaded)
         for relative_path in RESOURCE_MAP.get(intent, []):
             load_if_available(relative_path)
+        if len(loaded) > before_count:
+            matched_intents.append(intent)
 
     text = _task_text(task)
     if any(keyword in text for keyword in LOADING_LEVELS["ON_DEMAND_KEYWORDS"]):
@@ -171,7 +190,10 @@ def route_cocoindex_code_resources(task):
     if not loaded:
         load_if_available(DEFAULT_RESOURCE)
 
-    return {"intents": intents, "resources": loaded}
+    result = {"routing_key": "cocoindex-code", "intents": intents, "intent_scores": scores, "resources": loaded}
+    if not matched_intents:
+        result["notice"] = f"No knowledge base found for intent(s): {', '.join(intents)}"
+    return result
 ```
 
 ---

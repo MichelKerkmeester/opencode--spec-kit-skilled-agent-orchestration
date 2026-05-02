@@ -139,6 +139,8 @@ On this skill surface, the live code-graph readiness contract only reaches four 
 
 ## 2. SMART ROUTING
 
+> Pattern: see [sk-doc smart-router resilience template](../sk-doc/assets/skill/skill_smart_router.md).
+
 ### Resource Loading Levels
 
 | Level | When to Load | Resources |
@@ -153,8 +155,7 @@ On this skill surface, the live code-graph readiness contract only reaches four 
 from pathlib import Path
 
 SKILL_ROOT = Path(__file__).resolve().parent
-LOCAL_REFS   = SKILL_ROOT / "references"
-LOCAL_ASSETS = SKILL_ROOT / "assets"
+RESOURCE_BASES = (SKILL_ROOT / "references", SKILL_ROOT / "assets")
 DEFAULT_RESOURCE = "references/quick_reference.md"
 
 INTENT_SIGNALS = {
@@ -171,26 +172,23 @@ NOISY_SYNONYMS = {
     "REVIEW_REPORT":      {"review results": 1.5, "what to fix": 1.4, "ship decision": 1.6, "final report": 1.5},
 }
 
-# RESOURCE_MAP: local assets + local review-specific protocol docs
+# RESOURCE_MAP: local markdown assets + local review-specific protocol docs
 RESOURCE_MAP = {
     "REVIEW_SETUP":       [
         "references/loop_protocol.md",
         "references/state_format.md",
-        "assets/review_mode_contract.yaml",
         "assets/deep_review_strategy.md",
     ],
     "REVIEW_ITERATION":   [
         "references/loop_protocol.md",
         "references/convergence.md",
-        "assets/review_mode_contract.yaml",
     ],
     "REVIEW_CONVERGENCE": [
         "references/convergence.md",
-        "assets/review_mode_contract.yaml",
     ],
     "REVIEW_REPORT":      [
         "references/state_format.md",
-        "assets/review_mode_contract.yaml",
+        "assets/deep_review_dashboard.md",
     ],
 }
 
@@ -203,16 +201,106 @@ LOADING_LEVELS = {
         "references/convergence.md",
     ],
 }
-```
 
-### Scoped Guard
+PHASE_RESOURCE_MAP = {
+    "init": ["references/loop_protocol.md", "references/state_format.md"],
+    "iteration": ["references/loop_protocol.md", "references/convergence.md"],
+    "stuck": ["references/convergence.md", "references/loop_protocol.md"],
+    "synthesis": ["references/state_format.md", "assets/deep_review_dashboard.md"],
+}
 
-```python
-def _guard_in_skill():
-    """Verify this skill is active before loading resources."""
-    if not hasattr(_guard_in_skill, '_active'):
-        _guard_in_skill._active = True
-    return _guard_in_skill._active
+NON_MARKDOWN_REFERENCES = {
+    "review_contract": "assets/review_mode_contract.yaml",
+}
+
+UNKNOWN_FALLBACK_CHECKLIST = [
+    "Confirm the review target or spec folder",
+    "Confirm the review phase",
+    "Provide one concrete file, diff range, or expected finding class",
+    "Confirm the verification command set before final review",
+]
+
+def _guard_in_skill(relative_path: str) -> str:
+    resolved = (SKILL_ROOT / relative_path).resolve()
+    resolved.relative_to(SKILL_ROOT)
+    if resolved.suffix.lower() != ".md":
+        raise ValueError(f"Only markdown resources are routable: {relative_path}")
+    return resolved.relative_to(SKILL_ROOT).as_posix()
+
+def discover_markdown_resources() -> set[str]:
+    docs = []
+    for base in RESOURCE_BASES:
+        if base.exists():
+            docs.extend(path for path in base.rglob("*.md") if path.is_file())
+    return {doc.relative_to(SKILL_ROOT).as_posix() for doc in docs}
+
+def get_routing_key(dispatch_context) -> str:
+    phase = str(getattr(dispatch_context, "phase", "")).strip().lower()
+    if phase:
+        return phase
+    text = str(getattr(dispatch_context, "text", "")).lower()
+    if "recovery" in text:
+        return "stuck"
+    if "convergence" in text or "synthesis" in text:
+        return "synthesis"
+    if "iteration" in text or "dimension" in text:
+        return "iteration"
+    return "init"
+
+def route_review_resources(task, dispatch_context):
+    inventory = discover_markdown_resources()
+    routing_key = get_routing_key(dispatch_context)
+    scores = score_intents(task, INTENT_SIGNALS, NOISY_SYNONYMS)
+    intents = select_intents(scores, ambiguity_delta=1.0)
+
+    loaded = []
+    seen = set()
+
+    def load_if_available(relative_path: str) -> None:
+        guarded = _guard_in_skill(relative_path)
+        if guarded in inventory and guarded not in seen:
+            load(guarded)
+            loaded.append(guarded)
+            seen.add(guarded)
+
+    for relative_path in LOADING_LEVELS["ALWAYS"]:
+        load_if_available(relative_path)
+
+    if max(scores.values() or [0]) < 0.5:
+        return {
+            "routing_key": routing_key,
+            "load_level": "UNKNOWN_FALLBACK",
+            "needs_disambiguation": True,
+            "disambiguation_checklist": UNKNOWN_FALLBACK_CHECKLIST,
+            "resources": loaded,
+        }
+
+    phase_resources = PHASE_RESOURCE_MAP.get(routing_key, [])
+    if routing_key == "unknown" or not phase_resources:
+        return {
+            "routing_key": routing_key,
+            "notice": f"No review resources found for routing key '{routing_key}'",
+            "resources": loaded,
+        }
+
+    for intent in intents:
+        for relative_path in RESOURCE_MAP.get(intent, []):
+            load_if_available(relative_path)
+
+    for relative_path in phase_resources:
+        load_if_available(relative_path)
+
+    task_text = str(getattr(task, "text", "")).lower()
+    if any(keyword in task_text for keyword in LOADING_LEVELS["ON_DEMAND_KEYWORDS"]):
+        for relative_path in LOADING_LEVELS["ON_DEMAND"]:
+            load_if_available(relative_path)
+
+    return {
+        "routing_key": routing_key,
+        "intents": intents,
+        "resources": loaded,
+        "non_markdown_references": NON_MARKDOWN_REFERENCES,
+    }
 ```
 
 ### Phase Detection
