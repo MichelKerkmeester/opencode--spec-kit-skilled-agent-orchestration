@@ -193,6 +193,10 @@ function relativizeScanWarning(warning: string, workspaceRoot: string): string {
   return warning.replace(/\/[^\s'"`{}\[\],)]+/g, match => relativize(match, workspaceRoot));
 }
 
+function relativizeScanError(error: string, workspaceRoot: string): string {
+  return error.replace(/\/[^\s'"`{}\[\],)]+/g, match => relativize(match, workspaceRoot));
+}
+
 /** Handle code_graph_scan tool call */
 export async function handleCodeGraphScan(args: ScanArgs): Promise<{ content: Array<{ type: string; text: string }> }> {
   const startTime = Date.now();
@@ -289,11 +293,13 @@ export async function handleCodeGraphScan(args: ScanArgs): Promise<{ content: Ar
       totalNodes += result.nodes.length;
       totalEdges += result.edges.length;
     } catch (err: unknown) {
-      errors.push(`${result.filePath}: ${err instanceof Error ? err.message : String(err)}`);
+      const filePath = relativize(result.filePath, canonicalWorkspace);
+      errors.push(`${filePath}: ${err instanceof Error ? err.message : String(err)}`);
     }
 
     if (result.parseErrors.length > 0) {
-      errors.push(...result.parseErrors.map(e => `${result.filePath}: ${e}`));
+      const filePath = relativize(result.filePath, canonicalWorkspace);
+      errors.push(...result.parseErrors.map(e => `${filePath}: ${e}`));
     }
   }
 
@@ -331,7 +337,7 @@ export async function handleCodeGraphScan(args: ScanArgs): Promise<{ content: Ar
     filesSkipped,
     totalNodes,
     totalEdges,
-    errors: errors.slice(0, 10),
+    errors: errors.slice(0, 10).map(error => relativizeScanError(error, canonicalWorkspace)),
     durationMs: Date.now() - startTime,
     fullScanRequested: args.incremental === false,
     effectiveIncremental,

@@ -2,8 +2,9 @@
 // MODULE: Code Graph Scan Tests
 // ───────────────────────────────────────────────────────────────
 
-import { beforeEach, describe, expect, it, vi } from 'vitest';
+import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import { basename, join, resolve } from 'node:path';
+import { CODE_GRAPH_INDEX_SKILLS_ENV } from '../lib/index-scope-policy.js';
 
 const mocks = vi.hoisted(() => ({
   execSyncMock: vi.fn(),
@@ -96,7 +97,11 @@ import { handleCodeGraphScan } from '../handlers/scan.js';
 import { handleCodeGraphStatus } from '../handlers/status.js';
 
 describe('handleCodeGraphScan', () => {
+  let originalIndexSkillsEnv: string | undefined;
+
   beforeEach(() => {
+    originalIndexSkillsEnv = process.env[CODE_GRAPH_INDEX_SKILLS_ENV];
+    delete process.env[CODE_GRAPH_INDEX_SKILLS_ENV];
     vi.clearAllMocks();
 
     mocks.execSyncMock.mockReturnValue('new-head\n');
@@ -190,6 +195,14 @@ describe('handleCodeGraphScan', () => {
     }]));
   });
 
+  afterEach(() => {
+    if (originalIndexSkillsEnv === undefined) {
+      delete process.env[CODE_GRAPH_INDEX_SKILLS_ENV];
+    } else {
+      process.env[CODE_GRAPH_INDEX_SKILLS_ENV] = originalIndexSkillsEnv;
+    }
+  });
+
   it('forces a full reindex when git HEAD changes', async () => {
     const response = await handleCodeGraphScan({
       rootDir: process.cwd(),
@@ -278,35 +291,91 @@ describe('handleCodeGraphScan', () => {
   });
 
   it('lets includeSkills false override an env opt-in for one-call end-user scans', async () => {
-    process.env.SPECKIT_CODE_GRAPH_INDEX_SKILLS = 'true';
+    process.env[CODE_GRAPH_INDEX_SKILLS_ENV] = 'true';
     mocks.execSyncMock.mockReturnValue('same-head\n');
     mocks.getLastGitHeadMock.mockReturnValue('same-head');
 
-    try {
-      await handleCodeGraphScan({
-        rootDir: process.cwd(),
-        incremental: false,
-        includeSkills: false,
-      });
+    await handleCodeGraphScan({
+      rootDir: process.cwd(),
+      incremental: false,
+      includeSkills: false,
+    });
 
-      expect(mocks.indexFilesMock).toHaveBeenCalledWith(
-        expect.objectContaining({
-          scopePolicy: expect.objectContaining({
-            includeSkills: false,
-            source: 'scan-argument',
-            fingerprint: 'code-graph-scope:v1:skills=excluded:mcp-coco-index=excluded',
-          }),
-          excludeGlobs: expect.arrayContaining(['**/.opencode/skill/**']),
+    expect(mocks.indexFilesMock).toHaveBeenCalledWith(
+      expect.objectContaining({
+        scopePolicy: expect.objectContaining({
+          includeSkills: false,
+          source: 'scan-argument',
+          fingerprint: 'code-graph-scope:v1:skills=excluded:mcp-coco-index=excluded',
         }),
-        expect.any(Object),
-      );
-      expect(mocks.setCodeGraphScopeMock).toHaveBeenCalledWith(expect.objectContaining({
-        includeSkills: false,
-        source: 'scan-argument',
-      }));
-    } finally {
-      delete process.env.SPECKIT_CODE_GRAPH_INDEX_SKILLS;
-    }
+        excludeGlobs: expect.arrayContaining(['**/.opencode/skill/**']),
+      }),
+      expect.any(Object),
+    );
+    expect(mocks.setCodeGraphScopeMock).toHaveBeenCalledWith(expect.objectContaining({
+      includeSkills: false,
+      source: 'scan-argument',
+    }));
+  });
+
+  it('reports status activeScope from the stored scan scope after an env override scan', async () => {
+    process.env[CODE_GRAPH_INDEX_SKILLS_ENV] = 'true';
+    mocks.execSyncMock.mockReturnValue('same-head\n');
+    mocks.getLastGitHeadMock.mockReturnValue('same-head');
+
+    await handleCodeGraphScan({
+      rootDir: process.cwd(),
+      incremental: false,
+      includeSkills: false,
+    });
+
+    const storedPolicy = mocks.setCodeGraphScopeMock.mock.calls.at(-1)?.[0];
+    mocks.getStoredCodeGraphScopeMock.mockReturnValue({
+      fingerprint: storedPolicy.fingerprint,
+      label: storedPolicy.label,
+      includeSkills: storedPolicy.includeSkills,
+      source: storedPolicy.source,
+    });
+    mocks.getStatsMock.mockReturnValue({
+      totalFiles: 1,
+      totalNodes: 1,
+      totalEdges: 0,
+      nodesByKind: { function: 1 },
+      edgesByType: {},
+      parseHealthSummary: { clean: 1 },
+      lastScanTimestamp: '2026-04-17T00:00:00.000Z',
+      lastGitHead: 'same-head',
+      dbFileSize: 1024,
+      schemaVersion: 1,
+      graphQualitySummary: {
+        detectorProvenanceSummary: null,
+        graphEdgeEnrichmentSummary: null,
+      },
+    });
+
+    const response = await handleCodeGraphStatus();
+    const payload = JSON.parse(response.content[0].text) as {
+      data: {
+        activeScope: {
+          includeSkills: boolean;
+          source: string;
+          fingerprint: string;
+          label: string;
+        };
+        storedScope: {
+          includeSkills: boolean;
+          source: string;
+          fingerprint: string;
+          label: string;
+        };
+        scopeMismatch: boolean;
+      };
+    };
+
+    expect(payload.data.activeScope.includeSkills).toBe(false);
+    expect(payload.data.activeScope.source).toBe('scan-argument');
+    expect(payload.data.storedScope).toEqual(payload.data.activeScope);
+    expect(payload.data.scopeMismatch).toBe(false);
   });
 
   it('passes the canonical rootDir into the indexer config', async () => {
@@ -412,6 +481,35 @@ describe('handleCodeGraphScan', () => {
     expect(payload.data.warnings).toContain('[structural-indexer] Aborting descent at maxDepth=80: src');
     expect(payload.data.warnings).toContain('[structural-indexer] Aborting walk at outside-warning');
     expect(payload.data.warnings.join('\n')).not.toContain(workspaceRoot);
+  });
+
+  it('returns data.errors with workspace-relative parse failure paths', async () => {
+    const workspaceRoot = resolve(process.cwd());
+    const brokenFile = join(workspaceRoot, 'mcp_server', 'broken.ts');
+    mocks.execSyncMock.mockReturnValue('same-head\n');
+    mocks.getLastGitHeadMock.mockReturnValue('same-head');
+    mocks.indexFilesMock.mockResolvedValue(withPreParseSkippedCount([{
+      filePath: brokenFile,
+      language: 'typescript',
+      contentHash: 'hash-parse-error',
+      nodes: [],
+      edges: [],
+      detectorProvenance: 'ast',
+      parseHealth: 'error',
+      parseDurationMs: 10,
+      parseErrors: [`Unexpected token in ${brokenFile}`],
+    }]));
+
+    const response = await handleCodeGraphScan({
+      rootDir: workspaceRoot,
+      incremental: false,
+    });
+    const payload = JSON.parse(response.content[0].text) as { data: { errors: string[] } };
+
+    expect(payload.data.errors[0]).toContain('mcp_server/broken.ts');
+    expect(payload.data.errors[0]).not.toContain(workspaceRoot);
+    expect(payload.data.errors[0]).not.toContain(process.cwd());
+    expect(payload.data.errors[0]).not.toMatch(/^\/Users\//);
   });
 
   it('optionally runs verification for explicit full scans and attaches the result', async () => {

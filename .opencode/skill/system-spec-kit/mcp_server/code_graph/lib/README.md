@@ -96,6 +96,7 @@ lib/
 ├── working-set-tracker.ts      │ Recent file and symbol tracking
 ├── runtime-detection.ts        │ Runtime and hook policy checks
 ├── indexer-types.ts            │ Graph types and scan defaults
+├── index-scope-policy.ts       │ Env and per-call scope policy resolution
 ├── query-result-adapter.ts     │ Stable handler result shapes
 ├── ops-hardening.ts            │ Query timeout and retry guards
 ├── query-intent-classifier.ts  │ Query intent routing
@@ -142,6 +143,7 @@ lib/
 ├── working-set-tracker.ts
 ├── runtime-detection.ts
 ├── indexer-types.ts
+├── index-scope-policy.ts
 ├── query-result-adapter.ts
 ├── ops-hardening.ts
 ├── query-intent-classifier.ts
@@ -171,6 +173,7 @@ lib/
 | `budget-allocator.ts` | Splits context budgets across graph sections and overflow. |
 | `working-set-tracker.ts` | Tracks recently touched files and symbols for context recovery. |
 | `indexer-types.ts` | Defines graph node, edge, parse result and scan default types. |
+| `index-scope-policy.ts` | Resolves end-user-vs-skill-inclusive scope policy from env + per-call args. Per-call boolean overrides env. |
 | `startup-brief.ts` | Builds compact startup graph summaries for runtime surfaces. |
 
 <!-- /ANCHOR:key-files -->

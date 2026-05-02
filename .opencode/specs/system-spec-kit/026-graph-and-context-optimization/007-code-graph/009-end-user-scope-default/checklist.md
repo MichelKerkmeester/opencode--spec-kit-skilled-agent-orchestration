@@ -113,9 +113,9 @@ _memory:
 
 | Category | Total | Verified |
 |----------|-------|----------|
-| P0 Items | 27 | 27/27 |
-| P1 Items | 21 | 21/21 |
-| P2 Items | 8 | 8/8 |
+| P0 Items | 28 | 28/28 |
+| P1 Items | 24 | 24/24 |
+| P2 Items | 11 | 11/11 |
 
 **Verification Date**: 2026-05-02 - implementation complete, gates passed
 <!-- /ANCHOR:summary -->
@@ -218,7 +218,7 @@ _memory:
 - [x] CHK-G3-02 [P1] ENV reference documents `SPECKIT_CODE_GRAPH_INDEX_SKILLS=false` default; evidence: `ENV_REFERENCE.md` Graph table includes the default-off row.
 - [x] CHK-G3-03 [P0] README documents full-scan migration for existing databases; evidence: `code_graph/README.md` shows `{ "incremental": false }` migration.
 - [x] CHK-G3-04 [P0] Startup/status copy avoids changing Gate 3 or spec-level workflow text; evidence: workflow-invariance Vitest passed with 1 file and 2 tests.
-- [x] CHK-G3-05 [P0] Focused Vitest suites pass; evidence: remediation focused suites passed 152 tests and full code graph suite passed 216 tests.
+- [x] CHK-G3-05 [P0] Focused Vitest suites pass; evidence: remediation focused suites passed 162 tests and full code graph suite passed 224 tests.
 - [x] CHK-G3-06 [P0] Workflow-invariance Vitest passes; evidence: `workflow-invariance.vitest.ts` passed 2 tests.
 - [x] CHK-G3-07 [P0] Strict validation passes for packet 009 and sibling 008; evidence: both `validate.sh --strict` runs returned Errors: 0, Warnings: 0.
 - [x] CHK-G3-08 [P2] Full-fleet sample regression and performance baseline are recorded; evidence: sentinel packet validates clean and `implementation-summary.md` records 1,619/34,850/16,530 to 48/646/1,231.
@@ -230,6 +230,16 @@ _memory:
 - [x] CHK-G-NEW-03 [P2] Scan scope errors and returned warnings avoid absolute workspace paths; evidence: `code-graph-scan.vitest.ts` covers invalid root, out-of-workspace root, and warning sanitization.
 - [x] CHK-G-NEW-04 [P2] Resource map matches the Gate E implementation diff; evidence: Gate E `diff` returned no output.
 - [x] CHK-G-NEW-05 [P2] Precedence and symlink semantics are documented; evidence: `code_graph/README.md`, `ENV_REFERENCE.md`, `plan.md`, and ADR-002 were updated.
+
+### Remediation v2
+
+- [x] CHK-G-V2-01 [P0] `data.errors` paths are workspace-relative; evidence: `scan.ts:196`, `scan.ts:296`, `scan.ts:301`, `scan.ts:340`, and `code-graph-scan.vitest.ts:486`.
+- [x] CHK-G-V2-02 [P1] `code_graph_status` reflects per-call scope override from stored scan metadata; evidence: `status.ts:173`, `status.ts:174`, `code-graph-db.ts:248`, `code-graph-db.ts:262`, and `code-graph-scan.vitest.ts:321`.
+- [x] CHK-G-V2-03 [P1] Six-case precedence test matrix is complete; evidence: `code-graph-indexer.vitest.ts:277`.
+- [x] CHK-G-V2-04 [P1] Env-var test isolation captures and restores caller env; evidence: `code-graph-scan.vitest.ts:100`, `code-graph-indexer.vitest.ts:103`, and `code-graph-scope-readiness.vitest.ts:59`.
+- [x] CHK-G-V2-05 [P2] Scope literals are centralized through `CODE_GRAPH_SKILL_EXCLUDE_GLOBS` and `CODE_GRAPH_INDEX_SKILLS_ENV`; evidence: `index-scope-policy.ts:5`, `index-scope-policy.ts:10`, `index-scope.ts:5`, and `code-graph-db.ts:600`.
+- [x] CHK-G-V2-06 [P2] README topology documents `index-scope-policy.ts`; evidence: `code_graph/lib/README.md:99`, `code_graph/lib/README.md:176`, `code_graph/README.md:140`, and `code_graph/README.md:167`.
+- [x] CHK-G-V2-07 [P2] ADR-001 includes the sixth precedence sub-decision; evidence: `decision-record.md:79`.
 
 ---
 

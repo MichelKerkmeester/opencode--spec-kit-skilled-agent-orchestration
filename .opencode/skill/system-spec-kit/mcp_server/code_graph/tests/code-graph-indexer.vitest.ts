@@ -5,7 +5,7 @@
 // ───────────────────────────────────────────────────────────────
 // TEST: Code Graph Structural Indexer
 // ───────────────────────────────────────────────────────────────
-import { afterEach, describe, expect, it } from 'vitest';
+import { afterEach, beforeEach, describe, expect, it } from 'vitest';
 import { mkdirSync, mkdtempSync, readFileSync, realpathSync, rmSync, statSync, symlinkSync, utimesSync, writeFileSync } from 'node:fs';
 import { tmpdir } from 'node:os';
 import { dirname, join } from 'node:path';
@@ -46,6 +46,8 @@ import {
   type RawCapture,
 } from '../lib/structural-indexer.js';
 import type { ParseResult } from '../lib/indexer-types.js';
+
+let originalIndexSkillsEnv: string | undefined;
 
 function writeWorkspaceFile(rootDir: string, relativePath: string, content: string): string {
   const filePath = join(rootDir, relativePath);
@@ -98,8 +100,17 @@ function persistIndexResults(results: ParseResult[]): void {
   }
 }
 
-afterEach(() => {
+beforeEach(() => {
+  originalIndexSkillsEnv = process.env[CODE_GRAPH_INDEX_SKILLS_ENV];
   delete process.env[CODE_GRAPH_INDEX_SKILLS_ENV];
+});
+
+afterEach(() => {
+  if (originalIndexSkillsEnv === undefined) {
+    delete process.env[CODE_GRAPH_INDEX_SKILLS_ENV];
+  } else {
+    process.env[CODE_GRAPH_INDEX_SKILLS_ENV] = originalIndexSkillsEnv;
+  }
   try {
     closeDb();
   } catch {
@@ -261,6 +272,26 @@ describe('indexer-types', () => {
       expect(config.scopePolicy.fingerprint).toBe('code-graph-scope:v1:skills=excluded:mcp-coco-index=excluded');
       expect(config.excludeGlobs).toContain('**/.opencode/skill/**');
       expect(shouldIndexForCodeGraph('/root/.opencode/skill/example.ts', config.scopePolicy)).toBe(false);
+    });
+
+    describe('resolveIndexScopePolicy precedence matrix', () => {
+      it.each([
+        [undefined, undefined, false, 'default'],
+        [undefined, true, true, 'scan-argument'],
+        [undefined, false, false, 'scan-argument'],
+        ['true', undefined, true, 'env'],
+        ['true', true, true, 'scan-argument'],
+        ['true', false, false, 'scan-argument'],
+      ] as const)(
+        'env=%j, includeSkills=%j -> includeSkills=%j source=%j',
+        (envValue, includeSkills, expectedIncludeSkills, expectedSource) => {
+          const env = envValue === undefined ? {} : { [CODE_GRAPH_INDEX_SKILLS_ENV]: envValue };
+          const result = resolveIndexScopePolicy({ includeSkills, env });
+
+          expect(result.includeSkills).toBe(expectedIncludeSkills);
+          expect(result.source).toBe(expectedSource);
+        },
+      );
     });
 
     it('omits the skill exclude when the env opt-in is enabled', () => {

@@ -76,6 +76,7 @@ Sub-decisions:
 | Per-call field | `includeSkills:true` on `code_graph_scan` | Deterministic one-off scans and tests without editing process env. |
 | Default exclude list | `node_modules`, `dist`, `.git`, `vendor`, `external`, `z_future`, `z_archive`, `mcp-coco-index/mcp_server`, `.opencode/skill/**` | Preserves existing generated/vendor exclusions and adds the measured pollution source. |
 | Migration model | Store active scope fingerprint in `code_graph_metadata`; require `code_graph_scan({ incremental:false })` when stored and active scope differ | Existing incremental checks cannot detect a scope policy change when old files still exist and are hash-fresh. |
+| Env/per-call precedence | RESOLVED (2026-05-02) | Per-call boolean `includeSkills` overrides env `SPECKIT_CODE_GRAPH_INDEX_SKILLS`. Env applies only when per-call arg is undefined. See ADR-002. |
 
 The `mcp-coco-index/mcp_server` exclusion remains even when skill indexing is enabled. CocoIndex indexing stays out of scope for this packet because it uses a separate binary and `.cocoindex_code` index.
 <!-- /ANCHOR:adr-001-decision -->

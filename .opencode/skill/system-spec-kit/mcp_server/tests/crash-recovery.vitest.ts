@@ -12,11 +12,15 @@ const mockState = vi.hoisted(() => ({
   },
 }));
 
-vi.mock('../core/config.js', () => ({
-  resolveDatabasePaths: () => ({
-    databasePath: mockState.databasePath,
-  }),
-}));
+vi.mock('../core/config.js', async (importOriginal) => {
+  const actual = await importOriginal<typeof import('../core/config.js')>();
+  return {
+    ...actual,
+    resolveDatabasePaths: () => ({
+      databasePath: mockState.databasePath,
+    }),
+  };
+});
 
 vi.mock('../lib/cognitive/working-memory.js', () => mockState.workingMemory);
 

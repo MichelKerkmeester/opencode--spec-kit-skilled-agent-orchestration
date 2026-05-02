@@ -3,6 +3,7 @@
 // ───────────────────────────────────────────────────────────────
 
 import {
+  CODE_GRAPH_SKILL_EXCLUDE_GLOBS,
   resolveIndexScopePolicy,
   type IndexScopePolicy,
   type ResolveIndexScopePolicyInput,
@@ -13,6 +14,14 @@ const SEGMENT_END = '(/|$)';
 
 function compileSegmentPattern(segment: string): RegExp {
   return new RegExp(`${SEGMENT_BOUNDARY}${segment}${SEGMENT_END}`, 'i');
+}
+
+function compileGlobSegmentPattern(glob: string): RegExp {
+  const segment = glob
+    .replace(/^\*\*\//, '')
+    .replace(/\/\*\*$/, '')
+    .replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+  return compileSegmentPattern(segment);
 }
 
 function normalizeIndexScopePath(filePath: string | null | undefined): string {
@@ -46,7 +55,7 @@ export const EXCLUDED_FOR_CODE_GRAPH = [
 ] as const;
 
 const EXCLUDED_SKILL_INTERNALS_FOR_CODE_GRAPH = [
-  /(^|\/)\.opencode\/skill(\/|$)/i,
+  ...CODE_GRAPH_SKILL_EXCLUDE_GLOBS.map(compileGlobSegmentPattern),
 ] as const;
 
 export function shouldIndexForMemory(absolutePath: string): boolean {

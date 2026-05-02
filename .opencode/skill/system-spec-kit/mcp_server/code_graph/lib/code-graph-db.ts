@@ -11,7 +11,11 @@ import { generateContentHash, type CodeNode, type CodeEdge, type DetectorProvena
 import {
   CODE_GRAPH_SCOPE_FINGERPRINT_KEY,
   CODE_GRAPH_SCOPE_LABEL_KEY,
+  CODE_GRAPH_SCOPE_SOURCE_KEY,
+  CODE_GRAPH_SKILL_EXCLUDE_GLOBS,
+  parseIndexScopePolicyFromFingerprint,
   type IndexScopePolicy,
+  type IndexScopePolicySource,
 } from './index-scope-policy.js';
 import { DATABASE_DIR } from '../../core/config.js';
 
@@ -55,6 +59,8 @@ export interface GraphEdgeEnrichmentSummary {
 export interface StoredCodeGraphScope {
   fingerprint: string | null;
   label: string | null;
+  includeSkills: boolean | null;
+  source: IndexScopePolicySource | null;
 }
 
 /** Schema version for migration tracking */
@@ -240,15 +246,23 @@ export function setCodeGraphMetadata(key: string, value: string): void {
 }
 
 export function getStoredCodeGraphScope(): StoredCodeGraphScope {
+  const fingerprint = getMetadata(CODE_GRAPH_SCOPE_FINGERPRINT_KEY);
+  const label = getMetadata(CODE_GRAPH_SCOPE_LABEL_KEY);
+  const source = getMetadata(CODE_GRAPH_SCOPE_SOURCE_KEY);
+  const policy = parseIndexScopePolicyFromFingerprint({ fingerprint, source });
+
   return {
-    fingerprint: getMetadata(CODE_GRAPH_SCOPE_FINGERPRINT_KEY),
-    label: getMetadata(CODE_GRAPH_SCOPE_LABEL_KEY),
+    fingerprint,
+    label,
+    includeSkills: policy?.includeSkills ?? null,
+    source: policy?.source ?? null,
   };
 }
 
-export function setCodeGraphScope(scopePolicy: Pick<IndexScopePolicy, 'fingerprint' | 'label'>): void {
+export function setCodeGraphScope(scopePolicy: Pick<IndexScopePolicy, 'fingerprint' | 'label' | 'source'>): void {
   setMetadata(CODE_GRAPH_SCOPE_FINGERPRINT_KEY, scopePolicy.fingerprint);
   setMetadata(CODE_GRAPH_SCOPE_LABEL_KEY, scopePolicy.label);
+  setMetadata(CODE_GRAPH_SCOPE_SOURCE_KEY, scopePolicy.source);
 }
 
 export function getLastGitHead(): string | null {
@@ -585,11 +599,19 @@ export function getTrackedFiles(): string[] {
 
 export function countTrackedSkillFiles(): number {
   const d = getDb();
+  const skillLikePatterns = CODE_GRAPH_SKILL_EXCLUDE_GLOBS.map((glob) => {
+    const pathSegment = glob.replace(/^\*\*\//, '').replace(/\/\*\*$/, '');
+    return `%${pathSegment}/%`;
+  });
+  if (skillLikePatterns.length === 0) {
+    return 0;
+  }
+  const whereClause = skillLikePatterns.map(() => 'file_path LIKE ?').join(' OR ');
   const row = d.prepare(`
     SELECT COUNT(*) AS count
     FROM code_files
-    WHERE file_path LIKE '%.opencode/skill/%'
-  `).get() as { count: number } | undefined;
+    WHERE ${whereClause}
+  `).get(...skillLikePatterns) as { count: number } | undefined;
   return row?.count ?? 0;
 }
 

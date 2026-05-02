@@ -15,7 +15,10 @@ import {
   type EdgeDistribution,
 } from '../lib/edge-drift.js';
 import { getGraphFreshness, getGraphReadinessSnapshot } from '../lib/ensure-ready.js';
-import { resolveIndexScopePolicy } from '../lib/index-scope-policy.js';
+import {
+  parseIndexScopePolicyFromFingerprint,
+  resolveIndexScopePolicy,
+} from '../lib/index-scope-policy.js';
 import { isRecord } from '../lib/query-result-adapter.js';
 import { buildReadinessBlock } from '../lib/readiness-contract.js';
 
@@ -167,8 +170,8 @@ export async function handleCodeGraphStatus(): Promise<{ content: Array<{ type: 
   // calling it earlier never causes side effects.
   const snapshot = getGraphReadinessSnapshot(process.cwd());
   const freshness = snapshot.freshness;
-  const activeScopePolicy = resolveIndexScopePolicy();
   const storedScope = graphDb.getStoredCodeGraphScope();
+  const activeScopePolicy = parseIndexScopePolicyFromFingerprint(storedScope) ?? resolveIndexScopePolicy();
   const scopeMismatch = storedScope.fingerprint !== activeScopePolicy.fingerprint;
 
   // Stats is isolated so an unavailable DB never suppresses the readiness

@@ -143,7 +143,7 @@ export function getDefaultConfig(
   policyInput?: IndexScopePolicy | ResolveIndexScopePolicyInput,
 ): IndexerConfig {
   const scopePolicy = resolveIndexScopePolicy(policyInput);
-  // Default scope excludes .opencode/skill/** unless the caller opts in.
+  // Default scope excludes skill internals unless the caller opts in.
   const excludeGlobs = [
     '**/node_modules/**',
     '**/dist/**',

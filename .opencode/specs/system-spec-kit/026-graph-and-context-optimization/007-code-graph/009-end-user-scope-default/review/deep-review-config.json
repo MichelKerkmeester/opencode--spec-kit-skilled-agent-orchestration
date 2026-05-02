@@ -1,0 +1,70 @@
+{
+  "topic": "Review v2: 009 end-user-scope-default — maintainability coverage + FIX-009 regression",
+  "mode": "review",
+  "sessionId": "2026-05-02T14:00:34.910Z",
+  "parentSessionId": "2026-05-02T12:34:30.068Z",
+  "lineageMode": "restart",
+  "generation": 2,
+  "continuedFromRun": 6,
+  "reviewTarget": "009-end-user-scope-default implementation + FIX-009 remediation",
+  "reviewTargetType": "spec-folder",
+  "reviewDimensions": [
+    "maintainability",
+    "correctness",
+    "security",
+    "traceability"
+  ],
+  "resource_map_present": true,
+  "reviewScopeFiles": [
+    ".opencode/skill/system-spec-kit/mcp_server/lib/utils/index-scope.ts",
+    ".opencode/skill/system-spec-kit/mcp_server/code_graph/lib/index-scope-policy.ts",
+    ".opencode/skill/system-spec-kit/mcp_server/code_graph/lib/indexer-types.ts",
+    ".opencode/skill/system-spec-kit/mcp_server/code_graph/lib/structural-indexer.ts",
+    ".opencode/skill/system-spec-kit/mcp_server/code_graph/lib/code-graph-db.ts",
+    ".opencode/skill/system-spec-kit/mcp_server/code_graph/lib/ensure-ready.ts",
+    ".opencode/skill/system-spec-kit/mcp_server/code_graph/lib/startup-brief.ts",
+    ".opencode/skill/system-spec-kit/mcp_server/code_graph/handlers/scan.ts",
+    ".opencode/skill/system-spec-kit/mcp_server/code_graph/handlers/status.ts",
+    ".opencode/skill/system-spec-kit/mcp_server/tool-schemas.ts",
+    ".opencode/skill/system-spec-kit/mcp_server/schemas/tool-input-schemas.ts",
+    ".opencode/skill/system-spec-kit/mcp_server/code_graph/tests/code-graph-indexer.vitest.ts",
+    ".opencode/skill/system-spec-kit/mcp_server/code_graph/tests/code-graph-scan.vitest.ts",
+    ".opencode/skill/system-spec-kit/mcp_server/code_graph/tests/code-graph-scope-readiness.vitest.ts",
+    ".opencode/skill/system-spec-kit/mcp_server/code_graph/tests/code-graph-siblings-readiness.vitest.ts",
+    ".opencode/skill/system-spec-kit/mcp_server/tests/tool-input-schema.vitest.ts",
+    ".opencode/skill/system-spec-kit/mcp_server/code_graph/README.md",
+    ".opencode/skill/system-spec-kit/mcp_server/ENV_REFERENCE.md"
+  ],
+  "severityThreshold": "P2",
+  "crossReference": {
+    "core": [
+      "spec_code",
+      "checklist_evidence"
+    ],
+    "overlay": [
+      "skill_agent",
+      "agent_cross_runtime",
+      "feature_catalog_code",
+      "playbook_capability"
+    ]
+  },
+  "maxIterations": 10,
+  "convergenceThreshold": 0.05,
+  "stuckThreshold": 2,
+  "maxDurationMinutes": 240,
+  "specFolder": ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/007-code-graph/009-end-user-scope-default",
+  "resource_map.emit": true,
+  "createdAt": "2026-05-02T14:00:34.912Z",
+  "status": "initialized",
+  "releaseReadinessState": "in-progress",
+  "executionMode": "auto",
+  "executor": {
+    "kind": "cli-copilot",
+    "model": "gpt-5.5",
+    "reasoningEffort": null,
+    "serviceTier": null,
+    "sandboxMode": null,
+    "timeoutSeconds": 1800
+  },
+  "archivedRun1": "review_archive/run-001-converged-at-6-20260502T132458Z"
+}

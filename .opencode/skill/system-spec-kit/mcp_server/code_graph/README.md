@@ -137,6 +137,7 @@ code_graph/
 │   ├── code-graph-db.ts
 │   ├── code-graph-context.ts
 │   ├── seed-resolver.ts
+│   ├── index-scope-policy.ts
 │   └── readiness-contract.ts
 ├── tools/
 │   ├── code-graph-tools.ts
@@ -163,6 +164,7 @@ code_graph/
 | `lib/structural-indexer.ts` | Workspace walk, parse and persistence pipeline. |
 | `lib/code-graph-db.ts` | SQLite schema, graph storage and startup highlights. |
 | `lib/code-graph-context.ts` | Context assembly with budget and partial-output metadata. |
+| `lib/index-scope-policy.ts` | Resolves end-user-vs-skill-inclusive scope policy from env + per-call args. Per-call boolean overrides env. |
 | `lib/readiness-contract.ts` | Readiness and trust-state vocabulary used by public payloads. |
 | `tools/code-graph-tools.ts` | MCP tool registration and dispatch mapping. |
 

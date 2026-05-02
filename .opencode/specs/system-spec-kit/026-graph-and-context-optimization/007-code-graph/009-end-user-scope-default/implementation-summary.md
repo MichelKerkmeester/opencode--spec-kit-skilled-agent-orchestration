@@ -11,10 +11,10 @@ contextType: "general"
 _memory:
   continuity:
     packet_pointer: "system-spec-kit/026-graph-and-context-optimization/007-code-graph/009-end-user-scope-default"
-    last_updated_at: "2026-05-02T13:06:10Z"
+    last_updated_at: "2026-05-02T14:43:53Z"
     last_updated_by: "codex-gpt-5.5"
-    recent_action: "Phase 1-3 + remediation complete"
-    next_safe_action: "Re-run deep-review or commit + push"
+    recent_action: "FIX-009-v2 complete"
+    next_safe_action: "Re-run deep-review v3 or commit + push"
     blockers: []
     key_files:
       - "scan.ts"
@@ -82,6 +82,20 @@ The code graph README documents default exclusions, `includeSkills:true`, the en
 ### Remediation
 
 Remediated all six deep-review findings from `review/review-report.md`. Per-call `includeSkills` now overrides the env default when provided, so `includeSkills:false` can request an end-user-only scan from an env-enabled process. `scan.ts` now passes the canonical root into `getDefaultConfig()`, which closes the symlinked-root bypass before the default `.opencode/skill/**` guard runs. Scan validation errors and returned warnings now avoid absolute workspace paths. `resource-map.md`, README/env docs, ADR-002, the plan decision table, and focused tests were updated to lock the new contract.
+
+### Remediation v2
+
+Remediated the seven DR-009-v2 findings targeted by this packet and downgraded the moving-range resource-map claim in the review report.
+
+- `R2-I7-P0-001`: `data.errors` is sanitized at construction and response time. Evidence: `scan.ts:196`, `scan.ts:296`, `scan.ts:301`, `scan.ts:340`, and `code-graph-scan.vitest.ts:486`.
+- `R2-I9-P1-001`: `code_graph_status` reports active scope from stored scan metadata, with `scope_source` persisted beside the fingerprint. Evidence: `status.ts:173`, `status.ts:174`, `code-graph-db.ts:248`, `code-graph-db.ts:262`, and `code-graph-scan.vitest.ts:321`.
+- `R2-I5-P1-001`: the precedence matrix now covers all six env/per-call combinations. Evidence: `code-graph-indexer.vitest.ts:277`.
+- `R2-I4-P1-001`: env-sensitive tests now clear the flag for the test body and restore the caller's original env afterward. Evidence: `code-graph-scan.vitest.ts:100`, `code-graph-indexer.vitest.ts:103`, and `code-graph-scope-readiness.vitest.ts:59`.
+- `R2-I1-P2-001`: code paths derive skill-scope matching and env lookup from policy constants. Evidence: `index-scope-policy.ts:5`, `index-scope-policy.ts:10`, `index-scope.ts:5`, and `code-graph-db.ts:600`.
+- `R2-I2-P2-001`: code graph README topology now names `index-scope-policy.ts`. Evidence: `code_graph/lib/README.md:99`, `code_graph/lib/README.md:176`, `code_graph/README.md:140`, and `code_graph/README.md:167`.
+- `R2-I8-P2-001`: ADR-001 now has the sixth precedence sub-decision and cross-links ADR-002. Evidence: `decision-record.md:79`.
+- `R2-I8-P0-001`: review report severity was downgraded to P2 with the FIX-009 SHA note. Evidence: `review/review-report.md:14`, `review/review-report.md:42`.
+- Verification support: the exact broad `-t "precedence matrix"` gate now loads unrelated suites cleanly. Evidence: `crash-recovery.vitest.ts:15`, `spec-kit-skill-advisor.js:20`, and `spec-kit-compact-code-graph.js:24`.
 <!-- /ANCHOR:what-built -->
 
 ---
@@ -119,9 +133,9 @@ Phase 1 added the scope helper, config defaults, walker guard, scan/schema wirin
 
 | Check | Result |
 |-------|--------|
-| Remediation focused Vitest | PASS: `code-graph-indexer.vitest.ts`, `code-graph-scan.vitest.ts`, `code-graph-siblings-readiness.vitest.ts`, and `tool-input-schema.vitest.ts`; 4 files, 152 tests passed. |
+| Remediation focused Vitest | PASS: `code-graph-indexer.vitest.ts`, `code-graph-scan.vitest.ts`, `code-graph-scope-readiness.vitest.ts`, `code-graph-siblings-readiness.vitest.ts`, and `tool-input-schema.vitest.ts`; 5 files, 162 tests passed. |
 | Phase 1 grep gates | PASS: `includeSkills` appears in `tool-schemas.ts` and `scan.ts`; `.opencode/skill/**` default exclusion appears in `indexer-types.ts`. |
-| Phase 2 code graph suite | PASS: `mcp_server/code_graph/tests/`; 19 files, 216 tests passed. |
+| Phase 2 code graph suite | PASS: `mcp_server/code_graph/tests/`; 19 files, 224 tests passed. |
 | Phase 2 blocked shape | PASS: `context.ts` and `query.ts` still emit `requiredAction:"code_graph_scan"`. |
 | Resource-map drift | PASS: Gate E diff returned no output. |
 | Workflow invariance | PASS: `scripts/tests/workflow-invariance.vitest.ts`; 1 file, 2 tests passed. |

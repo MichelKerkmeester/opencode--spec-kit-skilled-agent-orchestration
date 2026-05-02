@@ -2,7 +2,7 @@
 // MODULE: Code Graph Scope Readiness Tests
 // ───────────────────────────────────────────────────────────────
 
-import { afterEach, describe, expect, it } from 'vitest';
+import { afterEach, beforeEach, describe, expect, it } from 'vitest';
 import { mkdirSync, mkdtempSync, rmSync, writeFileSync } from 'node:fs';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
@@ -23,6 +23,8 @@ import {
   getGraphReadinessSnapshot,
 } from '../lib/ensure-ready.js';
 import { generateContentHash, type CodeNode } from '../lib/indexer-types.js';
+
+let originalIndexSkillsEnv: string | undefined;
 
 function writeTrackedNode(rootDir: string): string {
   const filePath = join(rootDir, 'src/app.ts');
@@ -54,8 +56,17 @@ function writeTrackedNode(rootDir: string): string {
   return filePath;
 }
 
-afterEach(() => {
+beforeEach(() => {
+  originalIndexSkillsEnv = process.env[CODE_GRAPH_INDEX_SKILLS_ENV];
   delete process.env[CODE_GRAPH_INDEX_SKILLS_ENV];
+});
+
+afterEach(() => {
+  if (originalIndexSkillsEnv === undefined) {
+    delete process.env[CODE_GRAPH_INDEX_SKILLS_ENV];
+  } else {
+    process.env[CODE_GRAPH_INDEX_SKILLS_ENV] = originalIndexSkillsEnv;
+  }
   closeDb();
 });
 
@@ -71,6 +82,8 @@ describe('code graph scope readiness', () => {
       expect(getStoredCodeGraphScope()).toEqual({
         fingerprint: 'code-graph-scope:v1:skills=included:mcp-coco-index=excluded',
         label: 'end-user code plus .opencode/skill opt-in; mcp-coco-index/mcp_server excluded',
+        includeSkills: true,
+        source: 'scan-argument',
       });
     } finally {
       rmSync(tempDir, { recursive: true, force: true });
