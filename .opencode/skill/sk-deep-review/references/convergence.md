@@ -40,6 +40,18 @@ When the loop stops and enters synthesis, the workflow emits `{artifact_dir}/res
 | `minStabilizationPasses` | 1 | Coverage signal requires at least one stabilization pass |
 | `compositeStopScore` | 0.60 | Weighted stop-score needed before guard evaluation |
 
+### Security-Sensitive Fix Overrides
+
+For review reruns after fixes involving security, path disclosure, auth/authz, sandboxing, env precedence, public schemas, persistence, or user-visible error payloads:
+
+| Setting | General Default | Security-Sensitive Fix Default |
+|---------|-----------------|--------------------------------|
+| `minStabilizationPasses` | 1 | 2 |
+| `requiredClosedFindingReplay` | false | true for prior P0/P1 and any prior security/path P2 |
+| `requiredFixCompletenessGate` | false | true |
+
+STOP is not legal until the review report contains a closed-gate replay table that marks each prior active or remediated P0/P1 as `PASS`, `FAIL`, or `carried forward`, with file:line or command evidence.
+
 ### Shared Stop Contract
 
 Every terminal stop and every blocked-stop vote MUST emit the shared stop contract from REQ-001: a named `stopReason` enum plus — when STOP is vetoed — a `blocked_stop` event written to `deep-review-state.jsonl`. There is no nested `legalStop` wrapper on the persisted path; earlier drafts of this document implied one, and that drift was the source of F009 in the 042 closing audit.
@@ -77,7 +89,8 @@ Every terminal stop and every blocked-stop vote MUST emit the shared stop contra
     "p0ResolutionGate": { "pass": false, "activeP0": 1 },
     "evidenceDensityGate": { "pass": true, "avgEvidencePerFinding": 1.6 },
     "hotspotSaturationGate": { "pass": true },
-    "claimAdjudicationGate": { "pass": true, "activeP0P1": 2 }
+    "claimAdjudicationGate": { "pass": true, "activeP0P1": 2 },
+    "fixCompletenessReplayGate": { "pass": true, "securitySensitive": false, "requiredRows": 0, "passingRows": 0 }
   },
   "graphBlockerDetail": [],
   "recoveryStrategy": "Dispatch the next iteration at the maintainability dimension and re-check after resolving the remaining P0.",
@@ -88,7 +101,7 @@ Every terminal stop and every blocked-stop vote MUST emit the shared stop contra
 ```
 
 - `blockedBy`: array of gate names that failed (string[] — never structured objects). Empty when STOP is legal, in which case no `blocked_stop` event is emitted.
-- `gateResults`: named sub-records keyed by `convergenceGate`, `dimensionCoverageGate`, `p0ResolutionGate`, `evidenceDensityGate`, `hotspotSaturationGate`, and `claimAdjudicationGate`. Each sub-record has a `pass` boolean plus gate-specific fields (score, covered/missing, activeP0, avgEvidencePerFinding, activeP0P1). The reducer reads these verbatim and does not coerce shapes.
+- `gateResults`: named sub-records keyed by `convergenceGate`, `dimensionCoverageGate`, `p0ResolutionGate`, `evidenceDensityGate`, `hotspotSaturationGate`, `claimAdjudicationGate`, and `fixCompletenessReplayGate`. Each sub-record has a `pass` boolean plus gate-specific fields (score, covered/missing, activeP0, avgEvidencePerFinding, activeP0P1, securitySensitive, requiredRows, passingRows). The reducer reads these verbatim and does not coerce shapes.
 - `graphBlockerDetail`: array of structured graph blockers copied from the latest graph convergence decision. Empty when graph convergence did not veto STOP.
 - `recoveryStrategy`: human-readable one-liner describing what the next iteration should do before another stop attempt.
 - When the graph convergence verdict is `STOP_BLOCKED`, fold the graph blocker gate name into `blockedBy` and preserve the structured blocker objects under `graphBlockerDetail`.
@@ -372,6 +385,7 @@ Deep review treats STOP as legal only when the full review-specific gate bundle 
 | **p0Resolution** | No unresolved P0 findings may remain active at stop time | Block STOP, persist `blockedStop` |
 | **evidenceDensity** | Evidence density across active findings must meet the configured threshold | Block STOP, persist `blockedStop` |
 | **hotspotSaturation** | Review hotspots must be revisited enough times to satisfy the saturation heuristic | Block STOP, persist `blockedStop` |
+| **fixCompletenessReplay** | Security-sensitive fix reruns must replay previously closed P0/P1 gates and validate producer/consumer/matrix coverage from the remediation packet | Block STOP, persist `blockedStop` |
 
 ### Gate Evaluation
 
@@ -399,6 +413,10 @@ function buildReviewLegalStop(state, config, coverage):
     hotspotSaturation: {
       pass: computeHotspotSaturation(state.hotspots) >= config.hotspotSaturationThreshold,
       detail: "Priority hotspots received enough revisits to satisfy saturation."
+    },
+    fixCompletenessReplay: {
+      pass: not isSecuritySensitiveFixRerun(state, config) or allRequiredReplayRowsPass(state.reviewReport),
+      detail: "Security-sensitive fix reruns include closed-gate replay evidence and producer/consumer/matrix coverage before STOP."
     }
   }
 
@@ -421,6 +439,7 @@ When convergence math returns STOP, invoke `buildReviewLegalStop()`. If it retur
 | `p0Resolution` | Re-open the active blocker path and verify whether the P0 is real, downgraded, or still unresolved. |
 | `evidenceDensity` | Re-read weakly supported findings and add concrete `file:line` citations before they count toward a stop decision. |
 | `hotspotSaturation` | Revisit undersampled hotspots or adjacent call sites until the saturation heuristic passes. |
+| `fixCompletenessReplay` | Replay prior active or remediated P0/P1 gates, then record producer, consumer, and matrix coverage evidence before re-checking STOP. |
 
 ### Legacy Stop-Reason Mapping
 

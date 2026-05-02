@@ -218,6 +218,7 @@ template_compliance:
       <!-- ANCHOR:testing --> ## 5. TESTING STRATEGY
       <!-- ANCHOR:dependencies --> ## 6. DEPENDENCIES
       <!-- ANCHOR:rollback --> ## 7. ROLLBACK PLAN
+      <!-- ANCHOR:affected-surfaces --> ## FIX ADDENDUM: AFFECTED SURFACES
 
 # ─────────────────────────────────────────────────────────────────
 # PARALLEL DISPATCH CONFIGURATION
@@ -599,7 +600,7 @@ workflow:
         approach: ["Read files identified by @context agents", "Verify/refute each hypothesis", "Cross-reference for consistency", "Build complete mental model", "Resolve conflicts by reading additional files"]
       outputs: [architecture_findings, feature_findings, dependency_findings, test_findings, verified_mental_model]
       fallback: { on_failure: "Use inline planning activities below" }
-    activities: [Run check-prerequisites.sh --json --paths-only, Load plan.md, Fill Technical Context, Fill Constitution Check, "Phase 0: Generate research/research.md", "Phase 1: Define component structure/interfaces", Generate Testing Strategy, Generate Success Metrics, Import Risk Matrix from spec, Generate Dependencies Tables, Generate Phase 2-4 outlines]
+    activities: [Run check-prerequisites.sh --json --paths-only, Load plan.md, Fill Technical Context, Fill Constitution Check, "Phase 0: Generate research/research.md", "Phase 1: Define component structure/interfaces", Generate Testing Strategy, Generate Success Metrics, Import Risk Matrix from spec, Generate Dependencies Tables, Generate Affected Surfaces table for fix_bug/remediation packets, Generate Phase 2-4 outlines]
     outputs: [plan.md, research/research.md]
     template: level_contract_plan.md
     template_prompt_contract:
@@ -609,10 +610,11 @@ workflow:
     confidence_checkpoint:
       evaluate_at: "After drafting plan.md"
       scoring_factors:
-        - { factor: "Technical approach clarity", weight: 0.30, assess: "Implementation strategy well-defined?" }
-        - { factor: "Risk identification", weight: 0.25, assess: "Risks identified with mitigations?" }
-        - { factor: "Dependency mapping", weight: 0.25, assess: "All dependencies documented?" }
-        - { factor: "Pattern alignment", weight: 0.20, assess: "Follows existing codebase patterns?" }
+        - { factor: "Technical approach clarity", weight: 0.25, assess: "Implementation strategy well-defined?" }
+        - { factor: "Risk identification", weight: 0.20, assess: "Risks identified with mitigations?" }
+        - { factor: "Dependency mapping", weight: 0.20, assess: "All dependencies documented?" }
+        - { factor: "Pattern alignment", weight: 0.15, assess: "Follows existing codebase patterns?" }
+        - { factor: "Affected surface coverage", weight: 0.20, assess: "For fix/remediation packets, are same-class producers, consumers, test matrices, docs/resource maps, and runtime variants enumerated?" }
       thresholds:
         high_80_plus: { action: "Finalize plan.md, proceed to Step 6", log: "Confidence: [NN%] - Plan complete", cite: "Document sources in plan.md Technical Context" }
         medium_40_79: { action: "Proceed but flag uncertainties", log: "Confidence: [NN%] - Noted uncertainties", requirement: "Add RISK markers" }

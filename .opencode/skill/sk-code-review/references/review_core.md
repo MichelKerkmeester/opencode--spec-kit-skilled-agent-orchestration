@@ -83,6 +83,8 @@ Each finding should provide:
 | `title` | Short, risk-oriented summary |
 | `file` | Primary `path:line` location |
 | `evidence` | Plain-language explanation tied to observed code |
+| `findingClass` | One of `instance-only`, `class-of-bug`, `cross-consumer`, `algorithmic`, `matrix/evidence`, or `test-isolation` |
+| `scopeProof` | Grep/test/audit evidence that the recommendation covers same-class sites and consumers, or proves the finding is instance-only |
 | `recommendation` | Specific, scope-proportional fix or follow-up |
 
 Suggested shape:
@@ -91,6 +93,8 @@ Suggested shape:
 ### P1-001 [P1] Missing authorization check
 - File: path/to/file.ts:42
 - Evidence: Request handling reaches the write path before role validation.
+- Finding class: cross-consumer
+- Scope proof: `rg -n "permission guard|write path" path/to` shows the write handler is the only unchecked consumer.
 - Recommendation: Enforce the existing permission guard before mutation.
 ```
 
@@ -104,4 +108,3 @@ Suggested shape:
 - [code_quality_checklist.md](./code_quality_checklist.md) - Correctness, KISS, DRY, and maintainability checks.
 
 ---
-

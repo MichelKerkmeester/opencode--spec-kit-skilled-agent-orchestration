@@ -407,6 +407,9 @@ workflow:
           - latest_status: "Extract status from latest iteration record, else 'none yet'"
           - last_claim_adjudication_passed: "Scan state.jsonl for the most recent `claim_adjudication` event; use its `passed` boolean. Default true when no event exists or when activeP0 + activeP1 == 0 (gate is vacuous without adjudicable findings)."
           - claim_adjudication_active_count: "Count of active P0/P1 findings at the time of the last claim_adjudication event; 0 when none exist"
+          - security_sensitive_fix_scope: "Boolean true when the current review is a rerun after fixes involving security, path disclosure, auth/authz, sandboxing, env precedence, public schemas, persistence, or user-visible error payloads; derive from the latest review report, remediation notes, or planning packet when present, else false."
+          - fix_completeness_replay_required_rows: "Count prior active or remediated P0/P1 findings, plus any prior security/path P2 findings, that require closed-gate replay before STOP."
+          - fix_completeness_replay_passing_rows: "Count required replay rows marked PASS with file:line or command evidence and producer/consumer/matrix coverage."
 
       step_check_pause_sentinel:
         action: "Check for pause sentinel file"
@@ -486,11 +489,12 @@ workflow:
                d) evidenceDensityGate: pass when every active P0/P1 has concrete file:line evidence and no active P0/P1 relies only on inference; record avgEvidencePerFinding
                e) hotspotSaturationGate: pass when review hotspots have been revisited enough times to satisfy the saturation heuristic
                f) claimAdjudicationGate: pass when claim_adjudication_gate_pass == true (i.e. last_claim_adjudication_passed != false OR there are no active P0/P1 findings to adjudicate); record last_claim_adjudication_passed and claim_adjudication_active_count
+               g) fixCompletenessReplayGate: pass when security_sensitive_fix_scope == false OR every required closed-gate replay row passes with file:line or command evidence and producer/consumer/matrix coverage; record security_sensitive_fix_scope, fix_completeness_replay_required_rows, and fix_completeness_replay_passing_rows
              if STOP is a candidate and any gate fails:
                decision = "BLOCKED"
                stop_blocked = true
                stopReason = "blockedStop"
-               blocked_by_json = JSON array of failing gate names (always include "claimAdjudicationGate" when claim_adjudication_gate_pass == false)
+               blocked_by_json = JSON array of failing gate names (always include "claimAdjudicationGate" when claim_adjudication_gate_pass == false and "fixCompletenessReplayGate" when fix_completeness_replay_gate_pass == false)
                blocked_by_csv = comma-separated list of failing gate names
                convergence_gate_pass = boolean
                convergence_gate_score = numeric convergence score
@@ -504,6 +508,10 @@ workflow:
                hotspot_saturation_gate_pass = boolean
                claim_adjudication_gate_pass = boolean
                claim_adjudication_active_count = numeric count of active P0/P1 at the gate
+               fix_completeness_replay_gate_pass = boolean
+               security_sensitive_fix_scope = boolean
+               fix_completeness_replay_required_rows = numeric count of closed-gate replay rows required for security-sensitive fix reruns
+               fix_completeness_replay_passing_rows = numeric count of required closed-gate replay rows marked PASS with evidence
                recovery_strategy = one-line hint describing the next review action needed to satisfy the failed gates (when claimAdjudicationGate is the failing gate, prefer the step-0 recovery_strategy already set)
           6. COMBINED STOP RULE:
                a) if STOP is legal AND graph_decision == "STOP_ALLOWED": decision = "STOP"
@@ -542,6 +550,10 @@ workflow:
           - hotspot_saturation_gate_pass: "Boolean pass/fail for hotspotSaturationGate"
           - claim_adjudication_gate_pass: "Boolean pass/fail for claimAdjudicationGate (false vetoes STOP)"
           - claim_adjudication_active_count: "Count of active P0/P1 findings evaluated by claimAdjudicationGate"
+          - fix_completeness_replay_gate_pass: "Boolean pass/fail for fixCompletenessReplayGate (false vetoes STOP on security-sensitive fix reruns)"
+          - security_sensitive_fix_scope: "Boolean true when the review is a security-sensitive fix rerun"
+          - fix_completeness_replay_required_rows: "Count of closed-gate replay rows required before STOP"
+          - fix_completeness_replay_passing_rows: "Count of required closed-gate replay rows that passed with evidence"
           - graph_decision: "CONTINUE | STOP_ALLOWED | STOP_BLOCKED from step_graph_convergence"
           - graph_signals_json: "JSON object returned by graph convergence"
           - graph_blockers_json: "JSON array of graph blockers"
@@ -551,7 +563,7 @@ workflow:
       step_emit_blocked_stop:
         action: "Persist blocked-stop evidence whenever the review legal-stop decision tree vetoes STOP"
         if_blocked:
-          append_jsonl: '{"type":"event","event":"blocked_stop","mode":"review","run":{current_iteration},"blockedBy":{blocked_by_json},"gateResults":{"convergenceGate":{"pass":{convergence_gate_pass},"score":{convergence_gate_score}},"dimensionCoverageGate":{"pass":{dimension_coverage_gate_pass},"covered":{dimension_coverage_gate_covered_json},"missing":{dimension_coverage_gate_missing_json}},"p0ResolutionGate":{"pass":{p0_resolution_gate_pass},"activeP0":{active_p0_count}},"evidenceDensityGate":{"pass":{evidence_density_gate_pass},"avgEvidencePerFinding":{avg_evidence_per_finding}},"hotspotSaturationGate":{"pass":{hotspot_saturation_gate_pass}},"claimAdjudicationGate":{"pass":{claim_adjudication_gate_pass},"activeP0P1":{claim_adjudication_active_count}}},"graphBlockerDetail":{graph_blockers_json},"recoveryStrategy":"{recovery_strategy}","timestamp":"{ISO_8601_NOW}","sessionId":"{session_id}","generation":{generation}}'
+          append_jsonl: '{"type":"event","event":"blocked_stop","mode":"review","run":{current_iteration},"blockedBy":{blocked_by_json},"gateResults":{"convergenceGate":{"pass":{convergence_gate_pass},"score":{convergence_gate_score}},"dimensionCoverageGate":{"pass":{dimension_coverage_gate_pass},"covered":{dimension_coverage_gate_covered_json},"missing":{dimension_coverage_gate_missing_json}},"p0ResolutionGate":{"pass":{p0_resolution_gate_pass},"activeP0":{active_p0_count}},"evidenceDensityGate":{"pass":{evidence_density_gate_pass},"avgEvidencePerFinding":{avg_evidence_per_finding}},"hotspotSaturationGate":{"pass":{hotspot_saturation_gate_pass}},"claimAdjudicationGate":{"pass":{claim_adjudication_gate_pass},"activeP0P1":{claim_adjudication_active_count}},"fixCompletenessReplayGate":{"pass":{fix_completeness_replay_gate_pass},"securitySensitive":{security_sensitive_fix_scope},"requiredRows":{fix_completeness_replay_required_rows},"passingRows":{fix_completeness_replay_passing_rows}}},"graphBlockerDetail":{graph_blockers_json},"recoveryStrategy":"{recovery_strategy}","timestamp":"{ISO_8601_NOW}","sessionId":"{session_id}","generation":{generation}}'
           log: "Blocked STOP persisted for review loop. Failed gates: {blocked_by_csv}. Recovery strategy: {recovery_strategy}"
         if_not_blocked:
           proceed: true
@@ -1057,11 +1069,11 @@ workflow:
           2. **Planning Trigger**
              - State whether `/spec_kit:plan` is required
              - Include a fenced `json` block labeled `Planning Packet`
-             - The packet MUST include: `triggered`, `verdict`, `hasAdvisories`, `activeFindings`, `remediationWorkstreams`, `specSeed`, `planSeed`
+             - The packet MUST include: `triggered`, `verdict`, `hasAdvisories`, `activeFindings`, `remediationWorkstreams`, `specSeed`, `planSeed`, `findingClasses`, `affectedSurfacesSeed`, `fixCompletenessRequired`
 
           3. **Active Finding Registry**
              - Unified registry for active P0/P1/P2 findings
-             - For each: ID, severity, title, dimension, file:line, evidence, impact, fix recommendation, disposition
+             - For each: ID, severity, title, dimension, file:line, evidence, impact, fix recommendation, disposition, findingClass, scopeProofNeeded, affectedSurfaceHints
 
           4. **Remediation Workstreams**
              - Ordered action groups: P0 first, then P1, with P2 advisories separated

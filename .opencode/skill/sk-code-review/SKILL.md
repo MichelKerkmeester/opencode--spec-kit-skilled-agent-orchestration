@@ -86,7 +86,7 @@ assets/review/...
 
 | Level | When to Load | Resources |
 | --- | --- | --- |
-| ALWAYS | Every invocation | `references/review_core.md`, `references/review_ux_single_pass.md`, `references/security_checklist.md`, `references/code_quality_checklist.md` |
+| ALWAYS | Every invocation, including security/correctness reviews | `references/review_core.md`, `references/review_ux_single_pass.md`, `references/security_checklist.md`, `references/code_quality_checklist.md`, `references/fix-completeness-checklist.md` |
 | CONDITIONAL | Intent score indicates need | `references/solid_checklist.md`, `references/code_quality_checklist.md`, `references/removal_plan.md`, `references/test_quality_checklist.md` |
 | ON_DEMAND | Explicit deep-dive request | Full mapped reference set |
 
@@ -122,6 +122,7 @@ DEFAULT_RESOURCES = [
     "references/review_ux_single_pass.md",
     "references/security_checklist.md",
     "references/code_quality_checklist.md",
+    "references/fix-completeness-checklist.md",
 ]
 
 INTENT_SIGNALS = {
@@ -284,6 +285,18 @@ def route_review_resources(task, workspace_files=None, changed_files=None):
 3. Analyze KISS/DRY and SOLID violations (SRP/OCP/LSP/ISP/DIP) with evidence.
 4. Analyze removal opportunities with safe-now vs deferred classification.
 5. Produce findings ordered by severity (`P0`, `P1`, `P2`).
+6. For every actionable finding, classify fix scope as `instance-only`, `class-of-bug`, `cross-consumer`, `algorithmic`, `matrix/evidence`, or `test-isolation`. If unknown, default to class/cross-consumer until a producer/consumer inventory proves instance-only.
+
+#### Instance-Only Opt-Out
+
+A finding may use the narrow fix path only when all are true:
+
+- It is not P0/P1 security, path, auth/authz, sandboxing, env precedence, schema, persistence, or public-response behavior.
+- `rg` proves no same-class producer or consumer.
+- Verification is local and cheap: one focused test, one doc row, or one static audit command.
+- The fix response includes the exact command evidence for the opt-out.
+
+Otherwise, run the full fix completeness checklist.
 
 ### Phase 4: Output and Next Action
 
@@ -303,6 +316,8 @@ Required output contract:
 1. [path:line] Title
    - Risk
    - User impact
+   - Finding class: [instance-only | class-of-bug | cross-consumer | algorithmic | matrix/evidence | test-isolation]
+   - Scope proof: [grep/test evidence proving class coverage or instance-only status]
    - Recommended fix
 
 ### P1 - High
