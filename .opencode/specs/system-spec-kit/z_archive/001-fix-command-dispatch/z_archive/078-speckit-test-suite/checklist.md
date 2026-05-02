@@ -15,7 +15,7 @@ contextType: "implementation"
 # Verification Checklist: System Spec Kit v2.1.0 Test Suite
 
 <!-- SPECKIT_LEVEL: 2 -->
-<!-- SPECKIT_TEMPLATE_SOURCE: checklist | v2.0 -->
+<!-- SPECKIT_TEMPLATE_SOURCE: checklist | v2.2 -->
 
 ---
 

@@ -15,7 +15,7 @@ contextType: "planning"
 
 Implementation plan for end-to-end workflow testing of the Spec Kit Memory system.
 
-<!-- SPECKIT_TEMPLATE_SOURCE: plan | v1.0 -->
+<!-- SPECKIT_TEMPLATE_SOURCE: plan | v2.2 -->
 
 ---
 

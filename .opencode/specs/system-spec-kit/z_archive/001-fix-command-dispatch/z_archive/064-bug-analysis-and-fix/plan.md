@@ -16,7 +16,7 @@ contextType: "planning"
 
 Implementation plan for systematically addressing ~231 identified issues across system-spec-kit skill and spec_kit commands.
 
-<!-- SPECKIT_TEMPLATE_SOURCE: plan | v1.0 -->
+<!-- SPECKIT_TEMPLATE_SOURCE: plan | v2.2 -->
 
 ---
 

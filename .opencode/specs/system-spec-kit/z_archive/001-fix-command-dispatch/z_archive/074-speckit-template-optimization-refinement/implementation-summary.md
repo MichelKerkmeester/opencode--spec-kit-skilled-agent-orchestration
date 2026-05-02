@@ -14,7 +14,7 @@ contextType: "implementation"
 # Implementation Summary: SpecKit Template Optimization Refinement
 
 <!-- SPECKIT_LEVEL: 3+ -->
-<!-- SPECKIT_TEMPLATE_SOURCE: impl-summary-core | v2.0 -->
+<!-- SPECKIT_TEMPLATE_SOURCE: impl-summary-core | v2.2 -->
 
 ---
 

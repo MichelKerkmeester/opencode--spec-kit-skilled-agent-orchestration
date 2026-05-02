@@ -15,7 +15,7 @@ contextType: "implementation"
 
 Task list for resolving 75+ issues identified by 10-agent analysis across documentation, code, UX, and integration.
 
-<!-- SPECKIT_TEMPLATE_SOURCE: tasks | v1.0 -->
+<!-- SPECKIT_TEMPLATE_SOURCE: tasks | v2.2 -->
 
 ---
 

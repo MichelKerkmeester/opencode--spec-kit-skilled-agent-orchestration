@@ -11,7 +11,7 @@ trigger_phrases:
 importance_tier: "normal"
 contextType: "implementation"
 ---
-<!-- SPECKIT_TEMPLATE_SOURCE: checklist | v1.0 -->
+<!-- SPECKIT_TEMPLATE_SOURCE: checklist | v2.2 -->
 
 # QA Validation Checklist: SpecKit & Memory System Remediation
 

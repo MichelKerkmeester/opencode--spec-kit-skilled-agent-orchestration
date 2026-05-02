@@ -16,7 +16,7 @@ contextType: "implementation"
 
 Comprehensive validation checklist for the Spec Kit and Memory System refinement project based on 10-agent analysis findings.
 
-<!-- SPECKIT_TEMPLATE_SOURCE: checklist | v1.0 -->
+<!-- SPECKIT_TEMPLATE_SOURCE: checklist | v2.2 -->
 
 ---
 

@@ -15,7 +15,7 @@ contextType: "implementation"
 
 Task list for decomposing context-server.js into focused modules.
 
-<!-- SPECKIT_TEMPLATE_SOURCE: tasks | v1.0 -->
+<!-- SPECKIT_TEMPLATE_SOURCE: tasks | v2.2 -->
 
 ---
 

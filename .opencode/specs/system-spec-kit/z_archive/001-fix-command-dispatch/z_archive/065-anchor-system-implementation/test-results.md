@@ -1,6 +1,6 @@
 # Test Results: Anchor System Implementation
 
-<!-- SPECKIT_TEMPLATE_SOURCE: test-results | v1.0 -->
+<!-- SPECKIT_TEMPLATE_SOURCE: test-results | v2.2 -->
 
 ## 1. Summary
 **Date:** 2026-01-15

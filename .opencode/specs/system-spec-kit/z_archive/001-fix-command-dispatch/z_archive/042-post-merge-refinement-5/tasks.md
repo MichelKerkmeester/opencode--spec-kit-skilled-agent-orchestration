@@ -16,7 +16,7 @@ contextType: "implementation"
 
 Implementation breakdown for Spec Kit and Memory System bug fixes and refinements.
 
-<!-- SPECKIT_TEMPLATE_SOURCE: tasks | v1.0 -->
+<!-- SPECKIT_TEMPLATE_SOURCE: tasks | v2.2 -->
 
 ---
 

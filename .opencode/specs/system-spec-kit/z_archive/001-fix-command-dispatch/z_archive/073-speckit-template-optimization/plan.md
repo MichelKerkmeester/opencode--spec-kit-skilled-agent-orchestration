@@ -14,7 +14,7 @@ contextType: "planning"
 <!-- SPECKIT_LEVEL: 3+ -->
 # Implementation Plan: SpecKit Template Optimization
 
-<!-- SPECKIT_TEMPLATE_SOURCE: plan | v2.0 -->
+<!-- SPECKIT_TEMPLATE_SOURCE: plan | v2.2 -->
 
 ---
 

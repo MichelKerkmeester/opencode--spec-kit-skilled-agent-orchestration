@@ -12,7 +12,7 @@ trigger_phrases:
 importance_tier: "normal"
 contextType: "general"
 ---
-<!-- SPECKIT_TEMPLATE_SOURCE: handover | v1.0 -->
+<!-- SPECKIT_TEMPLATE_SOURCE: handover | v2.2 -->
 # Session Handover: Dynamic Complexity-Based Template Scaling
 
 **Spec Folder**: `.opencode/specs/system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/069-speckit-template-complexity`

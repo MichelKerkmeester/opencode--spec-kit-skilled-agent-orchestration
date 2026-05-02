@@ -14,7 +14,7 @@ contextType: "planning"
 # Implementation Plan: Naming Convention Test Suite
 
 <!-- SPECKIT_LEVEL: 2 -->
-<!-- SPECKIT_TEMPLATE_SOURCE: plan-core + level2-verify | v2.0 -->
+<!-- SPECKIT_TEMPLATE_SOURCE: plan-core + level2-verify | v2.2 -->
 
 ---
 

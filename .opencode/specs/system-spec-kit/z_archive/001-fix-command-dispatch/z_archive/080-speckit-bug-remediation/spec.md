@@ -14,7 +14,7 @@ contextType: "planning"
 # Spec: Spec Kit Bug Remediation
 
 <!-- SPECKIT_LEVEL: 3+ -->
-<!-- SPECKIT_TEMPLATE_SOURCE: spec | v2.0 -->
+<!-- SPECKIT_TEMPLATE_SOURCE: spec | v2.2 -->
 
 ---
 

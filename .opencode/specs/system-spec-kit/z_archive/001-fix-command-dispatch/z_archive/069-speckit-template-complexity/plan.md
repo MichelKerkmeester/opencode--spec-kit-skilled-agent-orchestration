@@ -16,7 +16,7 @@ contextType: "planning"
 
 Technical approach and architecture for complexity detection and level-based template folder system.
 
-<!-- SPECKIT_TEMPLATE_SOURCE: plan | v1.0 -->
+<!-- SPECKIT_TEMPLATE_SOURCE: plan | v2.2 -->
 
 ---
 

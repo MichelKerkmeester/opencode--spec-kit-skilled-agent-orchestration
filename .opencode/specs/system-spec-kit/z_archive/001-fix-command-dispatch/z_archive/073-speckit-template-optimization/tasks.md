@@ -13,7 +13,7 @@ contextType: "implementation"
 <!-- SPECKIT_LEVEL: 3+ -->
 # Tasks: SpecKit Template Optimization
 
-<!-- SPECKIT_TEMPLATE_SOURCE: tasks | v2.0 -->
+<!-- SPECKIT_TEMPLATE_SOURCE: tasks | v2.2 -->
 
 ---
 

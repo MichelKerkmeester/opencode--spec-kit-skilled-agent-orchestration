@@ -16,7 +16,7 @@ contextType: "implementation"
 # Implementation Summary: Cognitive Memory Upgrade
 
 <!-- SPECKIT_LEVEL: 3+ -->
-<!-- SPECKIT_TEMPLATE_SOURCE: implementation-summary | v2.0 -->
+<!-- SPECKIT_TEMPLATE_SOURCE: implementation-summary | v2.2 -->
 
 ---
 

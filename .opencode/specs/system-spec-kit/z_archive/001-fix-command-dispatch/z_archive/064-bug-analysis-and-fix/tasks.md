@@ -15,7 +15,7 @@ contextType: "implementation"
 
 Comprehensive task breakdown for fixing ~231 identified issues across the SpecKit system, organized by priority and phase.
 
-<!-- SPECKIT_TEMPLATE_SOURCE: tasks | v1.0 -->
+<!-- SPECKIT_TEMPLATE_SOURCE: tasks | v2.2 -->
 
 ---
 

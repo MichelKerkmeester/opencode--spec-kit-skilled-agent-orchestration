@@ -17,7 +17,7 @@ contextType: "planning"
 Align ALL SpecKit scripts, lib modules, and documentation with the new level-based template architecture from Spec 069.
 
 <!-- SPECKIT_LEVEL: 3 -->
-<!-- SPECKIT_TEMPLATE_SOURCE: spec | v1.0 -->
+<!-- SPECKIT_TEMPLATE_SOURCE: spec | v2.2 -->
 
 ---
 

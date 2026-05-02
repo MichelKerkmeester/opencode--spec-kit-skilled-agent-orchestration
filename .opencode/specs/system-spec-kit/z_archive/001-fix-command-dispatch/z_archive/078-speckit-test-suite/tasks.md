@@ -15,7 +15,7 @@ contextType: "implementation"
 # Tasks: System Spec Kit v2.1.0 Test Suite
 
 <!-- SPECKIT_LEVEL: 2 -->
-<!-- SPECKIT_TEMPLATE_SOURCE: tasks-core + level2-verify | v2.0 -->
+<!-- SPECKIT_TEMPLATE_SOURCE: tasks-core + level2-verify | v2.2 -->
 
 ---
 

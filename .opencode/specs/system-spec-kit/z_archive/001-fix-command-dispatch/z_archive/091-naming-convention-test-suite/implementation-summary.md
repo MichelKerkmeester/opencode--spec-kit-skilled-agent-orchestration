@@ -15,7 +15,7 @@ contextType: "implementation"
 # Implementation Summary: Naming Convention Test Suite
 
 <!-- SPECKIT_LEVEL: 2 -->
-<!-- SPECKIT_TEMPLATE_SOURCE: implementation-summary-core | v2.0 -->
+<!-- SPECKIT_TEMPLATE_SOURCE: implementation-summary-core | v2.2 -->
 
 ---
 

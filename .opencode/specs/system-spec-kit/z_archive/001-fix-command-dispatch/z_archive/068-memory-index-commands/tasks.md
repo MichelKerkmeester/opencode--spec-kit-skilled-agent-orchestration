@@ -15,7 +15,7 @@ contextType: "implementation"
 
 Task list for separating `/memory:search` into `/memory:search` (read-only) and `/memory:database` (management).
 
-<!-- SPECKIT_TEMPLATE_SOURCE: tasks | v1.0 -->
+<!-- SPECKIT_TEMPLATE_SOURCE: tasks | v2.2 -->
 
 ---
 

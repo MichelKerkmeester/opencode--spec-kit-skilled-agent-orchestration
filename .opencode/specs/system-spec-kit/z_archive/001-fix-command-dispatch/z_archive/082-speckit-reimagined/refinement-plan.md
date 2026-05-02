@@ -444,7 +444,7 @@ grep -c "\[P0\]" .opencode/specs/system-spec-kit/z_archive/001-fix-command-dispa
 **Add at line 1 (before existing content):**
 ```markdown
 <!-- SPECKIT_LEVEL: 3+ -->
-<!-- SPECKIT_TEMPLATE_SOURCE: impl-summary-core + level3plus-govern | v2.0 -->
+<!-- SPECKIT_TEMPLATE_SOURCE: impl-summary-core + level3plus-govern | v2.2 -->
 
 ```
 

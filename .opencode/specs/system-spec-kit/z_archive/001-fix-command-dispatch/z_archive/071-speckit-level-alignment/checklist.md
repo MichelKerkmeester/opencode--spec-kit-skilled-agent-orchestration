@@ -16,7 +16,7 @@ contextType: "implementation"
 Validation checklist for ensuring SpecKit alignment with level-based template architecture.
 
 <!-- SPECKIT_LEVEL: 3 -->
-<!-- SPECKIT_TEMPLATE_SOURCE: checklist | v1.0 -->
+<!-- SPECKIT_TEMPLATE_SOURCE: checklist | v2.2 -->
 
 ---
 

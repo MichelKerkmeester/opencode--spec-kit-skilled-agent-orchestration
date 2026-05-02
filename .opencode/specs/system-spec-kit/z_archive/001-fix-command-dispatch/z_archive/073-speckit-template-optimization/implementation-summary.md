@@ -13,7 +13,7 @@ contextType: "implementation"
 <!-- SPECKIT_LEVEL: 3+ -->
 # Implementation Summary
 
-<!-- SPECKIT_TEMPLATE_SOURCE: implementation-summary | v2.0 -->
+<!-- SPECKIT_TEMPLATE_SOURCE: implementation-summary | v2.2 -->
 
 ---
 

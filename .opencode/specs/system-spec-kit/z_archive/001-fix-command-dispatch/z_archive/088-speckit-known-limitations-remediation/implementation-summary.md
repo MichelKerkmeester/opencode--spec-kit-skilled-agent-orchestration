@@ -13,7 +13,7 @@ contextType: "implementation"
 # Implementation Summary
 
 <!-- SPECKIT_LEVEL: 2 -->
-<!-- SPECKIT_TEMPLATE_SOURCE: impl-summary-core + level2-verify | v2.0 -->
+<!-- SPECKIT_TEMPLATE_SOURCE: impl-summary-core + level2-verify | v2.2 -->
 
 <!-- WHEN TO USE THIS TEMPLATE:
 Level 2 Summary (+Verify) is appropriate when:

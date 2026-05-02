@@ -15,7 +15,7 @@ contextType: "planning"
 
 Implementation plan defining technical approach, project structure, and execution strategy for Spec Kit Memory system bug fixes and refinements.
 
-<!-- SPECKIT_TEMPLATE_SOURCE: plan | v1.0 -->
+<!-- SPECKIT_TEMPLATE_SOURCE: plan | v2.2 -->
 
 ---
 

@@ -14,7 +14,7 @@ contextType: "implementation"
 # Verification Checklist: SpecKit Reimagined Test Suite
 
 <!-- SPECKIT_LEVEL: 3+ -->
-<!-- SPECKIT_TEMPLATE_SOURCE: checklist + level3plus-govern | v2.0 -->
+<!-- SPECKIT_TEMPLATE_SOURCE: checklist + level3plus-govern | v2.2 -->
 
 ---
 

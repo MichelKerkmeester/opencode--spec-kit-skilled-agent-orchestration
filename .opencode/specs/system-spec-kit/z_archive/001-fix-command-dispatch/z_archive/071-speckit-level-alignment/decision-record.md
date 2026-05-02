@@ -18,7 +18,7 @@ contextType: "planning"
 Architecture Decision Record documenting the approach for aligning SpecKit scripts and documentation with level-based template folders.
 
 <!-- SPECKIT_LEVEL: 3 -->
-<!-- SPECKIT_TEMPLATE_SOURCE: decision-record | v1.0 -->
+<!-- SPECKIT_TEMPLATE_SOURCE: decision-record | v2.2 -->
 
 ---
 

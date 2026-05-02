@@ -15,7 +15,7 @@ contextType: "planning"
 <!-- SPECKIT_LEVEL: 2 -->
 # Feature Specification: Naming Convention Test Suite
 
-<!-- SPECKIT_TEMPLATE_SOURCE: spec-core + level2-verify | v2.0 -->
+<!-- SPECKIT_TEMPLATE_SOURCE: spec-core + level2-verify | v2.2 -->
 
 ---
 

@@ -10,7 +10,7 @@ trigger_phrases:
 importance_tier: "normal"
 contextType: "implementation"
 ---
-<!-- SPECKIT_TEMPLATE_SOURCE: checklist.md | v1.0 -->
+<!-- SPECKIT_TEMPLATE_SOURCE: checklist.md | v2.2 -->
 
 # Checklist: Post-Merge Refinement 4
 

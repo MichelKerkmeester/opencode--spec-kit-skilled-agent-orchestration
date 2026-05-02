@@ -1,0 +1,14 @@
+{
+  "specFolder": "008-z-archive-marker-validation-sweep",
+  "description": "z-archive-marker-validation-sweep",
+  "keywords": [
+    "z-archive-marker-validation-sweep"
+  ],
+  "lastUpdated": "2026-05-02T09:34:31.278Z",
+  "specId": "008",
+  "folderSlug": "z-archive-marker-validation-sweep",
+  "parentChain": [],
+  "memorySequence": 0,
+  "memoryNameHistory": [],
+  "level": "3"
+}

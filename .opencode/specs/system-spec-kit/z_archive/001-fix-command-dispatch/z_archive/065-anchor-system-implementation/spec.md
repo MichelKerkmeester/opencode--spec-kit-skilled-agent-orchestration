@@ -17,7 +17,7 @@ contextType: "planning"
 
 Complete feature specification defining requirements, user stories, and success criteria for the Anchor System implementation.
 
-<!-- SPECKIT_TEMPLATE_SOURCE: spec | v1.0 -->
+<!-- SPECKIT_TEMPLATE_SOURCE: spec | v2.2 -->
 
 ---
 

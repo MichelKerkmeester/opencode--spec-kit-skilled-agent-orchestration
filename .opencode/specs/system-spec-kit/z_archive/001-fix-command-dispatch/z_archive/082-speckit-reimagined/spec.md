@@ -14,7 +14,7 @@ contextType: "planning"
 <!-- SPECKIT_LEVEL: 3+ -->
 # Feature Specification: SpecKit Reimagined
 
-<!-- SPECKIT_TEMPLATE_SOURCE: spec-core + level2-verify + level3-arch + level3plus-govern | v2.0 -->
+<!-- SPECKIT_TEMPLATE_SOURCE: spec-core + level2-verify + level3-arch + level3plus-govern | v2.2 -->
 
 ---
 

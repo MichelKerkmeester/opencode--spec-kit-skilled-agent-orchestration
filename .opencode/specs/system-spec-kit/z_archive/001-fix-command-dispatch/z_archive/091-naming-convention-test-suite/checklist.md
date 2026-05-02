@@ -14,7 +14,7 @@ contextType: "implementation"
 # Checklist: Naming Convention Test Suite
 
 <!-- SPECKIT_LEVEL: 2 -->
-<!-- SPECKIT_TEMPLATE_SOURCE: checklist-core | v2.0 -->
+<!-- SPECKIT_TEMPLATE_SOURCE: checklist-core | v2.2 -->
 
 ---
 

@@ -15,7 +15,7 @@ contextType: "implementation"
 
 Checklist for validating the memory command separation implementation.
 
-<!-- SPECKIT_TEMPLATE_SOURCE: checklist | v1.0 -->
+<!-- SPECKIT_TEMPLATE_SOURCE: checklist | v2.2 -->
 
 ---
 

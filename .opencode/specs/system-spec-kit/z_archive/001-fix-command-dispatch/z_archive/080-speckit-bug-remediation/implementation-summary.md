@@ -16,7 +16,7 @@ contextType: "implementation"
 # Implementation Summary: Spec Kit Bug Remediation
 
 <!-- SPECKIT_LEVEL: 3+ -->
-<!-- SPECKIT_TEMPLATE_SOURCE: implementation-summary | v2.0 -->
+<!-- SPECKIT_TEMPLATE_SOURCE: implementation-summary | v2.2 -->
 
 ---
 

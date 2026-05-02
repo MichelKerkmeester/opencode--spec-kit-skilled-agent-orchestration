@@ -14,7 +14,7 @@ contextType: "implementation"
 # Implementation Summary: SpecKit Upgrade v1.0.7.0-v1.0.9.0
 
 <!-- SPECKIT_LEVEL: 3+ -->
-<!-- SPECKIT_TEMPLATE_SOURCE: implementation-summary | v2.0 -->
+<!-- SPECKIT_TEMPLATE_SOURCE: implementation-summary | v2.2 -->
 
 ---
 

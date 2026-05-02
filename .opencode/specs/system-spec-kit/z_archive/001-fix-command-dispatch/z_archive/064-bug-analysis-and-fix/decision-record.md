@@ -17,7 +17,7 @@ contextType: "planning"
 
 Architecture Decision Records (ADRs) documenting significant technical decisions for the bug fix effort.
 
-<!-- SPECKIT_TEMPLATE_SOURCE: decision-record | v1.0 -->
+<!-- SPECKIT_TEMPLATE_SOURCE: decision-record | v2.2 -->
 
 ---
 

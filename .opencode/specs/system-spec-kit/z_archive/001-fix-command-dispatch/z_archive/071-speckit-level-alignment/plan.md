@@ -18,7 +18,7 @@ contextType: "planning"
 **Status**: VERIFIED - Ready for Implementation
 
 <!-- SPECKIT_LEVEL: 3 -->
-<!-- SPECKIT_TEMPLATE_SOURCE: plan | v1.0 -->
+<!-- SPECKIT_TEMPLATE_SOURCE: plan | v2.2 -->
 
 ---
 

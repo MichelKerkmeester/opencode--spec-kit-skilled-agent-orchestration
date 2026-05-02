@@ -15,7 +15,7 @@ contextType: "planning"
 # Decision Record: SpecKit Template Optimization Refinement
 
 <!-- SPECKIT_LEVEL: 3+ -->
-<!-- SPECKIT_TEMPLATE_SOURCE: decision-record | v2.0 -->
+<!-- SPECKIT_TEMPLATE_SOURCE: decision-record | v2.2 -->
 
 ---
 

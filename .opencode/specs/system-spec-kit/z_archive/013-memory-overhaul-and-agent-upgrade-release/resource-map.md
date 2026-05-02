@@ -7,7 +7,7 @@ trigger_phrases:
   - "path catalog 013-memory-overhaul-and-agent-upgrade-release"
 importance_tier: "normal"
 contextType: "general"
-template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: resource-map | v1.1 -->"
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: resource-map | v2.2 -->"
 _memory:
   continuity:
     packet_pointer: "system-spec-kit/z_archive/013-memory-overhaul-and-agent-upgrade-release"
@@ -19,7 +19,7 @@ _memory:
 ---
 # Resource Map
 
-<!-- SPECKIT_TEMPLATE_SOURCE: resource-map | v1.1 -->
+<!-- SPECKIT_TEMPLATE_SOURCE: resource-map | v2.2 -->
 
 ---
 

@@ -14,7 +14,7 @@ contextType: "general"
 
 Session handover for the completed context-server.js modularization.
 
-<!-- SPECKIT_TEMPLATE_SOURCE: handover | v1.0 -->
+<!-- SPECKIT_TEMPLATE_SOURCE: handover | v2.2 -->
 
 ---
 

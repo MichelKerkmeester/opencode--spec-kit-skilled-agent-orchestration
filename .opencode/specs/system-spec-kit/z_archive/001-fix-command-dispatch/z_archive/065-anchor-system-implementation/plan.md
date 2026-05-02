@@ -12,7 +12,7 @@ contextType: "planning"
 ---
 # Implementation Plan: Anchor System
 
-<!-- SPECKIT_TEMPLATE_SOURCE: plan | v1.0 -->
+<!-- SPECKIT_TEMPLATE_SOURCE: plan | v2.2 -->
 
 ## 1. Technical Approach
 

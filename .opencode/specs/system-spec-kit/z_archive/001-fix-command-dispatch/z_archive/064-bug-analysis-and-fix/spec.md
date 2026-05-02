@@ -17,7 +17,7 @@ contextType: "planning"
 
 Complete feature specification for addressing ~231 identified issues across the system-spec-kit skill and spec_kit commands.
 
-<!-- SPECKIT_TEMPLATE_SOURCE: spec | v1.0 -->
+<!-- SPECKIT_TEMPLATE_SOURCE: spec | v2.2 -->
 
 ---
 

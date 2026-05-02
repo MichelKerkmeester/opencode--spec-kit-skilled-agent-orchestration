@@ -12,7 +12,7 @@ trigger_phrases:
 importance_tier: "important"
 contextType: "planning"
 ---
-<!-- SPECKIT_TEMPLATE_SOURCE: decision-record.md | v1.0 -->
+<!-- SPECKIT_TEMPLATE_SOURCE: decision-record.md | v2.2 -->
 
 # Decision Record: Post-Merge Refinement 4
 

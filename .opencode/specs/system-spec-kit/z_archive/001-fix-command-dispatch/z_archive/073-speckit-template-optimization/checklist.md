@@ -14,7 +14,7 @@ contextType: "implementation"
 <!-- SPECKIT_LEVEL: 3+ -->
 # Verification Checklist: SpecKit Template Optimization
 
-<!-- SPECKIT_TEMPLATE_SOURCE: checklist | v2.0 -->
+<!-- SPECKIT_TEMPLATE_SOURCE: checklist | v2.2 -->
 
 ---
 

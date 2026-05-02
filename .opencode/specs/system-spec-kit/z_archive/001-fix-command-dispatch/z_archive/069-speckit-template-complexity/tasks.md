@@ -16,7 +16,7 @@ contextType: "implementation"
 
 Implementation task breakdown for complexity detection and level-based template folder system.
 
-<!-- SPECKIT_TEMPLATE_SOURCE: tasks | v1.0 -->
+<!-- SPECKIT_TEMPLATE_SOURCE: tasks | v2.2 -->
 
 ---
 

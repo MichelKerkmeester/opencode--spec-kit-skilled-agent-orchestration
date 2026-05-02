@@ -15,7 +15,7 @@ contextType: "planning"
 
 Implementation plan for decomposing context-server.js (2,703 LOC) into focused modules.
 
-<!-- SPECKIT_TEMPLATE_SOURCE: plan | v1.0 -->
+<!-- SPECKIT_TEMPLATE_SOURCE: plan | v2.2 -->
 
 ---
 

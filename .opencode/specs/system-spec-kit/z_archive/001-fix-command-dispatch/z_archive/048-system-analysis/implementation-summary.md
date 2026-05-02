@@ -13,7 +13,7 @@ trigger_phrases:
 importance_tier: "normal"
 contextType: "implementation"
 ---
-<!-- SPECKIT_TEMPLATE_SOURCE: implementation-summary | v1.0 -->
+<!-- SPECKIT_TEMPLATE_SOURCE: implementation-summary | v2.2 -->
 
 # Implementation Summary: P3 Technical Debt Remediation
 

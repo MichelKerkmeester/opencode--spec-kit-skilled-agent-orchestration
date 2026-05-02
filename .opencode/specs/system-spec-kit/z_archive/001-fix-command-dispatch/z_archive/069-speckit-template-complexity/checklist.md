@@ -16,7 +16,7 @@ contextType: "implementation"
 
 Verification items for complexity detection and level-based template folder implementation.
 
-<!-- SPECKIT_TEMPLATE_SOURCE: checklist | v1.0 -->
+<!-- SPECKIT_TEMPLATE_SOURCE: checklist | v2.2 -->
 
 ---
 

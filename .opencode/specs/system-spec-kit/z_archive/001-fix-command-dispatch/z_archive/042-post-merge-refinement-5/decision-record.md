@@ -17,7 +17,7 @@ contextType: "planning"
 
 Architecture Decision Record (ADR) documenting significant technical decisions for the post-merge refinement phase.
 
-<!-- SPECKIT_TEMPLATE_SOURCE: decision-record | v1.0 -->
+<!-- SPECKIT_TEMPLATE_SOURCE: decision-record | v2.2 -->
 
 ---
 

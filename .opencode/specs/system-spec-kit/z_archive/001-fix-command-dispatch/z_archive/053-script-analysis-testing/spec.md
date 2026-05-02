@@ -17,7 +17,7 @@ contextType: "planning"
 
 Complete feature specification defining the end-to-end testing requirements for the Spec Kit Memory workflow.
 
-<!-- SPECKIT_TEMPLATE_SOURCE: spec | v1.0 -->
+<!-- SPECKIT_TEMPLATE_SOURCE: spec | v2.2 -->
 
 ---
 

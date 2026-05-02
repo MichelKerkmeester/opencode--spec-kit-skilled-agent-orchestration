@@ -12,7 +12,7 @@ contextType: "implementation"
 ---
 # Tasks: Anchor System Implementation
 
-<!-- SPECKIT_TEMPLATE_SOURCE: tasks | v1.0 -->
+<!-- SPECKIT_TEMPLATE_SOURCE: tasks | v2.2 -->
 
 <!-- ANCHOR:notation -->
 ## 1. Parser Implementation

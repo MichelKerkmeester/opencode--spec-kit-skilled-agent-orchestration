@@ -15,7 +15,7 @@ contextType: "implementation"
 
 Comprehensive checklist for validating the SpecKit bug fix implementation across all priority levels (re-analysis included).
 
-<!-- SPECKIT_TEMPLATE_SOURCE: checklist | v1.0 -->
+<!-- SPECKIT_TEMPLATE_SOURCE: checklist | v2.2 -->
 
 ---
 

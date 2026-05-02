@@ -17,7 +17,7 @@ contextType: "planning"
 
 Separate the unified `/memory:search` command into two focused commands: a read-only search command and a database management command.
 
-<!-- SPECKIT_TEMPLATE_SOURCE: spec | v1.0 -->
+<!-- SPECKIT_TEMPLATE_SOURCE: spec | v2.2 -->
 
 ---
 

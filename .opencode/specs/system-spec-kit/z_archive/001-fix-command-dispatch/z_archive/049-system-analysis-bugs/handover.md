@@ -11,7 +11,7 @@ importance_tier: "normal"
 contextType: "general"
 ---
 # Session Handover Document
-<!-- SPECKIT_TEMPLATE_SOURCE: handover | v2.0 -->
+<!-- SPECKIT_TEMPLATE_SOURCE: handover | v2.2 -->
 
 ## 1. Handover Summary
 

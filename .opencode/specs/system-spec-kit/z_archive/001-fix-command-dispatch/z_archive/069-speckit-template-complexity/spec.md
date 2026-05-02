@@ -18,7 +18,7 @@ contextType: "planning"
 
 Transform static system-spec-kit templates into a level-based folder system with pre-expanded templates for each documentation level.
 
-<!-- SPECKIT_TEMPLATE_SOURCE: spec | v1.0 -->
+<!-- SPECKIT_TEMPLATE_SOURCE: spec | v2.2 -->
 
 ---
 

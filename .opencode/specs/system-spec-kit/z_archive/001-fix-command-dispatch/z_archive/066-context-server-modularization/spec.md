@@ -17,7 +17,7 @@ contextType: "planning"
 
 Decompose the monolithic context-server.js (2,703 LOC) into focused modules following the Spec 058 pattern.
 
-<!-- SPECKIT_TEMPLATE_SOURCE: spec | v1.0 -->
+<!-- SPECKIT_TEMPLATE_SOURCE: spec | v2.2 -->
 
 ---
 

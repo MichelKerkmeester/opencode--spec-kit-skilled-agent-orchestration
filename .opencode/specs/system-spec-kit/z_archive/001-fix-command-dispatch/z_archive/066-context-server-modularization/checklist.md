@@ -15,7 +15,7 @@ contextType: "implementation"
 
 Validation checklist for context-server.js modularization.
 
-<!-- SPECKIT_TEMPLATE_SOURCE: checklist | v1.0 -->
+<!-- SPECKIT_TEMPLATE_SOURCE: checklist | v2.2 -->
 
 ---
 

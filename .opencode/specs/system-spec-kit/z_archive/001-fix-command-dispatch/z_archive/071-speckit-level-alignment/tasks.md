@@ -16,7 +16,7 @@ contextType: "implementation"
 Implementation tasks for aligning SpecKit with level-based template architecture.
 
 <!-- SPECKIT_LEVEL: 3 -->
-<!-- SPECKIT_TEMPLATE_SOURCE: tasks | v1.0 -->
+<!-- SPECKIT_TEMPLATE_SOURCE: tasks | v2.2 -->
 
 ---
 

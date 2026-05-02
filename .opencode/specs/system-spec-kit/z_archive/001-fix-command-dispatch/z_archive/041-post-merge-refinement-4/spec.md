@@ -17,7 +17,7 @@ contextType: "planning"
 
 Complete specification for addressing 75+ issues identified by 10-agent analysis across documentation, code, UX, and integration.
 
-<!-- SPECKIT_TEMPLATE_SOURCE: spec | v1.0 -->
+<!-- SPECKIT_TEMPLATE_SOURCE: spec | v2.2 -->
 
 ---
 

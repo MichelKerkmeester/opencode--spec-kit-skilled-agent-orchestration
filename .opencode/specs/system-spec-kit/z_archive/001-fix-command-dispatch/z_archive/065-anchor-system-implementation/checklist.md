@@ -12,7 +12,7 @@ contextType: "implementation"
 ---
 # Checklist: Anchor System Implementation
 
-<!-- SPECKIT_TEMPLATE_SOURCE: checklist | v1.0 -->
+<!-- SPECKIT_TEMPLATE_SOURCE: checklist | v2.2 -->
 
 <!-- ANCHOR:protocol -->
 ## P0 - Blockers (Must Complete)

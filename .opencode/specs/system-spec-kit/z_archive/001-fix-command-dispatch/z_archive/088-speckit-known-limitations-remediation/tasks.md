@@ -15,7 +15,7 @@ contextType: "implementation"
 # Tasks: System-Spec-Kit Known Limitations Remediation
 
 <!-- SPECKIT_LEVEL: 2 -->
-<!-- SPECKIT_TEMPLATE_SOURCE: tasks-core + level2-verify | v2.0 -->
+<!-- SPECKIT_TEMPLATE_SOURCE: tasks-core + level2-verify | v2.2 -->
 
 ---
 

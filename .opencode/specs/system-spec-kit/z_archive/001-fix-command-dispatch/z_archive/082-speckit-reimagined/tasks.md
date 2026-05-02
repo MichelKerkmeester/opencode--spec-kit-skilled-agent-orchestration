@@ -12,7 +12,7 @@ contextType: "implementation"
 # Tasks: SpecKit Reimagined
 
 <!-- SPECKIT_LEVEL: 3+ -->
-<!-- SPECKIT_TEMPLATE_SOURCE: tasks-core + level3plus-govern | v2.0 -->
+<!-- SPECKIT_TEMPLATE_SOURCE: tasks-core + level3plus-govern | v2.2 -->
 
 ---
 

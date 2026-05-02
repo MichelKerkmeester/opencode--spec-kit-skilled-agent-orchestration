@@ -1,7 +1,7 @@
 # Known Limitations & Remediation Guide
 
 <!-- SPECKIT_LEVEL: 3+ -->
-<!-- SPECKIT_TEMPLATE_SOURCE: supplementary | v1.0 -->
+<!-- SPECKIT_TEMPLATE_SOURCE: supplementary | v2.2 -->
 <!-- Parent: 087-speckit-deep-analysis -->
 
 ---

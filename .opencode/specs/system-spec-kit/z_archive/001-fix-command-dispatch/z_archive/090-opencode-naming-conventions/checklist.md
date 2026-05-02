@@ -14,7 +14,7 @@ contextType: "implementation"
 # Verification Checklist: OpenCode Naming Convention Alignment
 
 <!-- SPECKIT_LEVEL: 3+ -->
-<!-- SPECKIT_TEMPLATE_SOURCE: checklist + level3plus-govern | v2.0 -->
+<!-- SPECKIT_TEMPLATE_SOURCE: checklist + level3plus-govern | v2.2 -->
 
 ---
 

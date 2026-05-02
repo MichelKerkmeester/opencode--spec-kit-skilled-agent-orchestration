@@ -17,7 +17,7 @@ contextType: "planning"
 
 Architectural decisions and rationale for the complexity detection system.
 
-<!-- SPECKIT_TEMPLATE_SOURCE: decision-record | v1.0 -->
+<!-- SPECKIT_TEMPLATE_SOURCE: decision-record | v2.2 -->
 
 ---
 

@@ -15,7 +15,7 @@ contextType: "planning"
 
 Implementation plan defining phased approach to resolve 75+ issues identified by 10-agent analysis.
 
-<!-- SPECKIT_TEMPLATE_SOURCE: plan | v1.0 -->
+<!-- SPECKIT_TEMPLATE_SOURCE: plan | v2.2 -->
 
 ---
 

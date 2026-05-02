@@ -15,7 +15,7 @@ contextType: "planning"
 
 Implementation plan for separating the unified `/memory:search` command into two focused commands.
 
-<!-- SPECKIT_TEMPLATE_SOURCE: plan | v1.0 -->
+<!-- SPECKIT_TEMPLATE_SOURCE: plan | v2.2 -->
 
 ---
 
