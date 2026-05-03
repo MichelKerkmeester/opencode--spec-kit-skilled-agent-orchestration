@@ -12,7 +12,7 @@ import { getDb, getLastGitHead, setLastGitHead, ensureFreshFiles } from './code-
 import { indexFiles } from './structural-indexer.js';
 import { getDefaultConfig } from './indexer-types.js';
 import type { IndexerConfig, ParseResult } from './indexer-types.js';
-import { resolveIndexScopePolicy } from './index-scope-policy.js';
+import { resolveIndexScopePolicy, parseIndexScopePolicyFromFingerprint } from './index-scope-policy.js';
 import { isRecord } from './query-result-adapter.js';
 import * as graphDb from './code-graph-db.js';
 
@@ -176,7 +176,7 @@ function loadCandidateManifest(): CandidateManifest | null {
  * Persist a candidate manifest. Called after any successful full or selective
  * scan so the next `detectState()` has a baseline to compare against.
  */
-function recordCandidateManifest(filePaths: string[]): void {
+export function recordCandidateManifest(filePaths: string[]): void {
   // F-014-C4-03: persist {count, digest} only — no per-path storage.
   const sorted = [...filePaths].sort();
   const digest = createHash('sha256').update(sorted.join('\n'), 'utf-8').digest('hex').slice(0, 16);
@@ -292,7 +292,14 @@ function detectState(rootDir: string): {
 
   const activeScope = resolveIndexScopePolicy();
   const storedScope = graphDb.getStoredCodeGraphScope();
-  if (storedScope.fingerprint !== activeScope.fingerprint) {
+  // FIX-009-v3: env-vs-stored drift only blocks reads when the prior scan
+  // took its policy from env (`env`/`default`). When the prior scan was an
+  // explicit per-call override (`scan-argument`), the index contains exactly
+  // what the user just asked for — trust it and let reads proceed regardless
+  // of env drift. This preserves the FIX-009-v2 cross-session env-change
+  // contract while restoring read-after-scan semantics for explicit probes.
+  const storedFromPerCall = storedScope.source === 'scan-argument';
+  if (!storedFromPerCall && storedScope.fingerprint !== activeScope.fingerprint) {
     const storedLabel = storedScope.label ?? 'unknown previous code graph scope';
     return {
       freshness: 'stale',
@@ -527,9 +534,20 @@ export async function ensureCodeGraphReady(rootDir: string, options: EnsureReady
     };
   }
 
+  // Honor the last explicit scan's stored scope so per-call disabled scans are
+  // not silently re-broadened back to env-resolved scope at read time. Without
+  // this, a `code_graph_scan({includeSkills:false,...})` followed by any read
+  // re-resolves scope from env (which may say `INDEX_*=true`), detects a
+  // mismatch, and immediately blocks reads with `requiredAction:"code_graph_scan"`.
+  const storedScope = graphDb.getStoredCodeGraphScope();
+  const storedPolicy = parseIndexScopePolicyFromFingerprint({
+    fingerprint: storedScope.fingerprint,
+    source: storedScope.source,
+  });
+
   try {
     if (state.action === 'full_scan') {
-      const config = getDefaultConfig(rootDir);
+      const config = getDefaultConfig(rootDir, storedPolicy ?? undefined);
       await indexWithTimeout(config, AUTO_INDEX_TIMEOUT_MS);
       graphDb.setCodeGraphScope(config.scopePolicy);
 
@@ -558,7 +576,7 @@ export async function ensureCodeGraphReady(rootDir: string, options: EnsureReady
     // selective_reindex: only re-parse stale files
     if (state.action === 'selective_reindex' && state.staleFiles.length > 0) {
       const lastSelfHealAt = new Date().toISOString();
-      const config = getDefaultConfig(rootDir);
+      const config = getDefaultConfig(rootDir, storedPolicy ?? undefined);
       await indexWithTimeout(config, AUTO_INDEX_TIMEOUT_MS, { specificFiles: state.staleFiles });
       graphDb.setCodeGraphScope(config.scopePolicy);
 

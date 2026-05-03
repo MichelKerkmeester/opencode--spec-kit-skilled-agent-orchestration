@@ -8,6 +8,7 @@
 
 import { resolve, dirname } from 'node:path';
 import { fileURLToPath } from 'node:url';
+import { createRequire } from 'node:module';
 import type {
   ParseResult, SupportedLanguage, SymbolKind, EdgeType,
 } from './indexer-types.js';
@@ -47,7 +48,16 @@ type ParserLanguage = Exclude<SupportedLanguage, 'doc'>;
 const SUPPORTED_LANGUAGES: ParserLanguage[] = ['javascript', 'typescript', 'python', 'bash'];
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
+const localRequire = createRequire(import.meta.url);
 
+// FIX-011-FOLLOWUP-3: resolve grammar path via the tree-sitter-wasms package
+// itself (Node module resolution) rather than a relative `../../` walk.
+// Pre-fix used `resolve(__dirname, '../../node_modules/tree-sitter-wasms/out', ...)`
+// which works when running from src (`code_graph/lib/`) but fails from compiled
+// `dist/code_graph/lib/` because dist/ has no node_modules child. The previous
+// path silently failed, web-tree-sitter init threw ENOENT, and the parser
+// degraded to a regex fallback that extracts only the first ~3 callable nodes
+// per file — leaving 60-80% of production symbols missing from `code_nodes`.
 function getGrammarPath(language: ParserLanguage): string {
   const nameMap: Record<ParserLanguage, string> = {
     javascript: 'tree-sitter-javascript',
@@ -55,7 +65,14 @@ function getGrammarPath(language: ParserLanguage): string {
     python: 'tree-sitter-python',
     bash: 'tree-sitter-bash',
   };
-  return resolve(__dirname, '../../node_modules/tree-sitter-wasms/out', `${nameMap[language]}.wasm`);
+  try {
+    const pkgJson = localRequire.resolve('tree-sitter-wasms/package.json');
+    return resolve(dirname(pkgJson), 'out', `${nameMap[language]}.wasm`);
+  } catch {
+    // Fallback: try the legacy relative path (for any environment that
+    // ships node_modules alongside dist/, e.g. some bundlers).
+    return resolve(__dirname, '../../node_modules/tree-sitter-wasms/out', `${nameMap[language]}.wasm`);
+  }
 }
 
 async function ensureInit(): Promise<void> {

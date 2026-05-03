@@ -7,10 +7,14 @@ import { execSync } from 'node:child_process';
 import { existsSync } from 'node:fs';
 import { basename, isAbsolute, relative, resolve } from 'node:path';
 import { buildEdgeDistribution, computeEdgeShare } from '../lib/edge-drift.js';
+import {
+  hasCrossFileCallResolutionActivity,
+  resolveCrossFileCallEdges,
+} from '../lib/cross-file-edge-resolver.js';
 import { getDefaultConfig, type DetectorProvenance, type CodeEdge } from '../lib/indexer-types.js';
 import { indexFiles } from '../lib/structural-indexer.js';
 import * as graphDb from '../lib/code-graph-db.js';
-import { persistIndexedFileResult } from '../lib/ensure-ready.js';
+import { persistIndexedFileResult, recordCandidateManifest } from '../lib/ensure-ready.js';
 import {
   DEFAULT_GOLD_BATTERY_PATH,
   executeBattery,
@@ -274,7 +278,7 @@ export async function handleCodeGraphScan(args: ScanArgs): Promise<{ content: Ar
 
   const results = await indexFiles(config, { skipFreshFiles: effectiveIncremental });
   const detectorProvenanceSummary = summarizeDetectorProvenance(results);
-  const graphEdgeEnrichmentSummary = summarizeGraphEdgeEnrichment(results);
+  let graphEdgeEnrichmentSummary = summarizeGraphEdgeEnrichment(results);
   const preParseSkippedCount = effectiveIncremental ? (results.preParseSkippedCount ?? 0) : 0;
 
   let filesIndexed = 0;
@@ -336,10 +340,17 @@ export async function handleCodeGraphScan(args: ScanArgs): Promise<{ content: Ar
   }
   graphDb.setLastDetectorProvenanceSummary(detectorProvenanceSummary);
   graphDb.setCodeGraphScope(scopePolicy);
-  if (filesIndexed > 0 && graphEdgeEnrichmentSummary) {
-    graphDb.setLastGraphEdgeEnrichmentSummary(graphEdgeEnrichmentSummary);
-  } else if (filesIndexed > 0) {
-    graphDb.clearLastGraphEdgeEnrichmentSummary();
+
+  // F-014-C4-03: refresh candidate manifest after a successful full scan so
+  // the next detectState() has a current baseline to compare against. Without
+  // this, code_graph_status reports stale ("candidate manifest drift") on the
+  // very next call after an explicit user-triggered scan.
+  if (!effectiveIncremental && errors.length === 0) {
+    try {
+      recordCandidateManifest(graphDb.getTrackedFiles());
+    } catch {
+      // Best-effort: manifest recording must never block a successful scan
+    }
   }
 
   const hasPersistedBaseline = hasUsablePersistedEdgeDistributionBaseline();
@@ -352,12 +363,42 @@ export async function handleCodeGraphScan(args: ScanArgs): Promise<{ content: Ar
     graphDb.setCodeGraphMetadata('edge_distribution_baseline', JSON.stringify(distribution));
   }
 
+  const crossFileCallResolution = filesIndexed > 0 && errors.length === 0
+    ? resolveCrossFileCallEdges()
+    : { resolved: 0, unresolved: 0, ambiguousSkipped: 0 };
+  if (hasCrossFileCallResolutionActivity(crossFileCallResolution)) {
+    graphEdgeEnrichmentSummary = {
+      ...(graphEdgeEnrichmentSummary ?? {
+        edgeEvidenceClass: 'inferred_heuristic' as const,
+        numericConfidence: 0.8,
+      }),
+      crossFileCallResolution,
+    };
+  }
+
+  if (filesIndexed > 0 && graphEdgeEnrichmentSummary) {
+    graphDb.setLastGraphEdgeEnrichmentSummary(graphEdgeEnrichmentSummary);
+  } else if (filesIndexed > 0) {
+    graphDb.clearLastGraphEdgeEnrichmentSummary();
+  }
+
+  // FIX-011-FOLLOWUP-1: report POST-PERSIST DB counts so the scan response
+  // matches what the next code_graph_status will see. The pre-persist sums
+  // (totalNodes/totalEdges accumulated above) double-count edges that get
+  // deduped during persistence and miss edges added by enrichment that runs
+  // before the response is built — leading to a confusing ~1k delta between
+  // scan response and immediate status. The DB read is cheap (2 COUNT(*)
+  // queries) and gives a single source of truth for graph cardinality.
+  const persistedStats = graphDb.getStats();
+  const responseTotalNodes = persistedStats.totalNodes;
+  const responseTotalEdges = persistedStats.totalEdges;
+
   const scanResult: ScanResult = {
     filesScanned: results.length,
     filesIndexed,
     filesSkipped,
-    totalNodes,
-    totalEdges,
+    totalNodes: responseTotalNodes,
+    totalEdges: responseTotalEdges,
     errors: errors.slice(0, 10).map(error => relativizeScanError(error, canonicalWorkspace)),
     durationMs: Date.now() - startTime,
     fullScanRequested: args.incremental === false,
@@ -370,7 +411,7 @@ export async function handleCodeGraphScan(args: ScanArgs): Promise<{ content: Ar
     warnings: (results.warnings ?? []).map(warning => relativizeScanWarning(warning, canonicalWorkspace)),
     capExceeded: results.capExceeded ?? { maxNodes: false, depth: false, gitignoreSize: false },
   };
-  const lastPersistedAt = graphDb.getStats().lastScanTimestamp;
+  const lastPersistedAt = persistedStats.lastScanTimestamp;
   const shouldVerify = args.verify === true && incremental === false;
 
   if (shouldVerify) {

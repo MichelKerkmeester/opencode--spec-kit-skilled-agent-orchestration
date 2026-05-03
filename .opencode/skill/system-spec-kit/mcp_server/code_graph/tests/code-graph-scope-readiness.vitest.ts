@@ -99,12 +99,17 @@ describe('code graph scope readiness', () => {
     }
   });
 
-  it('requires an explicit full scan when stored and active scope fingerprints differ', async () => {
+  it('requires an explicit full scan when env drift makes stored and active scope fingerprints differ', async () => {
+    // FIX-009-v3: env-drift gate fires only when the stored scope was itself
+    // env-derived. Set up an env-source stored scope by passing env vars and
+    // NO per-call args, then resolve again with different env to simulate
+    // cross-session env change.
     const tempDir = mkdtempSync(join(tmpdir(), 'code-graph-scope-mismatch-'));
     try {
       initDb(tempDir);
       writeTrackedNode(tempDir);
-      setCodeGraphScope(resolveIndexScopePolicy({ includeSkills: true, env: {} }));
+      // Stored scope derived from env (source='env'): SKILLS=true env, no per-call.
+      setCodeGraphScope(resolveIndexScopePolicy({ env: { SPECKIT_CODE_GRAPH_INDEX_SKILLS: 'true' } }));
 
       const snapshot = getGraphReadinessSnapshot(tempDir);
       expect(snapshot).toMatchObject({
@@ -123,6 +128,28 @@ describe('code graph scope readiness', () => {
         inlineIndexPerformed: false,
       });
       expect(readiness.reason).toContain('inline full scan skipped for read path');
+    } finally {
+      rmSync(tempDir, { recursive: true, force: true });
+    }
+  });
+
+  it('FIX-009-v3: per-call (scan-argument) stored scope is trusted regardless of env drift', async () => {
+    // When a scan was run with explicit per-call args, the stored scope is the
+    // user's deliberate choice for the index. Env mismatch must NOT block reads.
+    const tempDir = mkdtempSync(join(tmpdir(), 'code-graph-scope-per-call-'));
+    try {
+      initDb(tempDir);
+      writeTrackedNode(tempDir);
+      // Stored scope from explicit per-call args (source='scan-argument'):
+      // includeSkills:true with empty env. Then env drifts (env={} = nothing
+      // included), but reads should still proceed against the stored scope.
+      setCodeGraphScope(resolveIndexScopePolicy({ includeSkills: true, env: {} }));
+
+      const snapshot = getGraphReadinessSnapshot(tempDir);
+      // Gate must NOT fire: per-call stored scope wins over env drift.
+      expect(snapshot.reason).not.toContain('code graph scope changed');
+      // Snapshot is fresh because no other drift exists in the temp DB.
+      expect(snapshot.freshness).toBe('fresh');
     } finally {
       rmSync(tempDir, { recursive: true, force: true });
     }

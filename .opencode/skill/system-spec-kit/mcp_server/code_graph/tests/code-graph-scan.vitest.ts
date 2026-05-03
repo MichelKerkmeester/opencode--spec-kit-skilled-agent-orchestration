@@ -42,6 +42,9 @@ const mocks = vi.hoisted(() => ({
   getStatsMock: vi.fn(),
   getStoredCodeGraphScopeMock: vi.fn(),
   countTrackedSkillFilesMock: vi.fn(),
+  recordCandidateManifestMock: vi.fn(),
+  resolveCrossFileCallEdgesMock: vi.fn(),
+  hasCrossFileCallResolutionActivityMock: vi.fn(),
 }));
 
 function withPreParseSkippedCount<T>(
@@ -74,6 +77,12 @@ vi.mock('../lib/ensure-ready.js', () => ({
   getGraphFreshness: mocks.getGraphFreshnessMock,
   getGraphReadinessSnapshot: mocks.getGraphReadinessSnapshotMock,
   persistIndexedFileResult: mocks.persistIndexedFileResultMock,
+  recordCandidateManifest: mocks.recordCandidateManifestMock,
+}));
+
+vi.mock('../lib/cross-file-edge-resolver.js', () => ({
+  resolveCrossFileCallEdges: mocks.resolveCrossFileCallEdgesMock,
+  hasCrossFileCallResolutionActivity: mocks.hasCrossFileCallResolutionActivityMock,
 }));
 
 vi.mock('../lib/code-graph-db.js', () => ({
@@ -241,6 +250,12 @@ describe('handleCodeGraphScan', () => {
         graphEdgeEnrichmentSummary: null,
       },
     });
+    mocks.resolveCrossFileCallEdgesMock.mockReturnValue({
+      resolved: 0,
+      unresolved: 0,
+      ambiguousSkipped: 0,
+    });
+    mocks.hasCrossFileCallResolutionActivityMock.mockReturnValue(false);
     mocks.indexFilesMock.mockResolvedValue(withPreParseSkippedCount([{
       filePath: '/workspace/current.ts',
       language: 'typescript',

@@ -54,6 +54,11 @@ export type GraphEdgeEvidenceSummaryClass =
 export interface GraphEdgeEnrichmentSummary {
   edgeEvidenceClass: GraphEdgeEvidenceSummaryClass;
   numericConfidence: number;
+  crossFileCallResolution?: {
+    resolved: number;
+    unresolved: number;
+    ambiguousSkipped: number;
+  };
 }
 
 export interface StoredCodeGraphScope {
