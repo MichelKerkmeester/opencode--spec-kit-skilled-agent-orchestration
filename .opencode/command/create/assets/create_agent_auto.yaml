@@ -10,18 +10,18 @@ purpose: Create production-ready OpenCode agents with 6-step workflow
 action: Guide agent creation from understanding through validation with YAML frontmatter verification and permission configuration
 
 # ─────────────────────────────────────────────────────────────────
-# PREREQUISITE: @write AGENT VERIFICATION
+# PREREQUISITE: @general AGENT VERIFICATION
 # ─────────────────────────────────────────────────────────────────
-# This workflow REQUIRES the @write agent for:
+# This workflow REQUIRES the @general agent for:
 #   • Template-first workflow (loads templates before creating)
 #   • YAML frontmatter validation
 #   • sk-doc skill integration
 #
-# PHASE 0 in the command markdown verifies @write agent BEFORE
+# PHASE 0 in the command markdown verifies @general agent BEFORE
 # this YAML workflow loads. If you're executing this workflow,
-# @write verification has already passed.
+# @general verification has already passed.
 #
-# To invoke correctly: @write /create:agent [agent-name]
+# To invoke correctly: @general /create:agent [agent-name]
 # ─────────────────────────────────────────────────────────────────
 
 operating_mode:
@@ -142,7 +142,7 @@ field_handling:
 
 input_contract:
   required:
-    - write_agent_verified
+    - general_agent_verified
     - agent_name
     - agent_path
     - spec_path
@@ -213,7 +213,7 @@ workflow_enforcement:
 gate_logic:
   hard:
     H0_write_verified:
-      description: "@write verification must have passed in Phase 0"
+      description: "@general verification must have passed in Phase 0"
       fail_action: "STOP and return to the command setup phase"
     H1_required_fields:
       description: "Required setup fields must be present before generation"
@@ -532,7 +532,7 @@ workflow:
       blocking: false
       not_for: "reviewing this workflow prompt or any pre-step activity"
     activities:
-    - "Run @write quality validation to score the created agent definition file"
+    - "Run @general quality validation to score the created agent definition file"
     - "Validation checks: frontmatter validity, permission config, behavioral rules"
     - "Score against 100-point rubric (Accuracy 40%, Completeness 35%, Consistency 25%)"
     on_low_score:

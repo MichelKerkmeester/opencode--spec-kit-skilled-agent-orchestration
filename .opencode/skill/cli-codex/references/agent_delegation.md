@@ -275,59 +275,6 @@ codex exec -p multi-ai-council -s read-only \
 
 ---
 
-### @write — Documentation Writer
-
-| Property           | Value                                                  |
-| ------------------ | ------------------------------------------------------ |
-| **Role**           | Non-spec documentation (READMEs, guides, install docs) |
-| **Model**          | gpt-5.5 (reasoning effort: `medium`)                    |
-| **Sandbox Mode**   | workspace-write                                        |
-| **Modifies Files** | Yes (non-spec docs)                                    |
-
-**Best for:** READMEs, guides, install documentation, project-level documentation. Can use `--search` to enrich docs with current external references.
-
-**Delegate when:** You need documentation generated from a different model's perspective, or want Codex's web search capability to enrich documentation with external references.
-
-```bash
-codex exec -p write -s workspace-write \
-  "Generate a comprehensive README.md for this project based on the codebase structure" \
-  --model gpt-5.5
-```
-
----
-
-## 4. ROUTING TABLE
-
-| Task Type                | Primary Agent          | Fallback             | Rationale                            |
-| ------------------------ | ---------------------- | -------------------- | ------------------------------------ |
-| Codebase exploration     | @context               | (none)               | Read-only, structured exploration    |
-| Cross-AI code review     | @review                | @context             | Second opinion on quality, read-only |
-| Web/API research         | @deep-research (`--search`) | @write          | Live web browsing capability         |
-| Architecture planning    | @multi-ai-council           | @deep-research       | Multi-lens analysis, no file changes |
-| Bug investigation        | @debug                 | @context             | Fresh perspective methodology        |
-| Documentation generation | @write                 | (none)               | Non-spec documentation and guides    |
-| Spec folder docs         | Main agent + `/spec_kit:plan --intake-only` | `/spec_kit:plan` | Distributed governance for packet docs |
-| Session continuity       | `/memory:save`         | `/spec_kit:resume`   | Refresh continuity before pause      |
-| Complex multi-agent task | @orchestrate           | (decompose manually) | Codex-internal coordination          |
-
----
-
-## 5. ANTI-PATTERNS
-
-| Anti-Pattern                   | Why It Fails                                                                       | Correct Approach                                                 |
-| ------------------------------ | ---------------------------------------------------------------------------------- | ---------------------------------------------------------------- |
-| Double orchestration           | The calling AI orchestrates, then delegates to @orchestrate, which orchestrates again | Delegate directly to leaf agents                                 |
-| Blind forwarding               | Passing user request verbatim to Codex without decomposition                       | Decompose, add context, specify expected output                  |
-| Ignoring output validation     | Using Codex output without checking quality                                        | Always validate before integrating                               |
-| Wrong agent for task           | Using @write for code review, @debug for exploration                               | Follow the routing table above                                   |
-| Stateful assumptions           | Assuming Codex remembers prior exec invocations                                    | Each `exec` is stateless; include all context in the prompt      |
-| Interactive mode delegation    | Starting Codex TUI from the calling AI                                                | Always use `codex exec` for non-interactive delegation           |
-| Over-permissive sandbox        | Using `danger-full-access` when `workspace-write` suffices                         | Use the least-permissive mode that works                         |
-| Missing approval for risky ops | Using `--ask-for-approval never` with `danger-full-access`                         | Always pair elevated sandbox with `--ask-for-approval untrusted` |
-
----
-
-## 6. OUTPUT HANDLING
 
 ### Capturing exec Output
 

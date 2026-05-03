@@ -41,7 +41,7 @@ trigger_phrases:
 
 The `create` command group scaffolds OpenCode components, documentation packages, and changelog entries. All commands follow a structured YAML workflow and support `:auto` (no approval prompts) and `:confirm` (pause at each step) execution modes.
 
-All shipped `create` commands run Phase 0 (@write agent self-verification).
+All shipped `create` commands run Phase 0 (@general agent self-verification).
 
 <!-- /ANCHOR:overview -->
 
@@ -210,7 +210,7 @@ A: The command reads the most recent changelog entry in the target component fol
 
 | Problem | Cause | Fix |
 |---------|-------|-----|
-| Phase 0 fails | @write agent not available | Verify agent files exist in the runtime path (`.opencode/agent/`, `.claude/agents/`, `.codex/agents/`, or `.gemini/agents/`) |
+| Phase 0 fails | @general agent not available | Verify agent files exist in the runtime path (`.opencode/agent/`, `.claude/agents/`, `.codex/agents/`, or `.gemini/agents/`) |
 | YAML workflow not found | Missing asset file | Check `assets/` contains the matching YAML for operation and mode |
 | Skill not found for sk-skill operation | Wrong skill name | Use the exact folder name from `.opencode/skill/` |
 | Catalog or playbook update target missing | `update` used before the package exists | Re-run with `create` or point to the correct skill root |

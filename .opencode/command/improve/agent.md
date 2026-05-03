@@ -14,7 +14,7 @@ allowed-tools: Read, Write, Edit, Bash, Grep, Glob, Task
 > 3. Determine execution mode from user input (`:auto` or `:confirm`)
 > 4. Load matching YAML workflow and execute
 >
-> This command is **general-agent based** and does **not** require `@write`.
+> This command is **general-agent based** — orchestrates sk-improve-agent skill invocation.
 
 ---
 
@@ -28,7 +28,7 @@ EXECUTE THIS AUTOMATIC SELF-CHECK (NOT A USER QUESTION):
 SELF-CHECK: Are you operating as the @general agent?
 │
 ├─ INDICATORS that you ARE @general agent:
-│   ├─ You were invoked without @write-only constraints
+│   ├─ You can orchestrate sk-improve-agent invocation
 │   ├─ You can orchestrate Read/Write/Edit/Bash workflow execution
 │   ├─ You can load skill references and execute defined logic
 │
@@ -44,7 +44,7 @@ SELF-CHECK: Are you operating as the @general agent?
     │   │ ⛔ GENERAL AGENT REQUIRED                                  │
     │   │                                                            │
     │   │ This command orchestrates sk-improve-agent skill          │
-    │   │ invocation and does not require @write routing.            │
+    │   │ invocation and runs general-agent based.            │
     │   │                                                            │
     │   │ To proceed, restart with:                                  │
     │   │   /improve:agent [arguments]                               │

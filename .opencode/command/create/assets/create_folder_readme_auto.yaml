@@ -14,20 +14,20 @@ purpose: Create comprehensive README files and AI-first installation guides with
 action: Generate scannable, well-organized documentation (README or Install Guide) with table of contents
 
 # ─────────────────────────────────────────────────────────────────
-# PREREQUISITE: @write AGENT VERIFICATION
+# PREREQUISITE: @general AGENT VERIFICATION
 # ─────────────────────────────────────────────────────────────────
-# This workflow REQUIRES the @write agent for:
+# This workflow REQUIRES the @general agent for:
 #   • Template-first workflow (loads templates before creating)
 #   • DQI scoring (target: 70+ Acceptable)
 #   • sk-doc skill integration
 #
-# PHASE 0 in the command markdown verifies @write agent BEFORE
+# PHASE 0 in the command markdown verifies @general agent BEFORE
 # this YAML workflow loads. If you're executing this workflow,
-# @write verification has already passed.
+# @general verification has already passed.
 #
 # To invoke correctly:
-#   README:        @write /create:folder_readme [path]
-#   Install Guide: @write /create:folder_readme install [project-name]
+#   README:        @general /create:folder_readme [path]
+#   Install Guide: @general /create:folder_readme install [project-name]
 # ─────────────────────────────────────────────────────────────────
 
 # ─────────────────────────────────────────────────────────────────
@@ -147,7 +147,7 @@ request_analysis_framework:
 
 input_contract:
   required:
-  - write_agent_verified
+  - general_agent_verified
   - operation
   - execution_mode
   optional:
@@ -222,7 +222,7 @@ workflow_enforcement:
 gate_logic:
   hard:
     H0_write_verified:
-      description: "@write verification must have passed in Phase 0"
+      description: "@general verification must have passed in Phase 0"
       fail_action: "STOP and return to the command setup phase"
     H1_operation_resolution:
       description: "The workflow must resolve README vs Install Guide before generation"
@@ -618,7 +618,7 @@ readme_workflow:
       blocking: false
       not_for: "reviewing this workflow prompt or any pre-step activity"
     activities:
-    - "Run @write quality validation to score the created README file"
+    - "Run @general quality validation to score the created README file"
     - "Validation checks: structure completeness, content quality, DQI standards"
     - "Score against 100-point rubric (Accuracy 40%, Completeness 35%, Consistency 25%)"
     on_low_score:
@@ -1073,7 +1073,7 @@ install_guide_workflow:
       blocking: false
       not_for: "reviewing this workflow prompt or any pre-step activity"
     activities:
-    - "Run @write quality validation to score the created install guide"
+    - "Run @general quality validation to score the created install guide"
     - "Validation checks: section completeness, prerequisite accuracy, platform coverage"
     - "Score against 100-point rubric (Accuracy 40%, Completeness 35%, Consistency 25%)"
     on_low_score:

@@ -125,13 +125,11 @@
         "source": "derived"
       },
       {
-        "name": "@write",
         "kind": "agent",
         "path": ".opencode/agent/write.md",
         "source": "derived"
       },
       {
-        "name": "@write (claude runtime)",
         "kind": "agent",
         "path": ".claude/agents/write.md",
         "source": "derived"

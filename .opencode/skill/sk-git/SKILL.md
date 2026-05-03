@@ -35,7 +35,6 @@ Use this orchestrator when:
 
 ## 2. SMART ROUTING
 
-> Pattern: see [sk-doc smart-router resilience template](../sk-doc/assets/skill/skill_smart_router.md).
 
 ### Resource Loading Levels
 

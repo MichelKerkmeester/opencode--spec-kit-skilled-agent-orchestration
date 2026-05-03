@@ -212,27 +212,6 @@ gemini "As @multi-ai-council agent: Design the caching strategy for this API. Co
 
 ---
 
-### @write — Documentation Writer
-
-| Property | Value |
-|----------|-------|
-| **Role** | Non-spec documentation (READMEs, guides, install docs) |
-| **Model** | gemini-3.1-pro-preview |
-| **Tools** | read_file, write_file, replace, run_shell_command, grep_search, list_directory, google_web_search |
-| **Modifies files** | Yes (non-spec docs) |
-| **Max turns** | 15 |
-
-**Best for:** READMEs, guides, install documentation, project-level documentation.
-
-**Delegate when:** You need documentation generated from a different model's perspective, or want Gemini's web search capability to enrich documentation with external references.
-
-**Unique capability:** `google_web_search` for enriching docs with current external links.
-
-```bash
-gemini "As @write agent: Generate a comprehensive README.md for this project based on the codebase structure" -y -o text
-```
-
----
 
 ## 4. ROUTING TABLE
 
@@ -240,10 +219,8 @@ gemini "As @write agent: Generate a comprehensive README.md for this project bas
 |-----------|---------------|----------|-----------|
 | Codebase exploration | @context | (none) | Read-only, structured Context Packages |
 | Cross-AI code review | @review | @context | Second opinion on quality |
-| Web/API research | @deep-research | @write | Google Search grounding |
 | Architecture planning | @multi-ai-council | @deep-research | Multi-lens analysis |
 | Bug investigation | @debug | @context | Fresh perspective methodology |
-| Documentation generation | @write | (none) | Non-spec documentation and guides |
 | Spec folder docs | Main agent + `/spec_kit:plan --intake-only` | `/spec_kit:plan` | Distributed governance for packet docs |
 | Session continuity | `/memory:save` | `/spec_kit:resume` | Refresh continuity before pause |
 | Complex multi-agent task | @orchestrate | (decompose manually) | Gemini-internal coordination |
@@ -257,7 +234,7 @@ gemini "As @write agent: Generate a comprehensive README.md for this project bas
 | Double orchestration | The calling AI orchestrates, then delegates to @orchestrate, which orchestrates again | Delegate directly to leaf agents |
 | Blind forwarding | Passing user request verbatim to Gemini without decomposition | Decompose, add context, specify output format |
 | Ignoring output validation | Using Gemini output without checking quality | Always validate before integrating |
-| Wrong agent for task | Using @write for code review, @debug for exploration | Follow the routing table above |
+| Wrong agent for task | Using the wrong agent for the task | Follow the routing table above |
 | Stateful assumptions | Assuming Gemini remembers prior delegations | Each invocation is stateless; include all context |
 | Interactive mode delegation | Starting Gemini in REPL mode from the calling AI | Always use non-interactive mode with prompt as argument |
 

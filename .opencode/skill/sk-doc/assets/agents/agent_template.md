@@ -593,7 +593,6 @@ Fix verification gaps first
 | @general        | (built-in)         | Agent      | Implementation, complex tasks, full tool access                                                  |
 | @deep-research  | deep-research.md   | Subagent   | Iterative research loop, externalized state, convergence detection                               |
 | @review         | review.md          | Subagent   | Quality rubric, orchestrator integration                                                         |
-| @write          | write.md           | Subagent   | DQI scoring, template alignment                                                                  |
 | orchestrate     | orchestrate.md     | Primary    | Task decomposition, circuit breaker                                                              |
 
 ### Key Patterns by Agent Type

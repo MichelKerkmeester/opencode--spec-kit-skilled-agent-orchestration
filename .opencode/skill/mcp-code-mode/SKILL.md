@@ -55,7 +55,6 @@ Execute TypeScript code with direct access to 200+ MCP tools through progressive
 
 ## 2. SMART ROUTING
 
-> Pattern: see [sk-doc smart-router resilience template](../sk-doc/assets/skill/skill_smart_router.md).
 
 ### Resource Loading Levels
 

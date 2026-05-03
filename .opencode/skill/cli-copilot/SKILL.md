@@ -43,7 +43,6 @@ Orchestrate the GitHub Copilot CLI from external AI assistants (Gemini CLI, Code
 
 ## 2. SMART ROUTING
 
-> Pattern: see [sk-doc smart-router resilience template](../sk-doc/assets/skill/skill_smart_router.md).
 
 ### Prerequisite Detection
 

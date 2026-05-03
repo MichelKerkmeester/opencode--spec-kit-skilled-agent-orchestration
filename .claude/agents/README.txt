@@ -18,4 +18,3 @@ Agents:
   orchestrate    — Multi-agent coordination
   review         — Code review (read-only)
   multi-ai-council    — Multi-strategy planning
-  write          — Documentation generation

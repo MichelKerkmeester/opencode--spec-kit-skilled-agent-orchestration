@@ -27,9 +27,9 @@ Complete setup and configuration guide for OpenCode agents, covering both primar
 
 ### HARD BLOCK: Write Agent Required
 
-> **CRITICAL:** Agent creation REQUIRES the `@write` agent to be active.
+> **CRITICAL:** Agent creation REQUIRES the `@general` agent to be active.
 
-**Why @write is mandatory:**
+**Why @general is mandatory:**
 - Loads `agent_template.md` BEFORE creating (template-first workflow)
 - Validates frontmatter format (YAML syntax, required fields)
 - Ensures proper tool permissions and behavioral rules
@@ -41,9 +41,9 @@ Complete setup and configuration guide for OpenCode agents, covering both primar
 **Verification (MUST pass before proceeding):**
 - [ ] Write agent exists: `ls .opencode/agent/write.md`
 - [ ] Agent template exists: `ls .opencode/skill/sk-doc/assets/agents/agent_template.md`
-- [ ] Use `@write` prefix when invoking the prompt below
+- [ ] Use `@general` prefix when invoking the prompt below
 
-**DO NOT** create agents without the @write agent. Manual creation bypasses quality gates and frontmatter validation.
+**DO NOT** create agents without the @general agent. Manual creation bypasses quality gates and frontmatter validation.
 
 **Reference:** `.opencode/agent/write.md` - Documentation creation standards
 
@@ -52,13 +52,13 @@ Complete setup and configuration guide for OpenCode agents, covering both primar
 **Copy and paste this prompt for interactive agent creation:**
 
 ```text
-@write I want to create a new agent for OpenCode. Please guide me through the process interactively by asking me questions one at a time.
+@general I want to create a new agent for OpenCode. Please guide me through the process interactively by asking me questions one at a time.
 
 **PREREQUISITE CHECK (you MUST verify before proceeding):**
-- [ ] You are operating as the @write agent
+- [ ] You are operating as the @general agent
 - [ ] sk-doc skill is accessible
 
-If you are NOT the @write agent: STOP immediately and instruct the user to restart with the "@write" prefix. Do NOT proceed with agent creation.
+If you are NOT the @general agent: STOP immediately and instruct the user to restart with the "@general" prefix. Do NOT proceed with agent creation.
 
 **Questions to ask me (one at a time, wait for my answer):**
 
@@ -176,7 +176,7 @@ User Request
 |  CUSTOM AGENTS:                                               |
 |  +-> @context: Context retrieval, analysis, exploration       |
 |  +-> @orchestrate: Task decomposition and delegation          |
-|  +-> @write: Documentation with template enforcement          |
+|  +-> @general: Documentation with template enforcement          |
 |  +-> @deep-research: Autonomous iterative research loop       |
 |  +-> @review: Code quality and security assessment            |
 |  +-> @debug: Task-tool debug dispatch after repeated failures |
@@ -240,16 +240,16 @@ This section covers **Phase 2**: creating an agent file with valid YAML frontmat
 
 ### Step 1: Choose Your Creation Method
 
-**Option A: Interactive Prompt with @write Agent (Recommended)**
+**Option A: Interactive Prompt with @general Agent (Recommended)**
 
 Use the AI-First prompt from section 0. Invoke it via:
 
 ```bash
 # Inside an OpenCode session, type:
-@write /create:agent my-agent
+@general /create:agent my-agent
 ```
 
-The @write agent will:
+The @general agent will:
 1. Verify the template exists before creating
 2. Ask you about purpose, tools, rules, and name
 3. Generate the agent file with validated frontmatter
@@ -571,7 +571,7 @@ opencode
 # Invoke subagents via @ mention
 @context find all config files in this project
 @deep-research investigate how authentication is implemented
-@write create a README for the utils folder
+@general create a README for the utils folder
 @review check this function for security issues
 ```
 
@@ -594,7 +594,7 @@ When subagents create child sessions, navigate between them:
 | Explore        | Subagent | `@explore`     | Fast file and code pattern discovery        |
 | context        | Subagent | `@context`     | Memory-integrated context retrieval         |
 | orchestrate    | Primary  | `@orchestrate` | Complex multi-step task coordination        |
-| write          | All      | `@write`       | Documentation creation with DQI scoring     |
+| write          | All      | `@general`       | Documentation creation with DQI scoring     |
 | deep-research  | Subagent | `@deep-research` | Autonomous iterative research loop        |
 | review         | Subagent | `@review`      | Code quality and security assessment        |
 | debug          | Subagent | `@debug`       | Fresh-perspective debugging via Task tool   |
@@ -605,7 +605,7 @@ When subagents create child sessions, navigate between them:
 2. **For planning or analysis**: Press **Tab** to switch to **Plan** agent. Suggests changes without making them.
 3. **For codebase exploration**: Type `@context` for memory-integrated exploration with structured Context Package output. Preferred over raw `@explore`.
 4. **For research tasks**: Type `@general` for general research, or `@deep-research` for autonomous iterative investigation.
-5. **For documentation tasks**: Type `@write` to invoke the documentation agent with template enforcement.
+5. **For documentation tasks**: Type `@general` to invoke the documentation agent with template enforcement.
 6. **For complex multi-step tasks**: Type `@orchestrate` to decompose and delegate work.
 7. **For code reviews**: Type `@review` for quality scoring and security assessment.
 8. **For spec folder creation**: Use `/spec_kit:plan --intake-only` or `/spec_kit:plan` and let the main agent apply templates under distributed governance.
@@ -829,7 +829,7 @@ for database changes.
 ```markdown
 User: "Create a README for the utils folder"
 
--> Routes to @write agent
+-> Routes to @general agent
 -> Agent loads readme_template.md
 -> Agent creates README following template
 -> Agent validates template alignment
@@ -846,7 +846,7 @@ User: "@orchestrate analyze this codebase and create a refactoring plan"
 -> Decomposes into tasks:
    - Task 1: Analyze code structure (delegate to @general)
    - Task 2: Identify patterns (delegate to @general)
-   - Task 3: Create refactoring plan (delegate to @write)
+   - Task 3: Create refactoring plan (delegate to @general)
 -> Delegates tasks in parallel
 -> Evaluates sub-agent outputs
 -> Synthesizes into unified response
@@ -858,7 +858,7 @@ User: "@orchestrate analyze this codebase and create a refactoring plan"
 ```markdown
 User: "Create a new skill for API testing"
 
--> Routes to @write agent
+-> Routes to @general agent
 -> Agent invokes sk-doc skill
 -> Skill provides:
    - skill_md_template.md
@@ -879,7 +879,7 @@ User: "Create a new skill for API testing"
 | Need domain knowledge/workflows | No                | Yes                         |
 | Need templates and standards    | No                | Yes                         |
 | Need behavioral constraints     | Yes               | Yes                         |
-| Creating documentation          | Yes `@write`      | Yes `sk-doc`                |
+| Creating documentation          | Yes `@general`      | Yes `sk-doc`                |
 | Complex multi-step task         | Yes `@orchestrate`| No                          |
 | Code quality standards          | No                | Yes `sk-code`          |
 | Git workflows                   | No                | Yes `sk-git`                |

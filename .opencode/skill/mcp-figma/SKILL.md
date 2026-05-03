@@ -86,7 +86,6 @@ Programmatic access to Figma design files through 18 specialized tools covering 
 
 ## 2. SMART ROUTING
 
-> Pattern: see [sk-doc smart-router resilience template](../sk-doc/assets/skill/skill_smart_router.md).
 
 ### Resource Loading Levels
 

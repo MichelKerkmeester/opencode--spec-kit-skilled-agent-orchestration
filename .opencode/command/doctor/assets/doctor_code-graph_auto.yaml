@@ -34,8 +34,27 @@ field_handling:
   scope_policy:
     all: "stale + missed + bloat detection"
     stale: "only stale-file detection"
-    missed: "only files-on-disk-not-in-index detection"
+    missed: "only policy-included files-on-disk-not-in-index detection"
     bloat: "only bloat-dir detection"
+
+active_scope_policy:
+  source: "code_graph_status({}).activeScope"
+  fingerprint_handling:
+    v2: "Parse code-graph-scope:v2 fields for includeSkills/includeAgents/includeCommands/includeSpecs/includePlugins"
+    v1: "Treat legacy code-graph-scope:v1 as NEEDS_FULL_SCAN; do not fail the workflow, but mark missed-file results unavailable until a full scan refreshes scope metadata"
+    missing_or_unparseable: "Fallback to activeScope booleans if present; otherwise mark NEEDS_FULL_SCAN"
+  default_excluded_roots:
+    - root: ".opencode/skill/"
+      included_when: "activeScope.includedSkills == 'all' OR path is under one of activeScope.includedSkills list entries"
+    - root: ".opencode/agent/"
+      included_when: "activeScope.includeAgents == true"
+    - root: ".opencode/command/"
+      included_when: "activeScope.includeCommands == true"
+    - root: ".opencode/specs/"
+      included_when: "activeScope.includeSpecs == true"
+    - root: ".opencode/plugins/"
+      included_when: "activeScope.includePlugins == true"
+  invariant: "Missed, stale, and bloat analysis must use the active scope policy; the same filesystem with different activeScope values can produce different findings"
 
 # ─────────────────────────────────────────────────────────────────
 # MUTATION BOUNDARIES (PHASE A INVARIANT)
@@ -81,7 +100,8 @@ workflow:
   phase_0_discovery:
     purpose: Gather index status + filesystem snapshot + bloat-dir candidates
     activities:
-      - "Invoke code_graph_status({}) → capture indexed_count, last_scan_at, edge_count, freshness flags"
+      - "Invoke code_graph_status({}) → capture indexed_count, last_scan_at, edge_count, freshness flags, activeScope"
+      - "Resolve active scope policy from activeScope fingerprint; accept v2, treat v1/null parser result as NEEDS_FULL_SCAN instead of error"
       - "Filesystem walk: count source files by language using find/glob (ts, js, py, sh, json, md)"
       - "Detect bloat-dir candidates: scan top-level directories for matches against bloat_patterns"
       - "Build initial inventory: { indexed_count, file_count, lang_histogram, bloat_candidates }"
@@ -91,6 +111,7 @@ workflow:
       - last_scan_at: timestamp
       - lang_histogram: { ts: N, js: N, py: N, sh: N, json: N, md: N }
       - bloat_candidates: [{ path, tier, present_in_index }]
+      - active_scope_policy: "{status: active|needs_full_scan, included roots, excluded roots, granular included skills}"
     validation: discovery_complete
     fail_fast:
       - "code_graph_status fails → degrade to filesystem-only diagnosis with warning"
@@ -103,13 +124,15 @@ workflow:
     # affectedSymbols) — calling it with {} produces an empty/unhelpful result.
     # The fallback path that was already implemented below now becomes the
     # primary path. Stale comes from code_graph_status freshness + git status;
-    # missed comes from filesystem walk minus index; bloat is unchanged.
-    purpose: Compute stale + missed + bloat sets via code_graph_status + git status + filesystem walk
+    # missed comes from policy-included filesystem walk minus index; bloat is unchanged.
+    purpose: Compute stale + missed + bloat sets via code_graph_status + git status + policy-aware filesystem walk
     activities:
       - "Read freshness flags from Phase 0's code_graph_status({}) result (already invoked)"
       - "Derive stale set from `git status --porcelain` + index timestamps (files modified-on-disk-since-indexed_at)"
-      - "Compute missed set: files-on-disk minus files-in-index (filter by language scope)"
-      - "Compute bloat set: bloat_candidates intersected with files-in-index (i.e., currently indexed bloat)"
+      - "Before stale/missed/bloat set construction, filter filesystem paths through active_scope_policy so default-excluded roots are intentionally absent unless opted in"
+      - "Compute missed set: policy-included files-on-disk minus files-in-index (filter by language scope)"
+      - "Compute bloat set: policy-included bloat_candidates intersected with files-in-index (i.e., currently indexed bloat)"
+      - "For granular includeSkills lists, include only files under the named .opencode/skill/sk-* folders; exclude all other skill folders from missed-file diagnosis"
       - "If scope filter active: filter to scope's specific subset"
       - "Cross-reference: stale ∪ missed ∪ bloat may overlap (a stale file in node_modules is both bloat + stale)"
     outputs:
@@ -147,6 +170,7 @@ quality_gates:
     blocking: hard
     checks:
       - "stale_set + missed_set + bloat_set computed (or scope filter applied)"
+      - "active_scope_policy is active; if NEEDS_FULL_SCAN, report that policy-aware missed files require code_graph_scan({ incremental: false })"
       - "no errors in analysis_report"
     on_fail: "STOP - analysis incomplete"
   post_phase_2:

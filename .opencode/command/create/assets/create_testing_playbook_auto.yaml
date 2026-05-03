@@ -10,16 +10,16 @@ purpose: Create or update rooted manual testing playbook packages with the shipp
 action: Normalize inputs, load standards, generate the package, validate structure, and report completion
 
 # ─────────────────────────────────────────────────────────────────
-# PREREQUISITE: @write AGENT VERIFICATION
+# PREREQUISITE: @general AGENT VERIFICATION
 # ─────────────────────────────────────────────────────────────────
-# This workflow REQUIRES the @write agent for:
+# This workflow REQUIRES the @general agent for:
 #   - Template-first generation
 #   - sk-doc standards enforcement
 #   - Root document validation
 #
-# PHASE 0 in the command markdown verifies @write agent BEFORE
+# PHASE 0 in the command markdown verifies @general agent BEFORE
 # this YAML workflow loads. If you are executing this workflow,
-# @write verification has already passed.
+# @general verification has already passed.
 # ─────────────────────────────────────────────────────────────────
 
 operating_mode:
@@ -77,7 +77,7 @@ request_analysis_framework:
     - "Validate root structure, linked files, and count consistency"
   pre_change_validation:
     items:
-      - "write_agent_verified is true"
+      - "general_agent_verified is true"
       - "skill_name is present"
       - "operation is create or update"
       - "source_strategy is present"
@@ -89,7 +89,7 @@ request_analysis_framework:
 
 input_contract:
   required:
-    - write_agent_verified
+    - general_agent_verified
     - skill_name
     - operation
     - source_strategy
@@ -183,7 +183,7 @@ quality_standards:
 gate_logic:
   hard:
     H0_write_verified:
-      description: "write_agent_verified must be true"
+      description: "general_agent_verified must be true"
       fail_action: "STOP and return to setup"
     H1_required_fields:
       description: "All required setup fields must be present"

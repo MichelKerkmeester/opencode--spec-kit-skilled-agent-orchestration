@@ -96,7 +96,6 @@ flowchart TD
 | 2        | Evidence / iterative investigation                                        | `@deep-research`       | LEAF | `system-spec-kit`, `sk-deep-research`                                             | `"general"`   |
 | 3        | Multi-strategy planning and architecture synthesis                        | `@multi-ai-council`         | LEAF | Multi-lens planning rubric (planning-only)                                        | `"general"`   |
 | 4        | Code review / security                                                    | `@review`              | LEAF | `sk-code` baseline + one `sk-code-*` overlay (auto-detected)      | `"general"`   |
-| 5        | Documentation (non-spec)                                                  | `@write`               | LEAF | `sk-doc`                                                         | `"general"`   |
 | 6        | Implementation / testing                                                  | `@code`                | LEAF | `sk-code` (stack-agnostic; sk-code performs detection at dispatch time); orchestrator dispatches `@review` separately for formal review | `"general"`   |
 | 7        | Debugging when `failure_count >= 3` — workflow surfaces a prompted offer; user opts in via Task tool. Never auto-dispatched. | `@debug`               | LEAF | Code analysis tools                                                               | `"general"`   |
 
@@ -109,7 +108,7 @@ This Copilot profile enforces **single-hop delegation**. Nested sub-agent dispat
 | Tier             | Dispatch Authority               | Who                                                                                   |
 | ---------------- | -------------------------------- | ------------------------------------------------------------------------------------- |
 | **ORCHESTRATOR** | Can dispatch LEAF agents         | Top-level orchestrator only                                                           |
-| **LEAF**         | MUST NOT dispatch any sub-agents | @context, @code, @multi-ai-council, @write, @review, @debug, @deep-research, @deep-review |
+| **LEAF**         | MUST NOT dispatch any sub-agents | @context, @code, @multi-ai-council, @review, @debug, @deep-research, @deep-review |
 
 #### Absolute Depth Rules
 
@@ -169,7 +168,6 @@ When dispatching ANY non-orchestrator agent, append this to the Task prompt:
 | @deep-research | `.opencode/agent/deep-research.md` | LEAF agent; iterative autonomous research loop with externalized state          |
 | @multi-ai-council | `.opencode/agent/multi-ai-council.md` | Planning-only multi-strategy architect (max 3 strategies)                              |
 | @review   | `.opencode/agent/review.md`   | Codebase-agnostic quality scoring                                                      |
-| @write    | `.opencode/agent/write.md`    | DQI standards enforcement                                                              |
 | @debug    | `.opencode/agent/debug.md`    | Isolated by design (no conversation context)                                           |
 | @code     | `.opencode/agent/code.md`     | Application-code LEAF; sk-code stack delegation; D3 convention-floor caller-restriction (`Depth: 1` marker required); fail-closed verify |
 
@@ -189,7 +187,7 @@ TASK #N: [Descriptive Title]
 ├─ Objective: [WHY this task exists]
 ├─ Scope: [Explicit inclusions AND exclusions]
 ├─ Boundary: [What this agent MUST NOT do]
-├─ Agent: @code | @context | @deep-research | @multi-ai-council | @write | @review | @debug
+├─ Agent: @code | @context | @deep-research | @multi-ai-council | @review | @debug
 ├─ Subagent Type: "general" (ALL dispatches use "general" — exploration routes through @context)
 ├─ Agent Definition: [.opencode/agent/<name>.md — MUST be read and included in prompt | "built-in" for @general]
 ├─ Skills: [Specific skills the agent should use]
@@ -407,7 +405,7 @@ The orchestrator uses a two-phase approach with single-hop dispatch only:
 - Purpose: Build complete understanding before action
 
 **Phase 2: ACTION** — Orchestrator dispatches implementation agents
-- @general, @write, @review, @debug
+- @general, @review, @debug
 - Uses Context Package from Phase 1 as input
 - Purpose: Execute with full context
 
@@ -552,7 +550,6 @@ When combining outputs, produce a **UNIFIED RESPONSE** - not assembled fragments
 ```markdown
 The authentication system uses `src/auth/login.js` [found by @context].
 I've enhanced the validation [implemented by @general] to include RFC 5322 compliance.
-The documentation has been updated with DQI score 95/100 [by @write].
 ```
 
 ### Output Discipline
@@ -747,7 +744,7 @@ The orchestrator's own behavior can cause context overload. Follow these rules:
 - Nested chains are illegal in this profile. Every dispatch must include `Depth: N` and respect single-hop NDP rules: only depth-0 orchestrator dispatches; depth-1 agents MUST NOT dispatch. If a task cannot be completed at depth 1, return partial results and escalate to the parent. See §2.
 
 ❌ **Never let LEAF agents dispatch sub-agents**
-- LEAF agents (@context, @general, @multi-ai-council, @write, @review, @debug, @deep-research, @deep-review) execute work directly. If a LEAF agent spawns a sub-agent, it violates NDP. When dispatching LEAF agents, ALWAYS include the LEAF Enforcement Instruction (§2).
+- LEAF agents (@context, @general, @multi-ai-council, @review, @debug, @deep-research, @deep-review) execute work directly. If a LEAF agent spawns a sub-agent, it violates NDP. When dispatching LEAF agents, ALWAYS include the LEAF Enforcement Instruction (§2).
 
 ❌ **Never read 3+ large files back-to-back in main context**
 - Loading multiple large files floods the orchestrator's context window. Delegate bulk file reads to `@context` and receive summarized Context Packages. See §8 Self-Protection Rules.
@@ -772,7 +769,7 @@ The orchestrator's own behavior can cause context overload. Follow these rules:
 | `sk-git`             | Version Control | See skill for details                                            | -                          |
 | `sk-doc`   | Markdown        | Doc quality, DQI scoring, skill creation, flowcharts             | `/create:*`                |
 | `mcp-chrome-devtools` | Browser         | DevTools automation, screenshots, console, CDP                   | `bdg` CLI                  |
-| `mcp-code-mode`             | External Tools  | Webflow, Figma, ClickUp, Chrome DevTools via MCP                 | `call_tool_chain()`        |
+| `mcp-code-mode`             | External Tools  | Figma, ClickUp, Chrome DevTools via MCP                 | `call_tool_chain()`        |
 
 ### Related Resources
 

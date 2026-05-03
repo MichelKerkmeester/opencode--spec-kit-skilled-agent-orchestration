@@ -54,7 +54,6 @@ Natural language code search through two complementary approaches: CLI (ccc) for
 
 ## 2. SMART ROUTING
 
-> Pattern: see [sk-doc smart-router resilience template](../sk-doc/assets/skill/skill_smart_router.md).
 
 ### Resource Loading Levels
 

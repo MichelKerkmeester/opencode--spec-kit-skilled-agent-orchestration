@@ -43,7 +43,6 @@ Browser debugging and automation through two complementary approaches: CLI (bdg)
 
 ## 2. SMART ROUTING
 
-> Pattern: see [sk-doc smart-router resilience template](../sk-doc/assets/skill/skill_smart_router.md).
 
 ### Resource Loading Levels
 

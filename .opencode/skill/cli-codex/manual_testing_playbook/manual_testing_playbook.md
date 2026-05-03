@@ -506,25 +506,6 @@ Desired user-visible outcome: A citation-backed comparison brief the operator ca
 
 > **Feature File:** [CX-026](04--agent-routing/005-research-profile.md)
 
-### CX-027 | @write profile (documentation-only edits)
-
-#### Description
-
-Verify `codex exec -p write` writes a README to a requested temp path with at least 3 H2 headers and a non-empty body, and no files are touched outside the temp directory.
-
-#### Scenario Contract
-
-Prompt: `As a cross-AI orchestrator delegating documentation generation, dispatch codex exec -p write --model gpt-5.5 -c model_reasoning_effort="medium" -c service_tier="fast" --sandbox workspace-write "Generate /tmp/cli-codex-playbook-cx027/README.md for a fictional Demo Skill. Include OVERVIEW, USAGE, and TROUBLESHOOTING H2 sections plus a one-paragraph description. Do not modify any files outside /tmp/cli-codex-playbook-cx027/." Verify the dispatch routes via -p write, the README is written at the requested path, the file contains at least 3 H2 headers, the body is non-empty, and no files outside the temp directory are touched. Return a verdict naming the file path, the H2 header count, and confirming the sandbox boundary.`
-
-Expected signals: `codex exec -p write` exits 0. README file exists at `/tmp/cli-codex-playbook-cx027/README.md`. README contains at least 3 H2 headers. Body line count > 5. `git status --porcelain` reports no working-tree changes. Dispatch line includes `-p write`.
-
-Desired user-visible outcome: A working README file the operator can review and commit, with provable evidence the sandbox boundary held.
-
-#### Test Execution
-
-> **Feature File:** [CX-027](04--agent-routing/006-write-profile.md)
-
----
 
 ## 11. SESSION CONTINUITY (`CX-016..CX-017`)
 
@@ -798,7 +779,6 @@ There is no automated coverage for default-invocation, sandbox-mode, reasoning-e
 - CX-014: [@debug profile (workspace-write fix)](04--agent-routing/003-debug-profile.md)
 - CX-015: [@multi-ai-council profile (multi-strategy planning)](04--agent-routing/004-multi-ai-council-profile.md)
 - CX-026: [@research profile (web-grounded investigation)](04--agent-routing/005-research-profile.md)
-- CX-027: [@write profile (documentation-only edits)](04--agent-routing/006-write-profile.md)
 
 ### SESSION CONTINUITY
 

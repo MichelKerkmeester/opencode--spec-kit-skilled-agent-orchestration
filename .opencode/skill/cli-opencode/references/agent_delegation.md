@@ -169,20 +169,6 @@ The repo ships these agents under `.opencode/agent/`. The cli-opencode skill can
 
 ---
 
-### @write — Documentation Writer
-
-| Property | Value |
-|----------|-------|
-| **Role** | Documentation generation (READMEs, skills, guides) |
-| **Sandbox** | Workspace-write |
-| **Modifies files** | Yes (documentation files only) |
-| **LEAF constraint** | No |
-
-**Best for:** READMEs, skill SKILL.md files, install guides, project-level documentation.
-
-**Delegate when:** The calling AI needs documentation generated with sk-doc template enforcement and DQI scoring.
-
----
 
 ### @multi-ai-council — Multi-Strategy Planning Architect
 
@@ -266,7 +252,7 @@ opencode run \
   --variant high \
   --format json \
   --dir /repo \
-  "Coordinate a code review and a doc update for the approved spec folder. Dispatch @review for the code, @write for the docs. Aggregate findings."
+  "Coordinate a code review for the approved spec folder. Dispatch @review for the code. Aggregate findings."
 ```
 
 ### Avoiding double orchestration
@@ -315,25 +301,6 @@ opencode run \
 
 ---
 
-### Example 2: Doc generation via `@write`
-
-The calling AI wants a fresh README for a new skill.
-
-```bash
-opencode run \
-  --model opencode-go/deepseek-v4-pro \
-  --agent write \
-  --variant high \
-  --format json \
-  --dir /Users/me/repo \
-  "As @write: generate README.md for .opencode/skill/cli-opencode/. Load the sk-doc readme_template.md, fill it with the three orthogonal use cases, run the DQI score, surface any HIGH issues for manual patching."
-```
-
-**Expected handback:** JSON event stream with `tool.call` events for template load + write operations, plus a final summary listing the DQI score and any HIGH issues.
-
-**Calling AI follow-up:** Read the generated README. If DQI flagged HIGH issues, dispatch a follow-up `@write` invocation with the patch list.
-
----
 
 ### Example 3: Root cause debugging via `@debug`
 
@@ -401,7 +368,7 @@ jq -r 'select(.type == "session.completed") | .payload.summary' /tmp/review-even
 When a dispatch produces low-quality output, the calling AI has three escalation paths:
 
 1. **Refine the prompt** — add file anchors, success criteria, or "do not change" guardrails. Re-dispatch with the same agent.
-2. **Re-route to a different agent** — if `@write` produced thin docs, escalate to `@write` with `--variant max`, or hand off to `@orchestrate` for multi-pass refinement.
+2. **Re-route to a different agent** — if `@orchestrate` produced thin docs, escalate with `--variant max` for multi-pass refinement.
 3. **Decompose the task** — break the dispatch into smaller sub-tasks with explicit handoffs between agents. Each sub-task gets its own validation step.
 
 The conductor (calling AI) decides which path. The agent has no visibility into the parent task graph.

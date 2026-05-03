@@ -90,7 +90,7 @@ phases:
     name: "Discovery"
     intent: "Probe code-graph status + load resilience assets + identify candidate excludes"
     actions:
-      - "Same as autonomous Phase 1: code_graph_status + detect_changes + load resilience assets"
+      - "Same as autonomous Phase 1: code_graph_status activeScope + detect_changes + load resilience assets"
       - "Identify candidates per user tier_floor selection (or ask if not provided)"
     user_gate:
       - "Optional: if tier_floor was not provided, present tier choice and wait for user input"
@@ -100,6 +100,8 @@ phases:
     intent: "Cross-check candidates against staleness model + project safety rules"
     actions:
       - "Same as autonomous Phase 2: glob match counts + safety verdicts"
+      - "Reject redundant candidates that match 011's 5 default-excluded roots: .opencode/skill/**, .opencode/agent/**, .opencode/command/**, .opencode/specs/**, .opencode/plugins/**"
+      - "Do not present those 5 default-excluded roots for user approval; they are already excluded by the active scope policy unless explicitly opted in"
       - "Build apply_plan[] with per-candidate {pattern, tier, file_match_count, safety_verdict, rationale}"
 
   phase_2_5_proposal_gate:

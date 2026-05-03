@@ -44,7 +44,6 @@ Orchestrate OpenCode's `opencode run` from external AI assistants (Claude Code, 
 
 ## 2. SMART ROUTING
 
-> Pattern: see [sk-doc smart-router resilience template](../sk-doc/assets/skill/skill_smart_router.md).
 
 ### Prerequisite Detection
 
@@ -505,7 +504,6 @@ Key integrations:
 | **cli-copilot** | Sibling — dispatch Copilot for cloud-agent style execution |
 | **cli-gemini** | Sibling — dispatch Gemini for Google Search grounding |
 | **system-spec-kit** | Cross-AI handback target — dispatched sessions load this skill for spec-folder workflows |
-| **sk-doc** | Doc generation in dispatched `@write` agent runs |
 | **sk-code** + `sk-code-*` overlay | Baseline+overlay code-quality contract for dispatched code review/generation; dispatched session selects overlay from stack signals (see Section 4 ALWAYS rule 12) |
 | **sk-deep-research** | LEAF agent dispatched as `--agent deep-research` for parallel research iterations |
 | **sk-deep-review** | LEAF agent dispatched as `--agent deep-review` for parallel review iterations |

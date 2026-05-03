@@ -545,7 +545,7 @@ Use the feature-catalog reference when the task is to inventory current behavior
 
 ##### ❌ NEVER
 
-1. **NEVER create agents without @write agent** (bypasses quality gates)
+1. **NEVER create agents without sk-doc** (bypasses quality gates)
 2. **NEVER skip frontmatter validation** (causes discovery failures)
 3. **NEVER use vague tool permissions** (be explicit: true or false)
 4. **NEVER omit anti-patterns** (agents need clear boundaries)

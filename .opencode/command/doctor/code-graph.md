@@ -85,7 +85,7 @@ EXECUTE THIS SINGLE CONSOLIDATED PROMPT:
    Q1. Scope (always ask if not flagged):
      A) all (default) - stale + missed + bloat detection
      B) stale - only files modified after last scan
-     C) missed - only files on disk not in index
+     C) missed - only policy-included files on disk not in index
      D) bloat - only bloat-dir detection
 
    Reply format: "A, A" or "B, all"
@@ -129,6 +129,14 @@ operating_mode:
 ## 1. PURPOSE
 
 Deliver a guided diagnostic over the code-graph index without requiring users to know the internal scanner architecture. Diagnostic mode produces a markdown report with stale/missed/bloat findings and proposed exclude-rule recommendations. Apply mode is manual or explicitly command-invoked: it writes `.opencode/code-graph.config.json`, runs `code_graph_scan`, and verifies against the resilience research assets.
+
+### 011 Scope Awareness
+
+Doctor reads `code_graph_status({}).activeScope` before missed-file analysis. The 011 broader default excludes skip 5 default-excluded `.opencode` folders unless the active scope opts them in: `.opencode/skill/**`, `.opencode/agent/**`, `.opencode/command/**`, `.opencode/specs/**`, and `.opencode/plugins/**`.
+
+When `includeSkills` is a string list, the missed-files check applies only to files under the listed `sk-*` skill folders. Other skill folders stay intentionally excluded and must not be reported as missed. `includeAgents`, `includeCommands`, `includeSpecs`, and `includePlugins` similarly control whether the corresponding folders participate in stale, missed, and bloat diagnosis.
+
+Doctor accepts both scope fingerprints: v2 is parsed for `includeSkills`, `includeAgents`, `includeCommands`, `includeSpecs`, and `includePlugins`; v1 is treated as a legacy scope that needs a full scan before policy-aware missed-file results are trusted.
 
 ---
 

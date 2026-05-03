@@ -92,10 +92,10 @@ phases:
     name: "Discovery"
     intent: "Probe code-graph status + load resilience assets + identify candidate excludes"
     actions:
-      - "Call code_graph_status({}) and capture indexed_count + lang_histogram + lastScanAt + freshness"
+      - "Call code_graph_status({}) and capture indexed_count + lang_histogram + lastScanAt + freshness + activeScope"
       - "Call detect_changes({}) and capture stale_files[] + missed_files[]"
       - "Read upstream_assets.files.exclude_rule_confidence + staleness_model + gold_queries"
-      - "Compute current excludes from index-scope.ts EXCLUDED_FOR_CODE_GRAPH (read-only inspection)"
+      - "Compute current excludes from activeScope plus index-scope-policy default excludes (read-only inspection)"
       - "Identify HIGH-tier patterns NOT yet excluded → these are apply candidates"
     outputs:
       - "discovery_state object: {indexed_count, file_count, lang_histogram, last_scan_at, freshness}"
@@ -110,11 +110,14 @@ phases:
     actions:
       - "For each candidate: verify pattern is segment-pattern style (^|/) X (/|$)"
       - "For each candidate: glob for matches in this repo and count files; reject if >0 files match a CRITICAL path (system-spec-kit, opencode/skill)"
+      - "Reject redundant candidates that match 011's 5 default-excluded roots: .opencode/skill/**, .opencode/agent/**, .opencode/command/**, .opencode/specs/**, .opencode/plugins/**"
+      - "Do not recommend re-adding those 5 default-excluded roots to .opencode/code-graph.config.json; they are already excluded by the active scope policy unless explicitly opted in"
       - "Build apply_plan[] = candidates that pass cross-check, with file_match_count + safety_verdict"
     outputs:
       - "apply_plan[] of {pattern, tier, rationale, file_match_count, safety_verdict: 'safe'|'reject'}"
     self_validation:
       - "Reject any candidate whose file_match_count includes paths starting with .opencode/skill/system-spec-kit/"
+      - "Reject any candidate whose pattern duplicates .opencode/skill/**, .opencode/agent/**, .opencode/command/**, .opencode/specs/**, or .opencode/plugins/**"
       - "If apply_plan filters down to empty: exit clean with STATUS=OK_NOOP_REJECTED"
 
   phase_3_apply:

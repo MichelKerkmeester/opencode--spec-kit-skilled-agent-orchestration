@@ -9,7 +9,7 @@ allowed-tools: Read, Write, Edit, Bash, Glob, Grep, TodoWrite, mcp__cocoindex_co
 > This command runs a structured YAML workflow. Do NOT dispatch agents from this document.
 >
 > **YOUR FIRST ACTION:**
-> 1. Run Phase 0: @write agent self-verification (below)
+> 1. Run Phase 0: @general agent self-verification (below)
 > 2. Run Setup Phase: consolidated prompt to gather inputs
 > 3. Determine execution mode from user input (`:auto` or `:confirm`)
 > 4. Load the corresponding YAML file from `assets/`:
@@ -17,7 +17,7 @@ allowed-tools: Read, Write, Edit, Bash, Glob, Grep, TodoWrite, mcp__cocoindex_co
 >    - Confirm mode → `create_agent_confirm.yaml`
 > 5. Execute the YAML workflow step by step
 >
-> The @write references below are self-verification checks — not dispatch instructions.
+> The @general references below are self-verification checks — not dispatch instructions.
 > All content after the Setup Phase is reference context for the YAML workflow.
 
 ---
@@ -29,16 +29,16 @@ allowed-tools: Read, Write, Edit, Bash, Glob, Grep, TodoWrite, mcp__cocoindex_co
 ```
 EXECUTE THIS AUTOMATIC SELF-CHECK (NOT A USER QUESTION):
 
-SELF-CHECK: Are you operating as the @write agent?
+SELF-CHECK: Are you operating as the @general agent?
 │
-├─ INDICATORS that you ARE @write agent:
-│   ├─ You were invoked with "@write" prefix
+├─ INDICATORS that you ARE @general agent:
+│   ├─ You were invoked with "@general" prefix
 │   ├─ You have template-first workflow capabilities
 │   ├─ You load templates BEFORE creating content
 │   ├─ You validate template alignment AFTER creating
 │
 ├─ IF YES (all indicators present):
-│   └─ write_agent_verified = TRUE → Continue to Setup Phase
+│   └─ general_agent_verified = TRUE → Continue to Setup Phase
 │
 └─ IF NO or UNCERTAIN:
     │
@@ -48,13 +48,13 @@ SELF-CHECK: Are you operating as the @write agent?
     │   ┌────────────────────────────────────────────────────────────┐
     │   │ ⛔ WRITE AGENT REQUIRED                                    │
     │   │                                                            │
-    │   │ This command requires the @write agent for:                │
+    │   │ This command requires the @general agent for:                │
     │   │   • Template-first workflow (loads before creating)          │
     │   │   • Frontmatter validation                                 │
     │   │   • sk-doc skill integration                               │
     │   │                                                            │
     │   │ To proceed, restart with:                                  │
-    │   │   @write /create:agent [agent-name]                        │
+    │   │   @general /create:agent [agent-name]                        │
     │   │                                                            │
     │   │ Reference: [runtime_agent_path]/write.md                   │
     │   └────────────────────────────────────────────────────────────┘
@@ -63,7 +63,7 @@ SELF-CHECK: Are you operating as the @write agent?
 ```
 
 **Phase Output:**
-- `write_agent_verified = ________________`
+- `general_agent_verified = ________________`
 
 ---
 
@@ -159,7 +159,7 @@ EXECUTE THIS SINGLE CONSOLIDATED PROMPT:
 ```
 
 **Phase Output:**
-- `write_agent_verified = ________________`
+- `general_agent_verified = ________________`
 - `agent_name = ________________`
 - `agent_path = ________________`
 - `spec_choice = ___` | `spec_path = ________________`
@@ -174,7 +174,7 @@ EXECUTE THIS SINGLE CONSOLIDATED PROMPT:
 
 | FIELD                | REQUIRED      | YOUR VALUE | SOURCE                 |
 | -------------------- | ------------- | ---------- | ---------------------- |
-| write_agent_verified | ✅ Yes         | ______     | Automatic check        |
+| general_agent_verified | ✅ Yes         | ______     | Automatic check        |
 | agent_name           | ✅ Yes         | ______     | Q0 or $ARGUMENTS       |
 | agent_path           | ✅ Yes         | ______     | --path flag or default |
 | spec_choice          | ✅ Yes         | ______     | Q1                     |
@@ -465,7 +465,7 @@ permission:
 **YOU ARE IN VIOLATION IF YOU:**
 
 **Phase Violations:**
-- Executed command without @write agent verification (Phase 0)
+- Executed command without @general agent verification (Phase 0)
 - Started reading the workflow section before all fields are set
 - Asked questions in MULTIPLE separate prompts instead of ONE consolidated prompt
 - Proceeded without asking user for agent name when not in $ARGUMENTS

@@ -57,7 +57,6 @@ Use these IDs when a recommendation depends on an integration point.
 | ID | Surface | Contract |
 | --- | --- | --- |
 | `INT-CALLER-GENERAL` | `@general` | Primary caller/orchestrator may dispatch this specialist and then dispatch the returned prompt elsewhere; this agent does not call back or delegate |
-| `INT-CALLER-WRITE` | `@write` | Documentation-focused caller may request prompt packaging context; this agent still returns only the structured prompt package |
 | `INT-CMD-IMPROVE-PROMPT` | `/improve:prompt` via `.opencode/command/improve/prompt.md` | Command surface routes prompt-improvement work to inline or agent flow; returned output must remain the exact structured package |
 | `INT-SKILL-IMPROVE-PROMPT` | `.opencode/skill/sk-improve-prompt/SKILL.md` | Canonical source for seven frameworks, DEPTH, and CLEAR; read before composing |
 | `INT-SKILL-SK-DOC` | `sk-doc` | Documentation-shape guidance may inform prompt constraints when the caller asks for documentation packaging or template alignment |
@@ -74,7 +73,6 @@ Use these IDs when a recommendation depends on an integration point.
 | Agent | Integration ID | Purpose |
 | ----- | -------------- | ------- |
 | `@general` | `INT-CALLER-GENERAL` | Primary caller/orchestrator that may dispatch this specialist for a prompt package |
-| `@write` | `INT-CALLER-WRITE` | Documentation-focused caller for doc-oriented prompt packaging |
 
 ### Commands
 
@@ -227,7 +225,7 @@ task_type: <generation|review|research|edit|analyze>   # optional
 target_cli: <claude-code|codex|copilot|gemini>         # optional
 complexity_hint: <1-10>                                # optional
 constraints: <policy, output, or audience constraints> # optional
-caller_agent: <@general|@write|other caller>           # optional
+caller_agent: <@general|other caller>           # optional
 command_surface: </improve:prompt|other command>       # optional
 skill_context: <skills to preserve or cite>            # optional
 mcp_tools: <caller-supplied MCP tool names>            # optional
@@ -361,7 +359,6 @@ Fix verification gaps first
 | Agent | Integration ID | Purpose |
 | ----- | -------------- | ------- |
 | `@general` | `INT-CALLER-GENERAL` | Primary caller/orchestrator that may dispatch this specialist |
-| `@write` | `INT-CALLER-WRITE` | Documentation-focused agent for doc-only workflows when prompt output needs packaging elsewhere |
 
 ### External Tool Constraints
 
@@ -390,7 +387,7 @@ Fix verification gaps first
 │  └─► 3. Validate boundaries, integrations, edge cases, and CLEAR        │
 │                                                                         │
 │  INTEGRATIONS                                                           │
-│  ├─► Callers: @general, @write                                          │
+│  ├─► Callers: @general                                          │
 │  ├─► Command: /improve:prompt                                           │
 │  ├─► Skills: sk-improve-prompt, sk-doc                                  │
 │  └─► Tool constraints: target_cli and caller-supplied mcp_tools         │

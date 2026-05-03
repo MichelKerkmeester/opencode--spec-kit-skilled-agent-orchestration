@@ -10,7 +10,7 @@ allowed-tools: Read, Write, Edit, Bash, Glob, Grep, TodoWrite, mcp__cocoindex_co
 > Do not split behavior across legacy or ad-hoc catalog commands.
 >
 > Mandatory execution order:
-> 1. Run Phase 0 verification (`@write`)
+> 1. Run Phase 0 verification (`@general`)
 > 2. Run unified setup (single consolidated prompt)
 > 3. Verify required phase outputs are present
 > 4. Route by mode (`:auto` or `:confirm`)
@@ -33,25 +33,25 @@ Do not infer missing command arguments from prior conversation context.
 ```text
 EXECUTE THIS AUTOMATIC SELF-CHECK (NOT A USER QUESTION):
 
-SELF-CHECK: Are you operating as @write?
+SELF-CHECK: Are you operating as @general?
 |
-|- Verify @write indicators:
-|  - Invoked with @write
+|- Verify @general indicators:
+|  - Invoked with @general
 |  - Template-first generation behavior available
 |  - sk-doc quality validation behavior available
 |- IF yes:
-|  - write_agent_verified = true
+|  - general_agent_verified = true
 |  - phase_0_status = PASSED
 |- IF no/uncertain:
 |  - HARD BLOCK and stop
 
 HARD BLOCK MESSAGE:
-"This command requires @write for template-first generation and sk-doc validation.
-Restart with: @write /create:feature-catalog <skill-name> [create|update]"
+"This command requires @general for template-first generation and sk-doc validation.
+Restart with: /create:feature-catalog <skill-name> [create|update]"
 ```
 
 Phase outputs:
-- `write_agent_verified`
+- `general_agent_verified`
 
 ---
 
@@ -155,7 +155,7 @@ Verify all required values are set before YAML execution:
 
 | Field | Required | Rule |
 | --- | --- | --- |
-| write_agent_verified | Yes | `true` |
+| general_agent_verified | Yes | `true` |
 | skill_name | Yes | explicit, hyphen-case |
 | operation | Yes | `create` or `update` |
 | source_strategy | Yes | one of A/B/C normalized choices |
@@ -205,7 +205,7 @@ Accepted mode suffix values:
 
 | Step | Name | Purpose | Output |
 | --- | --- | --- | --- |
-| 1 | Phase 0 Verification | Ensure `@write` is active | `write_agent_verified` |
+| 1 | Phase 0 Verification | Ensure `@general` is active | `general_agent_verified` |
 | 2 | Unified Setup | Capture all required parameters once | normalized setup fields |
 | 3 | Phase Validation | Enforce required-field contract | phase pass/fail |
 | 4 | Mode Routing | Route to auto or confirm YAML | target YAML path |
@@ -215,7 +215,7 @@ Accepted mode suffix values:
 ## 5. INSTRUCTIONS
 
 ### Step 1: Run Phase 0
-- Execute `@write` verification.
+- Execute `@general` verification.
 - Hard block on failure.
 
 ### Step 2: Run Unified Setup
@@ -327,7 +327,7 @@ The workflow is incomplete if it uses only the root template and ignores the per
 ## 11. VALIDATION AND QUALITY GATES
 
 Hard gates:
-- H0: `@write` verification
+- H0: `@general` verification
 - H1: required setup fields captured
 - H2: create/update existence semantics
 - H3: root catalog and per-feature structure match the shipped contract

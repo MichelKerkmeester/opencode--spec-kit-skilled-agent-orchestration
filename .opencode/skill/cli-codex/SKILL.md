@@ -45,7 +45,6 @@ Orchestrate OpenAI's Codex CLI for tasks that benefit from a second AI perspecti
 
 ## 2. SMART ROUTING
 
-> Pattern: see [sk-doc smart-router resilience template](../sk-doc/assets/skill/skill_smart_router.md).
 
 ### Prerequisite Detection
 

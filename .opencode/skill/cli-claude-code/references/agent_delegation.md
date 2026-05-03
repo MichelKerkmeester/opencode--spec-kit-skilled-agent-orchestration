@@ -241,29 +241,6 @@ claude -p "Plan the database migration from MongoDB to PostgreSQL. Evaluate stra
 
 ---
 
-### @write — Documentation Writer
-
-**Purpose:** Generate technical documentation, READMEs, guides, API documentation.
-
-**Best for:** Creating or updating documentation that follows project conventions.
-
-```bash
-# Generate README
-claude -p "Generate a comprehensive README.md for this project based on the codebase" \
-  --agent write --output-format text 2>&1
-
-# API documentation
-claude -p "Generate API documentation for all endpoints in @src/api/" \
-  --agent write --output-format text 2>&1
-
-# Technical guide
-claude -p "Write a developer onboarding guide for this project" \
-  --agent write --output-format text 2>&1
-```
-
----
-
-## 5. ROUTING DECISION GUIDE
 
 ### Quick Selection
 
@@ -275,7 +252,6 @@ FIX A BUG            → @debug
 REVIEW CODE          → @review (with --permission-mode plan)
 PLAN ARCHITECTURE    → @multi-ai-council (with --model claude-opus-4-6)
 RESEARCH A TOPIC     → @deep-research
-GENERATE DOCS        → @write
 COORDINATE AGENTS    → @orchestrate (with --permission-mode plan)
 SPEC PACKET WORK     → Main agent + `/spec_kit:plan --intake-only` or `/spec_kit:plan`
 SAVE CONTINUITY      → `/memory:save`

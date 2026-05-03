@@ -25,7 +25,7 @@ Agent creation is for cases where the system needs a named AI persona with expli
 - agents live under the active runtime agent directory, not under `sk-doc`
 - the frontmatter contract uses the unified `permission:` object
 - the deprecated standalone `tools:` object is no longer the canonical contract
-- `@write /create:agent` is the preferred creation workflow for new agents
+- `/create:agent` is the preferred creation workflow for new agents
 
 ## 2. WHEN TO CREATE AN AGENT
 
@@ -182,7 +182,7 @@ Recommended workflow:
 8. Validate the markdown and sanity-check runtime-path placement.
 
 **Preferred entry point**:
-- run `@write /create:agent ...` so the workflow can use the existing creation command and YAML execution guides
+- run `/create:agent ...` so the workflow can use the existing creation command and YAML execution guides
 
 **Authoring order matters**:
 - decide authority before drafting prose

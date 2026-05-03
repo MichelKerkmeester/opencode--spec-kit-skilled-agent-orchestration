@@ -61,7 +61,6 @@ Multi-language code standards for OpenCode system code across JavaScript, TypeSc
 
 ## 2. SMART ROUTING
 
-> Pattern: see [sk-doc smart-router resilience template](../sk-doc/assets/skill/skill_smart_router.md).
 
 ### Resource Domains
 

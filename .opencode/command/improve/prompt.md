@@ -29,7 +29,7 @@ EXECUTE THIS AUTOMATIC SELF-CHECK (NOT A USER QUESTION):
 SELF-CHECK: Are you operating as the @general agent?
 │
 ├─ INDICATORS that you ARE @general agent:
-│   ├─ You were invoked without @write-only constraints
+│   ├─ You were invoked without @general-only constraints
 │   ├─ You can orchestrate Read/Write/Edit/Bash workflow execution
 │   ├─ You can load skill references and execute defined logic
 │
