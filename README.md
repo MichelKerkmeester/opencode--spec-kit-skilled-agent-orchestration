@@ -516,6 +516,39 @@ The framework uses two different code-understanding systems on purpose. **CocoIn
 
 The intended routing order is graph-first: the code graph resolves structural queries first, CocoIndex finds semantic candidates when structural resolution misses, and Memory supports session decisions and active-task context after the packet-local recovery sources have been checked. A 3-tier FTS fallback escalates automatically when results are weak.
 
+&nbsp;
+#### Default Scope (End-User Code Only)
+
+By default, code-graph scans your repo code only. Five `.opencode/` folders are excluded so end-user search results stay signal-rich:
+
+- `.opencode/skill/**`
+- `.opencode/agent/**`
+- `.opencode/command/**`
+- `.opencode/specs/**`
+- `.opencode/plugins/**`
+
+Maintainers can opt folders back in process-wide with env vars:
+
+```bash
+SPECKIT_CODE_GRAPH_INDEX_SKILLS=true       # all skills
+SPECKIT_CODE_GRAPH_INDEX_SKILLS=sk-x,sk-y  # only listed skills (csv)
+SPECKIT_CODE_GRAPH_INDEX_AGENTS=true
+SPECKIT_CODE_GRAPH_INDEX_COMMANDS=true
+SPECKIT_CODE_GRAPH_INDEX_SPECS=true
+SPECKIT_CODE_GRAPH_INDEX_PLUGINS=true
+```
+
+Per-call args override env vars when provided. Env vars apply only for fields omitted from the scan call:
+
+```ts
+code_graph_scan({
+  includeSkills: ['sk-code-review', 'sk-doc'], // granular: only these skills
+  includeAgents: true,                         // all .opencode/agent/**
+})
+```
+
+Existing v1 scans trigger a blocked read with `requiredAction:"code_graph_scan"` until you re-run the scan. See [code_graph/README.md §8 SCAN SCOPE](.opencode/skill/system-spec-kit/mcp_server/code_graph/README.md#8-scan-scope) for the full scan-scope rules and precedence details.
+
 Our CocoIndex is forked. The Python wrapper that powers semantic search is a soft-fork at version `0.2.3+spec-kit-fork.0.2.0`, vendored alongside the skill so it ships with this repo; the Rust engine underneath stays on PyPI. The fork adds four things the upstream wrapper doesn't: duplicate suppression so mirror copies of the same file don't crowd results, canonical path identity per chunk (so dedup works across symlinks), a path-class taxonomy that nudges "find me the implementation of X" toward implementation files first, and ranking telemetry that surfaces *why* each result ranked where it did. Responses from the MCP tool or `ccc search` CLI carry seven fork-specific fields — `source_realpath`, `content_hash`, `path_class`, `dedupedAliases`, `uniqueResultCount`, `raw_score`, `rankingSignals` — that vanilla cocoindex output does not include. Schema, attribution, and per-release patch list all live under [`.opencode/skill/mcp-coco-index/`](.opencode/skill/mcp-coco-index/).
 
 &nbsp;

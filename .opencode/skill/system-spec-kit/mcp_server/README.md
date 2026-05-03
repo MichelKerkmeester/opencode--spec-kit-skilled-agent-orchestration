@@ -114,6 +114,8 @@ mcp_server/
 `-- README.md
 ```
 
+**Default scope is end-user repo only.** `.opencode/skill/**`, `.opencode/agent/**`, `.opencode/command/**`, `.opencode/specs/**`, and `.opencode/plugins/**` are excluded by default; opt in via `SPECKIT_CODE_GRAPH_INDEX_*` env vars or per-call `includeSkills` / `includeAgents` / `includeCommands` / `includeSpecs` / `includePlugins` args. See [`code_graph/README.md`](code_graph/README.md#8-scan-scope) §8 SCAN SCOPE for full details and granular per-skill selection.
+
 Allowed dependency direction:
 
 ```text
