@@ -553,26 +553,7 @@ PRE-DELIVERY VERIFICATION:
 
 ---
 
-## 10. RELATED RESOURCES
-
-### Commands
-
-| Command              | Purpose                                 |
-| -------------------- | --------------------------------------- |
-| `Task tool -> @debug` | User-dispatched fresh-perspective debugging (workflow prompts; user opts in) |
-| `/spec_kit:complete` | Return to full workflow after debug     |
-
-### Agents
-
-| Agent       | Relationship                        |
-| ----------- | ----------------------------------- |
-| @general    | May offer @debug for stuck issues; user opt-in required before dispatch |
-| @deep-research | Provides context that informs debug |
-| orchestrate | Prompts user to dispatch debug after 3 failures (user opts in; never auto) |
-
----
-
-## 11. SUMMARY
+## 10. SUMMARY
 
 ```
 ┌─────────────────────────────────────────────────────────────────────────┐

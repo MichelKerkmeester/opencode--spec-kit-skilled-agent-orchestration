@@ -1,0 +1,38 @@
+{
+  "schema_version": 1,
+  "packet_id": "skilled-agent-orchestration/063-sk-doc-agent-template-alignment",
+  "spec_folder": "skilled-agent-orchestration/063-sk-doc-agent-template-alignment",
+  "parent_id": null,
+  "children_ids": [],
+  "manual": {
+    "depends_on": [
+      "skilled-agent-orchestration/062-deep-loop-command-flow-stress-tests"
+    ],
+    "supersedes": [],
+    "related_to": [
+      "skilled-agent-orchestration/061-agent-optimization"
+    ]
+  },
+  "derived": {
+    "trigger_phrases": [
+      "063 sk-doc template",
+      "agent template alignment"
+    ],
+    "key_topics": [
+      "063",
+      "sk-doc",
+      "agent-template",
+      "cleanup"
+    ],
+    "status": "complete",
+    "completion_pct": 100,
+    "last_active_child_id": null,
+    "level": 1,
+    "is_phase_parent": false,
+    "session_outcome": "completed",
+    "files_cleaned": 40,
+    "template_lines_after": 765,
+    "sections_added_to_template": 9,
+    "sections_dropped_from_template": 3
+  }
+}

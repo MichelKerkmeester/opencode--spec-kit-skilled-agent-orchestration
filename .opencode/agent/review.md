@@ -434,20 +434,7 @@ Before sending: (1) Run self-check protocol, (2) Verify all evidence exists, (3)
 
 ---
 
-## 12. RELATED RESOURCES
-
-See Section 3 for available tools and skills.
-
-### Agents
-
-| Agent       | Purpose                               |
-| ----------- | ------------------------------------- |
-| orchestrate | Task delegation, gate integration     |
-| general     | Implementation, fixes based on review |
-
----
-
-## 13. SUMMARY
+## 12. SUMMARY
 
 ```
 ┌─────────────────────────────────────────────────────────────────────────┐

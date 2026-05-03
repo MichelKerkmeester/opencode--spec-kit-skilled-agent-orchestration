@@ -461,39 +461,7 @@ Before returning: (1) run the 6-question self-validation, (2) verify every RETUR
 
 ---
 
-## 12. RELATED RESOURCES
-
-See §3 for available skills and tools.
-
-### Agents
-
-| Agent | Relationship |
-| --- | --- |
-| `@orchestrate` | Dispatches `@code`; receives RETURN; decides retry/escalate/reassign |
-| `@review` | Independent quality reviewer; never inside `@code`; orchestrator dispatches separately if formal review needed |
-| `@debug` | Fresh-perspective debugger; offered by orchestrator after 3 consecutive `BLOCKED` from `@code` on same task |
-| `@context` | Optional context provider; if Context Package supplied, `@code` skips Layer 1 memory checks |
-
-### Skills
-
-| Skill | Role |
-| --- | --- |
-| `sk-code` | Baseline (always loaded): stack detection, intent routing, security/correctness minimums, verification commands |
-| `sk-code-*` overlays | Optional: at most one applicable overlay per dispatch, selected from stack/codebase signals |
-| `sk-code-review` | EXCLUDED from `@code`; review-side only |
-
-### Governance
-
-| Source | Topic |
-| --- | --- |
-| `AGENTS.md` §1 | Iron Law (scope-lock), Confidence Framework, Anti-Patterns, Analysis Lenses |
-| `AGENTS.md` §5 | Distributed Governance Rule (spec-doc authorship boundary) |
-| `CLAUDE.md` | Scope-lock, fail-closed verify, READ FIRST principle |
-| `decision-record.md` ADR-3 | Caller-restriction convention-floor (this packet) |
-
----
-
-## 13. SUMMARY
+## 12. SUMMARY
 
 ```
 ┌─────────────────────────────────────────────────────────────────────────┐
@@ -501,25 +469,25 @@ See §3 for available skills and tools.
 ├─────────────────────────────────────────────────────────────────────────┤
 │  AUTHORITY                                                              │
 │  ├─► Stack-aware application-code implementation via sk-code            │
-│  ├─► Scope-locked edits from orchestrator packet and target files       │
-│  ├─► Structured RETURN with verification and escalation state           │
+│  ├─► Scope-locked edits from orchestrator packet and target files        │
+│  ├─► Structured RETURN with verification and escalation state            │
 │  └─► Orchestrator-only dispatch under D3 convention                     │
 │                                                                         │
 │  IMPLEMENTATION MODES                                                   │
-│  ├─► Full implementation, surgical fix, and refactor-only changes       │
-│  ├─► Test-add, scaffold-new-file, rename-move, dependency-bump          │
-│  └─► Escalate UNKNOWN stack, scope conflict, or low confidence          │
+│  ├─► Full implementation, surgical fix, and refactor-only changes        │
+│  ├─► Test-add, scaffold-new-file, rename-move, dependency-bump           │
+│  └─► Escalate UNKNOWN stack, scope conflict, or low confidence           │
 │                                                                         │
 │  WORKFLOW                                                               │
 │  ├─► 1. RECEIVE scope, success criteria, and spec-folder context        │
 │  ├─► 2. READ packet docs, invoke sk-code, and load routed guidance      │
-│  ├─► 3. IMPLEMENT with Builder → Critic → Verifier discipline           │
+│  ├─► 3. IMPLEMENT with Builder → Critic → Verifier discipline            │
 │  └─► 4. VERIFY fail-closed, then RETURN evidence to orchestrator        │
 │                                                                         │
 │  LIMITS                                                                 │
-│  ├─► No spec-folder doc writes; application-code files only             │
+│  ├─► No spec-folder doc writes; application-code files only              │
 │  ├─► LEAF-only: no sub-agent dispatch or nested task creation           │
-│  ├─► No Bash write bypass outside scope or verification discipline      │
-│  └─► No completion claim without stack-appropriate verification         │
+│  ├─► No Bash write bypass outside scope or verification discipline       │
+│  └─► No completion claim without stack-appropriate verification          │
 └─────────────────────────────────────────────────────────────────────────┘
 ```

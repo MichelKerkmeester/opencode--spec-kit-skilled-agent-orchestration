@@ -1,0 +1,11 @@
+{
+  "specFolder": "skilled-agent-orchestration/063-sk-doc-agent-template-alignment",
+  "description": "Two-task cleanup: remove RELATED RESOURCES from 40 agent files + update sk-doc agent template to reflect current production state.",
+  "keywords": ["063", "sk-doc", "agent-template", "cleanup", "alignment"],
+  "lastUpdated": "2026-05-03T00:00:00Z",
+  "specId": "063",
+  "folderSlug": "sk-doc-agent-template-alignment",
+  "parentChain": ["skilled-agent-orchestration"],
+  "memorySequence": 1,
+  "memoryNameHistory": []
+}

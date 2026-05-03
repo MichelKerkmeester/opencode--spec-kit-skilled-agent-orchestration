@@ -328,38 +328,7 @@ Fix verification gaps first
 
 ---
 
-## 10. RELATED RESOURCES
-
-### Commands
-
-| Command | Integration ID | Purpose | Path |
-| ------- | -------------- | ------- | ---- |
-| `/improve:prompt` | `INT-CMD-IMPROVE-PROMPT` | Shared prompt-improvement command surface with inline vs agent routing | `.opencode/command/improve/prompt.md` |
-
-### Skills
-
-| Skill | Integration ID | Purpose |
-| ----- | -------------- | ------- |
-| `sk-improve-prompt` | `INT-SKILL-IMPROVE-PROMPT` | Canonical framework, DEPTH, and CLEAR source material |
-| `sk-doc` | `INT-SKILL-SK-DOC` | Current agent-template conventions and documentation structure |
-
-### Agents
-
-| Agent | Integration ID | Purpose |
-| ----- | -------------- | ------- |
-| `@general` | `INT-CALLER-GENERAL` | Primary caller/orchestrator that may dispatch this specialist |
-
-### External Tool Constraints
-
-| Surface | Integration ID | Boundary |
-| ------- | -------------- | -------- |
-| `target_cli` | `INT-TARGET-CLI` | Downstream executor context only |
-| `mcp_tools` | `INT-MCP-CALLER-SUPPLIED` | Caller-supplied downstream MCP tool constraints only |
-| Runtime mirrors | `INT-RUNTIME-MIRRORS` | Downstream packaging surfaces only |
-
----
-
-## 11. SUMMARY
+## 10. SUMMARY
 
 ```text
 ┌─────────────────────────────────────────────────────────────────────────┐

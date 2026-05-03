@@ -578,38 +578,7 @@ Fix verification gaps first
 
 ---
 
-## 12. RELATED RESOURCES
-
-### Commands
-
-| Command | Purpose | Path |
-| --- | --- | --- |
-| `/memory:save` | Preserve session context | `.opencode/skill/system-spec-kit/` |
-
-### Skills
-
-| Skill | Purpose |
-| --- | --- |
-| `system-spec-kit` | Spec folders, memory system, context preservation |
-| `sk-code-*` | Language-specific code quality standards |
-| `cli-codex` | External Codex-style implementation and code reasoning vantage |
-| `cli-copilot` | External Copilot-style GitHub workflow and pragmatic planning vantage |
-| `cli-gemini` | External Gemini-style broad research and alternative framing vantage |
-| `cli-claude-code` | External Claude Code-style deep planning and codebase reasoning vantage |
-
-### Agents
-
-| Agent | Purpose | Relationship |
-| --- | --- | --- |
-| @orchestrate | Task decomposition and delegation | May dispatch Multi-AI Council at Depth 1 |
-| @context | Memory-first codebase exploration | Provides context for PREPARE step |
-| @deep-research | Deep technical investigation | Native evidence-seeking council vantage |
-| @review | Code quality validation | Can validate the recommended plan post-synthesis |
-| @debug | Task-tool debug dispatch | Use via Task tool after repeated failures |
-
----
-
-## 13. SUMMARY
+## 12. SUMMARY
 
 ```text
 ┌─────────────────────────────────────────────────────────────────────────┐

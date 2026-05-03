@@ -506,64 +506,7 @@ For non-`complete` statuses, replace the heading with `## Review Iteration [N] P
 
 ---
 
-## 9. RELATED RESOURCES
-
-### Commands
-
-| Command | Purpose | Path |
-|---------|---------|------|
-| `/spec_kit:deep-review` | Autonomous review loop and dispatcher for this agent | `.opencode/command/spec_kit/deep-review.md` |
-| `/memory:save` | Save review continuity into canonical packet surfaces | `.opencode/command/memory/save.md` |
-
-### YAML Workflows
-
-| Workflow | Purpose | Path |
-|----------|---------|------|
-| Deep-review auto mode | Dispatches iterative `@deep-review` runs without per-iteration confirmation | `.opencode/command/spec_kit/assets/spec_kit_deep-review_auto.yaml` |
-| Deep-review confirm mode | Dispatches iterative `@deep-review` runs with operator confirmation boundaries | `.opencode/command/spec_kit/assets/spec_kit_deep-review_confirm.yaml` |
-
-### Skills
-
-| Skill | Purpose | Path |
-|-------|---------|------|
-| `sk-deep-review` | Deep review loop orchestration, reducer, state format, convergence protocol | `.opencode/skill/sk-deep-review/SKILL.md` |
-| `sk-code-review` | Shared review doctrine via `references/review_core.md` | `.opencode/skill/sk-code-review/SKILL.md` |
-| `system-spec-kit` | Spec folders, memory, docs, packet validation | `.opencode/skill/system-spec-kit/SKILL.md` |
-
-### Agents
-
-| Agent | Purpose | Boundary |
-|-------|---------|----------|
-| orchestrate | Dispatches deep-review iterations | Caller only; do not invoke from this leaf agent |
-| review | Single-pass code review | Related reviewer, not a delegate |
-| deep-research | Single-pass research iteration | Related research agent, not a delegate |
-
-Runtime mirrors and MCP/code tool rules are merged under **Runtime Mirror Awareness** and **MCP + Code Intelligence Tools** above.
-
-### References
-
-| Reference | Purpose |
-|-----------|---------|
-| `references/state_format.md` | JSONL and config schema |
-| `references/convergence.md` | Convergence algorithm details |
-| `.opencode/skill/sk-code-review/references/review_core.md` | Severity definitions and evidence requirements |
-| `.opencode/skill/sk-deep-review/scripts/reduce-state.cjs` | Reducer-owned registry/dashboard/report refresh |
-
----
-
-## 9b. HOOK-INJECTED CONTEXT & QUERY ROUTING
-
-If hook-injected context is present from the runtime startup/bootstrap surface, use it directly. Do NOT redundantly call `memory_context` or `memory_match_triggers` for the same information.
-
-If hook context is absent, rebuild active review context from `handover.md`, then the active spec doc's `_memory.continuity`, then relevant spec docs. Widen to `memory_context({ mode: "resume", profile: "resume" })` and `memory_match_triggers()` only when canonical packet sources are missing or insufficient.
-
-Route queries by intent: CocoIndex (`mcp__cocoindex_code__search`) for semantic discovery, Code Graph (`code_graph_query`/`code_graph_context`) for structural navigation, canonical packet continuity for active-session recovery, and Memory (`memory_search`/`memory_context`) for broader history after packet sources are exhausted.
-
-Query routing never relaxes the LEAF-only rule, write-safety boundary, declared review scope, edge-case disclosure requirement, or evidence requirements. External context may guide discovery, but active findings still require direct `file:line` or packet evidence.
-
----
-
-## 10. SUMMARY
+## 9. SUMMARY
 
 ```
 ┌──────────────────────────────────────────┐

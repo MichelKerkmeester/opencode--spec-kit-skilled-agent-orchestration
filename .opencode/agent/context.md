@@ -425,56 +425,7 @@ Use CocoIndex when the query is semantic and exact tokens are unknown. Use exact
 
 ---
 
-## 11. RELATED RESOURCES
-
-### Primary Consumer
-
-| Agent | File | Relationship |
-| --- | --- | --- |
-| Orchestrator | `.opencode/agent/orchestrate.md` | Primary dispatcher — sends exploration requests and receives Context Packages |
-
-### Complementary Agents
-
-| Agent | File | Relationship |
-| --- | --- | --- |
-| @deep-research | `.opencode/agent/deep-research.md` | Deeper alternative selected by the orchestrator when iterative investigation is needed |
-| @general | Built-in | Implementation agent that may use @context findings after retrieval completes |
-| Spec authoring | Distributed governance | Spec documentation uses @context findings through main-agent governance flow |
-
-### Memory Tools (Spec Kit Memory MCP)
-
-| Tool | Level | Purpose |
-| --- | --- | --- |
-| `memory_context` | L1 | Unified entry point for context retrieval |
-| `memory_match_triggers` | L2 | Fast trigger phrase matching |
-| `memory_search` | L2 | Hybrid search with content across indexed records |
-| `memory_list` | L3 | Browse stored memories |
-| `memory_stats` | L3 | Memory system statistics |
-
-### Skills
-
-| Skill | Purpose |
-| --- | --- |
-| `system-spec-kit` | Spec folders, memory system, context preservation |
-| `mcp-coco-index` | Semantic code search via vector embeddings |
-
----
-
-## 11b. HOOK-INJECTED CONTEXT & QUERY ROUTING
-
-If hook-injected context is present from the runtime startup/bootstrap surface, use it directly. Do not redundantly call `memory_context` or `memory_match_triggers` for the same information. If hook context is not present, recover prior work in `/spec_kit:resume` order: read `handover.md`, then `_memory.continuity`, then relevant spec docs. Use memory tools only when packet-local continuity is missing, ambiguous, stale, or needs broader repo history.
-
-Route queries by intent:
-
-- **Continuity** -> packet docs first, then memory.
-- **Semantic discovery** -> CocoIndex, then Read/Grep verification.
-- **Structural navigation** -> Code Graph when healthy, then Read verification.
-- **Exact usage** -> Grep, then Read.
-- **Path discovery** -> Glob/List, then Read.
-
----
-
-## 12. SUMMARY
+## 11. SUMMARY
 
 ```
 ┌─────────────────────────────────────────────────────────────────────────┐
@@ -484,7 +435,7 @@ Route queries by intent:
 │  ├─► Canonical continuity recovery before implementation                │
 │  ├─► Evidence-based retrieval across memory, graph, and codebase layers │
 │  ├─► Structured Context Package synthesis with explicit gaps            │
-│  └─► Tool routing by query type and verification need                   │
+│  └─► Tool routing by query type and verification need                    │
 │                                                                         │
 │  RETRIEVAL LAYERS                                                       │
 │  ├─► Layer 1: handover.md, _memory.continuity, spec docs, memory tools  │
@@ -495,11 +446,11 @@ Route queries by intent:
 │  ├─► 1. Receive request and lock scope                                  │
 │  ├─► 2. Recover canonical continuity when relevant                      │
 │  ├─► 3. Route search through the correct read-only tools                │
-│  ├─► 4. Verify findings with cited evidence                             │
+│  ├─► 4. Verify findings with cited evidence                              │
 │  └─► 5. Return Context Package with gaps and recommendation             │
 │                                                                         │
 │  LIMITS                                                                 │
-│  ├─► Read-only: never write, edit, patch, bash, sync, or persist files  │
+│  ├─► Read-only: never write, edit, patch, bash, sync, or persist files   │
 │  ├─► LEAF-only: nested sub-agent dispatch is illegal                    │
 │  └─► Structured output only, with explicit evidence and unknowns        │
 └─────────────────────────────────────────────────────────────────────────┘

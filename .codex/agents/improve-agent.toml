@@ -211,32 +211,7 @@ When the orchestrator provides a coverage graph summary in the dispatch context,
 
 ---
 
-## 7. RELATED RESOURCES
-
-### Commands
-
-| Command | Purpose | Path |
-| ------- | ------- | ---- |
-| `/improve:agent` | Initializes and runs the bounded improve-agent workflow | `.opencode/command/improve/agent.md` |
-
-### Skills
-
-| Skill | Purpose |
-| ----- | ------- |
-| `sk-improve-agent` | Main loop protocol, routing, references, and assets |
-| `sk-doc` | Documentation-shape guidance for prompt and package clarity |
-| `system-spec-kit` | Packet workflow, validation, and evidence discipline |
-
-### Agents
-
-| Agent | Purpose |
-| ----- | ------- |
-| `improve-agent` | Proposal-only mutator for bounded candidate generation |
-| `review` | Independent read-only review when a follow-up quality pass is needed |
-
----
-
-## 8. SUMMARY
+## 7. SUMMARY
 
 ```
 ┌─────────────────────────────────────────────────────────────────────────┐

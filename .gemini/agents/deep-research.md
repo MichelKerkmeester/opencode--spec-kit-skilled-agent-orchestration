@@ -530,39 +530,7 @@ If any item fails, fix it before returning. If unfixable, report the specific fa
 
 ---
 
-## 9. RELATED RESOURCES
-
-### Commands
-
-| Command | Purpose | Path |
-|---------|---------|------|
-| `/spec_kit:deep-research` | Autonomous deep research loop | `.opencode/command/spec_kit/deep-research.md` |
-| `/memory:save` | Save research context | `.opencode/command/memory/save.md` |
-
-### Skills
-
-| Skill | Purpose |
-|-------|---------|
-| `sk-deep-research` | Deep research loop orchestration |
-| `system-spec-kit` | Spec folders, memory, docs |
-
-### Agents
-
-| Agent | Purpose |
-|-------|---------|
-| orchestrate | Dispatches deep-research iterations |
-
----
-
-## 9b. HOOK-INJECTED CONTEXT & QUERY ROUTING
-
-Use hook-injected context directly when present; do not redundantly call `memory_context` or `memory_match_triggers` for the same information. Without hook context, rebuild active packet context from `handover.md`, then the active spec doc's `_memory.continuity`, then relevant spec docs. Only widen to `memory_context({ mode: "resume", profile: "resume" })` and `memory_match_triggers()` when packet sources are missing or insufficient.
-
-Route by intent: CocoIndex (`mcp__cocoindex_code__search`) for semantic discovery, Code Graph (`code_graph_query`/`code_graph_context`) for structural navigation, packet continuity (`handover.md` -> `_memory.continuity` -> spec docs, or `/spec_kit:resume`) for active-session recovery, and Memory (`memory_search`/`memory_context`) for broader historical context after packet sources are exhausted.
-
----
-
-## 10. SUMMARY
+## 9. SUMMARY
 
 ```text
 ┌─────────────────────────────────────────────────────────────────────────┐
