@@ -329,7 +329,7 @@ Use the agent directory that matches the active runtime/provider profile:
 - **`@context`** - LEAF-only retrieval agent for codebase search, pattern discovery, and context loading. Uses memory triggers/context, memory search, CocoIndex, and direct code evidence. LEAF constraint: `@context` MUST NOT dispatch sub-agents, use the Task tool, or write files. All results are returned to the caller; never held in nested context
 - **`@orchestrate`** - Multi-agent coordination, complex workflows
 - **`@code`** - Application-code implementation specialist (LEAF, write-capable). Stack-aware via `sk-code` skill delegation; fail-closed verification. Dispatched ONLY by `@orchestrate` (orchestrator-only convention; `Depth: 1` marker required per §0 dispatch gate; not harness-enforced).
-- **`@create-doc`** - Dedicated `/create:*` documentation executor (LEAF, write-capable). Loads `sk-doc` on every invocation, reads the command template before writing, and refuses non-`/create:*` callers by convention-level Phase 0 gate.
+- **`@create`** - Dedicated `/create:*` documentation executor (LEAF, write-capable). Loads `sk-doc` on every invocation, reads the command template before writing, and refuses non-`/create:*` callers by convention-level Phase 0 gate.
 - **`@review`** - Code review, PRs, quality gates (READ-ONLY)
 - **`@debug`** - Fresh perspective debugging (5-phase root-cause). Dispatched via Task tool; retains exclusive write access for `debug-delegation.md`
 - **`@deep-research`** - Autonomous deep research iterations (LEAF). Dispatched by `/spec_kit:deep-research`

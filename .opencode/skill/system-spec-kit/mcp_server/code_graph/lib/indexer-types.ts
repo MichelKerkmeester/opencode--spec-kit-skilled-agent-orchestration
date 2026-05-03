@@ -47,7 +47,7 @@ export interface CodeEdgeMetadata {
 }
 
 /** Languages supported by the structural indexer */
-export type SupportedLanguage = 'javascript' | 'typescript' | 'python' | 'bash';
+export type SupportedLanguage = 'javascript' | 'typescript' | 'python' | 'bash' | 'doc';
 
 /** A structural symbol node extracted from source code */
 export interface CodeNode {
@@ -131,6 +131,8 @@ export function detectLanguage(filePath: string): SupportedLanguage | null {
       return 'python';
     case 'sh': case 'bash': case 'zsh':
       return 'bash';
+    case 'md': case 'json': case 'jsonc': case 'yaml': case 'yml': case 'toml':
+      return 'doc';
     default:
       return null;
   }
@@ -163,10 +165,29 @@ export function getDefaultConfig(
 
   return {
     rootDir,
-    includeGlobs: ['**/*.ts', '**/*.tsx', '**/*.mts', '**/*.cts', '**/*.js', '**/*.jsx', '**/*.mjs', '**/*.cjs', '**/*.py', '**/*.sh', '**/*.bash', '**/*.zsh'],
+    includeGlobs: [
+      '**/*.ts',
+      '**/*.tsx',
+      '**/*.mts',
+      '**/*.cts',
+      '**/*.js',
+      '**/*.jsx',
+      '**/*.mjs',
+      '**/*.cjs',
+      '**/*.py',
+      '**/*.sh',
+      '**/*.bash',
+      '**/*.zsh',
+      '**/*.md',
+      '**/*.json',
+      '**/*.jsonc',
+      '**/*.yaml',
+      '**/*.yml',
+      '**/*.toml',
+    ],
     excludeGlobs,
     maxFileSizeBytes: 102_400,
-    languages: ['javascript', 'typescript', 'python', 'bash'],
+    languages: ['javascript', 'typescript', 'python', 'bash', 'doc'],
     scopePolicy,
   };
 }

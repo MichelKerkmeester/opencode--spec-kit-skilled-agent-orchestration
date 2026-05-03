@@ -56,6 +56,11 @@ Browser debugging and automation through two complementary approaches: CLI (bdg)
 
 The authoritative routing logic for scoped loading, weighted intent scoring, and ambiguity handling.
 
+- Pattern 1: Runtime Discovery - `discover_markdown_resources()` recursively scans `references/` and `assets/`.
+- Pattern 2: Existence-Check Before Load - `load_if_available()` uses `_guard_in_skill()`, `inventory`, and `seen`.
+- Pattern 3: Extensible Routing Key - CLI/MCP/install/troubleshoot/automation intents select browser-debugging resources.
+- Pattern 4: Multi-Tier Graceful Fallback - `UNKNOWN_FALLBACK` requests CLI/MCP/session disambiguation and missing intent routes return a "no knowledge base" notice.
+
 ```python
 from pathlib import Path
 
@@ -105,11 +110,10 @@ def discover_markdown_resources() -> set[str]:
     for base in RESOURCE_BASES:
         if base.exists():
             docs.extend(p for p in base.rglob("*.md") if p.is_file())
-    docs.extend(p for p in (SKILL_ROOT / "examples").rglob("*.md") if (SKILL_ROOT / "examples").exists())
     return {doc.relative_to(SKILL_ROOT).as_posix() for doc in docs}
 
 def score_intents(task) -> dict[str, float]:
-    """Weighted intent scoring from request text and capability signals."""
+    """Weighted intent scoring from request text and routing signals."""
     text = _task_text(task)
     scores = {intent: 0.0 for intent in INTENT_SIGNALS}
     for intent, cfg in INTENT_SIGNALS.items():
@@ -189,28 +193,13 @@ def route_chrome_devtools_resources(task):
 
 ### Tool Comparison
 
-| Feature        | CLI (bdg)                          | MCP (Code Mode)      | Puppeteer/Playwright |
-| -------------- | ---------------------------------- | -------------------- | -------------------- |
-| **Setup**      | `npm install -g browser-debugger-cli@alpha` | MCP config + server  | Heavy dependencies   |
-| **Discovery**  | `--list`, `--describe`, `--search` | `search_tools()`     | API docs required    |
-| **Token Cost** | Lowest (self-doc)                  | Medium (progressive) | Highest (verbose)    |
-| **CDP Access** | 300+ methods across 53 domains     | MCP-exposed subset   | Full but complex     |
-| **Best For**   | Debugging, inspection              | Multi-tool workflows | Complex UI testing   |
+Prefer CLI (`bdg`) for fast, low-token browser inspection. Use MCP via Code Mode when browser work must be chained with other tools or parallel isolated sessions.
 
 ### CLI Approach (Priority) - browser-debugger-cli (bdg)
 
 #### Installation & Verification
 
-```bash
-# Check if installed
-command -v bdg || echo "Install: npm install -g browser-debugger-cli@alpha"
-
-# Installation
-npm install -g browser-debugger-cli@alpha
-
-# Verify
-bdg --version 2>&1
-```
+Check with `command -v bdg`, install with `npm install -g browser-debugger-cli@alpha`, then verify `bdg --version 2>&1`.
 
 ### MCP Approach (Fallback) - Chrome DevTools via Code Mode
 
@@ -231,41 +220,7 @@ When CLI unavailable or multi-tool integration needed.
 - No session conflicts between instances
 - Register multiple instances for parallel testing (e.g., `chrome_devtools_1`, `chrome_devtools_2`)
 
-**Configuration example** (`.utcp_config.json`):
-```json
-{
-  "manual_call_templates": [
-    {
-      "name": "chrome_devtools_1",
-      "call_template_type": "mcp",
-      "config": {
-        "mcpServers": {
-          "chrome_devtools_1": {
-            "transport": "stdio",
-            "command": "npx",
-            "args": ["chrome-devtools-mcp@latest", "--isolated=true"],
-            "env": {}
-          }
-        }
-      }
-    },
-    {
-      "name": "chrome_devtools_2",
-      "call_template_type": "mcp",
-      "config": {
-        "mcpServers": {
-          "chrome_devtools_2": {
-            "transport": "stdio",
-            "command": "npx",
-            "args": ["chrome-devtools-mcp@latest", "--isolated=true"],
-            "env": {}
-          }
-        }
-      }
-    }
-  ]
-}
-```
+Configure one or more Chrome DevTools MCP entries in `.utcp_config.json` with `--isolated=true` when parallel browser sessions are needed.
 
 #### Configuration Check
 
@@ -275,67 +230,11 @@ cat .utcp_config.json | jq '.manual_call_templates[] | select(.name | startswith
 
 #### Invocation Pattern
 
-Tool naming: `{manual_name}.{manual_name}_{tool_name}`
-
-**Single instance example:**
-```typescript
-await call_tool_chain({
-  code: `
-    await chrome_devtools_1.chrome_devtools_1_navigate_page({
-      url: "https://example.com"
-    });
-    const screenshot = await chrome_devtools_1.chrome_devtools_1_take_screenshot({});
-    return screenshot;
-  `,
-  timeout: 30000
-});
-```
-
-**Parallel instances example** (comparing two pages):
-```typescript
-await call_tool_chain({
-  code: `
-    // Instance 1: Production site
-    await chrome_devtools_1.chrome_devtools_1_navigate_page({
-      url: "https://example.com"
-    });
-
-    // Instance 2: Staging site (parallel)
-    await chrome_devtools_2.chrome_devtools_2_navigate_page({
-      url: "https://staging.example.com"
-    });
-
-    // Capture both screenshots
-    const prod = await chrome_devtools_1.chrome_devtools_1_take_screenshot({});
-    const staging = await chrome_devtools_2.chrome_devtools_2_take_screenshot({});
-
-    return { production: prod, staging: staging };
-  `,
-  timeout: 60000
-});
-```
+Tool naming is `{manual_name}.{manual_name}_{tool_name}`. Run MCP browser operations inside `call_tool_chain()` and close pages in a `finally` block.
 
 #### Available MCP Tools
 
-| Tool                    | Purpose            | CLI Equivalent                                     |
-| ----------------------- | ------------------ | -------------------------------------------------- |
-| `navigate_page`         | Navigate to URL    | `bdg <url>`                                        |
-| `take_screenshot`       | Capture screenshot | `bdg dom screenshot`                               |
-| `list_console_messages` | Get console logs   | `bdg console --list`                               |
-| `resize_page`           | Set viewport size  | N/A (use cdp)                                      |
-| `click`                 | Click on element   | `bdg cdp Input.dispatchMouseEvent`                 |
-| `fill`                  | Fill form field    | `bdg dom eval "document.querySelector(...).value = ..."` |
-| `hover`                 | Hover over element | `bdg cdp Input.dispatchMouseEvent`                 |
-| `press_key`             | Press keyboard key | `bdg cdp Input.dispatchKeyEvent`                   |
-| `wait_for`              | Wait for condition | N/A (scripting)                                    |
-| `new_page`              | Open new page      | N/A                                                |
-| `close_page`            | Close page         | `bdg stop`                                         |
-| `select_page`           | Switch to page     | N/A                                                |
-
-**Note**: Tool names use underscores (e.g., `take_screenshot`) not camelCase.
-
-**Full invocation pattern**: `{manual_name}.{manual_name}_{tool_name}()`
-- Example: `chrome_devtools_1.chrome_devtools_1_take_screenshot({})`
+Common MCP tools include navigation, screenshots, console messages, viewport resize, clicks, form fill, hover, keyboard, waits, page creation/selection/close. Use underscores in tool names and confirm exact names with Code Mode discovery.
 
 #### When to Prefer MCP
 
@@ -354,43 +253,7 @@ await call_tool_chain({
 
 ### MCP Session Cleanup
 
-**Important**: Always close browser instances when done to prevent resource leaks.
-
-```typescript
-// Cleanup pattern for MCP sessions
-await call_tool_chain({
-  code: `
-    try {
-      // Your browser operations
-      await chrome_devtools_1.chrome_devtools_1_navigate_page({
-        url: "https://example.com"
-      });
-      const screenshot = await chrome_devtools_1.chrome_devtools_1_take_screenshot({});
-      return screenshot;
-    } finally {
-      // Always close the page when done
-      await chrome_devtools_1.chrome_devtools_1_close_page({});
-    }
-  `,
-  timeout: 30000
-});
-
-// For multi-instance cleanup
-await call_tool_chain({
-  code: `
-    try {
-      // Operations on multiple instances...
-    } finally {
-      // Close all instances
-      await chrome_devtools_1.chrome_devtools_1_close_page({});
-      await chrome_devtools_2.chrome_devtools_2_close_page({});
-    }
-  `,
-  timeout: 30000
-});
-```
-
-**Best Practice**: Wrap browser operations in try/finally to ensure cleanup even on errors.
+Always close browser instances when done. Wrap Code Mode browser operations in `try/finally` so cleanup runs even on errors.
 
 ---
 
@@ -398,81 +261,29 @@ await call_tool_chain({
 
 ### ✅ ALWAYS Rules
 
-**ALWAYS do these without asking:**
-
-1. **ALWAYS check CLI availability first**
-   - Run `command -v bdg` before any operation
-   - Prefer CLI over MCP when available
-
-2. **ALWAYS verify bdg installation** before first use
-   - `command -v bdg || echo "Install: npm install -g browser-debugger-cli@alpha"`
-
-3. **ALWAYS use discovery commands** when exploring
-   - Start with `--list`, `--describe`, `--search`
-   - Document how you found the method
-
-4. **ALWAYS verify session status** before CDP commands
-   - `bdg status 2>&1 | jq '.state'`
-
-5. **ALWAYS capture stderr** with `2>&1`
-   - Essential for error handling
-   - All bdg commands should include this
-
-6. **ALWAYS stop sessions** after operations
-   - `bdg stop 2>&1` or use trap pattern
-
-7. **ALWAYS use jq** for JSON processing
-   - Avoid string manipulation on JSON output
+1. Check CLI availability first and prefer CLI when it fits.
+2. Use discovery commands before CDP methods.
+3. Verify session status before CDP commands.
+4. Capture stderr with `2>&1`.
+5. Stop sessions after operations.
+6. Use `jq` for JSON processing.
 
 ### ❌ NEVER Rules
 
-**NEVER do these:**
-
-1. **NEVER execute CDP commands without verifying session**
-   - Session must be `active` state first
-
-2. **NEVER hardcode CDP method lists**
-   - Use self-discovery instead
-   - Methods change between versions
-
-3. **NEVER skip error handling**
-   - Always use `2>&1` pattern
-   - Check exit codes in scripts
-
-4. **NEVER leave sessions running**
-   - Cleanup with `bdg stop` or trap
-   - Browser processes consume resources
-
-5. **NEVER assume method names**
-   - Verify with `--describe` first
-   - Method signatures vary
-
-6. **NEVER use on Windows without WSL**
-   - PowerShell/Git Bash not supported
+1. Execute CDP commands without an active session.
+2. Hardcode CDP method lists.
+3. Skip error handling or exit-code checks.
+4. Leave sessions running.
+5. Assume method names without discovery.
+6. Use on Windows without WSL.
 
 ### ⚠️ ESCALATE IF
 
-**Ask user when:**
-
-1. **ESCALATE IF bdg not installed on Windows**
-   - WSL required for Windows support
-   - Ask if they have WSL configured
-
-2. **ESCALATE IF Chrome/Chromium not found**
-   - May need `CHROME_PATH` environment variable
-   - Ask user to specify browser location
-
-3. **ESCALATE IF session fails after 3 retries**
-   - May indicate deeper issue
-   - Ask about browser permissions/sandbox
-
-4. **ESCALATE IF task requires cross-browser testing**
-   - bdg is Chrome-only
-   - Suggest Puppeteer/Playwright for cross-browser
-
-5. **ESCALATE IF complex UI testing needed**
-   - May be better suited for Puppeteer/Playwright
-   - Ask about test framework preferences
+1. Chrome/Chromium cannot be found.
+2. Sessions fail after 3 retries.
+3. Cross-browser testing is required.
+4. Complex UI testing needs a heavier framework.
+5. Windows use lacks WSL.
 
 ---
 
@@ -480,24 +291,11 @@ await call_tool_chain({
 
 ### Browser Debugging Completion Checklist
 
-**Workflow complete when:**
-
-- ✅ CLI vs MCP approach selected based on availability
-- ✅ bdg installation verified (or MCP configured)
-- ✅ Session started successfully (`active` state)
-- ✅ CDP operations executed (exit code 0, valid JSON)
-- ✅ Required data captured (screenshot, logs, cookies, etc.)
-- ✅ Session stopped and cleaned up
-- ✅ Output provided to user
-- ✅ Error handling implemented (stderr captured)
-- ✅ Method discovery documented
+Workflow is complete when CLI/MCP path is selected, installation or config is verified, session is active, CDP operations exit 0 with valid JSON, requested data is captured, sessions are cleaned up, and discovery/error handling are documented.
 
 ### Quality Targets
 
-- **Session startup**: < 5 seconds
-- **Screenshot capture**: < 2 seconds
-- **Console log retrieval**: < 1 second
-- **Error rate**: 0% (all errors handled gracefully)
+Quality targets are fast session startup, quick screenshot/console capture, and handled errors.
 
 ---
 
@@ -514,40 +312,11 @@ Key integrations:
 
 ### Related Skills
 
-**mcp-code-mode**: Required for MCP fallback approach
-- When CLI unavailable, Code Mode provides alternative
-- Tool naming: `{manual_name}.{manual_name}_{tool_name}`
-
-**sk-code**: Phase 3 browser testing integration
-- Use bdg for verification during implementation
-- Example integration pattern:
-  ```bash
-  npm run dev &
-  sleep 5
-  bdg http://localhost:3000 2>&1
-  bdg dom screenshot verification.png 2>&1
-  bdg console --list 2>&1 > console.json
-  bdg stop 2>&1
-  ```
+Use `mcp-code-mode` for MCP fallback and `sk-code` for Phase 3 browser verification.
 
 ### Tool Usage Guidelines
 
-**Bash**: All bdg commands, session management, error handling
-**Read**: Load reference files when detailed guidance needed
-**Grep**: Filter command output, search logs
-**Glob**: Find screenshot files, locate HAR exports
-
-### External Tools
-
-**browser-debugger-cli (bdg)**:
-- Installation: `npm install -g browser-debugger-cli@alpha`
-- Purpose: Primary CLI for browser debugging
-- Fallback: Use MCP via Code Mode if unavailable
-
-**Chrome/Chromium**:
-- Installation: System package manager or direct download
-- Purpose: Browser runtime for CDP connection
-- Fallback: Set `CHROME_PATH` if not auto-detected
+Use Bash for `bdg`, Read for references, Grep for logs/output, and Glob for screenshots/HAR exports. Chrome/Chromium is the runtime; set `CHROME_PATH` if auto-detection fails.
 
 ---
 
@@ -555,48 +324,4 @@ Key integrations:
 
 ### Essential CLI Commands
 
-```bash
-# Discovery
-bdg cdp --list                # List domains
-bdg cdp --describe Page       # Domain methods
-bdg cdp --search screenshot   # Find methods
-
-# Session
-bdg <url>                     # Start
-bdg status                    # Check
-bdg stop                      # Stop
-
-# Helpers
-bdg dom screenshot <path>     # Screenshot
-bdg console --list            # Console
-bdg network getCookies        # Cookies
-bdg dom query "<sel>"         # DOM query
-bdg dom eval "<expr>"         # Execute JS
-bdg network har <path>        # HAR export
-```
-
-### MCP Tools (Isolated Instances)
-
-```typescript
-// Tool naming: {instance}.{instance}_{tool_name}
-// Each instance runs isolated browser (--isolated=true)
-
-// Instance 1
-chrome_devtools_1.chrome_devtools_1_navigate_page({ url: "..." })
-chrome_devtools_1.chrome_devtools_1_take_screenshot({})
-chrome_devtools_1.chrome_devtools_1_list_console_messages({})
-
-// Instance 2 (parallel testing)
-chrome_devtools_2.chrome_devtools_2_navigate_page({ url: "..." })
-chrome_devtools_2.chrome_devtools_2_take_screenshot({})
-```
-
-### Error Handling Pattern
-
-```bash
-#!/bin/bash
-trap "bdg stop 2>&1" EXIT INT TERM
-command -v bdg || { echo "Install bdg first"; exit 1; }
-bdg "$URL" 2>&1 || exit 1
-# ... operations ...
-```
+Use `bdg cdp --list`, `bdg cdp --describe <domain>`, `bdg cdp --search <term>`, `bdg <url>`, `bdg status`, `bdg stop`, `bdg dom screenshot <path>`, `bdg console --list`, `bdg dom query`, `bdg dom eval`, and `bdg network har <path>`. In shell scripts, install a trap so `bdg stop 2>&1` runs on exit.

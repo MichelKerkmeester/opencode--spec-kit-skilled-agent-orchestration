@@ -52,7 +52,9 @@ tests -> assets
 | Area | Representative Files | Coverage |
 |---|---|---|
 | Indexing and persistence | `code-graph-indexer.vitest.ts`, `code-graph-atomic-persistence.vitest.ts` | Symbol IDs, content hashes, stale detection, node and edge writes. |
-| Readiness and scope | `code-graph-scope-readiness.vitest.ts`, `code-graph-siblings-readiness.vitest.ts` | Freshness gates and workspace scope decisions. |
+| Scope policy and doc-language | `code-graph-indexer.vitest.ts`, `code-graph-scan.vitest.ts`, `code-graph-doc-language.test-d.ts` | 5-folder default excludes, env+per-call precedence, granular `sk-*` list selection, the 24-cell folder × file-type matrix that proves opted-in `.opencode/` folders persist `language='doc'` rows, and the type-level `SupportedLanguage` guard. |
+| Readiness and scope fingerprint | `code-graph-scope-readiness.vitest.ts`, `code-graph-siblings-readiness.vitest.ts` | Freshness gates, workspace scope decisions and v2 scope-fingerprint round-trip. |
+| Schema validation | `../tests/tool-input-schema.vitest.ts` | Accept and reject paths for `code_graph_scan` per-call args including `includeSkills` boolean, `sk-*` regex list, undefined defaults. |
 | Query and context handlers | `code-graph-query-handler.vitest.ts`, `code-graph-context-handler.vitest.ts` | MCP handler output contracts and graph context shaping. |
 | Seed and subject resolution | `code-graph-seed-resolver.vitest.ts`, `code-graph-resolve-subject-typed.vitest.ts` | File, symbol, and external seed mapping. |
 | Change detection | `detect-changes.test.ts` | Blocked responses on stale or failed readiness and line-range overlap attribution. |

@@ -1,12 +1,12 @@
 ---
-title: "Plan: 064 — agent-create-doc"
+title: "Plan: 064 — agent-create"
 description: "cli-codex gpt-5.5 high fast authors agent body + mirror sync + command rewiring."
 trigger_phrases: ["064 plan"]
 importance_tier: "high"
 contextType: "agent-architecture"
 _memory:
   continuity:
-    packet_pointer: "skilled-agent-orchestration/064-agent-create-doc"
+    packet_pointer: "skilled-agent-orchestration/064-agent-create"
     last_updated_at: "2026-05-03T00:30:00Z"
     last_updated_by: "claude-opus-4-7-1m"
     recent_action: "Plan scaffolded"
@@ -30,7 +30,7 @@ _memory:
 <!-- ANCHOR:summary -->
 ## 1. SUMMARY
 
-cli-codex gpt-5.5 high fast authors @create-doc agent body. Mirror to 4 runtimes. Update 6 /create:* commands. Sync READMEs + orchestrate + CLAUDE/AGENTS.
+cli-codex gpt-5.5 high fast authors @create agent body. Mirror to 4 runtimes. Update 6 /create:* commands. Sync READMEs + orchestrate + CLAUDE/AGENTS.
 <!-- /ANCHOR:summary -->
 
 <!-- ANCHOR:quality-gates -->
@@ -53,7 +53,7 @@ LEAF agent with caller-restriction convention. Same architecture as @code (orche
 
 | Phase | Steps |
 |---|---|
-| P1 | cli-codex authors canonical .opencode/agent/create-doc.md |
+| P1 | cli-codex authors canonical .opencode/agent/create.md |
 | P2 | Mirror to 3 other runtimes (Bash) |
 | P3 | Update 6 /create:* commands' Phase 0 gating |
 | P4 | Sync READMEs + orchestrate + CLAUDE/AGENTS |

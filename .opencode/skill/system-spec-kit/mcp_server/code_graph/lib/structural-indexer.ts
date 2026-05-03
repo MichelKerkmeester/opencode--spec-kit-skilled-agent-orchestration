@@ -1226,6 +1226,20 @@ export async function parseFile(
   const startTime = Date.now();
   const contentHash = generateContentHash(content);
 
+  if (language === 'doc') {
+    return {
+      filePath,
+      language,
+      nodes: [],
+      edges: [],
+      detectorProvenance: detectorProvenanceFromParserBackend(getRequestedParserBackend()),
+      contentHash,
+      parseHealth: 'clean',
+      parseErrors: [],
+      parseDurationMs: 0,
+    };
+  }
+
   try {
     const parser = await getParser();
     const parserResult = parser.parse(content, language, edgeWeights);

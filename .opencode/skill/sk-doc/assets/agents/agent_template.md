@@ -692,7 +692,7 @@ If ANY required check fails, do not claim completion. Return a blocked or partia
 | `@orchestrate` | `orchestrate.md` | Primary orchestrator | Task decomposition, specialist routing, integration synthesis, delegation governance |
 | `@review` | `review.md` | LEAF review subagent | Findings-first code review, quality rubric, read-only target discipline |
 
-The retired documentation-writing agent is no longer part of the production fleet. `@create-doc` is planned for packet 064 and should not appear as current production until it exists.
+The retired documentation-writing agent is no longer part of the production fleet. `@create` is planned for packet 064 and should not appear as current production until it exists.
 
 ### Key Patterns by Agent Type
 

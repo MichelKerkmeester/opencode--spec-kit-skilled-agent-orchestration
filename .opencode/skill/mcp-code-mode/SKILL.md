@@ -68,6 +68,11 @@ Execute TypeScript code with direct access to 200+ MCP tools through progressive
 
 The authoritative routing logic for scoped loading, weighted intent scoring, and ambiguity handling.
 
+- Pattern 1: Runtime Discovery - `discover_markdown_resources()` recursively inventories `references/` and `assets/`.
+- Pattern 2: Existence-Check Before Load - `load_if_available()` guards paths, checks `inventory`, and de-duplicates with `seen`.
+- Pattern 3: Extensible Routing Key - intent and command signals select Code Mode routing labels.
+- Pattern 4: Multi-Tier Graceful Fallback - `UNKNOWN_FALLBACK` returns a disambiguation checklist and missing matches return a "no knowledge base" notice.
+
 ```python
 from pathlib import Path
 
@@ -249,72 +254,12 @@ This helps with usage tracking and debugging.
 
 ### Basic Workflow
 
-**Step 1: Discover Tools**
+1. Discover tools with `search_tools()` or `list_tools()`.
+2. Confirm exact callable syntax with `tool_info()`.
+3. Execute `call_tool_chain()` with `{manual_name}.{manual_name}_{tool_name}` calls.
+4. Return structured state from the TypeScript block.
 
-```typescript
-// Progressive discovery - search for relevant tools
-search_tools({
-  task_description: "clickup task management",
-  limit: 10
-});
-
-// Returns: Tool names and descriptions (minimal tokens)
-// Example: ["clickup.clickup_create_task", "clickup.clickup_get_task", ...]
-```
-
-**Step 2: Call Tools via Code Mode**
-
-```typescript
-// Execute TypeScript with direct tool access
-call_tool_chain({
-  code: `
-    // Note the naming pattern: {manual_name}.{manual_name}_{tool_name}
-    const result = await clickup.clickup_create_task({
-      name: "New Feature",
-      listName: "Development Sprint",
-      description: "Implement user authentication"
-    });
-
-    console.log('Task created:', result.id);
-    return result;
-  `
-});
-```
-
-**Step 3: Multi-Tool Orchestration**
-
-```typescript
-// State persists across tool calls in single execution
-call_tool_chain({
-  code: `
-    // Step 1: Get Figma design
-    const design = await figma.figma_get_file({ fileId: "abc123" });
-
-    // Step 2: Create ClickUp task (design data available)
-    const task = await clickup.clickup_create_task({
-      name: \`Implement: \${design.name}\`,
-      description: \`Design has \${design.document.children.length} components\`
-    });
-
-    // Step 3: Update Webflow CMS (both design and task data available)
-    const cms = await webflow.webflow_collections_items_create_item_live({
-      collection_id: "queue-id",
-      request: {
-        items: [{
-          fieldData: {
-            name: design.name,
-            taskUrl: task.url,
-            status: "In Queue"
-          }
-        }]
-      }
-    });
-
-    return { design, task, cms };
-  `,
-  timeout: 60000  // Extended timeout for complex workflow
-});
-```
+Full multi-tool examples live in [references/workflows.md](references/workflows.md).
 
 ---
 
@@ -387,27 +332,7 @@ const info = await tool_info({
 
 ### Configuration Structure
 
-```json
-{
-  "manual_call_templates": [
-    {
-      "name": "manual_name",
-      "call_template_type": "mcp",
-      "config": {
-        "mcpServers": {
-          "manual_name": {
-            "transport": "stdio",
-            "command": "npx",
-            "args": ["package-name"],
-            "env": {},
-            "disabled": false
-          }
-        }
-      }
-    }
-  ]
-}
-```
+Use `.utcp_config.json` with `manual_call_templates[]`; each entry defines the manual name, MCP server command/args/env, and disabled state. See [references/configuration.md](references/configuration.md) and [assets/config_template.md](assets/config_template.md).
 
 ### Critical: Prefixed Environment Variables
 
@@ -428,78 +353,11 @@ const info = await tool_info({
 
 See [env_template.md](assets/env_template.md) for complete examples.
 
-### Generic Multi-Tool Workflow Pattern
-
-```typescript
-call_tool_chain({
-  code: `
-    // Step 1: Discover what tools are available
-    const availableTools = await search_tools({
-      task_description: "sync design QA tasks and publish status",
-      limit: 10
-    });
-
-    console.log("Available tools:", availableTools);
-
-    // Step 2: Call tools using correct naming pattern
-    const task = await clickup.clickup_create_task({
-      name: "Verify hero section spacing",
-      listName: "Design QA",
-      description: "Compare Figma spacing against production page"
-    });
-
-    // Step 3: Chain multiple tools if needed
-    const cmsItem = await webflow.webflow_collections_items_create_item_live({
-      collection_id: "design-qa-queue",
-      request: {
-        items: [{
-          fieldData: {
-            name: task.name,
-            status: "Queued",
-            taskUrl: task.url
-          }
-        }]
-      }
-    });
-
-    return { task, cmsItem, availableTools: availableTools.length };
-  `,
-  timeout: 60000
-});
-```
-
 ### How to Check Active Code Mode Servers
 
 **IMPORTANT**: This only shows Code Mode servers in `.utcp_config.json`, NOT Sequential Thinking
 
-```typescript
-// This code shows how to discover what Code Mode tools are configured
-call_tool_chain({
-  code: `
-    // List all available tools from all active Code Mode MCP servers
-    // NOTE: This will NOT include Sequential Thinking
-    const allTools = await list_tools();
-
-    // Group by server (manual name is prefix before first dot)
-    const servers = {};
-    allTools.forEach(tool => {
-      const serverName = tool.split('.')[0];
-      if (!servers[serverName]) servers[serverName] = [];
-      servers[serverName].push(tool);
-    });
-
-    console.log("Active Code Mode servers:", Object.keys(servers));
-    console.log("Tool counts:", Object.fromEntries(
-      Object.entries(servers).map(([k, v]) => [k, v.length])
-    ));
-
-    console.log("NOTE: Sequential Thinking is NOT in this list");
-    console.log("Sequential Thinking is a native MCP tool, not a Code Mode tool");
-
-    return servers;
-  `
-});
-```
+Run `list_tools()` through Code Mode and group returned names by the prefix before the first dot. Sequential Thinking is native MCP and will not appear.
 
 ---
 
@@ -571,35 +429,7 @@ Key integrations:
 - Use **mcp-code-mode** for external tool integration (Webflow, Figma, ClickUp, etc.)
 - Example: Create ClickUp task → Update Notion docs → Post to Webflow CMS
 
-**Workflow**:
-```typescript
-// All Code Mode - single execution for multi-tool workflow
-call_tool_chain({
-  code: `
-    // 1. Create task in ClickUp
-    const task = await clickup.clickup_create_task({
-      name: "Implement authentication",
-      description: "Add OAuth 2.0 authentication"
-    });
-
-    // 2. Update Webflow CMS with task reference
-    const cmsItem = await webflow.webflow_collections_items_create_item_live({
-      collection_id: "tasks-collection-id",
-      request: {
-        items: [{
-          fieldData: {
-            name: task.name,
-            taskUrl: task.url,
-            status: "In Queue"
-          }
-        }]
-      }
-    });
-
-    return { task, cmsItem };
-  `
-});
-```
+**Workflow**: discover tools, call them inside one `call_tool_chain()` execution, return state for the caller, and surface errors explicitly.
 
 ### Triggers
 
@@ -621,69 +451,7 @@ call_tool_chain({
 
 ## 8. QUICK REFERENCE
 
-### Essential Commands
-
-```typescript
-// 1. Discover tools
-search_tools({ task_description: "webflow site management", limit: 10 });
-
-// 2. Get tool details
-tool_info({ tool_name: "webflow.webflow_sites_list" });
-
-// 3. List all tools
-list_tools();
-
-// 4. Call single tool
-call_tool_chain({
-  code: `await webflow.webflow_sites_list({})`
-});
-
-// 5. Multi-tool workflow with error handling
-call_tool_chain({
-  code: `
-    try {
-      const design = await figma.figma_get_file({ fileKey: "AbC123DeF45" });
-      const task = await clickup.clickup_create_task({
-        name: `Implement ${design.name}`,
-        listName: "Frontend Sprint",
-        description: "Build from latest approved Figma file"
-      });
-      return { success: true, designName: design.name, taskId: task.id };
-    } catch (error) {
-      return { success: false, error: error.message };
-    }
-  `,
-  timeout: 60000
-});
-
-// 6. Parallel execution of independent operations
-call_tool_chain({
-  code: `
-    const [sites, tasks, figmaFile] = await Promise.all([
-      webflow.webflow_sites_list({}),
-      clickup.clickup_get_tasks({ listName: "Development" }),
-      figma.figma_get_file({ fileKey: "abc123" })
-    ]);
-    
-    return { 
-      siteCount: sites.length,
-      taskCount: tasks.length,
-      figmaName: figmaFile.name
-    };
-  `
-});
-```
-
-### Parallel Execution Patterns
-
-| Pattern | Use When | Example |
-|---------|----------|---------|
-| `Promise.all()` | All must succeed | `const [a, b] = await Promise.all([fnA(), fnB()])` |
-| `Promise.allSettled()` | Partial success OK | `const results = await Promise.allSettled([...])` |
-| Batch processing | Many items, rate limits | `processInBatches(items, 3, processor)` |
-| Parallel → Sequential | Fetch then process | Phase 1: parallel fetch, Phase 2: sequential use |
-
-**See [references/workflows.md](references/workflows.md) Section 7 for comprehensive parallel execution examples.**
+Use `search_tools()`, `tool_info()`, `list_tools()`, and `call_tool_chain()` as the core command set. For parallel execution, use `Promise.all()` when all calls must succeed and `Promise.allSettled()` when partial success is acceptable. Full examples live in [references/workflows.md](references/workflows.md).
 
 ### Critical Naming Pattern
 
@@ -701,42 +469,9 @@ call_tool_chain({
 
 ## 9. RELATED RESOURCES
 
-### scripts/
+The router discovers reference and asset docs dynamically. Key entry points are `references/naming_convention.md`, `references/configuration.md`, `references/tool_catalog.md`, `references/workflows.md`, `references/architecture.md`, `assets/config_template.md`, and `assets/env_template.md`.
 
-| Script | Purpose | Usage |
-|--------|---------|-------|
-| **update-code-mode.sh** | Update to latest version | `bash .opencode/skill/mcp-code-mode/scripts/update-code-mode.sh` |
-| **validate_config.py** | Validate configuration | `python3 scripts/validate_config.py <config-path> --check-env <env-path>` |
-
-### references/
-
-| Document | Purpose | Key Insight |
-|----------|---------|-------------|
-| **naming_convention.md** | Tool naming pattern | CRITICAL - read first for errors |
-| **configuration.md** | Setup guide | .utcp_config.json and .env |
-| **tool_catalog.md** | Available tools | 250+ tools across 8 servers |
-| **workflows.md** | Usage patterns | 5 comprehensive examples |
-| **architecture.md** | System design | Token economics |
-
-### assets/
-
-| Asset | Purpose |
-|-------|---------|
-| **config_template.md** | .utcp_config.json template |
-| **env_template.md** | .env template with API key placeholders |
-
-### External Resources
-
-- [Code Mode GitHub](https://github.com/universal-tool-calling-protocol/code-mode) - Source code and documentation
-- [MCP Specification](https://modelcontextprotocol.io/) - Model Context Protocol standard
-
-### Performance Metrics
-
-| Metric | Traditional | Code Mode | Improvement |
-|--------|-------------|-----------|-------------|
-| Context tokens | 141k (47 tools) | 1.6k (200+ tools) | 98.7% reduction |
-| Execution time | ~2000ms (4 tools) | ~300ms (4 tools) | 60% faster |
-| API round trips | 15+ | 1 | 93% reduction |
+Scripts: `scripts/update-code-mode.sh` and `scripts/validate_config.py`.
 
 ### Related Skills
 

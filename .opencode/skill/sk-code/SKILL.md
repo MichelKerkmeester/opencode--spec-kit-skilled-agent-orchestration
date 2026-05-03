@@ -134,6 +134,11 @@ The router discovers markdown resources recursively from `references/` and `asse
 
 The authoritative routing logic for stack detection, weighted intent scoring, ambiguity handling, and per-stack resource loading.
 
+- Pattern 1: Runtime Discovery - `discover_markdown_resources()` recursively scans `references/` and `assets/`.
+- Pattern 2: Existence-Check Before Load - `load_if_available()` guards paths, checks `inventory`, and de-duplicates with `seen`.
+- Pattern 3: Extensible Routing Key - stack marker plus intent labels select stack-specific resource trees.
+- Pattern 4: Multi-Tier Graceful Fallback - `UNKNOWN_FALLBACK` disambiguates unsupported stacks and missing routes fall back to universal resources.
+
 ```python
 from pathlib import Path
 
@@ -259,6 +264,8 @@ def _task_text(task) -> str:
 def _guard_in_skill(relative_path: str) -> str:
     resolved = (SKILL_ROOT / relative_path).resolve()
     resolved.relative_to(SKILL_ROOT)
+    if resolved.suffix.lower() != ".md":
+        raise ValueError(f"Only markdown resources are routable: {relative_path}")
     return resolved.relative_to(SKILL_ROOT).as_posix()
 
 def discover_markdown_resources() -> set[str]:
@@ -361,284 +368,74 @@ For deeper reads on TASK_SIGNALS scoring, NOISY_SYNONYMS, and load-level mapping
 
 ### Development Lifecycle
 
-Application development flows through phases with a mandatory quality gate:
+Application development flows through: Research when needed, Implementation, Code Quality Gate, Debugging if issues appear, and mandatory Verification. Full lifecycle detail lives in `references/router/phase_lifecycle.md`.
 
-```
-Research (optional) → Implementation → Code Quality Gate → Debugging (if issues) → Verification (MANDATORY)
-```
+### Phase 0: Research
 
-For the full per-phase narrative (workflows, transitions, exit criteria, anti-patterns) see `references/router/phase_lifecycle.md`.
-
-### Phase 0: Research (Optional)
-
-**When to Use:** Complex performance issues, unfamiliar codebases, architectural decisions, multi-system features.
-
-For WEBFLOW projects: Capture baseline metrics (PageSpeed Mobile + Desktop, LCP / FCP / TBT / CLS / Speed Index, waterfall) before implementing performance fixes. Use the 10-agent research methodology in `references/universal/multi_agent_research.md` for parallel codebase analysis (HTML loading, JS bundles, third-party, CSS, LCP/images, above-fold, animation, init patterns, libraries, network waterfall).
-
-**Skip Phase 0** for simple isolated fixes, clear requirements with known solutions, or time-critical hotfixes.
+Use for complex performance issues, unfamiliar codebases, architecture decisions, or multi-system features. For WEBFLOW performance work, capture baseline PageSpeed/Lighthouse and network evidence before changing code.
 
 ### Phase 1: Implementation
 
-Implementation patterns are stack-specific. The router loads from `references/<stack>/`.
-
-**Universal principles** (apply across stacks):
-
-1. **Condition-based waiting** — replace arbitrary timeouts with condition polling; include timeout limits with clear errors. Stack examples: WEBFLOW DOM ready / library load; NEXTJS useEffect with cancellation; GO context cancellation.
-2. **Defense-in-depth validation** — Layer 1: entry-point validation; Layer 2: processing validation; Layer 3: output validation; Layer 4: safe-access patterns.
-3. **Stack-specific bootstrap** —
-   - **WEBFLOW**: CDN version management, IntersectionObserver gates, snake_case naming, file headers
-   - **NEXTJS**: App Router (Server vs Client Components), vanilla-extract recipes, motion v12 transitions, react-hook-form + zod, react-aria a11y
-   - **GO**: cmd/ + internal/ + pkg/ layout, gin handler + service + repository layers, sqlc-generated repositories, validator registration, golang-jwt issuance/verification
-
-For stack-specific workflows: `references/<stack>/`. Live entry-point docs:
-- WEBFLOW: `references/webflow/implementation/implementation_workflows.md`
-- NEXTJS: `references/nextjs/implementation/implementation_workflows.md` (Next.js 14 target — currently a stub)
-- GO: `references/go/implementation/implementation_workflows.md` (gin + sqlc + Postgres)
-- Cross-stack contract (NEXTJS↔GO API/JWT/CORS): `references/router/cross_stack_pairing.md`
+Load `references/<stack>/implementation/`. Apply condition-based waiting, defense-in-depth validation, safe access, and stack-specific bootstrap rules. For React-Go work, also load `references/router/cross_stack_pairing.md`.
 
 ### Phase 1.5: Code Quality Gate
 
-**Before claiming implementation is complete, validate code against style standards.**
-
-1. Identify file type and stack — load the matching checklist
-   - WEBFLOW JavaScript: `assets/webflow/checklists/code_quality_checklist.md` (Sections 2-7 P0 items: file headers, section organization, snake_case, no commented-out code, CDN-safe init)
-   - WEBFLOW CSS: `assets/webflow/checklists/code_quality_checklist.md` (Section 8 P0 items: semantic custom property prefixes, attribute selectors with `i` flag, BEM naming, GPU-accelerated animations only)
-   - NEXTJS: `assets/nextjs/checklists/code_quality_checklist.md` (P0: TypeScript strict, no `any`, named exports, vanilla-extract recipes, server/client boundary, zod boundaries, no console.log, no dangerouslySetInnerHTML with unsanitized data)
-   - GO: `assets/go/checklists/code_quality_checklist.md` (P0: gofmt clean, golangci-lint clean, error wrapping with `%w`, context propagation, no naked goroutines)
-   - UNKNOWN: this skill does not own checklists for unsupported stacks; surface disambiguation prompt
-
-2. Validate items by severity — P0 (blocker), P1 (required), P2 (optional)
-3. Universal severity model: `references/universal/code_quality_standards.md`
-4. Formal review belongs to `sk-code-review` (this skill produces overlay compliance evidence, not findings-first output)
-
-**Gate Rule**: If ANY P0 item fails, completion is BLOCKED until fixed.
+Load the stack checklist, validate P0/P1/P2 items, and fix every P0 before proceeding. Formal findings-first review belongs to `sk-code-review`; this skill produces stack overlay evidence.
 
 ### Phase 2: Debugging
 
-**Systematic 4-phase framework**: Root Cause Investigation → Pattern Analysis → Hypothesis Testing → Implementation. Test one change at a time. If 3+ fixes fail → question approach.
-
-**Stack-specific debugging tooling:**
-- **WEBFLOW**: `references/webflow/debugging/debugging_workflows.md` (DevTools Console, network panel, performance profiler) + `mcp-chrome-devtools` skill
-- **NEXTJS**: `references/nextjs/debugging/debugging_workflows.md` + `references/nextjs/debugging/hydration_errors.md` (Server vs Client Component bugs, hydration mismatches, network inspection)
-- **GO**: `references/go/debugging/debugging_workflows.md` + `references/go/debugging/pprof_profiling.md` (dlv, structured logs via slog, race detector, pprof)
-- **UNKNOWN stacks** (Node.js without React/Next, React Native, Swift, etc.): not owned by this skill; surface disambiguation prompt
-
-**Universal error recovery**: `references/universal/error_recovery.md` (decision tree for rollback, recovery, escalation).
+Use root-cause investigation, pattern analysis, hypothesis testing, and one-change-at-a-time fixes. Load stack debugging resources and `references/universal/error_recovery.md`. WEBFLOW routes to `mcp-chrome-devtools`; NEXTJS focuses on hydration and server/client boundaries; GO uses tests, logs, race detector, dlv, and pprof.
 
 ### Phase 3: Verification
 
-**The Gate Function** — BEFORE claiming any status:
-
-1. IDENTIFY: What command/action proves this claim?
-2. RUN: Execute the stack's verification commands (see `STACK_VERIFICATION_COMMANDS`)
-3. TEST: For WEBFLOW, also open browser; for non-WEBFLOW, run unit/integration suites
-4. VERIFY: Does output match expected behavior?
-5. VERIFY: For WEBFLOW, multi-viewport check (mobile + desktop)
-6. VERIFY: For WEBFLOW, cross-browser check (if critical)
-7. RECORD: Note what you saw / what command exited 0
-8. ONLY THEN: Make the claim
-
-**WEBFLOW Browser Testing Matrix:**
-
-- **Minimum** (always required): Chrome Desktop (1920px), Mobile emulation (375px), DevTools Console — no errors
-- **Standard** (production work): Chrome Desktop + Tablet (991px) + Mobile (375px); DevTools console clear at all viewports
-
-**Non-WEBFLOW stacks**: run `STACK_VERIFICATION_COMMANDS[stack]`. All commands must exit 0 before claiming done.
-- **NEXTJS**: `references/nextjs/verification/verification_workflows.md` (npm run type-check / lint / build + browser smoke matrix)
-- **GO**: `references/go/verification/verification_workflows.md` (`go test ./...` + `golangci-lint run` + `go build ./...` + `-race` for race detector)
+Run `STACK_VERIFICATION_COMMANDS[stack]`. WEBFLOW also requires real browser checks at mobile and desktop viewports with a clean console. Do not claim completion until the command or browser evidence proves the claim.
 
 ---
 
 ## 4. RULES
 
-### Phase 1: Implementation
+### ALWAYS
 
-**ALWAYS:** Wait for actual conditions, not arbitrary timeouts (include timeout limits). Validate all inputs (function parameters, API responses, DOM/external data). Sanitize user input before storing or displaying. Use safe-access patterns appropriate to the stack (optional chaining + try/catch in JS/TS, error returns in Go, optionals in Swift). Log meaningful success/error messages.
+1. Wait for actual conditions with bounded timeouts.
+2. Validate inputs and external data.
+3. Sanitize before storing or displaying user-controlled content.
+4. Load the code quality checklist before completion claims.
+5. Trace debugging from symptom to root cause.
+6. Run stack verification commands; for WEBFLOW, also test browser and console.
+7. Update WEBFLOW CDN versions after JS changes.
 
-**WEBFLOW additional ALWAYS:** Update CDN versions after JS modifications. Use validated timing constants (64ms throttle pointer, 180ms debounce validation, 200ms debounce resize, 0.1 IntersectionObserver threshold).
+### NEVER
 
-**NEVER:** Use `setTimeout` (or stack equivalent) without documenting WHY. Assume data exists without checking. Trust external data without validation. WEBFLOW: use `innerHTML` with unsanitized data; skip CDN version updates after JS changes.
+1. Use arbitrary sleeps without a documented reason.
+2. Trust data exists without checking.
+3. Skip the quality gate for "simple" changes.
+4. Claim completion with P0 violations or without verification evidence.
+5. Leave commented-out code or production console logging.
+6. Use this skill for unsupported stacks without disambiguation.
 
-**ESCALATE IF:** Condition never becomes true (infinite wait); validation logic becoming too complex; security concerns with XSS or injection attacks; WEBFLOW: script reports no HTML files found, CDN version cannot be determined.
+### ESCALATE IF
 
-### Phase 1.5: Code Quality Gate (MANDATORY for all code files)
-
-**ALWAYS:** Load the stack's code quality checklist before claiming implementation complete. Validate all P0 items for the applicable file type and stack. Fix P0 violations before proceeding. Document any P1/P2 deferrals with reasons. Use `sk-code-review` baseline for formal findings-first review output.
-
-**NEVER (universal):** Skip the quality gate for "simple" changes. Claim completion with P0 violations. Use commented-out code (delete it).
-
-**NEVER (WEBFLOW JavaScript):** Use camelCase for variables/functions (use snake_case). Skip file headers or section organization.
-
-**NEVER (WEBFLOW CSS):** Use generic custom property names without semantic prefixes. Omit case-insensitivity flag `i` on data attribute selectors. Animate layout properties (width, height, top, left, padding, margin). Set `will-change` permanently in CSS (set dynamically via JS).
-
-**ESCALATE IF:** Cannot fix a P0 violation; standard conflicts with existing code patterns; unclear whether code is compliant.
-
-### Phase 2: Debugging
-
-**ALWAYS:** Open the stack's debugging tool BEFORE attempting fixes (DevTools for WEBFLOW; debugger / log viewer for backend; LLDB / Xcode for Swift). Read complete error messages and stack traces. WEBFLOW: test across multiple viewports (375px, 768px, 1920px). Test one change at a time. Trace backward from symptom to root cause. Document root cause in comments. WEBFLOW: remember RAF auto-throttles to ~1fps in background tabs (no manual visibility checks needed).
-
-**NEVER:** Skip console / log error messages. Change multiple things simultaneously. Proceed with 4th fix without questioning approach. Fix only symptoms without tracing root cause. WEBFLOW: leave production console.log statements.
-
-**ESCALATE IF:** Bug only occurs in production; issue requires changing third-party library or framework; cross-browser / cross-platform compatibility cannot be achieved; bug intermittent despite extensive logging; cannot trace backward (dead end).
-
-### Phase 3: Verification (MANDATORY)
-
-**ALWAYS:** Run the stack's verification commands (`STACK_VERIFICATION_COMMANDS[stack]`); all must exit 0. WEBFLOW: open actual browser to verify (not just code review); test mobile viewport (375px minimum); check DevTools console for errors. Non-WEBFLOW: run unit + integration tests + lint; do not skip a category. Note what you tested in your claim.
-
-**NEVER:** Claim "works" without running verification commands. Say "should work" or "probably works" — test it. WEBFLOW: test only at one viewport size; assume desktop testing covers mobile. Express satisfaction before verification.
-
-**ESCALATE IF:** Cannot test in required browsers / runtimes; real device testing required but unavailable; issue only reproduces in production; performance testing requires specialized tools.
-
-### Error Recovery
-
-See `references/universal/error_recovery.md` for the universal decision tree (recover-in-place / rollback / escalate). WEBFLOW-specific recovery for CDN upload, minification, version mismatch lives in `references/webflow/debugging/error_recovery.md`.
+1. A required condition never becomes true.
+2. Security-sensitive validation becomes unclear.
+3. A P0 cannot be fixed without broader design changes.
+4. A bug only reproduces in production or cannot be traced.
+5. Required runtime/browser/device verification is unavailable.
 
 ---
 
 ## 5. REFERENCES
 
-### Core References
-
-#### Universal (stack-agnostic core)
-
-- [code_quality_standards.md](./references/universal/code_quality_standards.md) - severity model (P0/P1/P2) and universal checklist framework.
-- [code_style_guide.md](./references/universal/code_style_guide.md) - language-agnostic conventions: naming, comments, structure, safety patterns.
-- [error_recovery.md](./references/universal/error_recovery.md) - decision tree: recover-in-place / rollback / escalate for all stacks.
-- [multi_agent_research.md](./references/universal/multi_agent_research.md) - 10-agent specialization model for performance audits and complex codebase analysis.
-
-#### Router (routing internals + cross-stack contract)
-
-- [stack_detection.md](./references/router/stack_detection.md) - marker-file precedence and detection edge cases.
-- [intent_classification.md](./references/router/intent_classification.md) - TASK_SIGNALS scoring, NOISY_SYNONYMS, intent ranking.
-- [resource_loading.md](./references/router/resource_loading.md) - load levels and per-stack resource resolution.
-- [phase_lifecycle.md](./references/router/phase_lifecycle.md) - Phase 0-3 lifecycle narrative with exit criteria and transitions.
-- [cross_stack_pairing.md](./references/router/cross_stack_pairing.md) - canonical Next.js ↔ Go API contract (REST envelope, JWT handoff, CORS, deploy topology).
-
-#### WEBFLOW (live)
-
-- [implementation/implementation_workflows.md](./references/webflow/implementation/implementation_workflows.md) - Phase 1 entry point.
-- [debugging/debugging_workflows.md](./references/webflow/debugging/debugging_workflows.md) - DevTools console, network panel, performance profiles.
-- [verification/verification_workflows.md](./references/webflow/verification/verification_workflows.md) - browser matrix and Lighthouse procedure.
-- [deployment/cdn_deployment.md](./references/webflow/deployment/cdn_deployment.md) - CDN version management and Wrangler workflow.
-- [standards/code_style_guide.md](./references/webflow/standards/code_style_guide.md) - WEBFLOW snake_case JS + BEM CSS conventions.
-
-#### NEXTJS (stub)
-
-- [README.md](./references/nextjs/README.md) - stack overview stub (Next.js 14 target).
-- [implementation/implementation_workflows.md](./references/nextjs/implementation/implementation_workflows.md) - Phase 1 entry point stub.
-
-#### GO (stub)
-
-- [README.md](./references/go/README.md) - stack overview stub (gin + sqlc + Postgres target).
-- [implementation/implementation_workflows.md](./references/go/implementation/implementation_workflows.md) - Phase 1 entry point stub.
-
-### Templates and Assets
-
-- [assets/universal/checklists/debugging_checklist.md](./assets/universal/checklists/debugging_checklist.md) - stack-agnostic 4-phase debugging workflow.
-- [assets/universal/checklists/verification_checklist.md](./assets/universal/checklists/verification_checklist.md) - stack-agnostic 8-step verification gate.
-- [assets/webflow/checklists/](./assets/webflow/checklists/) - WEBFLOW P0/P1/P2 code quality, performance loading, debugging, verification.
-- [assets/webflow/integrations/](./assets/webflow/integrations/) - lenis and HLS.js vendor integration patterns.
-- [assets/webflow/patterns/](./assets/webflow/patterns/) - wait, validation, interaction-gate, performance JS patterns.
-- [assets/nextjs/checklists/](./assets/nextjs/checklists/), [assets/nextjs/patterns/](./assets/nextjs/patterns/), [assets/nextjs/integrations/](./assets/nextjs/integrations/) - NEXTJS stub assets.
-- [assets/go/checklists/](./assets/go/checklists/), [assets/go/patterns/](./assets/go/patterns/) - GO stub assets.
-
-### Build and Verification Scripts
-
-- `scripts/minify-webflow.mjs` - WEBFLOW JS bundle minification (CWD-relative; portable).
-- `scripts/verify-minification.mjs` - AST verification of minified output before CDN deploy.
-- `scripts/test-minified-runtime.mjs` - runtime sandbox for minified bundles.
-
-NEXTJS and GO stacks use standard `npm`/`go` CLIs natively — no skill-owned scripts needed.
+The router discovers references and assets dynamically. Start with universal standards, then stack-specific `implementation`, `debugging`, `verification`, `deployment`, and `standards` resources. Router internals and cross-stack pairing live under `references/router/`. WEBFLOW scripts are `scripts/minify-webflow.mjs`, `scripts/verify-minification.mjs`, and `scripts/test-minified-runtime.mjs`.
 
 ---
 
 ## 6. SUCCESS CRITERIA
 
-### Phase Completion Checklists
+Implementation follows stack patterns, quality gate P0s pass, debugging documents root cause, and verification commands/browser checks pass.
 
-| Phase | Checklist | Key Criteria |
-| --- | --- | --- |
-| Phase 1: Implementation | `references/<stack>/` workflows | Stack patterns followed; inputs validated; safe-access |
-| Phase 1.5: Code Quality | `assets/<stack>/checklists/code_quality_checklist.md` (or universal) | P0 items passing |
-| Phase 2: Debugging | `references/webflow/debugging/debugging_workflows.md` (WEBFLOW) / `references/universal/error_recovery.md` | Root cause documented; fix at source |
-| Phase 3: Verification | `assets/universal/checklists/verification_checklist.md` + stack commands | All commands exit 0; for WEBFLOW: multi-viewport browser test, console clean |
+WEBFLOW performance targets: FCP <1.8s, LCP <2.5s, CLS <0.1, 60fps, console errors 0. NEXTJS target: type-check, lint, build, and browser smoke pass. GO target: tests, lint, and build pass.
 
-### Performance Targets (WEBFLOW)
-
-| Metric | Target | Tool       | Metric | Target | Tool       |
-| --- | --- | --- | --- | --- | --- |
-| FCP | < 1.8s | Lighthouse | CLS | < 0.1 | Lighthouse |
-| LCP | < 2.5s | Lighthouse | FPS | 60fps | DevTools |
-| TTI | < 3.8s | Lighthouse | Errors | 0 | Console |
-
-Run Lighthouse 3× in Incognito with mobile emulation, use median scores.
-
-### Performance / Verification Targets (Non-WEBFLOW)
-
-| Stack | Target |
-| --- | --- |
-| NEXTJS | `npm run type-check` clean; `npm run lint` clean; `npm run build` succeeds; browser smoke (mobile + desktop) console clean |
-| GO | `go test ./...` exits 0; `golangci-lint run` clean; `go build ./...` succeeds |
-
----
-
-## 7. EXTERNAL RESOURCES
-
-### Official Documentation (by stack)
-
-| Stack | Resource | URL |
-| --- | --- | --- |
-| WEBFLOW | MDN Web Docs | developer.mozilla.org |
-| WEBFLOW | Webflow University | university.webflow.com |
-| WEBFLOW | Motion.dev | motion.dev/docs |
-| WEBFLOW | HLS.js | github.com/video-dev/hls.js |
-| WEBFLOW | Lenis | lenis.darkroom.engineering |
-| NEXTJS | React docs | react.dev |
-| NEXTJS | Next.js docs | nextjs.org/docs |
-| NEXTJS | vanilla-extract | vanilla-extract.style |
-| NEXTJS | motion | motion.dev/docs |
-| GO | Go documentation | go.dev/doc |
-| GO | gin | gin-gonic.com/docs |
-| GO | sqlc | docs.sqlc.dev |
-| GO | pgx | github.com/jackc/pgx |
-
-### Testing & Debugging
-
-| Stack | Resource | Use For |
-| --- | --- | --- |
-| WEBFLOW | Chrome DevTools | Browser debugging |
-| WEBFLOW | Can I Use | Browser compatibility |
-| NEXTJS | React DevTools, Vitest, Chrome DevTools | Component inspection, unit tests, browser smoke |
-| GO | `go test`, `go vet`, `dlv`, `pprof` | Unit tests, static analysis, debugger, profiler |
-
----
-
-## 8. RELATED RESOURCES
-
-### Related Skills
-
-| Skill | Use For |
-| --- | --- |
-| **`sk-code-review`** | Findings-first review baseline, severity model, risk reporting |
-| **`sk-code-opencode`** | OpenCode harness/system code (`.opencode/` directory) — sibling, not subsumed |
-| **`sk-doc`** | Documentation quality, skill creation, markdown validation |
-| **`sk-git`** | Git workflows, commit hygiene, PR creation |
-| **`system-spec-kit`** | Spec folder management, memory system, context preservation |
-| **`mcp-chrome-devtools`** | WEBFLOW stack browser debugging, screenshots, console access |
-
-### Cross-Skill Linkage
-
-- **`sk-code-review`** is invoked for formal findings-first review output. This skill produces overlay compliance evidence (Phase 1.5 checklists), not the review itself.
-- **`sk-code-opencode`** covers OpenCode system code (the `.opencode/` directory itself — JS/TS/Python/Shell standards). It is intentionally NOT subsumed by sk-code; the two are siblings.
-- **`mcp-chrome-devtools`** is the canonical browser-automation surface for the WEBFLOW Phase 2/3 routes.
-
-### Navigation Guide
-
-**For implementation tasks:** Confirm stack via marker files (this skill auto-detects WEBFLOW, NEXTJS, GO); load Phase 1 resources from `references/<stack>/`; cite `references/universal/` for stack-agnostic principles. For React↔Go fullstack work also load `references/router/cross_stack_pairing.md`. If detection returns UNKNOWN (Node.js without React/Next, React Native, Swift, etc.), this skill does not own the stack — surface a disambiguation prompt.
-
-**For debugging tasks:** Load `assets/universal/checklists/debugging_checklist.md`; load `references/<stack>/debugging/` content (WEBFLOW: + `mcp-chrome-devtools`; NEXTJS: hydration / Server vs Client / network inspection; GO: dlv + slog + pprof).
-
-**For verification tasks:** Load `assets/universal/checklists/verification_checklist.md`; run `STACK_VERIFICATION_COMMANDS[stack]`; for WEBFLOW also run browser matrix (mobile + desktop + console clean); only claim "done" when all commands exit 0 + checklist passes.
+Related skills: `sk-code-review` for formal review, `sk-code-opencode` for `.opencode/` code, `sk-doc` for docs, `sk-git` for git, `system-spec-kit` for packets/memory, and `mcp-chrome-devtools` for browser inspection.
 
 ---
 
@@ -658,61 +455,4 @@ Run Lighthouse 3× in Incognito with mobile emulation, use median scores.
 
 ## 10. QUICK REFERENCE
 
-### Stack Detection (single command)
-
-```bash
-# Run from project root — first match wins; sk-code only owns WEBFLOW / NEXTJS / GO
-([ -d "src/2_javascript" ] || ls *.webflow.js 2>/dev/null | head -1 >/dev/null) && echo WEBFLOW \
-  || ([ -f "wrangler.toml" ] && echo WEBFLOW) \
-  || ([ -f "go.mod" ] && echo GO) \
-  || (ls next.config.* 2>/dev/null | head -1 >/dev/null && echo NEXTJS) \
-  || ([ -f "package.json" ] && grep -Eq '"next"|"react"' package.json && echo NEXTJS) \
-  || echo UNKNOWN
-```
-
-### CDN Version Update (WEBFLOW)
-
-```bash
-# After JS changes, update version in HTML
-# Pattern: src="https://cdn.example.com/js/file.js?v=X.Y.Z"
-# Increment Z for patches, Y for features, X for breaking changes
-```
-
-### Common Commands by Stack
-
-```bash
-# WEBFLOW — minification workflow (scripts portable from new skill location)
-node .opencode/skill/sk-code/scripts/minify-webflow.mjs          # Batch minify all JS
-node .opencode/skill/sk-code/scripts/verify-minification.mjs     # AST verification
-node .opencode/skill/sk-code/scripts/test-minified-runtime.mjs   # Runtime testing
-# Single file: npx terser src/javascript/[folder]/[file].js --compress --mangle -o src/javascript/z_minified/[folder]/[file].js
-# CDN deploy: wrangler r2 object put project-cdn/js/[file].min.js --file src/javascript/z_minified/[file].min.js
-# Version check: grep -n "v=" src/html/global.html | head -5
-
-# NEXTJS
-npm run type-check && npm run lint && npm run build
-# GO
-go test ./... && golangci-lint run && go build ./...
-```
-
-### Success Criteria Checklist (Quick)
-
-```
-Implementation:
-  □ Stack detected (or explicit hint provided)
-  □ No arbitrary timeouts (condition-based waiting instead)
-  □ All inputs validated
-  □ WEBFLOW: CDN versions updated
-
-Code Quality:
-  □ P0 items passing (per stack checklist)
-  □ WEBFLOW JS: snake_case naming, file headers
-  □ WEBFLOW CSS: semantic custom properties, `i` flag, BEM, GPU-only animation
-
-Verification:
-  □ STACK_VERIFICATION_COMMANDS all exit 0
-  □ WEBFLOW: actual browser opened, mobile + desktop tested, console errors: 0
-  □ Documented what was tested
-```
-
-For routing detail (precedence, intent classification, resource loading, cross-stack pairing): see `references/router/`.
+Quick check: stack detected, arbitrary waits avoided, inputs validated, WEBFLOW CDN versions updated when needed, P0 items pass, stack verification commands exit 0, and browser evidence is recorded where required. Routing detail lives in `references/router/`.

@@ -67,6 +67,11 @@ Natural language code search through two complementary approaches: CLI (ccc) for
 
 The authoritative routing logic for scoped loading, weighted intent scoring, and ambiguity handling.
 
+- Pattern 1: Runtime Discovery - `discover_markdown_resources()` recursively inventories `references/` and `assets/`.
+- Pattern 2: Existence-Check Before Load - `load_if_available()` uses `_guard_in_skill()`, `inventory`, and `seen`.
+- Pattern 3: Extensible Routing Key - intent labels select search, index, setup, status, and cross-CLI guidance.
+- Pattern 4: Multi-Tier Graceful Fallback - `UNKNOWN_FALLBACK` requests search/index disambiguation and missing intent routes return a "no knowledge base" notice.
+
 ```python
 from pathlib import Path
 
@@ -123,7 +128,7 @@ def discover_markdown_resources() -> set[str]:
     return {doc.relative_to(SKILL_ROOT).as_posix() for doc in docs}
 
 def score_intents(task) -> dict[str, float]:
-    """Weighted intent scoring from request text and capability signals."""
+    """Weighted intent scoring from request text and routing signals."""
     text = _task_text(task)
     scores = {intent: 0.0 for intent in INTENT_SIGNALS}
     for intent, cfg in INTENT_SIGNALS.items():
@@ -206,56 +211,13 @@ CocoIndex Code provides two access patterns for semantic code search:
 1. **CLI (ccc)** - Direct terminal usage, fastest for one-off searches
 2. **MCP server** - AI agent integration via `ccc mcp` (stdio mode)
 
-### CLI Approach (Primary) - CocoIndex Code CLI
+### CLI Approach
 
-#### Semantic Search
+Use `ccc status`, `ccc index`, `ccc search "query" --lang <language> --path "<glob>" --limit <n>`, and `ccc reset` only with explicit confirmation. If `ccc` is not on PATH, use `.opencode/skill/mcp-coco-index/mcp_server/.venv/bin/ccc`.
 
-```bash
-# Basic semantic search
-ccc search "error handling middleware" --limit 5
+### MCP Approach
 
-# Filter by language
-ccc search "database connection" --lang typescript
-
-# Filter by path
-ccc search "authentication" --path "src/**"
-
-# Combine filters
-ccc search "retry logic" --lang python --path "lib/**" --limit 10
-```
-
-#### Index Management
-
-```bash
-# Check index status
-ccc status
-
-# Build or update the index
-ccc index
-
-# Reset project databases (destructive)
-ccc reset
-```
-
-#### Binary Location
-
-```text
-.opencode/skill/mcp-coco-index/mcp_server/.venv/bin/ccc
-```
-
-Add to PATH or use the full path for invocation.
-
-### MCP Approach - AI Agent Integration
-
-The MCP server exposes tools via `ccc mcp` running in stdio mode.
-
-**MCP Tool:**
-
-The MCP server exposes **1 tool only**: `search`. The `status`, `index`, and `reset` operations are CLI-only commands and are NOT available as MCP tools.
-
-| Tool     | Purpose                         | Key Parameters                                                                  |
-| -------- | ------------------------------- | ------------------------------------------------------------------------------- |
-| `search` | Semantic search across codebase | `query` (str, required), `languages` (list\|null), `paths` (list\|null), `limit` (int, default 5), `offset` (int, default 0), `refresh_index` (bool, default True) |
+The MCP server exposes `search` only. Index/status/reset operations remain CLI-only unless routed through the Spec Kit Memory `ccc_*` tools. Use `refresh_index=true` on the first query, then `false` for follow-up searches when the codebase has not changed.
 
 ### Embedding Models
 
@@ -294,33 +256,7 @@ The CocoIndex Code daemon manages background indexing and serves search requests
 
 ### How Indexing Works
 
-```text
-STEP 1: File Scanning
-       +-- Scans project files respecting .gitignore
-       +-- Detects language from file extensions
-       +-- Supports 28+ languages (TypeScript, Python, Go, Rust, etc.)
-       |
-STEP 2: Chunk Splitting
-       +-- RecursiveSplitter with language-aware boundaries
-       +-- 1000 char chunks, 250 char minimum, 150 char overlap
-       +-- Preserves function/class boundaries where possible
-       +-- Produces many chunks for a typical large codebase
-       |
-STEP 3: Embedding Generation
-       +-- Primary: voyage/voyage-code-3 via LiteLLM (1024-dim vectors)
-       +-- Alternative: all-MiniLM-L6-v2 local model (384-dim vectors)
-       +-- Model configured in ~/.cocoindex_code/global_settings.yml
-       |
-STEP 4: Vector Storage
-       +-- Stores vectors in SQLite via sqlite-vec extension
-       +-- Indexes for fast approximate nearest neighbor search
-       |
-STEP 5: Search Execution
-       +-- Query text embedded with the same model
-       +-- Cosine similarity comparison against stored vectors
-       +-- Results ranked by similarity score
-       +-- Language and path filters applied post-ranking
-```
+Indexing scans project files, splits language-aware chunks, embeds each chunk with the configured model, stores vectors in SQLite, and searches by query-vector similarity with language/path filtering.
 
 ### Search Result Interpretation
 
@@ -372,19 +308,7 @@ Scores above 0.5 typically indicate strong semantic relevance. Always verify res
 
 ### Query Optimization
 
-**Write short, focused queries** -- 2-5 words of natural language outperform long keyword lists:
-
-| Style | Example | Why it works |
-|-------|---------|--------------|
-| Good | "retry logic patterns" | Tight embedding vector, high similarity to relevant code |
-| Good | "authentication middleware" | Single concept, precise matches |
-| Avoid | "retry helper utilities, exponential backoff, max retries, failed operation retry wrappers" | Embedding dilution -- averages across too many concepts |
-
-**Tips**:
-- Describe the *concept*, not the implementation details
-- Use 2-5 words, not full sentences or keyword lists
-- If results are too broad, add a language or path filter instead of more keywords
-- Run multiple focused queries rather than one overloaded query
+Use short, focused 2-5 word concept queries. Add language/path filters to narrow scope instead of stuffing more keywords into one query. Run multiple focused searches for broad investigations.
 
 ### Concurrent Query Sessions
 
@@ -446,82 +370,17 @@ When sending multiple searches in sequence (e.g., exploring a codebase):
 
 ## 5. REFERENCES
 
-### Fork Attribution
+Attribution: upstream `cocoindex-io/cocoindex-code`, local license/notice/changelog files, and helper scripts under `scripts/`. The router discovers detailed references dynamically.
 
-- **Upstream**: [cocoindex-io/cocoindex-code](https://github.com/cocoindex-io/cocoindex-code)
-- **License**: [LICENSE](./LICENSE)
-- **Attribution and modifications**: [NOTICE](./NOTICE)
-- **Changelog**: [changelog/CHANGELOG.md](./changelog/CHANGELOG.md)
-
-### Essential CLI Commands
-
-```bash
-# Search
-ccc search "query text"                    # Basic search
-ccc search "query" --limit 10             # Limit results
-ccc search "query" --lang typescript      # Filter by language
-ccc search "query" --path "src/**"        # Filter by path
-
-# Index management
-ccc status                                 # Check index status
-ccc index                                  # Build/update index
-ccc reset                                  # Reset databases (destructive)
-
-# Helper scripts
-bash .opencode/skill/mcp-coco-index/scripts/doctor.sh [--json] [--strict] [--require-config] [--require-daemon] [--expect-config <path>]
-bash .opencode/skill/mcp-coco-index/scripts/ensure_ready.sh [--json] [--refresh-index] [--strict] [--require-config] [--expect-config <path>]
-```
-
-### MCP Tool Summary
-
-The CocoIndex MCP server exposes `search` as its primary tool. Additionally, 3 management tools are available via the Spec Kit Memory MCP server's code graph module:
-
-| Tool     | Server | Description                    | Key Parameters                                                                  |
-| -------- | ------ | ------------------------------ | ------------------------------------------------------------------------------- |
-| `search` | CocoIndex | Semantic search across code    | `query` (str), `languages` (list\|null), `paths` (list\|null), `limit` (int, default 5), `offset` (int, default 0), `refresh_index` (bool, default true) |
-| `ccc_status` | Spec Kit Memory | Check CocoIndex availability and index stats | none |
-| `ccc_reindex` | Spec Kit Memory | Trigger incremental or full re-indexing | `full` (bool, default false) |
-| `ccc_feedback` | Spec Kit Memory | Submit search result quality feedback | `query` (str), `rating` (helpful\|not_helpful\|partial), `comment` (str, optional) |
-
-> **Note**: `refresh_index` defaults to `true`. Use the default on the first query in a session, then switch follow-up queries to `false` when the codebase has not changed to avoid `ComponentContext` errors.
->
-> **Companion recovery surface**: In the integrated Spec Kit workflow, use `/spec_kit:resume` first. Recover packet context in the order `handover.md -> _memory.continuity -> spec docs`, then use CocoIndex when those canonical packet sources no longer answer the question.
+Companion recovery: use `/spec_kit:resume` first, then use CocoIndex when `handover.md -> _memory.continuity -> spec docs` cannot answer the question.
 
 ### Supported Languages
 
-CocoIndex Code supports 28+ languages with language-aware chunk splitting:
+CocoIndex Code supports 28+ source/config languages with language-aware chunk splitting. Use `--lang` when the target language is known.
 
-| Language   | Extension          | Language    | Extension       |
-| ---------- | ------------------ | ----------- | --------------- |
-| TypeScript | .ts, .tsx          | Python      | .py             |
-| JavaScript | .js, .jsx          | Go          | .go             |
-| Rust       | .rs                | Java        | .java           |
-| C          | .c, .h             | C++         | .cpp, .hpp      |
-| C#         | .cs                | Ruby        | .rb             |
-| PHP        | .php               | Swift       | .swift          |
-| Kotlin     | .kt                | Shell       | .sh             |
-| CSS        | .css               | DTD         | .dtd            |
-| Fortran    | .f, .f90           | HTML        | .html           |
-| JSON       | .json              | Lua         | .lua            |
-| Pascal     | .pas               | R           | .r, .R          |
-| Scala      | .scala             | Solidity    | .sol            |
-| TOML       | .toml              | XML         | .xml            |
-| YAML       | .yml, .yaml        | SQL         | .sql            |
+### Decision Tree
 
-### Decision Tree: Which Search Tool?
-
-```text
-Need to find code?
-  |
-  +-- Know the exact text/token?
-  |     YES --> Use Grep
-  |
-  +-- Know the file name?
-  |     YES --> Use Glob
-  |
-  +-- Searching by concept/intent?
-        YES --> Use ccc search
-```
+Exact token: Grep. File name/path: Glob. Concept or intent: CocoIndex.
 
 ---
 
@@ -560,25 +419,7 @@ Key integrations:
 
 ### Complements Grep and Glob
 
-Semantic search fills the gap between exact pattern matching and conceptual code discovery:
-
-| Tool   | Best For                        | Limitation                          |
-| ------ | ------------------------------- | ----------------------------------- |
-| Grep   | Exact text, regex patterns      | Cannot find conceptual matches      |
-| Glob   | File names, path patterns       | Cannot search file contents         |
-| ccc    | Intent-based, conceptual search | Approximate - needs verification    |
-
-**Combined workflow example:**
-```bash
-# Step 1: Semantic search to find candidate files
-ccc search "rate limiting middleware" --lang typescript --limit 5
-
-# Step 2: Grep to verify exact patterns in candidates
-grep -rn "rateLimit" src/middleware/
-
-# Step 3: Read to confirm implementation details
-# Use Read tool on the matched files
-```
+Use CocoIndex to find candidate files by concept, Grep to confirm exact patterns, and Read to verify implementation details.
 
 ### Related Skills
 
@@ -588,56 +429,10 @@ grep -rn "rateLimit" src/middleware/
 **system-spec-kit**: For context preservation
 - Search results and decisions can be saved as memory for future sessions
 
-### Tool Usage Guidelines
-
-**Bash**: All ccc commands, index management, status checks
-**Read**: Verify search results by reading matched files
-**Grep**: Confirm exact patterns after semantic search narrows candidates
-**Glob**: Locate files by name when semantic search identifies a module
-
-### External Tools
-
-**CocoIndex Code (ccc)**:
-- Installation: `bash .opencode/skill/mcp-coco-index/scripts/install.sh`
-- Update: `bash .opencode/skill/mcp-coco-index/scripts/update.sh`
-- Purpose: Semantic code search via vector embeddings
-- Requires: Python 3.11+, SQLite with sqlite-vec extension
+Tool usage: Bash for `ccc`, Read for result verification, Grep for exact confirmation, and Glob for file names.
 
 ---
 
 ## 8. RELATED RESOURCES
 
-### scripts/
-
-| Script         | Purpose            | Usage                                                                         |
-| -------------- | ------------------ | ----------------------------------------------------------------------------- |
-| **install.sh** | Install CocoIndex  | `bash .opencode/skill/mcp-coco-index/scripts/install.sh`                  |
-| **update.sh**  | Update to latest   | `bash .opencode/skill/mcp-coco-index/scripts/update.sh`                   |
-| **doctor.sh**  | Read-only health check | `bash .opencode/skill/mcp-coco-index/scripts/doctor.sh [--json] [--strict] [--require-config] [--require-daemon] [--expect-config <path>]` |
-| **ensure_ready.sh** | Idempotent bootstrap | `bash .opencode/skill/mcp-coco-index/scripts/ensure_ready.sh [--json] [--refresh-index] [--strict] [--require-config] [--expect-config <path>]` |
-
-### references/
-
-| Document                    | Purpose                  | Key Insight                                  |
-| --------------------------- | ------------------------ | -------------------------------------------- |
-| **tool_reference.md**       | Complete CLI/MCP docs    | All commands, parameters, and options        |
-| **search_patterns.md**      | Search query patterns    | Effective query formulation and filter usage |
-| **cross_cli_playbook.md**   | Cross-CLI usage recipe   | Safe defaults for repeated searches and troubleshooting |
-| **downstream_adoption_checklist.md** | Downstream rollout checklist | Minimum bundle for sibling-repo adoption |
-| **settings_reference.md**   | Global settings config   | Embedding model switching, daemon settings   |
-
-### assets/
-
-| Asset                     | Purpose                |
-| ------------------------- | ---------------------- |
-| **config_templates.md**   | MCP server config examples |
-
-### Guides
-
-- [INSTALL_GUIDE.md](INSTALL_GUIDE.md) - Installation and initial setup
-- [README.md](README.md) - Skill overview and quick start
-
-### Related Skills
-
-- **[mcp-code-mode](../mcp-code-mode/SKILL.md)** - MCP orchestration for external tools
-- **[system-spec-kit](../system-spec-kit/SKILL.md)** - Context preservation and memory
+Related guides: `INSTALL_GUIDE.md`, `README.md`, routed references, and `assets/config_templates.md`. Related skills: `mcp-code-mode` for external tools and `system-spec-kit` for continuity.

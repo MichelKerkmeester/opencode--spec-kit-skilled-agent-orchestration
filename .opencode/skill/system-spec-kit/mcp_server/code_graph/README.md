@@ -293,6 +293,10 @@ SPECKIT_CODE_GRAPH_INDEX_SKILLS=sk-code-review,sk-doc
 }
 ```
 
+### Doc-Language File Types
+
+When a folder is opted in, the scan persists more than source code. Markdown, JSON, JSONC, YAML, YML and TOML files in that folder become `code_files` rows tagged `language='doc'` with zero nodes and zero edges. This honors the public contract that opted-in folders are actually scanned (without dragging tree-sitter parsers across non-code formats). AST-only consumers that join `code_nodes` or `code_edges` correctly find nothing for these files. The doc lane stays inactive when no `.opencode/` folder is opted in.
+
 ### Precedence
 
 When both are present, scan-call arguments take precedence over env vars. Use env vars for process-wide defaults; use per-call args for one-off overrides.

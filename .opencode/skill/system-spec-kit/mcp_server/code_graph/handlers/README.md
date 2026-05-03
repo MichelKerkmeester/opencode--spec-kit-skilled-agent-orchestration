@@ -141,7 +141,7 @@ handlers/
 
 | File | Responsibility |
 |---|---|
-| `scan.ts` | Handles `code_graph_scan`, walks the workspace and updates the SQLite graph through the library indexer. |
+| `scan.ts` | Handles `code_graph_scan`, walks the workspace and updates the SQLite graph through the library indexer. Accepts `includeSkills` (boolean or `sk-*` list), `includeAgents`, `includeCommands`, `includeSpecs`, `includePlugins` per-call args; resolves the active scope policy via `../lib/index-scope-policy.ts`. Per-call args override the matching `SPECKIT_CODE_GRAPH_INDEX_*` env vars. |
 | `query.ts` | Handles `code_graph_query` structural reads such as outline, calls, imports and blast radius. |
 | `status.ts` | Handles `code_graph_status` health probes with freshness, readiness, parse health and graph-quality fields. |
 | `context.ts` | Handles `code_graph_context` neighborhoods from manual, graph or CocoIndex seeds. |

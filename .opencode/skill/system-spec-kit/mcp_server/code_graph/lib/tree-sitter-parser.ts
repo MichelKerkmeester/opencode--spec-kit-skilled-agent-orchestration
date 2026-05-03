@@ -43,12 +43,13 @@ let initPromise: Promise<void> | null = null;
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 const grammarCache = new Map<SupportedLanguage, any>();
-const SUPPORTED_LANGUAGES: SupportedLanguage[] = ['javascript', 'typescript', 'python', 'bash'];
+type ParserLanguage = Exclude<SupportedLanguage, 'doc'>;
+const SUPPORTED_LANGUAGES: ParserLanguage[] = ['javascript', 'typescript', 'python', 'bash'];
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 
-function getGrammarPath(language: SupportedLanguage): string {
-  const nameMap: Record<SupportedLanguage, string> = {
+function getGrammarPath(language: ParserLanguage): string {
+  const nameMap: Record<ParserLanguage, string> = {
     javascript: 'tree-sitter-javascript',
     typescript: 'tree-sitter-typescript',
     python: 'tree-sitter-python',
@@ -78,7 +79,7 @@ async function ensureInit(): Promise<void> {
   return initPromise;
 }
 
-async function getLanguageGrammar(language: SupportedLanguage): Promise<unknown> {
+async function getLanguageGrammar(language: ParserLanguage): Promise<unknown> {
   const cached = grammarCache.get(language);
   if (cached) return cached;
 
@@ -128,6 +129,8 @@ function getKindMap(language: SupportedLanguage): Record<string, SymbolKind> {
       return PYTHON_KIND_MAP;
     case 'bash':
       return BASH_KIND_MAP;
+    case 'doc':
+      return {};
   }
 }
 
@@ -639,6 +642,20 @@ export class TreeSitterParser implements ParserAdapter {
     language: SupportedLanguage,
     edgeWeights?: Partial<Record<EdgeType, number>>,
   ): ParseResult {
+    if (language === 'doc') {
+      return {
+        filePath: '',
+        language,
+        nodes: [],
+        edges: [],
+        detectorProvenance: detectorProvenanceFromParserBackend('treesitter'),
+        contentHash: generateContentHash(content),
+        parseHealth: 'clean',
+        parseErrors: [],
+        parseDurationMs: 0,
+      };
+    }
+
     if (!parserInstance) {
       if (isSpeckitMetricsEnabled()) {
         speckitMetrics.recordHistogram('spec_kit.graph.parse_duration_ms', 0, { language, outcome: 'error' });
@@ -729,6 +746,7 @@ export class TreeSitterParser implements ParserAdapter {
 
   /** Load a specific language grammar */
   static async loadLanguage(language: SupportedLanguage): Promise<void> {
+    if (language === 'doc') return;
     await getLanguageGrammar(language);
   }
 
@@ -740,6 +758,7 @@ export class TreeSitterParser implements ParserAdapter {
   /** Check if parser and grammars are loaded */
   static isReady(language?: SupportedLanguage): boolean {
     if (!parserInstance) return false;
+    if (language === 'doc') return true;
     if (language) return grammarCache.has(language);
     return SUPPORTED_LANGUAGES.every(lang => grammarCache.has(lang));
   }

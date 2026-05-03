@@ -34,7 +34,7 @@ Multi-language code standards for OpenCode system code across JavaScript, TypeSc
 | TypeScript | `typescript`, `ts`, `tsx`, `interface`, `type`, `tsconfig`, `tsc`, `strict`       |
 | Python     | `python`, `pytest`, `argparse`, `docstring`, `snake_case`                         |
 | Shell      | `bash`, `shell`, `shebang`, `set -e`, `pipefail`                                  |
-| Config     | `json`, `jsonc`, `config`, `schema`, `manifest`                                   |
+| Config     | `json`, `jsonc`, `config`, `schema`, `descriptor`                                 |
 
 ### When NOT to Use
 
@@ -86,6 +86,11 @@ The router discovers markdown resources recursively from `references/` and `asse
 
 The authoritative routing logic for scoped loading, weighted intent scoring, and ambiguity handling.
 
+- Pattern 1: Runtime Discovery - `discover_markdown_resources()` recursively scans `references/` and `assets/`.
+- Pattern 2: Existence-Check Before Load - `load_if_available()` uses `_guard_in_skill()`, `inventory`, and `seen`.
+- Pattern 3: Extensible Routing Key - file extension, language score, and shared-topic signals route resources.
+- Pattern 4: Multi-Tier Graceful Fallback - `UNKNOWN_FALLBACK` provides a disambiguation checklist when language detection is weak.
+
 ```python
 from pathlib import Path
 
@@ -98,7 +103,7 @@ LANGUAGE_KEYWORDS = {
     "TYPESCRIPT": {"typescript": 2.4, "interface": 2.0, "tsconfig": 2.1, "tsc": 1.8},
     "PYTHON": {"python": 2.3, "pytest": 2.0, "argparse": 1.7, "docstring": 1.6},
     "SHELL": {"bash": 2.2, "shebang": 1.5, "set -e": 1.5, "pipefail": 1.7},
-    "CONFIG": {"json": 2.0, "jsonc": 2.1, "schema": 1.8, "manifest": 1.5},
+    "CONFIG": {"json": 2.0, "jsonc": 2.1, "schema": 1.8, "descriptor": 1.5},
 }
 
 FILE_EXTENSIONS = {
@@ -278,26 +283,10 @@ def route_opencode_resources(task):
 
 ### Standards Workflow
 
-```
-STEP 1: Language Detection
-        ├─ Check file extension first (.js/.cjs/.mjs, .ts/.tsx/.mts, .py, .sh, .json/.jsonc)
-        ├─ Fall back to keyword matching
-        └─ Prompt user if ambiguous
-        ↓
-STEP 2: Load Shared Patterns (ALWAYS)
-        ├─ universal_patterns.md → Naming, commenting principles
-        └─ code_organization.md → File structure, sections
-        ↓
-STEP 3: Load Language References (CONDITIONAL)
-        ├─ {language}/style_guide.md → Headers, formatting
-        ├─ {language}/quality_standards.md → Errors, logging
-        └─ {language}/quick_reference.md → Cheat sheet
-        ↓
-STEP 4: Apply Standards
-        ├─ Follow patterns from loaded references
-        ├─ Use checklist for validation (ON_DEMAND)
-        └─ Cite evidence with file:line references
-```
+1. Detect language from extension first, then weighted keywords.
+2. Load shared patterns and code organization guidance.
+3. Load language-specific style, quality, and quick-reference docs.
+4. Apply standards with file:line evidence and the relevant checklist.
 
 ### Key Pattern Categories
 
@@ -313,61 +302,15 @@ STEP 4: Apply Standards
 
 ### Evidence-Based Patterns
 
-| Language   | Key Evidence Files                                             |
-| ---------- | -------------------------------------------------------------- |
-| JavaScript | Legacy `.js/.cjs` runtime helpers plus plugin ESM entrypoints; apply module rules by file extension and path |
-| TypeScript | Current system-spec-kit packages: root `tsconfig.json`, `shared/tsconfig.json`, `mcp_server/tsconfig.json`, `scripts/tsconfig.json`; source examples in `mcp_server/context-server.ts`, `scripts/core/config.ts`, `mcp_server/handlers/memory-search.ts` |
-| Python     | `mcp_server/skill_advisor/scripts/skill_advisor.py`, verifier scripts in this skill |
-| Shell      | `lib/common.sh`, `spec/create.sh`, `validate.sh`               |
-| Config     | `config.jsonc`, `opencode.json`, `complexity-config.jsonc`     |
-
-### Module-System Boundaries
-
-Do not apply one module format globally. Current system-spec-kit TypeScript is
-package-aware:
-
-- `shared/` and `mcp_server/` are ESM packages (`"type": "module"`) with
-  `module: "nodenext"` and `moduleResolution: "nodenext"`.
-- `scripts/` is an ESM package (`"type": "module"`) with `module: "es2022"`
-  and `moduleResolution: "node"`.
-- The root `tsconfig.json` still provides a CommonJS default inherited by
-  workspaces that do not override it.
-- Plain JavaScript `.js/.cjs` utility files use CommonJS unless their package
-  boundary or loader contract says otherwise.
-- OpenCode plugin entrypoints and plugin bridge helpers use ESM default export;
-  do not force `module.exports` onto those paths.
+Use language references for current examples. Module rules are package-aware: ESM packages use their local TypeScript settings, `.cjs` stays CommonJS, `.mjs` stays ESM, and plugin entrypoints keep their ESM export shape.
 
 ### 139 Carry-Forward Patterns
 
-Recent 139 hybrid-rag implementation patterns are normative for new standards work:
-
-1. **Default-on with explicit opt-out**
-   - New behavior flags default to enabled.
-   - Opt-out is explicit and testable (`false` path must be covered).
-2. **Single source of truth constants**
-   - Shared rule values live in one module and are imported by dependents/tests.
-   - Avoid duplicate literals across handlers, tests, or checklists.
-3. **Invariant-at-source, regression-at-seam**
-   - Put invariants in core parsing/scoring modules.
-   - Validate via seam-level tests and command assertions.
-4. **Idempotent verification loops**
-   - Re-running the same validation command should keep status stable.
-   - Treat drift between first and second pass as a defect.
+Use explicit opt-out flags, single-source constants, invariants at source with seam tests, and idempotent verification loops.
 
 ### Alignment Verifier Output Contract
 
-The recurring verifier at `scripts/verify_alignment_drift.py` applies severity-aware reporting:
-
-- Output format includes rule id and severity: `[{RULE_ID}] [{ERROR|WARN}]`.
-- Default failure criteria: `ERROR` findings only.
-- Optional strict mode: `--fail-on-warn` makes warnings build-breaking.
-- Style rules (`JS-*`, `TS-*`, `PY-*`, `SH-*`) are warning-first by default.
-- Parse/integrity rules (`COMMON-*`, `JSON-*`, `JSONC-*`) are error-class by default.
-- Header style invariants and comment policy checks are manual checklist gates; the verifier checks marker-level headers only.
-- Context-aware advisory downgrade is applied in archival/contextual paths (`z_archive`, `scratch`, `memory`, `research`, `context`, `assets`, `examples`, `fixtures`, and test-heavy paths).
-- TypeScript module-header enforcement is skipped for test files (`*.test.ts`, `*.spec.ts`, `*.vitest.ts` + TSX variants) and pattern assets.
-- JavaScript strict-mode enforcement is skipped for `.mjs`.
-- `tsconfig*.json` supports comment-aware parsing fallback.
+`scripts/verify_alignment_drift.py` reports `[{RULE_ID}] [{ERROR|WARN}]`. Default completion blocks on `ERROR`; `--fail-on-warn` makes warnings blocking. Header styling, comment density, naming, and KISS/DRY/SOLID remain manual checklist gates.
 
 ---
 
@@ -442,55 +385,7 @@ The recurring verifier at `scripts/verify_alignment_drift.py` applies severity-a
 
 ## 5. SUCCESS CRITERIA
 
-### Quality Gates
-
-| Gate               | Criteria                                 | Priority |
-| ------------------ | ---------------------------------------- | -------- |
-| File Header        | Matches language-specific format         | P0       |
-| Naming Convention  | Consistent throughout file               | P0       |
-| No Commented Code  | Zero commented-out code blocks           | P0       |
-| Header Invariant   | Numbered ALL-CAPS section headers preserved | P0    |
-| Alignment Verifier | `verify_alignment_drift.py` returns no `ERROR` on changed scope | P0 |
-| Filesystem Safety  | Canonical path containment checks on create/move/delete flows | P0 |
-| Spec Folder Safety | `NNN-name` validation + approved roots for spec operations | P0 |
-| Module Boundary    | NodeNext/ESM, CommonJS, and plugin ESM rules applied by package/path | P0 |
-| Error Handling     | All error paths handled                  | P1       |
-| Comment Policy     | Max 3/10 + purposeful WHY comments only (manual checklist gate) | P1 |
-| KISS/DRY/SOLID     | SRP/OCP/LSP/ISP/DIP violations identified | P1      |
-| Documentation      | Public functions have doc comments       | P1       |
-| Reference Comments | Task/bug/req references where applicable | P2       |
-
-### Priority Levels
-
-| Level | Handling                  | Examples                          |
-| ----- | ------------------------- | --------------------------------- |
-| P0    | HARD BLOCKER - must fix   | File header, no commented code    |
-| P1    | Required OR approved skip | Consistent naming, error handling |
-| P2    | Can defer                 | Reference comments, import order  |
-
-### Completion Checklist
-
-```
-P0 Items (MUST pass):
-□ File header present and correct format
-□ No commented-out code
-□ Consistent naming convention
-□ Numbered ALL-CAPS section headers preserved
-□ Alignment verifier reports no ERROR findings for changed scope
-□ Filesystem mutation paths use canonical containment checks
-□ Spec folder operations enforce `NNN-name` and approved roots
-□ Module system matches package/path boundary
-
-P1 Items (Required):
-□ Comment policy enforced via manual checklist review (max 3/10, purposeful WHY comments only)
-□ Error handling implemented
-□ Public functions documented
-□ KISS/DRY + SOLID checks applied (SRP/OCP/LSP/ISP/DIP)
-
-P2 Items (Can defer):
-□ Reference comments (T###, BUG-###)
-□ Import order optimized
-```
+P0: correct file header, no commented-out code, consistent naming, section-header invariants, no verifier `ERROR`, path containment on filesystem mutations, approved spec folder roots, and correct module boundary. P1: purposeful comments, error handling, public docs, and KISS/DRY/SOLID review. P2: reference comments and import order.
 
 ---
 
@@ -512,67 +407,15 @@ This skill operates within the behavioral framework defined in AGENTS.md.
 - Use `sk-code-review` security/code-quality/test checklists for baseline risk findings.
 - Use this skill's references/checklists only for language-specific standards evidence.
 
-### Skill Differentiation
-
-| Task Type                 | This Skill | sk-code |
-| ------------------------- | ---------- | -------------- |
-| MCP server JavaScript     | ✅          | ❌              |
-| MCP server TypeScript     | ✅          | ❌              |
-| Python validation scripts | ✅          | ❌              |
-| Shell automation scripts  | ✅          | ❌              |
-| JSON/JSONC configs        | ✅          | ❌              |
-| Frontend JavaScript (DOM) | ❌          | ✅              |
-| CSS styling               | ❌          | ✅              |
-| Browser verification      | ❌          | ✅              |
-
----
-
-## 7. EXTERNAL RESOURCES
-
-| Resource          | URL                              | Use For                     |
-| ----------------- | -------------------------------- | --------------------------- |
-| MDN Web Docs      | developer.mozilla.org            | JavaScript, Node.js APIs    |
-| TypeScript Docs   | typescriptlang.org/docs          | TypeScript language, config |
-| TSDoc Reference   | tsdoc.org                        | TSDoc comment format        |
-| Python Docs       | docs.python.org                  | Python standard library     |
-| Bash Manual       | gnu.org/software/bash/manual     | Shell scripting             |
-| JSON Schema       | json-schema.org                  | JSON/JSONC validation       |
-| ShellCheck        | shellcheck.net                   | Shell script validation     |
+This skill covers OpenCode JS/TS/Python/Shell/config code. Use `sk-code` for app/frontend work and browser verification.
 
 ---
 
 ## 8. REFERENCES AND RELATED RESOURCES
 
-### Reference Files
+The router discovers reference and checklist markdown dynamically. Start with `references/shared/universal_patterns.md`, then load language-specific style, quality, quick-reference, and checklist docs.
 
-| Language   | Files                                                          |
-| ---------- | -------------------------------------------------------------- |
-| Shared     | `universal_patterns.md`, `code_organization.md`, `hooks.md`    |
-| JavaScript | `style_guide.md`, `quality_standards.md`, `quick_reference.md` |
-| TypeScript | `style_guide.md`, `quality_standards.md`, `quick_reference.md` |
-| Python     | `style_guide.md`, `quality_standards.md`, `quick_reference.md` |
-| Shell      | `style_guide.md`, `quality_standards.md`, `quick_reference.md` |
-| Config     | `style_guide.md`, `quality_standards.md`, `quick_reference.md` |
-
-### Checklists
-
-- `assets/checklists/universal_checklist.md` - Cross-language P0 items
-- `assets/checklists/javascript_checklist.md` - JS-specific validation
-- `assets/checklists/typescript_checklist.md` - TS-specific validation
-- `assets/checklists/python_checklist.md` - Python-specific validation
-- `assets/checklists/shell_checklist.md` - Shell-specific validation
-- `assets/checklists/config_checklist.md` - JSON/JSONC validation
-- `references/shared/alignment_verification_automation.md` - verifier contract and automation workflow
-
-### Related Skills
-
-| Skill                       | Use For                                    |
-| --------------------------- | ------------------------------------------ |
-| **sk-code-review**       | Findings-first review baseline, severity model, risk reporting |
-| **sk-code**          | Web/frontend development, browser testing  |
-| **sk-doc** | Markdown documentation, skill creation     |
-| **system-spec-kit**         | Spec folders, memory, context preservation |
-| **sk-git**           | Git workflows, commits, PR creation        |
+Related skills: `sk-code-review` for formal review, `sk-code` for app/frontend work, `sk-doc` for markdown, `system-spec-kit` for packets and memory, and `sk-git` for git workflows.
 
 ---
 
@@ -591,77 +434,7 @@ This skill operates within the behavioral framework defined in AGENTS.md.
 
 ## 10. QUICK REFERENCE
 
-### File Header Templates
-
-**JavaScript**
-```javascript
-// ╔══════════════════════════════════════════════════════════════════════════╗
-// ║ [Module Name]                                                            ║
-// ╚══════════════════════════════════════════════════════════════════════════╝
-
-'use strict';
-
-// ─────────────────────────────────────────────────────────────────────────────
-// 1. IMPORTS
-// ─────────────────────────────────────────────────────────────────────────────
-const fs = require('fs');
-```
-
-**Python**
-```python
-#!/usr/bin/env python3
-# ╔══════════════════════════════════════════════════════════════════════════╗
-# ║ [Script Name]                                                            ║
-# ╚══════════════════════════════════════════════════════════════════════════╝
-"""Brief description."""
-
-# ─────────────────────────────────────────────────────────────────────────────
-# 1. IMPORTS
-# ─────────────────────────────────────────────────────────────────────────────
-import sys
-```
-
-**Shell**
-```bash
-#!/usr/bin/env bash
-# ╔══════════════════════════════════════════════════════════════════════════╗
-# ║ [Script Name]                                                            ║
-# ╚══════════════════════════════════════════════════════════════════════════╝
-# Brief description.
-
-set -euo pipefail
-
-# ─────────────────────────────────────────────────────────────────────────────
-# 1. CONFIGURATION
-# ─────────────────────────────────────────────────────────────────────────────
-SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-```
-
-**TypeScript**
-```typescript
-// ───────────────────────────────────────────────────────────────────
-// MODULE: [Module Name]
-// ───────────────────────────────────────────────────────────────────
-
-// ───────────────────────────────────────────────────────────────────
-// 1. IMPORTS
-// ───────────────────────────────────────────────────────────────────
-
-import path from 'path';
-import type { SearchOptions } from '../types';
-```
-
-**JSONC**
-```jsonc
-// ╔══════════════════════════════════════════════════════════════════════════╗
-// ║ [Config Name]                                                             ║
-// ╚══════════════════════════════════════════════════════════════════════════╝
-{
-  "$schema": "https://...",
-  // Section-level rationale
-  "key": "value"
-}
-```
+File header templates live in each language quick-reference. Keep headers, shebangs, strict-mode directives, and numbered sections aligned with the loaded language reference.
 
 ### Naming Matrix
 
@@ -679,53 +452,4 @@ import type { SearchOptions } from '../types';
 | Booleans   | `is`/`has`    | `is`/`has`    | `is_`/`has_`  | `is_`/`has_`  | N/A         |
 | Private    | `_prefix`     | `_prefix`     | `_prefix`     | `_prefix`     | N/A         |
 
-### Error Handling Patterns
-
-**JavaScript**
-```javascript
-function processData(data) {
-  if (!data) throw new Error('Data required');
-  try {
-    return JSON.parse(data);
-  } catch (error) {
-    console.error('[Module] Failed:', error.message);
-    return null;
-  }
-}
-```
-
-**Python**
-```python
-def validate_input(data: str) -> Tuple[bool, str]:
-    if not data:
-        return False, "Data required"
-    try:
-        return True, json.loads(data)
-    except json.JSONDecodeError as e:
-        return False, f"Parse error: {e}"
-```
-
-**Shell**
-```bash
-validate_file() {
-    local file="$1"
-    if [[ ! -f "$file" ]]; then
-        log_error "Not found: $file"
-        return 1
-    fi
-    return 0
-}
-```
-
-### Comment Patterns
-
-```javascript
-// GOOD - Purposeful comments
-// Skip initialization to prevent double-binding
-// Sort by recency so latest evidence is consumed first
-// REQ-033: transaction manager for pending file recovery
-
-// BAD - WHAT comments (avoid)
-// Set value to 42
-// Loop through items
-```
+Error handling and comment examples live in the language references. Keep comments purposeful and avoid narrative "what" comments.

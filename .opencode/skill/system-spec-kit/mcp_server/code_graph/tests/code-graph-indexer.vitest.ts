@@ -8,7 +8,7 @@
 import { afterEach, beforeEach, describe, expect, it } from 'vitest';
 import { mkdirSync, mkdtempSync, readFileSync, realpathSync, rmSync, statSync, symlinkSync, utimesSync, writeFileSync } from 'node:fs';
 import { tmpdir } from 'node:os';
-import { dirname, join } from 'node:path';
+import { dirname, join, relative } from 'node:path';
 import { shouldIndexForCodeGraph } from '../../lib/utils/index-scope.js';
 import {
   generateSymbolId,
@@ -270,6 +270,12 @@ describe('indexer-types', () => {
       expect(detectLanguage('file.sh')).toBe('bash');
     });
 
+    it('detects doc file types', () => {
+      for (const extension of ['md', 'json', 'jsonc', 'yaml', 'yml', 'toml']) {
+        expect(detectLanguage(`file.${extension}`)).toBe('doc');
+      }
+    });
+
     it('returns null for unknown', () => {
       expect(detectLanguage('file.rs')).toBeNull();
       expect(detectLanguage('file.go')).toBeNull();
@@ -506,6 +512,146 @@ describe('structural-indexer', () => {
 
         const workspaceResults = await indexFiles(getDefaultConfig(tempDir), { skipFreshFiles: false });
         expect(workspaceResults.map((result) => realpathSync(result.filePath))).not.toContain(realpathSync(skillFilePath));
+      } finally {
+        rmSync(tempDir, { recursive: true, force: true });
+      }
+    });
+
+    it('indexes doc file rows for opted-in .opencode folders across the extension matrix', async () => {
+      const tempDir = mkdtempSync(join(tmpdir(), 'code-graph-doc-scope-fixture-'));
+      const folders = ['agent', 'command', 'specs', 'plugins'] as const;
+      const extensions = ['md', 'json', 'jsonc', 'yaml', 'yml', 'toml'] as const;
+      const expectedRelativePaths = folders.flatMap((folder) => (
+        extensions.map((extension) => `.opencode/${folder}/doc-${folder}.${extension}`)
+      ));
+
+      try {
+        initDb(tempDir);
+        for (const relativePath of expectedRelativePaths) {
+          writeWorkspaceFile(tempDir, relativePath, `title: ${relativePath}\n`);
+        }
+
+        const results = await indexFiles(
+          getDefaultConfig(tempDir, {
+            includeAgents: true,
+            includeCommands: true,
+            includeSpecs: true,
+            includePlugins: true,
+            env: {},
+          }),
+          { skipFreshFiles: false },
+        );
+        persistIndexResults(results);
+
+        const rows = getDb().prepare(`
+          SELECT file_path, language, node_count, edge_count, parse_health
+          FROM code_files
+          WHERE language = 'doc'
+          ORDER BY file_path
+        `).all() as Array<{
+          file_path: string;
+          language: string;
+          node_count: number;
+          edge_count: number;
+          parse_health: string;
+        }>;
+
+        expect(rows).toHaveLength(24);
+        expect(rows.map((row) => relative(tempDir, row.file_path).replace(/\\/g, '/')).sort())
+          .toEqual([...expectedRelativePaths].sort());
+        for (const row of rows) {
+          expect(row).toMatchObject({
+            language: 'doc',
+            node_count: 0,
+            edge_count: 0,
+            parse_health: 'clean',
+          });
+        }
+      } finally {
+        rmSync(tempDir, { recursive: true, force: true });
+      }
+    });
+
+    it('indexes selected skill and agent doc rows without opening other default-excluded folders', async () => {
+      const tempDir = mkdtempSync(join(tmpdir(), 'code-graph-doc-selected-skill-fixture-'));
+      const expectedRelativePaths = [
+        '.opencode/agent/code.md',
+        '.opencode/skill/sk-code-review/SKILL.md',
+        '.opencode/skill/sk-code-review/rules.json',
+      ];
+      const excludedRelativePaths = [
+        '.opencode/skill/sk-doc/SKILL.md',
+        '.opencode/command/run.yaml',
+      ];
+
+      try {
+        initDb(tempDir);
+        for (const relativePath of [...expectedRelativePaths, ...excludedRelativePaths]) {
+          writeWorkspaceFile(tempDir, relativePath, `title: ${relativePath}\n`);
+        }
+
+        const results = await indexFiles(
+          getDefaultConfig(tempDir, {
+            includeSkills: ['sk-code-review'],
+            includeAgents: true,
+            env: {},
+          }),
+          { skipFreshFiles: false },
+        );
+        persistIndexResults(results);
+
+        const rows = getDb().prepare(`
+          SELECT file_path, language, node_count, edge_count
+          FROM code_files
+          WHERE language = 'doc'
+          ORDER BY file_path
+        `).all() as Array<{
+          file_path: string;
+          language: string;
+          node_count: number;
+          edge_count: number;
+        }>;
+
+        expect(rows.map((row) => relative(tempDir, row.file_path).replace(/\\/g, '/')).sort())
+          .toEqual([...expectedRelativePaths].sort());
+        for (const row of rows) {
+          expect(row).toMatchObject({
+            language: 'doc',
+            node_count: 0,
+            edge_count: 0,
+          });
+        }
+      } finally {
+        rmSync(tempDir, { recursive: true, force: true });
+      }
+    });
+
+    it('keeps doc files in default-excluded .opencode folders out of code_files rows', async () => {
+      const tempDir = mkdtempSync(join(tmpdir(), 'code-graph-doc-default-scope-fixture-'));
+      const excludedDocPaths = [
+        '.opencode/agent/foo.md',
+        '.opencode/command/bar.json',
+        '.opencode/specs/baz.yaml',
+        '.opencode/plugins/qux.toml',
+      ];
+
+      try {
+        initDb(tempDir);
+        for (const relativePath of excludedDocPaths) {
+          writeWorkspaceFile(tempDir, relativePath, `title: ${relativePath}\n`);
+        }
+
+        const results = await indexFiles(getDefaultConfig(tempDir), { skipFreshFiles: false });
+        persistIndexResults(results);
+
+        const docRows = getDb().prepare(`
+          SELECT COUNT(*) AS count
+          FROM code_files
+          WHERE language = 'doc'
+        `).get() as { count: number };
+
+        expect(results).toHaveLength(0);
+        expect(docRows.count).toBe(0);
       } finally {
         rmSync(tempDir, { recursive: true, force: true });
       }

@@ -162,8 +162,8 @@ lib/
 
 | File | Responsibility |
 |---|---|
-| `structural-indexer.ts` | Walks files, applies scan filters, parses symbols and persists graph rows. |
-| `tree-sitter-parser.ts` | Extracts AST-backed nodes and edges with fallback parser support. |
+| `structural-indexer.ts` | Walks files, applies scan filters, parses symbols and persists graph rows. Short-circuits `language='doc'` files (markdown, JSON, JSONC, YAML, YML, TOML) to register-only rows without tree-sitter parsing. |
+| `tree-sitter-parser.ts` | Extracts AST-backed nodes and edges with fallback parser support. Skips the `'doc'` language entirely. |
 | `code-graph-db.ts` | Owns SQLite schema, graph CRUD, statistics and startup highlights. |
 | `code-graph-context.ts` | Builds token-bounded neighborhoods for `code_graph_context`. |
 | `seed-resolver.ts` | Resolves manual, graph and CocoIndex file-line seeds to indexed graph nodes. |
@@ -172,8 +172,8 @@ lib/
 | `readiness-contract.ts` | Defines readiness, canonical readiness and trust-state terms. |
 | `budget-allocator.ts` | Splits context budgets across graph sections and overflow. |
 | `working-set-tracker.ts` | Tracks recently touched files and symbols for context recovery. |
-| `indexer-types.ts` | Defines graph node, edge, parse result and scan default types. |
-| `index-scope-policy.ts` | Resolves end-user-vs-skill-inclusive scope policy from env + per-call args. Per-call boolean overrides env. |
+| `indexer-types.ts` | Defines graph node, edge, parse result and scan default types. Owns `SupportedLanguage` (including the `'doc'` lane), `detectLanguage()` extension routing and the default include-glob set. |
+| `index-scope-policy.ts` | Resolves end-user-vs-skill-inclusive scope policy from env + per-call args across the 5 default-excluded `.opencode/` folders. Per-call boolean or `sk-*` list overrides env. Emits the v2 scope fingerprint stored on the graph metadata row. |
 | `startup-brief.ts` | Builds compact startup graph summaries for runtime surfaces. |
 
 <!-- /ANCHOR:key-files -->

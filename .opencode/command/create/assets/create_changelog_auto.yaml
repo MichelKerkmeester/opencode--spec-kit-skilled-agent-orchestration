@@ -10,18 +10,18 @@ purpose: Create properly formatted changelog entries by analyzing recent work an
 action: Detect work context, resolve component folder, calculate version, generate formatted changelog
 
 # ─────────────────────────────────────────────────────────────────
-# PREREQUISITE: @create-doc AGENT VERIFICATION
+# PREREQUISITE: @create AGENT VERIFICATION
 # ─────────────────────────────────────────────────────────────────
-# This workflow REQUIRES the @create-doc agent for:
+# This workflow REQUIRES the @create agent for:
 #   - Template-first workflow (loads format before generating)
 #   - Changelog format validation
 #   - Version number verification
 #
-# PHASE 0 in the command markdown verifies @create-doc agent BEFORE
+# PHASE 0 in the command markdown verifies @create agent BEFORE
 # this YAML workflow loads. If you're executing this workflow,
-# @create-doc verification has already passed.
+# @create verification has already passed.
 #
-# To invoke correctly: @create-doc /create:changelog [source]
+# To invoke correctly: @create /create:changelog [source]
 # ─────────────────────────────────────────────────────────────────
 
 operating_mode:
@@ -143,7 +143,7 @@ field_handling:
 
 input_contract:
   required:
-    - create_doc_agent_verified
+    - create_agent_verified
     - source_type
   optional:
     - spec_folder
@@ -326,7 +326,7 @@ workflow_enforcement:
 gate_logic:
   hard:
     H0_write_verified:
-      description: "@create-doc verification must have passed in Phase 0"
+      description: "@create verification must have passed in Phase 0"
       fail_action: "STOP and return to the command setup phase"
     H1_required_fields:
       description: "Source context and resolution inputs must be present"

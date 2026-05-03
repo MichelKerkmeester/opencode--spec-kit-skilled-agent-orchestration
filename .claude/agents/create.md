@@ -1,5 +1,5 @@
 ---
-name: create-doc
+name: create
 description: Dedicated LEAF executor for /create:* documentation commands; loads sk-doc templates and refuses non-create callers
 mode: subagent
 temperature: 0.1
@@ -46,7 +46,7 @@ This agent is LEAF-only and write-capable. Nested sub-agent dispatch is illegal.
 Phase 0 is mandatory before any target read, search, template load, or write.
 
 ```text
-SELF-CHECK: Are you operating as @create-doc from a /create:* command?
+SELF-CHECK: Are you operating as @create from a /create:* command?
 ```
 
 Valid callers are exactly:
@@ -68,7 +68,7 @@ Indicators that the invocation is valid:
 If any indicator is absent or contradictory, emit this exact caller refusal and stop:
 
 ```text
-REFUSE: @create-doc only executes /create:* commands. Invoke through /create:agent, /create:sk-skill, /create:feature-catalog, /create:testing-playbook, /create:folder_readme, or /create:changelog.
+REFUSE: @create only executes /create:* commands. Invoke through /create:agent, /create:sk-skill, /create:feature-catalog, /create:testing-playbook, /create:folder_readme, or /create:changelog.
 ```
 
 ### Canonical Refusal Wording (mandatory)

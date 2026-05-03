@@ -107,6 +107,11 @@ if detect_self_invocation():
 
 Provider-specific dictionaries (used by the shared helper functions in [`system-spec-kit/references/cli/shared_smart_router.md`](../system-spec-kit/references/cli/shared_smart_router.md)):
 
+- Pattern 1: Runtime Discovery - `discover_markdown_resources()` recursively scans `references/` and `assets/`.
+- Pattern 2: Existence-Check Before Load - `load_if_available()` uses `_guard_in_skill()`, `inventory`, and `seen`.
+- Pattern 3: Extensible Routing Key - provider/use-case context derives an `opencode` routing key across external dispatch, detached sessions, handback, agents, cross-repo, templates, and workflows.
+- Pattern 4: Multi-Tier Graceful Fallback - `UNKNOWN_FALLBACK` disambiguates OpenCode vs sibling CLI vs detached/handback and missing intent routes return a "no knowledge base" notice.
+
 ```python
 INTENT_SIGNALS = {
     "EXTERNAL_DISPATCH":  {"weight": 4, "keywords": ["delegate to opencode", "opencode run", "from claude code", "from codex", "from gemini", "from copilot", "external runtime", "full plugin runtime"]},
@@ -216,66 +221,19 @@ Which would you like to set up? Confirm when login finishes; the skill will retr
 
 **Default model + variant + agent + format + dir**: `opencode-go/deepseek-v4-pro` · `--variant high` · `--agent general` · `--format json` · `--dir <repo-root>`. The repo root pin avoids CWD ambiguity. OpenCode Go is the default provider — it routes DeepSeek and other open models through a single gateway and gives elevated reasoning at low cost for routine cli-opencode dispatches.
 
-```bash
-opencode run \
-  --model opencode-go/deepseek-v4-pro \
-  --agent general \
-  --variant high \
-  --format json \
-  --dir /Users/michelkerkmeester/MEGA/Development/Code_Environment/Public \
-  "<prompt>"
-```
+Use `opencode run --model opencode-go/deepseek-v4-pro --agent general --variant high --format json --dir <repo-root> "<prompt>"`.
 
-**User override** (honor explicit user phrasing verbatim):
-
-| User says | Resolve to |
-|-----------|------------|
-| (nothing specified) | `--model opencode-go/deepseek-v4-pro --agent general --variant high --format json` |
-| "Use opencode-go deepseek" | `--model opencode-go/deepseek-v4-pro --agent general --variant high --format json` |
-| "Use deepseek v4 pro" | `--model deepseek/deepseek-v4-pro --agent general --variant high --format json` |
-| "Use deepseek v4 flash" | `--model deepseek/deepseek-v4-flash --agent general --variant high --format json` |
-| "Use the deep-research subagent loop" | `--model opencode-go/deepseek-v4-pro --agent orchestrate --variant high --format json` (orchestrate dispatches the deep-research subagent via Task) |
-| "Spawn a parallel detached session on port 4096" | (use case 2) appends `--share --port 4096` |
+Honor explicit user model, agent, port, and handback phrasing verbatim; otherwise use the default invocation above.
 
 ### Core Invocation Pattern
 
-```bash
-opencode run "prompt" --model opencode-go/deepseek-v4-pro --agent general --variant high --format json --dir /repo 2>&1
-```
-
-| Flag / Option | Purpose |
-|---------------|---------|
-| `--model <provider/model>` | Provider-prefixed model selector (e.g. `opencode-go/deepseek-v4-pro`) |
-| `--agent <slug>` | Agent definition from `.opencode/agent/<slug>.md` |
-| `--variant <level>` | Provider-specific reasoning effort (`minimal`, `low`, `medium`, `high`, `max`) |
-| `--format default \| json` | Human-readable log OR newline-delimited JSON event stream |
-| `--dir <path>` | Working directory or remote-server path |
-| `-c`, `--continue` | Continue the last session in this project |
-| `-s`, `--session <id>` | Continue a specific session id |
-| `--fork` | Fork before continuing (requires `--continue` or `--session`) |
-| `--share` | Publish a shareable session URL — opt-in per CHK-033 |
-| `--port <N>` | Local server port (only for parallel detached sessions) |
-| `-f`, `--file <path>` | Attach file(s) to the message |
-| `--thinking` | Show thinking blocks |
-| `--pure` | Disable external plugins (debugging only) |
-| `--print-logs` | Stream logs to stderr |
-| `--log-level <level>` | DEBUG / INFO / WARN / ERROR |
+Core flags: `--model`, `--agent`, `--variant`, `--format json`, `--dir`, continuation/session/fork flags, `--share` and `--port` for detached sessions, `--file`, `--thinking`, `--pure`, and log flags.
 
 > **Background dispatch in a `while read` loop**: always append `</dev/null` after the redirect when backgrounding `opencode run` inside a loop. Without it the backgrounded process inherits the loop's stdin and silently consumes the rest. See `references/integration_patterns.md` §6.
 
 ### Model Selection
 
-The skill supports two providers. Run `opencode providers list` to confirm credentials, and `opencode models [provider]` to enumerate available models.
-
-| Provider | Example model id | Reasoning effort range | Use case |
-|----------|------------------|------------------------|----------|
-| opencode-go (DEFAULT) | `opencode-go/deepseek-v4-pro` (default) | `--variant` accepted; effect depends on opencode-go routing | Default — deep reasoning at low cost via the OpenCode Go gateway |
-| opencode-go | `opencode-go/deepseek-v4-flash` | same | Lower-tier sibling for cost/latency |
-| opencode-go | `opencode-go/glm-5.1`, `opencode-go/kimi-k2.6`, `opencode-go/qwen3.6-plus` | provider-specific | Alternative open models routed through opencode-go |
-| deepseek (direct API) | `deepseek/deepseek-v4-pro` | `--variant` accepted | Direct DeepSeek API — bypasses opencode-go routing |
-| deepseek | `deepseek/deepseek-v4-flash` | non-reasoning (variant ignored) | Latency-optimized sibling |
-
-`opencode models <provider>` enumerates the live model list per provider. The skill defaults to `opencode-go/deepseek-v4-pro --variant high` because routine cli-opencode tasks benefit from elevated reasoning at low cost, and the OpenCode Go gateway routes DeepSeek and other open models through a single API key. The direct `deepseek/*` provider is available when the operator wants to bypass the opencode-go gateway and call DeepSeek's API directly.
+Run `opencode providers list` to confirm credentials and `opencode models <provider>` for live choices. Default to `opencode-go/deepseek-v4-pro --variant high`; direct `deepseek/*` remains available when explicitly requested.
 
 ### OpenCode Agent Delegation
 
@@ -283,12 +241,7 @@ The calling AI is the conductor. OpenCode distinguishes **primary agents** (dire
 
 #### Primary agents — directly invokable via `--agent`
 
-| Task type | Agent | Source | Invocation pattern |
-|-----------|-------|--------|---------------------|
-| Default / unspecified | `general` | OpenCode built-in | `opencode run --model opencode-go/deepseek-v4-pro --agent general --variant high --format json --dir /repo "<prompt>"` |
-| Step-by-step planning | `plan` | OpenCode built-in | `opencode run --model opencode-go/deepseek-v4-pro --agent plan --variant high --format json --dir /repo "Plan auth redesign"` |
-| Multi-agent coordination | `orchestrate` | `.opencode/agent/orchestrate.md` (mode=primary) | `opencode run --model opencode-go/deepseek-v4-pro --agent orchestrate --variant high --format json --dir /repo "Coordinate review + tests via subagents"` |
-| Multi-strategy planning | `multi-ai-council` | `.opencode/agent/multi-ai-council.md` (mode=all) | `opencode run --model opencode-go/deepseek-v4-pro --agent multi-ai-council --variant high --format json --dir /repo "Plan auth redesign"` |
+Direct agents are `general`, `plan`, `orchestrate`, and `multi-ai-council`. Pin one explicitly when the task needs planning, orchestration, or multi-strategy planning.
 
 #### Subagents — dispatched as Task subagents from a primary
 
@@ -299,86 +252,21 @@ These live at `.opencode/agent/<slug>.md` with `mode: subagent` and are NOT dire
 1. **Generic subagents** (`context`, `review`, `write`, `debug`) — dispatched by a primary (`orchestrate`) using the Task tool. To exercise via the opencode CLI, route through `--agent orchestrate` and let it dispatch the relevant subagent.
 2. **Command-owned loop executors** (`deep-research`, `deep-review`, `improve-agent`, `improve-prompt`) — dispatched ONLY by their parent commands (`/spec_kit:deep-research`, `/spec_kit:deep-review`, `/improve:agent`, `/improve:prompt`). Never dispatch these directly via `--agent <slug>` and never route them through `orchestrate`. The parent command owns iteration state, convergence detection, and continuity.
 
-| Task type | Subagent | Legal dispatch surface |
-|-----------|----------|------------------------|
-| Codebase exploration | `context` | `--agent orchestrate "Use the context subagent to map src/"` |
-| Code review | `review` | `--agent orchestrate "Use the review subagent on @src/auth.ts"` |
-| Documentation | `write` | `--agent orchestrate "Use the write subagent to generate README"` |
-| Fresh-perspective debugging | `debug` | `--agent orchestrate "Hand off via the debug subagent"` |
-| Iterative deep research | `deep-research` | `/spec_kit:deep-research` (parent command only) |
-| Iterative code review | `deep-review` | `/spec_kit:deep-review` (parent command only) |
-| Agent self-improvement | `improve-agent` | `/improve:agent` (parent command only) |
-| Prompt engineering | `improve-prompt` | `/improve:prompt` (parent command only) |
+Generic subagents (`context`, `review`, `write`, `debug`) route through `orchestrate`; loop executors (`deep-research`, `deep-review`, `improve-agent`, `improve-prompt`) route only through their parent commands.
 
 See [agent_delegation.md](./references/agent_delegation.md) for the complete agent roster and dispatch patterns.
 
-### Unique OpenCode Capabilities
+### Unique OpenCode Strengths
 
-| Capability | Purpose | Invocation |
-|------------|---------|------------|
-| Full plugin / skill / MCP runtime | Dispatched session loads every project plugin, skill, MCP tool, and Spec Kit Memory | Default behavior — no special flag |
-| Parallel detached sessions | Spawn separate session id + state directory + optional share URL | `opencode run --share --port <N>` |
-| Structured event stream | Newline-delimited JSON events with stable schema | `--format json` |
-| Agent dispatch | Pin model + tool permissions + system prompt via slug | `--agent <slug>` |
-| Cross-repo dispatch | Target a different repo's runtime via path | `--dir <path>` |
-| Cross-server dispatch | Attach to a remote OpenCode server | `--attach <url>` |
-| Session continuation | Resume or fork a prior session | `-c` / `-s <id>` / `--fork` |
-| Plugin disable for debugging | Run without plugins | `--pure` |
+OpenCode dispatch provides full project runtime loading, detached sessions, JSON event streams, agent routing, cross-repo/server dispatch, session continuation, and plugin-disable debugging.
 
 ### Essential Commands
 
-```bash
-# 1. External runtime to OpenCode (use case 1) — default opencode-go dispatch
-opencode run \
-  --model opencode-go/deepseek-v4-pro --agent general --variant high --format json \
-  --dir /Users/michelkerkmeester/MEGA/Development/Code_Environment/Public \
-  "Run memory_search for 'spec kit memory health' and return top 5 results."
-
-# 2. Parallel detached session (use case 2 — only valid from inside OpenCode)
-opencode run --share --port 4096 \
-  --model opencode-go/deepseek-v4-pro --agent deep-research --variant high --format json \
-  --dir /Users/michelkerkmeester/MEGA/Development/Code_Environment/Public \
-  "Run iteration 3 of the deep-research loop for the approved spec folder."
-
-# 3. Cross-AI handback (use case 3 — Codex / Copilot CLI / Gemini calling)
-opencode run \
-  --model opencode-go/deepseek-v4-pro --agent general --variant high --format json \
-  --dir /Users/michelkerkmeester/MEGA/Development/Code_Environment/Public \
-  "Use system-spec-kit to validate the approved spec folder. Return JSON validation report."
-
-# 4. Code review with the review agent
-opencode run \
-  --model opencode-go/deepseek-v4-pro --agent review --variant high --format json \
-  --dir /repo \
-  "Review @src/auth.ts for security issues. Surface P0 / P1 with file:line evidence."
-
-# 5. DeepSeek direct API — bypasses opencode-go routing
-opencode run \
-  --model deepseek/deepseek-v4-pro --agent general --variant high --format json \
-  --dir /Users/michelkerkmeester/MEGA/Development/Code_Environment/Public \
-  "Walk through the migration sequence for the approved spec folder."
-
-# 6. Cross-repo dispatch (Barter sibling)
-opencode run \
-  --model opencode-go/deepseek-v4-pro --agent general --variant high --format json \
-  --dir /Users/michelkerkmeester/MEGA/Development/Code_Environment/Barter \
-  "Draft a Level 1 spec for the auth refresh feature."
-```
+Use the default invocation for external runtime handback, append `--share --port <N>` only for explicit detached sessions, select `--agent orchestrate` for generic subagent routing, and change `--dir` for cross-repo dispatch.
 
 ### Error Handling
 
-| Issue | Solution |
-|-------|----------|
-| `command not found: opencode` | Install via `brew install opencode` (macOS) or the standalone installer |
-| Self-invocation refused | Use a sibling cli-* skill OR a fresh shell session OR add explicit "parallel detached" keywords to the prompt |
-| `provider/model not found` | Run the Provider Auth Pre-Flight (§3); the default provider is likely missing. Ask the user before falling back. |
-| `401 Unauthorized` mid-dispatch | Credentials expired or rotated. Invalidate the pre-flight cache, rerun `opencode providers list`, ask the user before falling back to a different provider. |
-| `unknown option --variant` | Version drift — see `references/cli_reference.md` §9 |
-| Empty event stream | Pass `--format json` and parse line-delimited events |
-| Background dispatch hangs | Add `</dev/null` to background invocations inside `while read` loops |
-| `--share` URL leaks secrets | Operator MUST confirm before passing `--share` (CHK-033) |
-| Plugin load crash | Rerun with `--pure` to bypass plugins; surface the underlying issue |
-| Session never finishes | Inspect `~/.opencode/state/<session_id>/messages.jsonl` for the last tool call |
+Install missing binaries, refuse ambiguous self-invocation, run provider pre-flight for model/auth errors, check version drift for unknown flags, force `--format json` for empty streams, add `</dev/null` for background loops, confirm `--share`, use `--pure` only for plugin crashes, and inspect state logs for stuck sessions.
 
 ---
 

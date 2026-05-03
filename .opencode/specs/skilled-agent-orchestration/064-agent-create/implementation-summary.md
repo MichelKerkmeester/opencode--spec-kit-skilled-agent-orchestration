@@ -1,22 +1,22 @@
 ---
 title: "Implementation Summary: 064"
-description: "Created @create-doc agent mirrors and rewired /create:* command gates."
+description: "Created @create agent mirrors and rewired /create:* command gates."
 trigger_phrases: ["064 implementation summary"]
 importance_tier: "high"
 contextType: "agent-architecture"
 _memory:
   continuity:
-    packet_pointer: "skilled-agent-orchestration/064-agent-create-doc"
+    packet_pointer: "skilled-agent-orchestration/064-agent-create"
     last_updated_at: "2026-05-03T07:40:00Z"
     last_updated_by: "codex"
-    recent_action: "Implemented create-doc wiring"
+    recent_action: "Implemented create wiring"
     next_safe_action: "commit_if_requested"
     blockers: []
     key_files:
-      - ".opencode/agent/create-doc.md"
-      - ".claude/agents/create-doc.md"
-      - ".gemini/agents/create-doc.md"
-      - ".codex/agents/create-doc.toml"
+      - ".opencode/agent/create.md"
+      - ".claude/agents/create.md"
+      - ".gemini/agents/create.md"
+      - ".codex/agents/create.toml"
       - ".opencode/command/create/agent.md"
       - ".opencode/command/create/sk-skill.md"
       - ".opencode/command/create/feature-catalog.md"
@@ -29,12 +29,12 @@ _memory:
       - ".codex/agents/orchestrate.toml"
     session_dedup:
       fingerprint: "sha256:0640640640640640640640640640640640640640640640640640640640640640"
-      session_id: "codex-064-create-doc-2026-05-03"
+      session_id: "codex-064-create-2026-05-03"
       parent_session_id: "scaffold-064-2026-05-03"
     completion_pct: 100
     open_questions: []
     answered_questions:
-      - "Agent name remains @create-doc"
+      - "Agent name remains @create"
 ---
 
 # Implementation Summary: 064
@@ -53,14 +53,14 @@ _memory:
 
 <!-- ANCHOR:what-built -->
 ## 2. WHAT WAS BUILT
-Created the dedicated `@create-doc` LEAF executor in four runtime surfaces:
+Created the dedicated `@create` LEAF executor in four runtime surfaces:
 
-- `.opencode/agent/create-doc.md`
-- `.claude/agents/create-doc.md`
-- `.gemini/agents/create-doc.md`
-- `.codex/agents/create-doc.toml`
+- `.opencode/agent/create.md`
+- `.claude/agents/create.md`
+- `.gemini/agents/create.md`
+- `.codex/agents/create.toml`
 
-Rewired these command markdown files so Phase 0 verifies `@create-doc` instead of `@general` and uses `create_doc_agent_verified`:
+Rewired these command markdown files so Phase 0 verifies `@create` instead of `@general` and uses `create_agent_verified`:
 
 - `/create:agent`
 - `/create:sk-skill`
@@ -69,7 +69,7 @@ Rewired these command markdown files so Phase 0 verifies `@create-doc` instead o
 - `/create:folder_readme`
 - `/create:changelog`
 
-Updated runtime README inventories, orchestrate agent tables, `CLAUDE.md`, and `AGENTS.md` to expose `@create-doc` with its `/create:*` caller restriction.
+Updated runtime README inventories, orchestrate agent tables, `CLAUDE.md`, and `AGENTS.md` to expose `@create` with its `/create:*` caller restriction.
 <!-- /ANCHOR:what-built -->
 
 <!-- ANCHOR:how-delivered -->
@@ -89,12 +89,12 @@ The Markdown mirrors are byte-identical across `.opencode`, `.claude`, and `.gem
 
 <!-- ANCHOR:verification -->
 ## 5. VERIFICATION
-- `python3 .opencode/skill/sk-doc/scripts/validate_document.py .opencode/agent/create-doc.md --type agent --blocking-only` -> PASS
-- `python3 .opencode/skill/sk-doc/scripts/validate_document.py .claude/agents/create-doc.md --type agent --blocking-only` -> PASS
-- `python3 .opencode/skill/sk-doc/scripts/validate_document.py .gemini/agents/create-doc.md --type agent --blocking-only` -> PASS
-- `python3` + `tomli.loads(Path(".codex/agents/create-doc.toml").read_text())` -> PASS
+- `python3 .opencode/skill/sk-doc/scripts/validate_document.py .opencode/agent/create.md --type agent --blocking-only` -> PASS
+- `python3 .opencode/skill/sk-doc/scripts/validate_document.py .claude/agents/create.md --type agent --blocking-only` -> PASS
+- `python3 .opencode/skill/sk-doc/scripts/validate_document.py .gemini/agents/create.md --type agent --blocking-only` -> PASS
+- `python3` + `tomli.loads(Path(".codex/agents/create.toml").read_text())` -> PASS
 - Line counts: `.opencode/.claude/.gemini` 311 lines each; `.codex` 302 lines; all under 600.
-- Mirror check: `.opencode/agent/create-doc.md` matches `.claude/agents/create-doc.md` and `.gemini/agents/create-doc.md`.
+- Mirror check: `.opencode/agent/create.md` matches `.claude/agents/create.md` and `.gemini/agents/create.md`.
 - Grep audit: no `@general`, `general_agent_verified`, or `write.md` references remain in the six command markdown entrypoints.
 <!-- /ANCHOR:verification -->
 

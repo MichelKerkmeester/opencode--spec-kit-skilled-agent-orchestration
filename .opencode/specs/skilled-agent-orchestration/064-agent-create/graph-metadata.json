@@ -1,7 +1,7 @@
 {
   "schema_version": 1,
-  "packet_id": "skilled-agent-orchestration/064-agent-create-doc",
-  "spec_folder": "skilled-agent-orchestration/064-agent-create-doc",
+  "packet_id": "skilled-agent-orchestration/064-agent-create",
+  "spec_folder": "skilled-agent-orchestration/064-agent-create",
   "parent_id": null,
   "children_ids": [],
   "manual": {
@@ -13,12 +13,12 @@
   },
   "derived": {
     "trigger_phrases": [
-      "064 create-doc agent",
-      "create-doc"
+      "064 create agent",
+      "create"
     ],
     "key_topics": [
       "064",
-      "create-doc",
+      "create",
       "agent",
       "sk-doc"
     ],

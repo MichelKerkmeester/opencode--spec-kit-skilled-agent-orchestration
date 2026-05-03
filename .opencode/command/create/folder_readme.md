@@ -9,7 +9,7 @@ allowed-tools: Read, Write, Edit, Bash, Glob, Grep, TodoWrite, mcp__cocoindex_co
 > This command runs a structured YAML workflow. Do NOT dispatch agents from this document.
 >
 > **YOUR FIRST ACTION:**
-> 1. Run Phase 0: @create-doc agent self-verification (below)
+> 1. Run Phase 0: @create agent self-verification (below)
 > 2. Run Setup Phase: consolidated prompt to gather inputs (including operation detection)
 > 3. Determine execution mode from user input (`:auto` or `:confirm`)
 > 4. Load the corresponding YAML file from `assets/`:
@@ -18,7 +18,7 @@ allowed-tools: Read, Write, Edit, Bash, Glob, Grep, TodoWrite, mcp__cocoindex_co
 >    (Both YAMLs contain readme AND install operations — skip to the detected operation section)
 > 5. Execute the YAML workflow step by step
 >
-> The @create-doc references below are self-verification checks — not dispatch instructions.
+> The @create references below are self-verification checks — not dispatch instructions.
 > All content after the Setup Phase is reference context for the YAML workflow.
 
 ---
@@ -30,16 +30,16 @@ allowed-tools: Read, Write, Edit, Bash, Glob, Grep, TodoWrite, mcp__cocoindex_co
 ```
 EXECUTE THIS AUTOMATIC SELF-CHECK (NOT A USER QUESTION):
 
-SELF-CHECK: Are you operating as the @create-doc agent?
+SELF-CHECK: Are you operating as the @create agent?
 │
-├─ INDICATORS that you ARE @create-doc agent:
-│   ├─ You were invoked with "@create-doc" prefix
+├─ INDICATORS that you ARE @create agent:
+│   ├─ You were invoked with "@create" prefix
 │   ├─ You have template-first workflow capabilities
 │   ├─ You load templates BEFORE creating content
 │   ├─ You validate template alignment AFTER creating
 │
 ├─ IF YES (all indicators present):
-│   └─ create_doc_agent_verified = TRUE → Continue to Setup Phase
+│   └─ create_agent_verified = TRUE → Continue to Setup Phase
 │
 └─ IF NO or UNCERTAIN:
     │
@@ -49,22 +49,22 @@ SELF-CHECK: Are you operating as the @create-doc agent?
     │   ┌────────────────────────────────────────────────────────────┐
     │   │ ⛔ CREATE-DOC AGENT REQUIRED                                    │
     │   │                                                            │
-    │   │ This command requires the @create-doc agent for:                │
+    │   │ This command requires the @create agent for:                │
     │   │   • Template-first workflow (loads before creating)          │
     │   │   • DQI scoring (target: 75+ Good)                         │
     │   │   • sk-doc skill integration                               │
     │   │                                                            │
     │   │ To proceed, restart with:                                  │
-    │   │   @create-doc /create:folder_readme [operation] [target]        │
+    │   │   @create /create:folder_readme [operation] [target]        │
     │   │                                                            │
-    │   │ Reference: [runtime_agent_path]/create-doc.md                   │
+    │   │ Reference: [runtime_agent_path]/create.md                   │
     │   └────────────────────────────────────────────────────────────┘
     │
     └─ RETURN: STATUS=FAIL ERROR="Create-doc agent required"
 ```
 
 **Phase Output:**
-- `create_doc_agent_verified = ________________`
+- `create_agent_verified = ________________`
 
 ---
 
@@ -222,7 +222,7 @@ EXECUTE THIS SINGLE CONSOLIDATED PROMPT:
 ```
 
 **Phase Output:**
-- `create_doc_agent_verified = ________________`
+- `create_agent_verified = ________________`
 - `operation = ________________`
 - `target_path = ________________` (readme only)
 - `readme_type = ________________` (readme only)
@@ -241,7 +241,7 @@ EXECUTE THIS SINGLE CONSOLIDATED PROMPT:
 
 | FIELD                  | REQUIRED       | YOUR VALUE | SOURCE                |
 | ---------------------- | -------------- | ---------- | --------------------- |
-| create_doc_agent_verified   | ✅ Yes          | ______     | Automatic check       |
+| create_agent_verified   | ✅ Yes          | ______     | Automatic check       |
 | operation              | ✅ Yes          | ______     | Detection or Q_OP     |
 | target_path            | ○ readme only  | ______     | Q_R1 or $ARGUMENTS    |
 | readme_type            | ○ readme only  | ______     | Q_R2 or --type flag   |
@@ -334,7 +334,7 @@ Use `[runtime_agent_path]` based on the active runtime profile:
 **YOU ARE IN VIOLATION IF YOU:**
 
 **Phase Violations:**
-- Executed command without @create-doc agent verification
+- Executed command without @create agent verification
 - Asked questions in MULTIPLE separate prompts instead of ONE consolidated prompt
 - Started reading the workflow section before all fields are set
 - Proceeded without explicit target path or project name

@@ -99,6 +99,11 @@ Programmatic access to Figma design files through 18 specialized tools covering 
 
 The authoritative routing logic for scoped loading, weighted intent scoring, and ambiguity handling.
 
+- Pattern 1: Runtime Discovery - `discover_markdown_resources()` recursively scans `references/` and `assets/`.
+- Pattern 2: Existence-Check Before Load - `load_if_available()` uses `_guard_in_skill()`, `inventory`, and `seen`.
+- Pattern 3: Extensible Routing Key - quick-start/tool-reference signals route by setup, token, export, component, style, comment, and file intent.
+- Pattern 4: Multi-Tier Graceful Fallback - `UNKNOWN_FALLBACK` asks for target/action disambiguation and missing intent routes return a "no knowledge base" notice.
+
 ```python
 from pathlib import Path
 
@@ -230,65 +235,11 @@ Figma MCP is accessed via Code Mode's `call_tool_chain()` for token efficiency.
 figma.figma_{tool_name}
 ```
 
-**Process Flow**:
-```
-STEP 1: Discover Tools
-       ├─ Use search_tools() for capability-based discovery
-       ├─ Use tool_info() for specific tool details
-       └─ Output: Tool name and parameters
-       ↓
-STEP 2: Execute via Code Mode
-       ├─ Use call_tool_chain() with TypeScript code
-       ├─ Await figma.figma_{tool_name}({params})
-       └─ Output: Tool results
-       ↓
-STEP 3: Process Results
-       └─ Parse and present findings
-```
+Process flow: discover tools with `search_tools()`/`tool_info()`, execute via `call_tool_chain()` with `figma.figma_{tool_name}({params})`, then parse and present results.
 
 ### Tool Invocation Examples
 
-```typescript
-// Discover Figma tools
-search_tools({ task_description: "figma design components" });
-
-// Get tool details
-tool_info({ tool_name: "figma.figma_get_file" });
-
-// Get a Figma file
-call_tool_chain({
-  code: `
-    const file = await figma.figma_get_file({
-      fileKey: "abc123XYZ"
-    });
-    console.log('File:', file.name);
-    return file;
-  `
-});
-
-// Export as image
-call_tool_chain({
-  code: `
-    const images = await figma.figma_get_image({
-      fileKey: "abc123XYZ",
-      ids: ["1:234"],
-      format: "png",
-      scale: 2
-    });
-    return images;
-  `
-});
-
-// Get components
-call_tool_chain({
-  code: `
-    const components = await figma.figma_get_file_components({
-      fileKey: "abc123XYZ"
-    });
-    return components;
-  `
-});
-```
+Use `search_tools({ task_description: "figma design components" })`, inspect with `tool_info({ tool_name: "figma.figma_get_file" })`, then call `figma.figma_get_file`, `figma.figma_get_image`, or `figma.figma_get_file_components` inside Code Mode.
 
 ### Finding Your File Key
 
@@ -305,25 +256,11 @@ https://www.figma.com/file/ABC123xyz/My-Design
 
 ### ✅ ALWAYS
 
-1. **ALWAYS use Code Mode for Figma invocation**
-   - Call via `call_tool_chain()` with TypeScript
-   - Saves context tokens vs native MCP
-
-2. **ALWAYS use full tool naming convention**
-   - Format: `figma.figma_{tool_name}`
-   - Example: `figma.figma_get_file({ fileKey: "abc" })`
-
-3. **ALWAYS verify file key format**
-   - Extract from Figma URL
-   - Should be alphanumeric string
-
-4. **ALWAYS handle pagination for team queries**
-   - Use `page_size` and `cursor` parameters
-   - Check for `cursor` in response for more pages
-
-5. **ALWAYS check API key before operations**
-   - Use `figma_check_api_key()` to verify
-   - Token must be valid and not expired
+1. Use Code Mode for Figma invocation.
+2. Use full tool names: `figma.figma_{tool_name}`.
+3. Verify file keys from Figma URLs.
+4. Handle pagination for team queries.
+5. Check the API key before operations.
 
 ### ❌ NEVER
 
@@ -404,70 +341,15 @@ https://www.figma.com/file/ABC123xyz/My-Design
 
 ### Prerequisites
 
-Before using this skill, ensure:
-
-1. **mcp-code-mode skill is available** - Figma is accessed through Code Mode
-2. **Figma configured in .utcp_config.json** - NOT in opencode.json
-3. **Figma Personal Access Token** - Stored in `.env` file
-
-```
-Dependency Chain:
-┌─────────────────────────────────────────────────────────────────┐
-│  mcp-code-mode skill (REQUIRED)                                 │
-│  └─► Provides: call_tool_chain(), search_tools(), etc.          │
-│      └─► Enables: Access to Figma provider                      │
-└─────────────────────────────────────────────────────────────────┘
-                           │
-                           ▼
-┌─────────────────────────────────────────────────────────────────┐
-│  mcp-figma skill (THIS SKILL)                                    │
-│  └─► Provides: Knowledge of 18 Figma tools                      │
-│      └─► Pattern: figma.figma_{tool_name}                         │
-└─────────────────────────────────────────────────────────────────┘
-```
+Before using this skill, ensure `mcp-code-mode` is available, Figma is configured in `.utcp_config.json`, and the Figma access token is present in `.env`.
 
 ### Code Mode Dependency (REQUIRED)
 
 > **⚠️ CRITICAL**: This skill REQUIRES `mcp-code-mode`. Figma tools are NOT accessible without Code Mode.
 
-**How Figma Relates to Code Mode:**
+`opencode.json` configures Code Mode, and Code Mode reads `.utcp_config.json`, where the Figma provider and token substitution are configured.
 
-```
-┌─────────────────────────────────────────────────────────────────┐
-│  opencode.json                                                  │
-│  └─► Configures: code-mode MCP server                            │
-│      └─► Points to: .utcp_config.json                            │
-└─────────────────────────────────────────────────────────────────┘
-                           │
-                           ▼
-┌─────────────────────────────────────────────────────────────────┐
-│  .utcp_config.json                                               │
-│  └─► Configures: figma provider (among others)                    │
-│      └─► Package: figma-developer-mcp                            │
-│      └─► Auth: FIGMA_API_KEY                                    │
-└─────────────────────────────────────────────────────────────────┘
-```
-
-**Figma Provider Configuration** (in `.utcp_config.json`):
-
-```json
-{
-  "name": "figma",
-  "call_template_type": "mcp",
-  "config": {
-    "mcpServers": {
-      "figma": {
-        "transport": "stdio",
-        "command": "npx",
-        "args": ["-y", "figma-developer-mcp", "--stdio"],
-        "env": {
-          "FIGMA_API_KEY": "${FIGMA_API_KEY}"
-        }
-      }
-    }
-  }
-}
-```
+Configure the Figma provider in `.utcp_config.json` with the `figma-developer-mcp` stdio package and `FIGMA_API_KEY` environment substitution.
 
 > **⚠️ CRITICAL: Prefixed Environment Variables**
 >
@@ -477,32 +359,13 @@ Dependency Chain:
 > ```
 > **NOT** `FIGMA_API_KEY=figd_...` (this will cause "Variable not found" errors)
 
-> **Alternative**: If you prefer not to use env substitution, you can hardcode the API key directly in the config (not recommended for security).
-
 ### Related Skills
 
-| Skill             | Relationship | Notes                                              |
-| ----------------- | ------------ | -------------------------------------------------- |
-| **mcp-code-mode** | **REQUIRED** | Figma accessed via Code Mode's `call_tool_chain()` |
+`mcp-code-mode` is required because Figma is accessed through Code Mode's `call_tool_chain()`.
 
 ### Cross-Tool Workflows
 
-**Figma → ClickUp**:
-```typescript
-// Get design info, create task
-const file = await figma.figma_get_file({ fileKey: "abc" });
-const task = await clickup.clickup_create_task({
-  name: `Implement: ${file.name}`,
-  description: `Design file: https://figma.com/file/abc`
-});
-```
-
-**Figma → Webflow**:
-```typescript
-// Export images, update CMS
-const images = await figma.figma_get_image({ fileKey: "abc", ids: ["1:2"], format: "png" });
-// Use image URLs in Webflow CMS
-```
+Common Code Mode chains include Figma to ClickUp task creation and Figma image export to Webflow/CMS updates.
 
 ---
 
@@ -510,90 +373,28 @@ const images = await figma.figma_get_image({ fileKey: "abc", ids: ["1:2"], forma
 
 ### Essential Commands
 
-| Task           | Tool                  | Example                                                                  |
-| -------------- | --------------------- | ------------------------------------------------------------------------ |
-| Get file       | `get_file`            | `figma.figma_get_file({ fileKey: "abc123" })`                            |
-| Export image   | `get_image`           | `figma.figma_get_image({ fileKey: "abc", ids: ["1:2"], format: "png" })` |
-| Get components | `get_file_components` | `figma.figma_get_file_components({ fileKey: "abc" })`                    |
-| Get styles     | `get_file_styles`     | `figma.figma_get_file_styles({ fileKey: "abc" })`                        |
-| Get comments   | `get_comments`        | `figma.figma_get_comments({ fileKey: "abc" })`                           |
-| Post comment   | `post_comment`        | `figma.figma_post_comment({ fileKey: "abc", message: "..." })`           |
+Common tools: `get_file`, `get_image`, `get_file_components`, `get_file_styles`, `get_comments`, and `post_comment`, all invoked as `figma.figma_<tool>({ ... })`.
 
 ### Common Patterns
 
-```typescript
-// Get file structure
-call_tool_chain({
-  code: `
-    const file = await figma.figma_get_file({ fileKey: "abc123XYZ" });
-    console.log('Pages:', file.document.children.map(p => p.name));
-    return file;
-  `
-});
-
-// Export multiple nodes as PNG
-call_tool_chain({
-  code: `
-    const images = await figma.figma_get_image({
-      fileKey: "abc123XYZ",
-      ids: ["1:234", "1:235", "1:236"],
-      format: "png",
-      scale: 2
-    });
-    return images;
-  `
-});
-
-// Get all components with metadata
-call_tool_chain({
-  code: `
-    const components = await figma.figma_get_file_components({ fileKey: "abc123XYZ" });
-    return components.meta.components.map(c => ({
-      name: c.name,
-      key: c.key,
-      nodeId: c.node_id
-    }));
-  `
-});
-```
+Use Code Mode for file structure reads, multi-node PNG export, component metadata extraction, style inventory, and comments. Keep examples in task-local notes rather than in this router.
 
 ### Troubleshooting
 
-| Issue                 | Solution                                                    |
-| --------------------- | ----------------------------------------------------------- |
-| "Invalid token" error | Regenerate token in Figma Settings → Personal Access Tokens |
-| File not found        | Verify fileKey from URL: `figma.com/file/{fileKey}/...`     |
-| Rate limited          | Add delays between requests, reduce batch size              |
-| Node ID not found     | Node IDs change on edit - re-fetch file to get current IDs  |
-| Empty components list | File may not have published components                      |
+Regenerate invalid tokens, verify file keys from URLs, add delays for rate limits, re-fetch files when node IDs change, and confirm whether components are published.
 
 ---
 
 ## 8. RELATED RESOURCES
 
-### references/
+### references/ and assets/
 
-| Document | Purpose | Key Insight |
-|----------|---------|-------------|
-| **tool_reference.md** | All 18 tools documented | Complete parameter reference |
-| **quick_start.md** | Getting started | 5-minute setup |
-
-### assets/
-
-| Asset | Purpose |
-|-------|---------|
-| **tool_categories.md** | Priority categorization of all 18 tools |
+Runtime discovery loads markdown from `references/` and `assets/`; keep reference details there rather than duplicating static inventories in this file.
 
 ### External Resources
 
-- [Figma API Documentation](https://www.figma.com/developers/api) - Official API reference
-- [Official Figma MCP Server](https://developers.figma.com/docs/figma-mcp-server/) - Figma's official MCP (HTTP at mcp.figma.com) - **RECOMMENDED**
-- [figma-developer-mcp](https://www.npmjs.com/package/figma-developer-mcp) - Recommended package for Code Mode integration
+Use the Figma API docs, official Figma MCP docs, and `figma-developer-mcp` package docs for provider-specific details.
 
 ### Related Skills
 
-- **[mcp-code-mode](../mcp-code-mode/SKILL.md)** - Tool orchestration (Figma accessed via Code Mode)
-
-### Install Guide
-
-- [Install Guide](./INSTALL_GUIDE.md) - Installation and configuration
+See `mcp-code-mode` for tool orchestration and `INSTALL_GUIDE.md` for setup.

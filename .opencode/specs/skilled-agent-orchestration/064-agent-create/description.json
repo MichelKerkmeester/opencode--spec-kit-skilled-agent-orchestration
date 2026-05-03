@@ -1,0 +1,11 @@
+{
+  "specFolder": "skilled-agent-orchestration/064-agent-create",
+  "description": "New @create agent (4 runtimes) for /create:* commands; uses sk-doc templates. Aligned with 063b template.",
+  "keywords": ["064", "create", "agent", "sk-doc", "create-commands"],
+  "lastUpdated": "2026-05-03T00:30:00Z",
+  "specId": "064",
+  "folderSlug": "agent-create",
+  "parentChain": ["skilled-agent-orchestration"],
+  "memorySequence": 1,
+  "memoryNameHistory": []
+}

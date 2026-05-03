@@ -64,33 +64,11 @@ This skill is invoked EXCLUSIVELY through the `/spec_kit:deep-research` command.
 
 ### Executor Selection Contract
 
-The YAML workflow supports executor selection via `config.executor.kind`. Current shipped kinds:
+The YAML workflow owns executor selection. Native `@deep-research` is the default path; CLI executors are routed through the workflow, not through ad hoc shell loops.
 
-| Kind | Dispatch | Required fields | Status |
-|------|----------|----------------|--------|
-| `native` | `@deep-research` agent via Task tool, `model: opus` | none (default) | Shipped. Default. |
-| `cli-codex` | `codex exec` via stdin-piped rendered prompt | `model` (e.g. gpt-5.4) | Shipped (spec 018). |
-| `cli-copilot` | Reserved | — | Shipped (spec 019). |
-| `cli-gemini` | Reserved | — | Shipped (spec 019). |
-| `cli-claude-code` | Reserved | — | Shipped (spec 019). |
+Cross-CLI delegation is possible inside each executor sandbox but discouraged. Do not invoke the same CLI from within itself, and do not assume auth from a parent executor propagates to child CLIs.
 
-#### Cross-CLI Delegation
-
-Each CLI executor operates inside its own sandbox / permissions layer (codex `workspace-write`, copilot `allow-all-tools`, gemini `-y -s none`, claude-code `acceptEdits`). Within that sandbox, a running iteration CAN, in theory, shell out to other CLIs.
-
-**What is possible**:
-- A `cli-codex` iteration can invoke `gemini "..."`, `copilot -p ...`, or `claude -p ...` via its shell.
-- A `cli-gemini` iteration can invoke `codex exec ...`, `copilot -p ...`, or `claude -p ...`.
-- A `cli-copilot` iteration can invoke other CLIs through its tool-execution layer.
-- A `cli-claude-code` iteration (with `acceptEdits` permission mode) can invoke other CLIs via shell.
-
-**Anti-patterns** (each CLI's own SKILL.md warns against these):
-- **Self-recursion**: do NOT invoke `codex` from within a `cli-codex` iteration; do NOT invoke `copilot` from within a `cli-copilot` iteration; same for gemini and claude-code. Each CLI's orchestration skill warns that self-invocation is circular and wasteful.
-- **Auth propagation assumptions**: do NOT assume the parent executor's environment has credentials for child CLIs. Each CLI uses its own authentication layer (OPENAI_API_KEY for codex, GitHub OAuth for copilot, Google credentials for gemini, Anthropic API key for claude). Auth is a user-responsibility; the deep-loop workflow does not mediate.
-
-**Runtime enforcement**: NONE. This is documented design intent, not a code path. If a user wires a recursive invocation, the `post_dispatch_validate` step will eventually catch repeated failures through the existing `schema_mismatch` → `stuck_recovery` flow, but the workflow does not detect or block cross-CLI delegation at dispatch time.
-
-**Invariants** the executor MUST satisfy regardless of kind:
+**Invariants** the executor MUST satisfy regardless of route:
 
 1. Produce an iteration markdown file at `{state_paths.iteration_pattern}` (non-empty).
 2. Append a JSONL delta record to `{state_paths.state_log}` with required fields: `type`, `iteration`, `newInfoRatio`, `status`, `focus`. Optional: `graphEvents`.
@@ -105,13 +83,13 @@ Each CLI executor operates inside its own sandbox / permissions layer (codex `wo
 - JSONL malformed → `jsonl_parse_error`.
 - 3 consecutive failures → existing `stuck_recovery` event (unchanged).
 
-**JSONL audit field**: Non-native executor runs append an `executor: {kind, model, reasoningEffort, serviceTier}` block to the iteration's JSONL record via `executor-audit.ts`. Native runs are NOT audited (the default path is recoverable from YAML alone).
+**JSONL audit field**: Non-native executor runs append executor metadata (`model`, effort, tier) to the iteration's JSONL record via `executor-audit.ts`. Native runs are recoverable from YAML alone.
 
 **Template**: The executor-agnostic iteration prompt lives at `.opencode/skill/sk-deep-research/assets/prompt_pack_iteration.md.tmpl`. It is rendered by `prompt-pack.ts` before dispatch and either (a) injected as the agent's context (native) or (b) piped to `codex exec` stdin (cli-codex).
 
 **Config surface**: Defined in `assets/deep_research_config.json` under the `executor` key. Schema is in `.opencode/skill/system-spec-kit/mcp_server/lib/deep-loop/executor-config.ts`. CLI flag precedence is: `--executor/--model/--reasoning-effort/--service-tier/--executor-timeout > config file > schema default`.
 
-**What NEVER changes regardless of executor kind**:
+**What NEVER changes regardless of executor route**:
 
 - YAML owns state (`deep-research-state.jsonl`, strategy.md, registry, dashboard).
 - `reduce-state.cjs` is the single state writer.
@@ -158,6 +136,11 @@ See `references/loop_protocol.md §Lifecycle Branches` for the canonical event c
 
 ### Smart Router Pseudocode
 
+- Pattern 1: Runtime Discovery - `discover_markdown_resources()` recursively scans `references/` and `assets/`.
+- Pattern 2: Existence-Check Before Load - `load_if_available()` uses `_guard_in_skill()`, `inventory`, and `seen`.
+- Pattern 3: Extensible Routing Key - setup, iteration, convergence, and state intents route loop resources.
+- Pattern 4: Multi-Tier Graceful Fallback - `UNKNOWN_FALLBACK` asks for loop/setup/state disambiguation and missing intent routes return a "no knowledge base" notice.
+
 ```python
 from pathlib import Path
 
@@ -193,18 +176,30 @@ LOADING_LEVELS = {
 }
 ```
 
-### Scoped Guard
+### Scoped Guard and Loading
 
 ```python
-def _guard_in_skill():
-    """Verify this skill is active before loading resources."""
-    if not hasattr(_guard_in_skill, '_active'):
-        _guard_in_skill._active = True
-    return _guard_in_skill._active
+UNKNOWN_FALLBACK = ["Confirm setup vs iteration vs convergence vs state recovery", "Confirm spec folder and research packet"]
 
-def discover_markdown_resources(base_path: Path) -> list[str]:
-    """Discover all .md files in the assets directory."""
-    return sorted(str(p.relative_to(base_path)) for p in (base_path / "references").glob("*.md"))
+def _guard_in_skill(relative_path: str) -> str:
+    resolved = (SKILL_ROOT / relative_path).resolve()
+    resolved.relative_to(SKILL_ROOT)
+    if resolved.suffix.lower() != ".md":
+        raise ValueError(f"Only markdown resources are routable: {relative_path}")
+    return resolved.relative_to(SKILL_ROOT).as_posix()
+
+def discover_markdown_resources() -> set[str]:
+    docs = []
+    for base in RESOURCE_BASES:
+        if base.exists():
+            docs.extend(p for p in base.rglob("*.md") if p.is_file())
+    return {doc.relative_to(SKILL_ROOT).as_posix() for doc in docs}
+
+def load_if_available(relative_path: str) -> None:
+    guarded = _guard_in_skill(relative_path)
+    if guarded in inventory and guarded not in seen:
+        load(guarded)
+        seen.add(guarded)
 ```
 
 ### Phase Detection
@@ -245,45 +240,7 @@ When `{spec_folder}/resource-map.md` is absent at init:
 
 ### Architecture: 3-Layer Integration
 
-```text
-User invokes: /spec_kit:deep-research "topic"
-                    |
-                    v
-    ┌─────────────────────────────────┐
-    │  /spec_kit:deep-research command│  Layer 1: Command
-    │  (YAML workflow + loop config)    │  Manages loop lifecycle
-    └──────────────┬──────────────────┘
-                   |
-                   v
-    ┌─────────────────────────────────┐
-    │     YAML Loop Engine            │  Layer 2: Workflow
-    │  - Init (config, strategy)       │  Dispatch, evaluate, decide
-    │  - Loop (dispatch + converge)   │
-    │  - Synthesize (final output)     │
-    │  - Save (memory context)        │
-    └──────────────┬──────────────────┘
-                   |  dispatches per iteration
-                   v
-    ┌─────────────────────────────────┐
-    │    @deep-research (LEAF agent)  │  Layer 3: Agent
-    │  - Reads: state + strategy      │  Fresh context each time
-    │  - Executes ONE research cycle  │
-    │  - Writes: findings + state      │
-    │  - Tools: WebFetch, Grep, etc.  │
-    └──────────────┬──────────────────┘
-                   |
-                   v
-    ┌─────────────────────────────────┐
-    │        State Files (disk)       │  Externalized State
-    │  deep-research-config.json       │  Persists across iterations
-    │  deep-research-state.jsonl      │
-    │  deep-research-strategy.md      │
-    │  findings-registry.json          │
-    │  research/iterations/iteration-NNN.md │
-    │  research/research.md (workflow-owned │
-    │  progressive synthesis)         │
-    └─────────────────────────────────┘
-```
+`/spec_kit:deep-research` owns the YAML workflow, which initializes state, dispatches one LEAF iteration at a time, evaluates convergence, synthesizes `research/research.md`, and saves continuity. The `@deep-research` agent executes only one research cycle per dispatch.
 
 ### State Packet Location
 
@@ -293,21 +250,7 @@ Example (first run on a child phase): `.../026-graph.../019-system-hardening/001
 
 Example (subsequent run with prior content for a different target): `004-desc-regen/research/004-desc-regen-pt-02/` (pt-NN allocated as a sibling to the prior content).
 
-```text
-{spec_folder}/research/
-  [packet-dir/]                      # Present only when the target spec is a nested child phase
-    deep-research-config.json        # Immutable after init: loop parameters
-    deep-research-state.jsonl        # Append-only research iteration log
-    deep-research-strategy.md        # Reducer-synchronized investigation plan
-    findings-registry.json           # Reducer-owned registry of open and resolved questions
-    deep-research-dashboard.md       # Auto-generated loop dashboard
-    .deep-research-pause             # Pause sentinel checked between lifecycle turns
-    .deep-research.lock              # Advisory lock held from late INIT through cleanup
-    resource-map.md                  # Convergence-time resource map from research citations
-    research.md                      # Workflow-owned final synthesis output
-    iterations/
-      iteration-NNN.md               # Write-once per-iteration findings
-```
+State files include `deep-research-config.json`, `deep-research-state.jsonl`, `deep-research-strategy.md`, `findings-registry.json`, `deep-research-dashboard.md`, `.deep-research-pause`, `.deep-research.lock`, `resource-map.md`, `research.md`, and `iterations/iteration-NNN.md`.
 
 ### Core Innovation: Fresh Context Per Iteration
 
@@ -317,29 +260,7 @@ Adapted from: karpathy/autoresearch (loop concept), AGR (fresh context "Ralph Lo
 
 ### Data Flow
 
-```text
-Init --> Create config.json, strategy.md, state.jsonl
-  |
-Loop --> Read state --> Check convergence --> Dispatch @deep-research
-  |                                              |
-  |                                              v
-  |                                         Agent executes:
-  |                                         1. Read state files
-  |                                         2. Determine focus
-  |                                         3. Research (3-5 actions)
-  |                                         4. Write iteration-NNN.md
-  |                                         5. Update strategy.md
-  |                                         6. Append state.jsonl
-  |                                              |
-  +<--- Evaluate results <-----------------------+
-  |
-  +--- Continue? --> Yes: next iteration
-  |                  No: exit loop
-  v
-Synthesize --> Compile final research/research.md
-  |
-Save --> generate-context.js --> verify memory artifact
-```
+Init creates config, strategy, and state logs. Each loop reads state, checks convergence, dispatches `@deep-research`, writes iteration markdown and JSONL deltas, refreshes reducer-owned state, and either continues or synthesizes and saves continuity.
 
 Late-INIT can also anchor the research run to `spec.md`: the workflow acquires the advisory lock, classifies `folder_state`, seeds or appends bounded context before LOOP, and then syncs one generated findings block back into `spec.md` during SYNTHESIS while keeping `research/research.md` canonical.
 
@@ -351,15 +272,7 @@ That contract is exact:
 
 ### Key Concepts
 
-| Concept | Description |
-|---------|-------------|
-| **Externalized state** | All research continuity via files, not agent memory |
-| **Fresh context** | Each iteration gets a clean agent with no prior context |
-| **Convergence** | Multi-signal detection: newInfoRatio, stuck count, questions answered |
-| **Strategy file** | Reducer-synchronized research steering with machine-owned sections |
-| **JSONL log** | Append-only structured log for lineage and iteration data |
-| **Findings registry** | Reducer-owned open/resolved questions, key findings, and ruled-out directions |
-| **Progressive synthesis** | `progressiveSynthesis` defaults to `true`; the agent may update `research/research.md` incrementally, and the orchestrator always performs the final consolidation pass |
+Research continuity is externalized to files, each iteration starts fresh, convergence uses newInfoRatio/stuck/question signals, strategy and registry are reducer-owned, JSONL remains append-only, and final synthesis consolidates `research/research.md`.
 
 ---
 
@@ -419,23 +332,9 @@ These concepts remain documented for future design work, but they are not part o
 
 ## 5. REFERENCES
 
-### Core Documentation
+Core documentation: `references/loop_protocol.md`, `references/spec_check_protocol.md`, `references/state_format.md`, `references/convergence.md`, and `references/quick_reference.md`.
 
-| Document | Purpose | Key Insight |
-|----------|---------|-------------|
-| [loop_protocol.md](references/loop_protocol.md) | Loop lifecycle (4 phases) | Init, iterate, synthesize, save |
-| [spec_check_protocol.md](references/spec_check_protocol.md) | Bounded `spec.md` integration contract | Locking, folder states, pre-init branches, generated-fence write-back |
-| [state_format.md](references/state_format.md) | State file schemas | JSONL + strategy.md + config.json |
-| [convergence.md](references/convergence.md) | Stop condition algorithms | shouldContinue(), stuck recovery |
-| [quick_reference.md](references/quick_reference.md) | One-page cheat sheet | Commands, tuning, troubleshooting |
-
-### Templates
-
-| Template | Purpose | Usage |
-|----------|---------|-------|
-| [deep_research_config.json](assets/deep_research_config.json) | Loop configuration | Copied to `research/` during research init |
-| [deep_research_strategy.md](assets/deep_research_strategy.md) | Strategy file | Copied to `research/` during research init |
-| [deep_research_dashboard.md](assets/deep_research_dashboard.md) | Dashboard template | Auto-generated each iteration |
+Templates: `assets/deep_research_config.json`, `assets/deep_research_strategy.md`, and `assets/deep_research_dashboard.md`.
 
 ---
 
@@ -450,13 +349,7 @@ These concepts remain documented for future design work, but they are not part o
 
 ### Quality Gates
 
-| Gate | Criteria | Blocking |
-|------|----------|----------|
-| **Pre-loop** | Config valid, strategy initialized, state log created | Yes |
-| **Per-iteration** | iteration-NNN.md written, JSONL appended, reducer refreshes strategy/dashboard/registry | Yes |
-| **Post-loop** | research/research.md exists with content, convergence report generated | Yes |
-| **Quality guards** | Source diversity (>=2), focus alignment, no single-weak-source | Yes |
-| **Continuity save** | Canonical packet continuity surfaces updated via generate-context.js | No |
+Blocking gates: valid config/strategy/state before loop, iteration markdown plus JSONL plus reducer refresh per iteration, final `research/research.md` and convergence report after loop, and quality guards for source diversity/focus/no weak single source. Continuity save is expected but non-blocking.
 
 ### Convergence Report
 
@@ -482,24 +375,7 @@ Key integrations:
 
 ### Continuity Integration
 
-```text
-Before research:
-  /spec_kit:resume
-  --> Recover packet context in this order:
-      handover.md -> _memory.continuity -> spec docs
-  --> Use memory_context() or memory_search() only after those canonical packet sources are exhausted
-
-During research (each iteration):
-  Agent writes resolved_research_packet/iterations/iteration-NNN.md
-  Agent appends resolved_research_packet/deep-research-state.jsonl
-  Workflow reducer updates resolved_research_packet/deep-research-strategy.md, resolved_research_packet/findings-registry.json, and resolved_research_packet/deep-research-dashboard.md
-  Runtime capability lookups resolve through assets/runtime_capabilities.json plus scripts/runtime-capabilities.cjs
-
-After research:
-  node .opencode/skill/system-spec-kit/scripts/dist/memory/generate-context.js [spec-folder]
-  # Updates canonical continuity surfaces directly.
-  # No additional indexing step is part of the live workflow contract.
-```
+Before research, recover context with `/spec_kit:resume` using `handover.md -> _memory.continuity -> spec docs`. During each iteration, write `iterations/iteration-NNN.md`, append JSONL, and let the reducer refresh strategy/registry/dashboard. After research, save continuity through `generate-context.js`.
 
 ### Command Integration
 
@@ -514,56 +390,9 @@ After research:
 
 ## 8. RELATED RESOURCES
 
-### Worked Examples
+### Worked Examples and Commands
 
-**Deep Research on Unknown Topic**:
-1. `/spec_kit:deep-research:auto "WebSocket reconnection strategies across browsers"`
-2. Init creates config, strategy with 5 key questions
-3. Iterations 1-3: Broad survey, official docs, codebase patterns
-4. Iterations 4-6: Deep dive into specific strategies, edge cases
-5. Iteration 7: Convergence detected after recent newInfoRatio values stay below the configured threshold
-6. Synthesis produces 17-section research/research.md
-7. Memory saved via generate-context.js
-
-**Narrow Research with Early Convergence**:
-1. `/spec_kit:deep-research:auto "What CSS properties trigger GPU compositing?"`
-2. Init creates config with 2 key questions
-3. Iteration 1: Finds definitive answer from official specs
-4. All questions answered after iteration 1
-5. Loop stops cleanly, research/research.md produced
-
-**Stuck Recovery Example**:
-1. Iterations 4-6 all have newInfoRatio below the configured threshold
-2. Stuck recovery triggers at iteration 7
-3. Recovery widens focus to least-explored question
-4. Iteration 7 finds new angle, newInfoRatio jumps to 0.4
-5. Loop continues productively
-
-### Design Origins
-
-| Innovation | Source | Our Adaptation |
-|------------|--------|----------------|
-| Autonomous loop | karpathy/autoresearch | YAML-driven loop with convergence |
-| Fresh context per iteration | AGR (Ralph Loop) | Orchestrator dispatch = fresh context |
-| STRATEGY.md persistent brain | AGR | deep-research-strategy.md |
-| JSONL state | pi-autoresearch | deep-research-state.jsonl |
-| Stuck detection | AGR | 3-consecutive-no-progress recovery |
-| Context injection | autoresearch-opencode | Strategy file as agent context |
-
-### Agents
-
-| Agent | Purpose |
-|-------|---------|
-| `@deep-research` | Single iteration executor (LEAF) |
-| `@orchestrate` | Loop coordination (when dispatched externally) |
-
-### Commands
-
-| Command | Purpose |
-|---------|---------|
-| `/spec_kit:plan --intake-only` | Optional upfront intake when a packet still needs a canonical `spec.md` before research begins |
-| `/spec_kit:deep-research` | Full loop workflow with bounded `spec.md` anchoring under `spec_check_protocol.md` |
-| `/memory:save` | Manual context preservation |
+Use `/spec_kit:deep-research:auto "<topic>"` for broad or narrow research; convergence may stop early when questions are answered or trigger stuck recovery when novelty stays low. Related commands are `/spec_kit:plan --intake-only`, `/spec_kit:deep-research`, and `/memory:save`; `@deep-research` remains a single-iteration LEAF executor.
 
 **For one-page cheat sheet**: See [quick_reference.md](./references/quick_reference.md)
 

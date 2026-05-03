@@ -95,7 +95,7 @@ flowchart TD
 | 1        | ALL codebase exploration, file search, pattern discovery, context loading | `@context`             | LEAF | Memory tools, Glob, Grep, Read                                                    | `"general"`   |
 | 2        | Evidence / iterative investigation                                        | `@deep-research`       | LEAF | `system-spec-kit`, `sk-deep-research`                                             | `"general"`   |
 | 3        | Multi-strategy planning and architecture synthesis                        | `@multi-ai-council`         | LEAF | Multi-lens planning rubric (planning-only)                                        | `"general"`   |
-| 4        | `/create:*` documentation and component creation command execution        | `@create-doc`          | LEAF | `sk-doc`, `system-spec-kit` when spec tracking applies                            | `"general"`   |
+| 4        | `/create:*` documentation and component creation command execution        | `@create`          | LEAF | `sk-doc`, `system-spec-kit` when spec tracking applies                            | `"general"`   |
 | 5        | Code review / security                                                    | `@review`              | LEAF | `sk-code` baseline + one `sk-code-*` overlay (auto-detected)      | `"general"`   |
 | 6        | Implementation / testing                                                  | `@general`             | LEAF | `sk-code-*` (auto-detects available variant), `mcp-chrome-devtools` | `"general"`   |
 | 7        | Debugging when `failure_count >= 3` — workflow surfaces a prompted offer; user opts in via Task tool. Never auto-dispatched. | `@debug`               | LEAF | Code analysis tools                                                               | `"general"`   |
@@ -109,7 +109,7 @@ This Copilot profile enforces **single-hop delegation**. Nested sub-agent dispat
 | Tier             | Dispatch Authority               | Who                                                                                   |
 | ---------------- | -------------------------------- | ------------------------------------------------------------------------------------- |
 | **ORCHESTRATOR** | Can dispatch LEAF agents         | Top-level orchestrator only                                                           |
-| **LEAF**         | MUST NOT dispatch any sub-agents | @context, @general, @create-doc, @multi-ai-council, @review, @debug, @deep-research, @deep-review |
+| **LEAF**         | MUST NOT dispatch any sub-agents | @context, @general, @create, @multi-ai-council, @review, @debug, @deep-research, @deep-review |
 
 #### Absolute Depth Rules
 
@@ -166,7 +166,7 @@ When dispatching ANY non-orchestrator agent, append this to the Task prompt:
 | Agent     | File                          | Notes                                                                                  |
 | --------- | ----------------------------- | -------------------------------------------------------------------------------------- |
 | @context  | `.claude/agents/context.md`  | Sub-agent with direct retrieval only. Routes ALL exploration tasks                     |
-| @create-doc | `.claude/agents/create-doc.md` | `/create:*` command executor; sk-doc template-first; caller-restricted to create commands |
+| @create | `.claude/agents/create.md` | `/create:*` command executor; sk-doc template-first; caller-restricted to create commands |
 | @deep-research | `.claude/agents/deep-research.md` | LEAF agent; iterative autonomous research loop with externalized state          |
 | @multi-ai-council | `.claude/agents/multi-ai-council.md` | Planning-only multi-strategy architect (max 3 strategies)                              |
 | @review   | `.claude/agents/review.md`   | Codebase-agnostic quality scoring                                                      |
@@ -188,7 +188,7 @@ TASK #N: [Descriptive Title]
 ├─ Objective: [WHY this task exists]
 ├─ Scope: [Explicit inclusions AND exclusions]
 ├─ Boundary: [What this agent MUST NOT do]
-├─ Agent: @general | @context | @create-doc | @deep-research | @multi-ai-council | @review | @debug
+├─ Agent: @general | @context | @create | @deep-research | @multi-ai-council | @review | @debug
 ├─ Subagent Type: "general" (ALL dispatches use "general" — exploration routes through @context)
 ├─ Agent Definition: [.claude/agents/<name>.md — MUST be read and included in prompt | "built-in" for @general]
 ├─ Skills: [Specific skills the agent should use]
@@ -745,7 +745,7 @@ The orchestrator's own behavior can cause context overload. Follow these rules:
 - Nested chains are illegal in this profile. Every dispatch must include `Depth: N` and respect single-hop NDP rules: only depth-0 orchestrator dispatches; depth-1 agents MUST NOT dispatch. If a task cannot be completed at depth 1, return partial results and escalate to the parent. See §2.
 
 ❌ **Never let LEAF agents dispatch sub-agents**
-- LEAF agents (@context, @general, @create-doc, @multi-ai-council, @review, @debug, @deep-research, @deep-review) execute work directly. If a LEAF agent spawns a sub-agent, it violates NDP. When dispatching LEAF agents, ALWAYS include the LEAF Enforcement Instruction (§2).
+- LEAF agents (@context, @general, @create, @multi-ai-council, @review, @debug, @deep-research, @deep-review) execute work directly. If a LEAF agent spawns a sub-agent, it violates NDP. When dispatching LEAF agents, ALWAYS include the LEAF Enforcement Instruction (§2).
 
 ❌ **Never read 3+ large files back-to-back in main context**
 - Loading multiple large files floods the orchestrator's context window. Delegate bulk file reads to `@context` and receive summarized Context Packages. See §8 Self-Protection Rules.

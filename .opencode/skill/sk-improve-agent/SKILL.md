@@ -78,6 +78,11 @@ The router discovers markdown resources recursively from `references/` and `asse
 
 The authoritative routing logic for scoped markdown loading and explicit runtime-asset loading.
 
+- Pattern 1: Runtime Discovery - `discover_markdown_resources()` recursively scans `references/` and `assets/`.
+- Pattern 2: Existence-Check Before Load - `load_if_available()` uses `_guard_in_skill()`, `inventory`, and `seen`.
+- Pattern 3: Extensible Routing Key - quick-reference, loop, evaluation, promotion, target onboarding, integration, and setup intents route resources.
+- Pattern 4: Multi-Tier Graceful Fallback - `UNKNOWN_FALLBACK` asks for target/action/gate disambiguation and missing intent routes return a "no knowledge base" notice.
+
 ```python
 from pathlib import Path
 
@@ -118,7 +123,9 @@ def _task_text(task) -> str:
         " ".join(getattr(task, "keywords", []) or []),
     ]).lower()
 
-def _guard_markdown(relative_path: str) -> str:
+UNKNOWN_FALLBACK = ["Confirm target path", "Confirm proposal vs scoring vs promotion", "Confirm packet-local evidence path"]
+
+def _guard_in_skill(relative_path: str) -> str:
     resolved = (SKILL_ROOT / relative_path).resolve()
     resolved.relative_to(SKILL_ROOT)
     if resolved.suffix.lower() != ".md":
@@ -157,7 +164,7 @@ def route_recursive_agent_resources(task):
     seen = set()
 
     def load_if_available(relative_path: str) -> None:
-        guarded = _guard_markdown(relative_path)
+        guarded = _guard_in_skill(relative_path)
         if guarded in inventory and guarded not in seen:
             load(guarded)
             loaded.append(guarded)
@@ -176,6 +183,8 @@ def route_recursive_agent_resources(task):
 
     runtime_assets = list(RUNTIME_ASSETS["ALWAYS"])
 
+    if not loaded:
+        load_if_available(DEFAULT_RESOURCE)
     return {"intents": intents, "resources": loaded, "runtime_assets": runtime_assets}
 ```
 
@@ -187,12 +196,12 @@ def route_recursive_agent_resources(task):
 
 1. Confirm the spec folder, target path, execution mode, and active target profile.
 2. Create `{spec_folder}/improvement/` plus the packet-local `candidates/`, `benchmark-runs/`, and `archive/` directories when needed.
-3. Copy in the runtime config, charter, strategy, and manifest templates.
+3. Copy in the runtime config, charter, strategy, and boundary templates.
 4. Record baseline state in the append-only ledger before the first candidate run.
 
 ### Mode 2: Proposal and Evaluation
 
-1. Read the charter, manifest, target profile, and canonical target surface.
+1. Read the charter, boundary file, target profile, and canonical target surface.
 2. Run `scripts/scan-integration.cjs` to discover all surfaces the target agent touches.
 3. Write exactly one bounded candidate under the packet-local `candidates/` directory.
 4. Run `scripts/score-candidate.cjs` to evaluate the candidate via dynamic-mode 5-dimension scoring (the sole supported path).
@@ -221,13 +230,13 @@ Dynamic mode is the only scoring path. Scoring evaluates five dimensions:
 | Rule Coherence | 0.25 | ALWAYS/NEVER rules align with workflow steps |
 | Integration Consistency | 0.25 | Mirrors in sync, commands reference agent, skills reference agent |
 | Output Quality | 0.15 | Output verification items present, no placeholder content |
-| System Fitness | 0.15 | Permission-capability alignment, resource references valid, frontmatter complete |
+| System Fitness | 0.15 | Permission alignment, resource references valid, frontmatter complete |
 
 Profiles are generated on the fly from any agent file via `scripts/generate-profile.cjs`. No static profiles are shipped; every target is evaluated against its own derived structure and rules.
 
 ### Mode 3: Promotion and Recovery
 
-1. Promote only when prompt scoring, benchmark status, repeatability, manifest boundary, and approval gates all pass.
+1. Promote only when prompt scoring, benchmark status, repeatability, boundary, and approval gates all pass.
 2. Use `scripts/promote-candidate.cjs` for guarded canonical mutation.
 3. Use `scripts/rollback-candidate.cjs` plus direct comparison evidence when the canonical target must be restored.
 4. Treat mirror drift as downstream packaging work and review it separately with `scripts/check-mirror-drift.cjs`.
@@ -239,7 +248,7 @@ Profiles are generated on the fly from any agent file via `scripts/generate-prof
 - The loop stays proposal-first unless an explicit guarded promotion path is requested
 - Benchmark evidence, prompt scoring, and mirror-sync evidence remain separate
 - Reducer outputs make the best-known state, rejected runs, infrastructure failures, and stop conditions easy to review
-- Operators can onboard a bounded target without weakening manifest or evaluator guardrails
+- Operators can onboard a bounded target without weakening boundary or evaluator guardrails
 
 ---
 
@@ -292,35 +301,7 @@ The command workflow first materializes static fixture JSON into packet-local ma
 
 ### Legal-Stop Gate Bundles
 
-A session may NOT claim `converged` unless ALL gate bundles pass:
-
-| Gate Bundle | Conditions | Required Evidence |
-| --- | --- | --- |
-| `contractGate` | structural >= 90 AND systemFitness >= 90 | score/legal-stop artifact includes both dimension values |
-| `behaviorGate` | ruleCoherence >= 85 AND outputQuality >= 85 | score/legal-stop artifact includes both dimension values |
-| `integrationGate` | integration >= 90 AND no drift ambiguity | integration report includes the expected runtime mirror manifest and no ambiguous drift |
-| `evidenceGate` | benchmark pass AND repeatability pass | `benchmark_completed` journal event plus repeatability output |
-| `improvementGate` | weighted delta >= `scoring.thresholdDelta` | `baselineScore`, current `score`, numeric `delta`, and `thresholdDelta` |
-
-The orchestrator MUST emit `legal_stop_evaluated` with all five gate keys before any `session_end` event. The required journal shape is nested:
-
-```json
-{
-  "eventType": "legal_stop_evaluated",
-  "details": {
-    "gateResults": {
-      "contractGate": "...",
-      "behaviorGate": "...",
-      "integrationGate": "...",
-      "evidenceGate": "...",
-      "improvementGate": "..."
-    },
-    "stopReason": "blockedStop"
-  }
-}
-```
-
-Flat fields such as `details.gateName`, `details.gateResult`, or top-level `details.contractGate` are not the command-flow contract. If any gate fails, the orchestrator MUST emit `blocked_stop` with `failedGates[]` and use `stopReason:"blockedStop"`, not `converged`.
+A session may NOT claim `converged` unless all five gate bundles pass: `contractGate`, `behaviorGate`, `integrationGate`, `evidenceGate`, and `improvementGate`. The orchestrator emits `legal_stop_evaluated` with nested `details.gateResults` before any `session_end`; failures emit `blocked_stop` with `failedGates[]` and `stopReason:"blockedStop"`.
 
 ### Resume/Continuation Semantics (current release)
 
@@ -374,11 +355,7 @@ The helper validates event type plus `session_end` or `session_ended` details, a
 
 ### Boundary Points
 
-| Boundary | When It Fires | Event Types | Required Details |
-| --- | --- | --- | --- |
-| `session_start` | Once after baseline setup is recorded and before the first loop iteration begins | `session_start` | `sessionId`, `target`, `charter`, `startedAt` |
-| `iteration_boundary` | On every iteration after candidate generation, after candidate scoring, and after gate evaluation | `candidate_generated`, `candidate_scored`, `gate_evaluation` | Per-iteration context such as `sessionId`, `iteration`, `candidateId`, `candidatePath`, `scoreOutputPath`, `weightedScore`, and gate decision details |
-| `session_end` | Once after synthesis completes or the session reaches a terminal stop | `session_end` | `stopReason`, `sessionOutcome`, `endedAt`, `totalIterations` |
+Journal boundaries are `session_start` after baseline setup, per-iteration candidate/scoring/gate events, and `session_end` after synthesis or terminal stop. Required details include session id, target, iteration/candidate paths, scores, stop reason, session outcome, and total iterations.
 
 ### Frozen Helper Enums
 
@@ -429,18 +406,18 @@ The dashboard now also includes a dedicated **Sample Quality** section. This sep
 
 ### ✅ ALWAYS
 
-- Read the charter, manifest, and target profile before creating a candidate
+- Read the charter, boundary file, and target profile before creating a candidate
 - Keep the ledger append-only
 - Treat the scorer as independent from the mutator
 - Preserve repeatability evidence when benchmark claims are made
 - Prefer the simpler candidate when scores tie
 - Keep benchmark evidence separate from mirror-drift packaging work
-- Require integration evidence to name each expected runtime mirror path explicitly (`.claude/agents`, `.codex/agents`, `.gemini/agents`, plus any manifest-declared extra mirrors) before trusting `integrationGate`
+- Require integration evidence to name each expected runtime mirror path explicitly (`.claude/agents`, `.codex/agents`, `.gemini/agents`, plus any declared extra mirrors) before trusting `integrationGate`
 
 ### ❌ NEVER
 
 - Mutate the canonical target during proposal-only mode
-- Broaden scope beyond the active manifest boundary
+- Broaden scope beyond the active boundary
 - Treat runtime mirrors as experiment truth in the same phase as canonical evaluation
 - Treat a stale placeholder mirror path as equivalent to a real runtime mirror
 - Hide rejected runs, weak benchmark results, or infra failures
@@ -448,7 +425,7 @@ The dashboard now also includes a dedicated **Sample Quality** section. This sep
 
 ### ⚠️ ESCALATE IF
 
-- The target profile and manifest disagree about mutability or target family
+- The target profile and boundary file disagree about mutability or target family
 - The benchmark runner cannot produce stable repeatability results
 - Promotion evidence is incomplete but canonical mutation is still being requested
 - Documentation edits would change the trust boundary rather than clarify it
@@ -457,40 +434,7 @@ The dashboard now also includes a dedicated **Sample Quality** section. This sep
 
 ## 6. REFERENCES
 
-| Resource | Purpose |
-| --- | --- |
-| `README.md` | Human-facing skill overview and operating guide |
-| `references/quick_reference.md` | Short command and runtime reminder |
-| `references/loop_protocol.md` | End-to-end operator workflow |
-| `references/evaluator_contract.md` | Deterministic scoring and benchmark contract |
-| `references/benchmark_operator_guide.md` | Repeatable fixture-benchmark workflow |
-| `references/promotion_rules.md` | Keep, reject, and promote policy |
-| `references/rollback_runbook.md` | Promotion rollback and recovery steps |
-| `references/mirror_drift_policy.md` | Packaging drift handling after canonical mutation |
-| `references/no_go_conditions.md` | Explicit stop and expansion blockers |
-| `references/target_onboarding.md` | Safe onboarding of new bounded targets |
-| `assets/improvement_charter.md` | Fixed policy charter template |
-| `assets/improvement_strategy.md` | Mutable runtime strategy template |
-| `assets/improvement_config.json` | Runtime configuration template |
-| `assets/improvement_config_reference.md` | Field-level config documentation |
-| `assets/target_manifest.jsonc` | Surface classification and guardrail manifest |
-| `assets/benchmark-profiles/default.json` | Static benchmark profile consumed by materializer and runner |
-| `assets/benchmark-fixtures/*.json` | Static benchmark fixture definitions |
-| `scripts/materialize-benchmark-fixtures.cjs` | Converts static benchmark fixture JSON into packet-local markdown outputs |
-| `scripts/run-benchmark.cjs` | Deterministic benchmark runner |
-| `scripts/score-candidate.cjs` | Deterministic prompt-surface scorer |
-| `scripts/reduce-state.cjs` | Ledger reducer and dashboard generator |
-| `scripts/promote-candidate.cjs` | Guarded canonical promotion helper |
-| `scripts/rollback-candidate.cjs` | Canonical rollback helper |
-| `scripts/scan-integration.cjs` | Full integration surface scanner |
-| `scripts/generate-profile.cjs` | Dynamic target profile generator |
-| `scripts/check-mirror-drift.cjs` | Derived-surface drift report helper |
-| `scripts/improvement-journal.cjs` | Append-only JSONL event emitter for improvement session audit journals |
-| `scripts/mutation-coverage.cjs` | Coverage graph reader/writer for explored dimensions and mutation tracking |
-| `scripts/trade-off-detector.cjs` | Cross-dimension regression detector using trajectory and Pareto analysis |
-| `scripts/candidate-lineage.cjs` | Lineage graph for optional parallel candidate wave sessions |
-| `scripts/benchmark-stability.cjs` | Benchmark replay stability measurement and advisory weight optimization |
-| `references/integration_scanning.md` | Integration scanner documentation |
+Core references: `README.md`, `references/quick_reference.md`, `references/loop_protocol.md`, evaluator/promotion/rollback/no-go/onboarding docs, runtime assets under `assets/`, benchmark assets, and helper scripts for scoring, reduction, promotion, rollback, scanning, drift, journal, mutation coverage, trade-offs, candidate lineage, and benchmark stability.
 
 ---
 

@@ -1,22 +1,22 @@
 ---
-title: "Tasks: 064 — agent-create-doc"
+title: "Tasks: 064 — agent-create"
 description: "Task list."
 trigger_phrases: ["064 tasks"]
 importance_tier: "high"
 contextType: "agent-architecture"
 _memory:
   continuity:
-    packet_pointer: "skilled-agent-orchestration/064-agent-create-doc"
+    packet_pointer: "skilled-agent-orchestration/064-agent-create"
     last_updated_at: "2026-05-03T07:40:00Z"
     last_updated_by: "codex"
-    recent_action: "Created @create-doc mirrors and rewired /create:* command Phase 0 gates"
+    recent_action: "Created @create mirrors and rewired /create:* command Phase 0 gates"
     next_safe_action: "validate_and_report"
     blockers: []
     key_files:
-      - ".opencode/agent/create-doc.md"
-      - ".claude/agents/create-doc.md"
-      - ".gemini/agents/create-doc.md"
-      - ".codex/agents/create-doc.toml"
+      - ".opencode/agent/create.md"
+      - ".claude/agents/create.md"
+      - ".gemini/agents/create.md"
+      - ".codex/agents/create.toml"
       - ".opencode/command/create/agent.md"
       - ".opencode/command/create/sk-skill.md"
       - ".opencode/command/create/feature-catalog.md"
@@ -25,7 +25,7 @@ _memory:
       - ".opencode/command/create/changelog.md"
     session_dedup:
       fingerprint: "sha256:0640640640640640640640640640640640640640640640640640640640640640"
-      session_id: "codex-064-create-doc-2026-05-03"
+      session_id: "codex-064-create-2026-05-03"
       parent_session_id: "scaffold-064-2026-05-03"
     completion_pct: 100
     open_questions: []
@@ -51,7 +51,7 @@ _memory:
 
 <!-- ANCHOR:phase-2 -->
 ## 3. PHASE 2: IMPLEMENTATION
-### T-003: [x] cli-codex authors canonical @create-doc agent
+### T-003: [x] cli-codex authors canonical @create agent
 ### T-004: [x] Mirror to .claude/.gemini/.codex
 ### T-005: [x] Update 6 /create:* commands Phase 0
 ### T-006: [x] Update READMEs + orchestrate + CLAUDE/AGENTS
