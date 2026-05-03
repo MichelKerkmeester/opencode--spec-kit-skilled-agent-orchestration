@@ -929,17 +929,18 @@ These skills let you run **cross-CLI agent teams from any starting CLI**. Whiche
 - Compact RETURN line + structured body with `escalation` classifier (NONE / UNKNOWN_STACK / SCOPE_CONFLICT / LOW_CONFIDENCE / LOGIC_SYNC / VERIFY_FAIL)
 - Dispatched ONLY by `@orchestrate` via convention-floor caller-restriction (description prose + body §0 dispatch gate + orchestrate.md routing entry; not harness-enforced)
 
-**Write**
-- Documentation generation specialist for project-level docs outside spec folders
-- Template-first: MUST load template before proceeding (hard gate)
-- Runs `extract_structure.py` and `validate_document.py` for DQI quality scoring
-- Handles READMEs, install guides, skills, agents, commands. Cannot write inside `specs/` directories.
+**Create**
+- Dedicated LEAF executor for the `/create:*` command family (agent, sk-skill, feature-catalog, testing-playbook, folder_readme, changelog)
+- Caller-restricted to `/create:*` commands by convention-level Phase 0 gate; refuses other dispatchers with canonical REFUSE wording
+- Loads `sk-doc` skill on every invocation; reads the per-command template before writing
+- Deterministic 3-state output contract: `STATUS=OK PATH=<file>` / `STATUS=FAIL ERROR=<reason>` / `STATUS=CANCELLED`
+- DQI score ≥75 minimum reported in completion claim; HVR (Human Voice Rules) compliance enforced
 
-**Ultra-Think**
-- Multi-strategy planning architect dispatching diverse thinking strategies
-- Uses 5 reasoning lenses: Analytical, Creative, Critical, Pragmatic, and Holistic
-- Scores results via a 5-dimension rubric - each strategy uses a different lens and temperature
-- Plans only - never modifies files directly
+**Multi-AI Council**
+- Multi-strategy planning architect dispatching diverse AI vantage points and strategy lenses
+- Seeks distinct reasoning strategies across multiple AIs (cli-codex, cli-copilot, cli-gemini, cli-claude-code, native @deep-research)
+- Multi-round deliberation before recommending a plan; planning-only (never modifies files)
+- 5-dimension scoring rubric for strategy quality
 
 **Agent-Improver**
 - Proposal-only mutator for bounded agent improvement experiments
