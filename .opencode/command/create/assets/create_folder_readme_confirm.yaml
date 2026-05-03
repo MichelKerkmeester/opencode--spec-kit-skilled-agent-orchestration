@@ -17,20 +17,20 @@ purpose: Create comprehensive README files and AI-first installation guides with
 action: Generate scannable, well-organized documentation (README or Install Guide) with table of contents
 
 # ─────────────────────────────────────────────────────────────────
-# PREREQUISITE: @general AGENT VERIFICATION
+# PREREQUISITE: @create-doc AGENT VERIFICATION
 # ─────────────────────────────────────────────────────────────────
-# This workflow REQUIRES the @general agent for:
+# This workflow REQUIRES the @create-doc agent for:
 #   - Template-first workflow (loads templates before creating)
 #   - DQI scoring (target: 70+ Acceptable)
 #   - sk-doc skill integration
 #
-# PHASE 0 in the command markdown verifies @general agent BEFORE
+# PHASE 0 in the command markdown verifies @create-doc agent BEFORE
 # this YAML workflow loads. If you're executing this workflow,
-# @general verification has already passed.
+# @create-doc verification has already passed.
 #
 # To invoke correctly:
-#   README:        @general /create:folder_readme [path]
-#   Install Guide: @general /create:folder_readme install [project-name]
+#   README:        @create-doc /create:folder_readme [path]
+#   Install Guide: @create-doc /create:folder_readme install [project-name]
 # ─────────────────────────────────────────────────────────────────
 
 # ─────────────────────────────────────────────────────────────────
@@ -132,7 +132,7 @@ request_analysis_framework:
 
 input_contract:
   required:
-  - general_agent_verified
+  - create_doc_agent_verified
   - operation
   - execution_mode
   optional:
@@ -186,7 +186,7 @@ workflow_enforcement:
 gate_logic:
   hard:
     H0_write_verified:
-      description: "@general verification must have passed in Phase 0"
+      description: "@create-doc verification must have passed in Phase 0"
       fail_action: "STOP and return to the command setup phase"
     H1_operation_resolution:
       description: "The workflow must resolve README vs Install Guide before generation"
@@ -604,7 +604,7 @@ readme_workflow:
       blocking: false
       not_for: "reviewing this workflow prompt or any pre-step activity"
     activities:
-    - "Run @general quality validation to score the created README file"
+    - "Run @create-doc quality validation to score the created README file"
     - "Validation checks: structure completeness, content quality, DQI standards"
     - "Score against 100-point rubric (Accuracy 40%, Completeness 35%, Consistency 25%)"
     on_low_score:
@@ -1152,7 +1152,7 @@ install_guide_workflow:
       blocking: false
       not_for: "reviewing this workflow prompt or any pre-step activity"
     activities:
-    - "Run @general quality validation to score the created install guide"
+    - "Run @create-doc quality validation to score the created install guide"
     - "Validation checks: section completeness, prerequisite accuracy, platform coverage"
     - "Score against 100-point rubric (Accuracy 40%, Completeness 35%, Consistency 25%)"
     on_low_score:
@@ -1730,6 +1730,6 @@ rules:
   - "Validate the generated document before completion"
   must_not:
   - "Blend README and install-guide sections into one output file"
-  - "Skip Phase 0 @general verification"
+  - "Skip Phase 0 @create-doc verification"
   - condition: "Want to save context"
     action: "Run /memory:save"

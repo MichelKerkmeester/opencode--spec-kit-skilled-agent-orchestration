@@ -10,16 +10,16 @@ purpose: Create or update rooted feature catalog packages with explicit checkpoi
 action: Normalize inputs, confirm taxonomy, load standards, generate the package, validate structure, and report completion
 
 # ─────────────────────────────────────────────────────────────────
-# PREREQUISITE: @general AGENT VERIFICATION
+# PREREQUISITE: @create-doc AGENT VERIFICATION
 # ─────────────────────────────────────────────────────────────────
-# This workflow REQUIRES the @general agent for:
+# This workflow REQUIRES the @create-doc agent for:
 #   - Template-first generation
 #   - sk-doc standards enforcement
 #   - Root document validation
 #
-# PHASE 0 in the command markdown verifies @general agent BEFORE
+# PHASE 0 in the command markdown verifies @create-doc agent BEFORE
 # this YAML workflow loads. If you are executing this workflow,
-# @general verification has already passed.
+# @create-doc verification has already passed.
 # ─────────────────────────────────────────────────────────────────
 
 operating_mode:
@@ -77,7 +77,7 @@ request_analysis_framework:
     - "Validate root structure, linked files, and count consistency"
   pre_change_validation:
     items:
-      - "general_agent_verified is true"
+      - "create_doc_agent_verified is true"
       - "skill_name is present"
       - "operation is create or update"
       - "source_strategy is present"
@@ -103,7 +103,7 @@ checkpoint_options:
 
 input_contract:
   required:
-    - general_agent_verified
+    - create_doc_agent_verified
     - skill_name
     - operation
     - source_strategy
@@ -191,7 +191,7 @@ quality_standards:
 gate_logic:
   hard:
     H0_write_verified:
-      description: "general_agent_verified must be true"
+      description: "create_doc_agent_verified must be true"
       fail_action: "STOP and return to setup"
     H1_required_fields:
       description: "All required setup fields must be present"
