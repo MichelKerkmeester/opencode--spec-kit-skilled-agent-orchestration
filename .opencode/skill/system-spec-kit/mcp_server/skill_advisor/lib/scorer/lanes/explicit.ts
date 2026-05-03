@@ -138,7 +138,8 @@ const TOKEN_BOOSTS: Readonly<Record<string, readonly [string, number][]>> = {
 };
 
 const PHRASE_BOOSTS: Readonly<Record<string, readonly [string, number][]>> = {
-  '/memory:save': [['command-memory-save', 1], ['system-spec-kit', 0.9]],
+  '/create:agent': [['create:agent', 1.6], ['sk-doc', 0.45]],
+  '/memory:save': [['memory:save', 1.6], ['command-memory-save', 1], ['system-spec-kit', 0.45]],
   '/spec_kit:deep-research': [['sk-deep-research', 1.6], ['command-spec-kit', 0.45]],
   '/spec_kit:deep-review': [['sk-deep-review', 1.6], ['command-spec-kit', 0.45]],
   '/spec_kit:resume': [['system-spec-kit', 0.9], ['command-spec-kit', 0.75]],
@@ -185,8 +186,10 @@ const PHRASE_BOOSTS: Readonly<Record<string, readonly [string, number][]>> = {
   'viewport height': [['sk-code', 0.55]],
   'mobile browser': [['sk-code', 0.6]],
   'browser verification': [['sk-code', 0.7]],
-  'save context': [['system-spec-kit', 1]],
-  'save memory': [['system-spec-kit', 1]],
+  'create a new agent': [['create:agent', 1.6], ['sk-doc', 0.45]],
+  'create new agent': [['create:agent', 1.6], ['sk-doc', 0.45]],
+  'save context': [['memory:save', 1.6], ['command-memory-save', 1], ['system-spec-kit', 0.45]],
+  'save memory': [['memory:save', 1.6], ['command-memory-save', 1], ['system-spec-kit', 0.45]],
   'semantic code search': [['mcp-coco-index', 1]],
   'source-type mix': [['system-spec-kit', 0.35]],
   'system prompt': [['sk-improve-prompt', 0.8]],

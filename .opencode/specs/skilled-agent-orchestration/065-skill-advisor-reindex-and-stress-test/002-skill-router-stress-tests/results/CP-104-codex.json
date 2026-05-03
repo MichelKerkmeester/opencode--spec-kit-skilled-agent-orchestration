@@ -1,0 +1,15 @@
+{
+  "cp_id": "CP-104",
+  "executor": "cli-codex",
+  "executor_model": "not-invoked-directly",
+  "captured_at": "2026-05-03T10:45:00Z",
+  "duration_ms": 1954,
+  "prompt": "preserve everything we figured out today so the next session doesn't lose it",
+  "dispatch_mode": "python-fallback-threshold-0.0-current-session-copy",
+  "advisor_response": [
+    {"skill": "system-spec-kit", "confidence": 0.72, "uncertainty": 0.30, "score": 0.114333, "dominant_lane": "derived_generated"},
+    {"skill": "sk-code", "confidence": 0.5371, "uncertainty": 0.34, "score": 0.033333, "dominant_lane": "lexical"}
+  ],
+  "status": "success",
+  "error": null
+}

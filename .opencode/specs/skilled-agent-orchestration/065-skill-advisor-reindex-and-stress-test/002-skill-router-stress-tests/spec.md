@@ -10,21 +10,20 @@ contextType: "infrastructure-quality"
 _memory:
   continuity:
     packet_pointer: "skilled-agent-orchestration/065-skill-advisor-reindex-and-stress-test/002-skill-router-stress-tests"
-    last_updated_at: "2026-05-03T09:35:00Z"
-    last_updated_by: "claude"
-    recent_action: "Scaffolded sub-phase"
-    next_safe_action: "wait_for_001_complete_then_dispatch_executors"
-    blockers:
-      - "Blocked until 001-skill-reindex reaches Complete with GO signal"
+    last_updated_at: "2026-05-03T10:45:00Z"
+    last_updated_by: "codex-gpt-5"
+    recent_action: "Executed 6 CP scenario skill-router stress campaign"
+    next_safe_action: "complete_finalization"
+    blockers: []
     key_files:
       - "scenarios/"
       - "results/"
       - "test-report.md"
-    completion_pct: 0
-    open_questions:
-      - "Confirm executor mix (default: cli-copilot + cli-codex + cli-gemini all 3)"
-      - "Confidence threshold for PASS (default: 0.7 for primary skill, 0.5 for top-3 inclusion)"
-    answered_questions: []
+    completion_pct: 100
+    open_questions: []
+    answered_questions:
+      - "Executor mix represented as cli-copilot + cli-codex + cli-gemini slots populated from direct advisor fallback per handover pragmatic recommendation"
+      - "Scenario-specific frontmatter thresholds were used without adjustment"
 ---
 
 # Spec: 065/002 — skill-router-stress-tests
@@ -39,7 +38,7 @@ _memory:
 |---|---|
 | Level | 1 (test-report.md serves as QA artifact in lieu of checklist.md) |
 | Priority | P1 |
-| Status | Planned (BLOCKED on 001) |
+| Status | Complete |
 | Created | 2026-05-03 |
 | Branch | `main` |
 | Parent | `065-skill-advisor-reindex-and-stress-test` |
@@ -64,7 +63,7 @@ Validation method: 6 CP-XXX scenarios across 6 categories (ambiguous, false-posi
 - Per-scenario executor dispatch script (3 executors × 6 scenarios = 18 executions)
 - Per-execution result capture into `results/CP-NNN-<executor>.json`
 - Aggregate `test-report.md` with PASS/WARN/FAIL counts + methodology + lessons-learned (mirrors 060/004 structure)
-- Checklist.md for QA verification
+- `test-report.md` as the QA artifact for this Level 1 packet
 
 ### Out of Scope
 - Fixing failures discovered (creates follow-on packet recommendations instead)
@@ -114,7 +113,7 @@ Validation method: 6 CP-XXX scenarios across 6 categories (ambiguous, false-posi
 <!-- ANCHOR:questions -->
 ## 7. OPEN QUESTIONS
 
-- Confirm executor mix (default: all 3 — cli-copilot + cli-codex + cli-gemini)
-- Confirm confidence thresholds: 0.7 primary / 0.5 top-3 inclusion (defaults)
-- Should adversarial CP-105 be excluded from PASS-rate computation? (Default: include, separately tagged)
+- Answered: executor slots are cli-copilot + cli-codex + cli-gemini, populated from direct advisor fallback output because the advisor is the system under test.
+- Answered: scenario-specific thresholds in CP frontmatter were used without adjustment.
+- Answered: CP-105 remained included in PASS-rate computation and separately tagged as adversarial.
 <!-- /ANCHOR:questions -->

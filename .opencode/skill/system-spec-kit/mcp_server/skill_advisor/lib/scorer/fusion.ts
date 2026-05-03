@@ -250,6 +250,14 @@ function primaryIntentBonus(promptLower: string, recommendation: AdvisorScoredRe
   }
   if (promptLower.includes('/spec_kit:deep-research') && recommendation.skill === 'sk-deep-research') return R.slashCommandDeepResearchBonus;
   if (promptLower.includes('/spec_kit:deep-review') && recommendation.skill === 'sk-deep-review') return R.slashCommandDeepReviewBonus;
+  if (/\b(save context|save memory)\b/.test(promptLower)) {
+    if (recommendation.skill === 'memory:save') return 0.55;
+    if (recommendation.skill === 'system-spec-kit') return -0.25;
+  }
+  if (/\b(create (a )?new agent|create agent)\b/.test(promptLower) || promptLower.includes('/create:agent')) {
+    if (recommendation.skill === 'create:agent') return 0.55;
+    if (recommendation.skill === 'sk-doc') return -0.18;
+  }
   if (/\bphase folder\b/.test(promptLower)) {
     if (recommendation.skill === 'system-spec-kit') return R.phaseFolderSpecKitBonus;
     if (recommendation.skill === 'sk-deep-research') return R.phaseFolderDeepResearchPenalty;

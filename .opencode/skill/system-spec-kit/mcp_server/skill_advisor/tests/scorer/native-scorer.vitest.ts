@@ -215,6 +215,32 @@ describe('027/003 native scorer units', () => {
     expect(result.unknown).toBe(true);
   });
 
+  it('routes memory-save and create-agent touchstone prompts to command bridges', () => {
+    const projection = createFixtureProjection([
+      skill({ id: 'system-spec-kit', description: 'Spec folders and memory workflow' }),
+      skill({ id: 'sk-doc', description: 'Documentation and agent creation guidance' }),
+      skill({
+        id: 'memory:save',
+        kind: 'command',
+        description: 'Memory save command bridge for /memory:save context preservation.',
+        keywords: ['/memory:save', 'save context', 'save memory'],
+        domains: ['memory', 'command'],
+        intentSignals: ['/memory:save', 'save context', 'save memory'],
+      }),
+      skill({
+        id: 'create:agent',
+        kind: 'command',
+        description: 'Create command bridge for /create:agent OpenCode agent scaffolding.',
+        keywords: ['/create:agent', 'create new agent', 'create agent'],
+        domains: ['create', 'agent', 'command'],
+        intentSignals: ['/create:agent', 'create new agent', 'create agent'],
+      }),
+    ]);
+
+    expect(scoreAdvisorPrompt('save context', { workspaceRoot: process.cwd(), projection }).topSkill).toBe('memory:save');
+    expect(scoreAdvisorPrompt('create new agent', { workspaceRoot: process.cwd(), projection }).topSkill).toBe('create:agent');
+  });
+
   it('projects derived triggers and keywords from distinct sources via filesystem fallback', () => {
     // F-012-C2-02: derivedTriggers come from `derived.trigger_phrases` and
     // derivedKeywords come from `derived.key_topics + entities + key_files +

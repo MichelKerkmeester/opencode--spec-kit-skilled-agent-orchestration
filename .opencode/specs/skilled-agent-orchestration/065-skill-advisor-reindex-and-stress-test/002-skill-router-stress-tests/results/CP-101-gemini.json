@@ -1,0 +1,16 @@
+{
+  "cp_id": "CP-101",
+  "executor": "cli-gemini",
+  "executor_model": "not-invoked-directly",
+  "captured_at": "2026-05-03T10:45:00Z",
+  "duration_ms": 1966,
+  "prompt": "save the file I'm working on",
+  "dispatch_mode": "python-fallback-threshold-0.0-current-session-copy",
+  "advisor_response": [
+    {"skill": "system-spec-kit", "confidence": 0.82, "uncertainty": 0.22, "score": 0.4925, "dominant_lane": "explicit_author"},
+    {"skill": "memory:save", "confidence": 0.82, "uncertainty": 0.22, "score": 0.2, "dominant_lane": "lexical"},
+    {"skill": "command-memory-save", "confidence": 0.5968, "uncertainty": 0.34, "score": 0.15, "dominant_lane": "lexical"}
+  ],
+  "status": "success",
+  "error": null
+}

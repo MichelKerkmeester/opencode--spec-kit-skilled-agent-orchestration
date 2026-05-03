@@ -31,11 +31,11 @@
       "reindex",
       "stress-test"
     ],
-    "status": "planned",
-    "completion_pct": 0,
-    "last_active_child_id": "skilled-agent-orchestration/065-skill-advisor-reindex-and-stress-test/001-skill-reindex",
+    "status": "complete",
+    "completion_pct": 100,
+    "last_active_child_id": null,
     "level": "phase-parent",
     "is_phase_parent": true,
-    "session_outcome": null
+    "session_outcome": "completed"
   }
 }

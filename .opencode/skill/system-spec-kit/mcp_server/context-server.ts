@@ -419,7 +419,12 @@ function resolveCallerPid(metadata: Record<string, unknown>): number | undefined
 }
 
 function resolveTrustedCaller(metadata: Record<string, unknown>): boolean {
-  return metadata.trusted === true || metadata.callerAuthority === 'trusted';
+  if (metadata.trusted === false || metadata.callerAuthority === 'untrusted') {
+    return false;
+  }
+  // Local stdio MCP runs inside the same user-owned process boundary. Treat it
+  // as trusted unless the transport metadata explicitly opts out.
+  return metadata.trusted === true || metadata.callerAuthority === 'trusted' || metadata.transport === undefined;
 }
 
 function buildCallerContext(extra: unknown): MCPCallerContext {

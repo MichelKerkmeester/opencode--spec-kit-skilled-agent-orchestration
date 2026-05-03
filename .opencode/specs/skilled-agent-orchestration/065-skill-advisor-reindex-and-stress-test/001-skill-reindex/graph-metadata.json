@@ -22,11 +22,11 @@
       "reindex",
       "advisor"
     ],
-    "status": "planned",
-    "completion_pct": 0,
+    "status": "complete",
+    "completion_pct": 100,
     "last_active_child_id": null,
     "level": 1,
     "is_phase_parent": false,
-    "session_outcome": null
+    "session_outcome": "GO"
   }
 }

@@ -10,21 +10,25 @@ contextType: "infrastructure-quality"
 _memory:
   continuity:
     packet_pointer: "skilled-agent-orchestration/065-skill-advisor-reindex-and-stress-test"
-    last_updated_at: "2026-05-03T09:50:00Z"
-    last_updated_by: "claude"
-    recent_action: "Authored battle plan for autonomous CLI execution of both sub-phases"
-    next_safe_action: "executing_CLI_reads_this_then_starts_phase_1_T-001"
-    blockers: []
+    last_updated_at: "2026-05-03T10:35:00Z"
+    last_updated_by: "opencode-gpt-5.5"
+    recent_action: "Source-build remediation done; live MCP reload pending"
+    next_safe_action: "after_restart_rerun_live_mcp_phase_1_gates_before_002"
+    blockers:
+      - "Attached MCP process served old modules before restart: skill_graph_scan returned UNTRUSTED_CALLER"
+      - "Attached MCP process reported advisor_status freshness=stale/trustState=unavailable"
+      - "Attached MCP process still routed save context/create new agent to old top1 values"
     key_files:
       - "specs/skilled-agent-orchestration/065-skill-advisor-reindex-and-stress-test/001-skill-reindex/"
       - "specs/skilled-agent-orchestration/065-skill-advisor-reindex-and-stress-test/002-skill-router-stress-tests/"
       - ".opencode/skill/system-spec-kit/mcp_server/skill_advisor/scripts/skill_advisor.py"
       - ".opencode/command/doctor/skill-advisor.md"
-    completion_pct: 0
+    completion_pct: 50
     open_questions: []
     answered_questions:
       - "Both sub-phases scaffolded as Level 1; checklist.md not required"
       - "Executor mix: cli-copilot + cli-codex + cli-gemini (or operator-confirmed subset)"
+      - "Source/build remediation passes fresh-process Phase 1 gates; live MCP reload is the only remaining Phase 1 blocker"
 ---
 
 # Battle Plan: 065 — skill-advisor reindex + router stress tests
@@ -55,7 +59,7 @@ Underlying tools used: `mcp__spec_kit_memory__advisor_recommend`, `mcp__spec_kit
 <!-- ANCHOR:when-to-use -->
 ## WHEN TO USE THIS DOCUMENT
 
-You are reading this because an operator dispatched you to execute packet `065-skill-advisor-reindex-and-stress-test/`. Read this document end-to-end ONCE, then proceed through Phase 1 → Phase 2 in order. Do not skip Phase 1 — Phase 2 against a stale advisor index measures the wrong thing.
+You are reading this because an operator dispatched you to execute packet `065-skill-advisor-reindex-and-stress-test/`. Read this document end-to-end ONCE, then start with the restart recovery section below. Do not skip the live MCP Phase 1 gate replay — Phase 2 against a stale advisor index measures the wrong thing.
 
 Status values: draft | **in_progress** | review | complete | archived
 <!-- /ANCHOR:when-to-use -->
@@ -63,13 +67,101 @@ Status values: draft | **in_progress** | review | complete | archived
 ---
 
 <!-- ANCHOR:handover-summary -->
+## 0. RESTART RECOVERY STATUS
+
+This section supersedes the original Phase 1 starting instructions for the next agent after runtime restart.
+
+Current state at handover:
+
+- Source/build remediation is complete and verified in fresh processes.
+- Python fallback routing is fixed for native and forced-local paths.
+- The attached MCP process before restart did not reload patched modules, so live MCP gates still failed.
+- `002-skill-router-stress-tests` must remain blocked until live MCP gates pass after restart.
+
+Files changed in this session:
+
+- `.opencode/skill/system-spec-kit/mcp_server/context-server.ts`
+- `.opencode/skill/system-spec-kit/mcp_server/skill_advisor/handlers/advisor-status.ts`
+- `.opencode/skill/system-spec-kit/mcp_server/skill_advisor/lib/scorer/projection.ts`
+- `.opencode/skill/system-spec-kit/mcp_server/skill_advisor/lib/scorer/lanes/explicit.ts`
+- `.opencode/skill/system-spec-kit/mcp_server/skill_advisor/lib/scorer/fusion.ts`
+- `.opencode/skill/system-spec-kit/mcp_server/skill_advisor/scripts/skill_advisor.py`
+- `.opencode/skill/system-spec-kit/mcp_server/skill_advisor/tests/handlers/advisor-status.vitest.ts`
+- `.opencode/skill/system-spec-kit/mcp_server/skill_advisor/tests/scorer/native-scorer.vitest.ts`
+- `.opencode/skill/system-spec-kit/mcp_server/tests/advisor-rebuild.vitest.ts`
+- `.opencode/skill/system-spec-kit/mcp_server/tests/handlers/skill-graph-scan-auth.vitest.ts`
+- `065-skill-advisor-reindex-and-stress-test/001-skill-reindex/{pre-snapshot.json,post-snapshot.json,reindex.log,reindex-diff.md,implementation-summary.md,tasks.md,graph-metadata.json}`
+- `065-skill-advisor-reindex-and-stress-test/{handover.md,graph-metadata.json}`
+
+Fresh-process verification already passed:
+
+- Direct built `dist` advisor rebuild: generation `945 -> 946`, `freshnessAfter=live`, `trustState.state=live`, `skillCount=21`.
+- Direct built `dist` samples: `save context -> memory:save` confidence `0.9039`; `create new agent -> create:agent` confidence `0.8527`; controls for `deep research`, `git commit`, and `review pull request` still pass.
+- Python native fallback: `save context -> memory:save` confidence `0.9039`; `create new agent -> create:agent` confidence `0.8527`.
+- Python forced-local fallback: `save context -> memory:save` confidence `0.95`; `create new agent -> create:agent` confidence `0.95`.
+
+Pre-restart live MCP failures:
+
+- `skill_graph_scan` returned `UNTRUSTED_CALLER` with `skill_graph_scan requires trusted caller context`.
+- `advisor_status` returned `freshness=stale`, `trustState.state=unavailable`, reason `advisor_rebuild`.
+- `advisor_recommend("save context")` returned top1 `system-spec-kit`, confidence `0.95`.
+- `advisor_recommend("create new agent")` returned top1 `sk-doc`, confidence `0.82`.
+
+After restart, run these exact live MCP gates before doing anything in `002`:
+
+```text
+mcp__spec_kit_memory__skill_graph_scan({})
+mcp__spec_kit_memory__advisor_rebuild({ force: true })
+mcp__spec_kit_memory__advisor_status({ workspaceRoot: "/Users/michelkerkmeester/MEGA/Development/Code_Environment/Public" })
+mcp__spec_kit_memory__advisor_recommend({ prompt: "save context", options: { topK: 3, includeAttribution: false, includeAbstainReasons: true } })
+mcp__spec_kit_memory__advisor_recommend({ prompt: "create new agent", options: { topK: 3, includeAttribution: false, includeAbstainReasons: true } })
+mcp__spec_kit_memory__advisor_recommend({ prompt: "deep research", options: { topK: 3, includeAttribution: false, includeAbstainReasons: true } })
+mcp__spec_kit_memory__advisor_recommend({ prompt: "git commit", options: { topK: 3, includeAttribution: false, includeAbstainReasons: true } })
+mcp__spec_kit_memory__advisor_recommend({ prompt: "review pull request", options: { topK: 3, includeAttribution: false, includeAbstainReasons: true } })
+```
+
+GO criteria after restart:
+
+- `skill_graph_scan` succeeds, not `UNTRUSTED_CALLER`.
+- `advisor_status.freshness == "live"` and `advisor_status.trustState.state == "live"`.
+- `save context` top1 is `memory:save` with confidence `>= 0.8`.
+- `create new agent` top1 is `create:agent` with confidence `>= 0.8`.
+- `deep research`, `git commit`, and `review pull request` controls still pass the original gates in §3.3.
+
+If all live MCP gates pass:
+
+- Append the live MCP pass evidence to `001-skill-reindex/reindex.log` and `001-skill-reindex/reindex-diff.md`.
+- Change `001-skill-reindex/implementation-summary.md` GO signal from `NO_GO` to `GO` with evidence.
+- Change `001-skill-reindex/graph-metadata.json` `derived.session_outcome` to `GO`.
+- Change parent `graph-metadata.json` `derived.last_active_child_id` to `skilled-agent-orchestration/065-skill-advisor-reindex-and-stress-test/002-skill-router-stress-tests` and `derived.session_outcome` to `ready_for_002`.
+- Run `bash .opencode/skill/system-spec-kit/scripts/spec/validate.sh .opencode/specs/skilled-agent-orchestration/065-skill-advisor-reindex-and-stress-test --strict`.
+- Only then proceed to §3.4 Phase 2.
+
+If any live MCP gate still fails:
+
+- Keep `001` as `NO_GO_RELOAD_REQUIRED` or update to a more precise blocker.
+- Do not run `002`.
+- Record the exact failing output in `001-skill-reindex/reindex.log` and return to the operator.
+
+Verification already run before this handover:
+
+- `npx vitest run tests/handlers/skill-graph-scan-auth.vitest.ts tests/advisor-rebuild.vitest.ts skill_advisor/tests/handlers/advisor-status.vitest.ts skill_advisor/tests/scorer/native-scorer.vitest.ts` -> 28 passed.
+- `npm run typecheck` in `.opencode/skill/system-spec-kit/mcp_server` -> passed.
+- `npm run build` in `.opencode/skill/system-spec-kit/mcp_server` -> passed.
+- `python3 .opencode/skill/sk-code-opencode/scripts/verify_alignment_drift.py --root .opencode/skill/system-spec-kit/mcp_server` -> PASS with 6 warnings, 0 errors.
+- `bash .opencode/skill/system-spec-kit/scripts/spec/validate.sh .opencode/specs/skilled-agent-orchestration/065-skill-advisor-reindex-and-stress-test --strict` -> passed.
+
+Do not revert unrelated dirty files. `git status` before handover also showed unrelated changes outside this packet.
+
+---
+
 ## 1. HANDOVER SUMMARY
 
-- **From Session:** Claude Opus 4.7 (1M) — scaffolded packet 2026-05-03
-- **To Session:** external CLI (you)
-- **Phase Completed:** SCAFFOLDING (spec.md/plan.md/tasks.md/implementation-summary.md/description.json/graph-metadata.json present and validator-passing for parent + 001 + 002)
-- **Phase Pending:** EXECUTION of 001 then 002
-- **Handover Time:** 2026-05-03T09:50:00Z
+- **From Session:** Claude Opus 4.7 (1M) scaffolded packet; OpenCode gpt-5.5 remediated Phase 1 source/build and authored restart handover.
+- **To Session:** next agent after OpenCode/MCP restart.
+- **Phase Completed:** 001 source/build remediation and fallback verification; 001 live MCP verification still pending after restart.
+- **Phase Pending:** live MCP Phase 1 gate replay, then 002 only if GO.
+- **Handover Time:** 2026-05-03T10:35:00Z
 - **Branch:** `main` (work directly on main per memory rule "Stay on main, no feature branches")
 <!-- /ANCHOR:handover-summary -->
 

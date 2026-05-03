@@ -9,6 +9,7 @@ import { tmpdir } from 'node:os';
 import { describe, expect, it } from 'vitest';
 
 import { handleAdvisorStatus, readAdvisorStatus } from '../../handlers/advisor-status.js';
+import { computeAdvisorSourceSignature } from '../../lib/freshness.js';
 
 function workspace(name: string): string {
   const root = mkdtempSync(join(tmpdir(), `advisor-status-${name}-`));
@@ -23,7 +24,7 @@ function writeGeneration(root: string, state: 'live' | 'stale' | 'absent' | 'una
   writeFileSync(join(root, '.opencode', 'skill', '.advisor-state', 'skill-graph-generation.json'), `${JSON.stringify({
     generation,
     updatedAt: '2026-04-20T00:00:00.000Z',
-    sourceSignature: `sig-${state}`,
+    sourceSignature: null,
     reason: `${state.toUpperCase()}_FIXTURE`,
     state,
   })}\n`, 'utf8');
@@ -42,11 +43,34 @@ describe('advisor_status handler', () => {
     const status = readAdvisorStatus({ workspaceRoot: root });
 
     expect(status.freshness).toBe('live');
+    expect(status.trustState.state).toBe('live');
     expect(status.generation).toBe(3);
     expect(status.trustState.lastLiveAt).toBe('2026-04-20T00:00:00.000Z');
     expect(status.lastScanAt).toBe('2026-04-20T00:00:00.000Z');
     expect(status.skillCount).toBe(1);
     expect(status.laneWeights.explicit_author).toBe(0.45);
+  });
+
+  it('keeps signed generations live when source mtimes exceed skipped SQLite writes', () => {
+    const root = workspace('signed-live');
+    writeDb(root);
+    const dbPath = join(root, '.opencode', 'skill', 'system-spec-kit', 'mcp_server', 'database', 'skill-graph.sqlite');
+    const metadataPath = join(root, '.opencode', 'skill', 'alpha', 'graph-metadata.json');
+    utimesSync(dbPath, new Date('2026-04-19T00:00:00.000Z'), new Date('2026-04-19T00:00:00.000Z'));
+    utimesSync(metadataPath, new Date('2026-04-21T00:00:00.000Z'), new Date('2026-04-21T00:00:00.000Z'));
+    const sourceSignature = computeAdvisorSourceSignature(root);
+    writeFileSync(join(root, '.opencode', 'skill', '.advisor-state', 'skill-graph-generation.json'), `${JSON.stringify({
+      generation: 9,
+      updatedAt: '2026-04-22T00:00:00.000Z',
+      sourceSignature,
+      reason: 'advisor_rebuild',
+      state: 'live',
+    })}\n`, 'utf8');
+
+    const status = readAdvisorStatus({ workspaceRoot: root });
+
+    expect(status.freshness).toBe('live');
+    expect(status.trustState.state).toBe('live');
   });
 
   it('marks live generations stale when nested graph metadata is newer than the database', () => {

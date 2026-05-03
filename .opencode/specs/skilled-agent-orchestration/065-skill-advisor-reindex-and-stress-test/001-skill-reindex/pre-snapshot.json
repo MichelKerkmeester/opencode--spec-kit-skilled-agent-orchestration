@@ -1,0 +1,88 @@
+{
+  "captured_at": "2026-05-03T08:21:49Z",
+  "advisor_path": "Path A - direct MCP",
+  "skill_graph_status": {
+    "tool_status": "ok",
+    "totalSkills": 20,
+    "totalEdges": 73,
+    "lastIndexedAt": "2026-05-03T06:22:58.062Z",
+    "dbStatus": "ready",
+    "validation": {
+      "isHealthy": true,
+      "brokenEdgeCount": 0,
+      "weightBandViolations": 0,
+      "unsupportedSchemaVersionCount": 0
+    },
+    "staleness": {
+      "trackedSkills": 20,
+      "freshSourceFiles": 20,
+      "changedSourceFiles": 0,
+      "missingSourceFiles": 0,
+      "staleSkillIds": []
+    }
+  },
+  "advisor_status": {
+    "tool_status": "ok",
+    "freshness": "stale",
+    "generation": 941,
+    "skillCount": 21,
+    "lastGenerationBump": "2026-05-03T08:00:56.878Z",
+    "lastScanAt": "2026-05-03T08:00:56.878Z",
+    "trustState": {
+      "state": "unavailable",
+      "reason": "context-server-startup-scan"
+    }
+  },
+  "skill_count": 20,
+  "advisor_record_count": 21,
+  "samples": [
+    {
+      "prompt": "save context",
+      "expected_top1_skill": "memory:save",
+      "top1_skill": "system-spec-kit",
+      "top1_confidence": 0.95,
+      "top3": [
+        { "skill": "system-spec-kit", "confidence": 0.95, "score": 0.84 },
+        { "skill": "command-memory-save", "confidence": 0.8425, "score": 0.63 }
+      ]
+    },
+    {
+      "prompt": "create new agent",
+      "expected_top1_skill": "create:agent",
+      "top1_skill": "sk-doc",
+      "top1_confidence": 0.82,
+      "top3": [
+        { "skill": "sk-doc", "confidence": 0.82, "score": 0.1225 }
+      ]
+    },
+    {
+      "prompt": "deep research",
+      "expected_top1_skill": "spec_kit:deep-research",
+      "top1_skill": "sk-deep-research",
+      "top1_confidence": 0.95,
+      "top3": [
+        { "skill": "sk-deep-research", "confidence": 0.95, "score": 0.90875 },
+        { "skill": "command-spec-kit", "confidence": 0.82, "score": 0.2 }
+      ]
+    },
+    {
+      "prompt": "git commit",
+      "expected_top1_skill": "sk-git",
+      "top1_skill": "sk-git",
+      "top1_confidence": 0.9295,
+      "top3": [
+        { "skill": "sk-git", "confidence": 0.9295, "score": 0.8 }
+      ]
+    },
+    {
+      "prompt": "review pull request",
+      "expected_top1_skill": "review skill or command",
+      "top1_skill": "sk-code-review",
+      "top1_confidence": 0.95,
+      "top3": [
+        { "skill": "sk-code-review", "confidence": 0.95, "score": 0.87288 },
+        { "skill": "sk-git", "confidence": 0.9039, "score": 0.75 }
+      ]
+    }
+  ]
+}

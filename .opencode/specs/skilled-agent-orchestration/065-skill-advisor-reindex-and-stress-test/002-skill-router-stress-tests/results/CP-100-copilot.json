@@ -1,0 +1,16 @@
+{
+  "cp_id": "CP-100",
+  "executor": "cli-copilot",
+  "executor_model": "not-invoked-directly",
+  "captured_at": "2026-05-03T10:45:00Z",
+  "duration_ms": 1971,
+  "prompt": "I need to figure out what's wrong with my code",
+  "dispatch_mode": "python-fallback-threshold-0.0-current-session-copy",
+  "advisor_response": [
+    {"skill": "sk-code", "confidence": 0.6215, "uncertainty": 0.30, "score": 0.198375, "dominant_lane": "derived_generated"},
+    {"skill": "sk-code-opencode", "confidence": 0.5809, "uncertainty": 0.30, "score": 0.118965, "dominant_lane": "lexical"},
+    {"skill": "sk-code-review", "confidence": 0.5789, "uncertainty": 0.34, "score": 0.115027, "dominant_lane": "lexical"}
+  ],
+  "status": "success",
+  "error": null
+}

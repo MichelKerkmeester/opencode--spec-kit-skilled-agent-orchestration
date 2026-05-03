@@ -1465,12 +1465,14 @@ PHRASE_INTENT_BOOSTERS = {
     "write documentation": [("sk-doc", 1.5)],
     "write docs": [("sk-doc", 1.2)],
     "generate documentation": [("sk-doc", 1.2)],
-    "save context": [("system-spec-kit", 1.0)],
-    "save memory": [("system-spec-kit", 1.0)],
-    "save this context": [("system-spec-kit", 1.0)],
-    "save conversation": [("system-spec-kit", 1.0)],
-    "save conversation context": [("system-spec-kit", 1.0)],
-    "save this conversation context": [("system-spec-kit", 1.0)],
+    "create new agent": [("create:agent", 1.6), ("sk-doc", 0.45)],
+    "create agent": [("create:agent", 1.6), ("sk-doc", 0.45)],
+    "save context": [("memory:save", 1.6), ("command-memory-save", 1.0), ("system-spec-kit", 0.45)],
+    "save memory": [("memory:save", 1.6), ("command-memory-save", 1.0), ("system-spec-kit", 0.45)],
+    "save this context": [("memory:save", 1.6), ("command-memory-save", 1.0), ("system-spec-kit", 0.45)],
+    "save conversation": [("memory:save", 1.6), ("command-memory-save", 1.0), ("system-spec-kit", 0.45)],
+    "save conversation context": [("memory:save", 1.6), ("command-memory-save", 1.0), ("system-spec-kit", 0.45)],
+    "save this conversation context": [("memory:save", 1.6), ("command-memory-save", 1.0), ("system-spec-kit", 0.45)],
     "code review": [("sk-code-review", 2.4)],
     "pr review": [("sk-code-review", 2.3), ("sk-git", 0.4)],
     "security review": [("sk-code-review", 2.2)],
@@ -1768,7 +1770,8 @@ COMMAND_BRIDGES = {
 }
 
 COMMAND_BRIDGE_OWNER_NORMALIZATION = {
-    "command-memory-save": "system-spec-kit",
+    "command-memory-save": "memory:save",
+    "command-create-agent": "create:agent",
     "command-spec-kit-resume": "system-spec-kit",
     "command-spec-kit-deep-research": "sk-deep-research",
     "command-spec-kit-deep-review": "sk-deep-review",
@@ -1907,7 +1910,7 @@ INTENT_NORMALIZATION_RULES = {
     "memory": {
         "phrases": ["save context", "save memory", "remember this", "restore checkpoint"],
         "tokens": {"memory", "context", "checkpoint", "remember", "restore", "session", "preserve"},
-        "boosts": [("system-spec-kit", 0.6)],
+        "boosts": [("memory:save", 0.6)],
     },
     "tooling": {
         "phrases": ["use mcp", "code mode", "chrome devtools", "use figma", "use webflow"],
@@ -1988,6 +1991,23 @@ def _build_inline_record(
 def get_skills(force_refresh: bool = False) -> Dict[str, Dict[str, Any]]:
     """Return skill + command records with cached discovery metadata."""
     skills = get_cached_skill_records(SKILLS_DIR, STOP_WORDS, force_refresh=force_refresh)
+
+    skills["memory:save"] = _build_inline_record(
+        name="memory:save",
+        description="Memory save command bridge for /memory:save context preservation.",
+        kind="skill",
+        source="bridge",
+        path=None,
+        extra_variants={"/memory:save", "save context", "save memory"},
+    )
+    skills["create:agent"] = _build_inline_record(
+        name="create:agent",
+        description="Create command bridge for /create:agent OpenCode agent scaffolding.",
+        kind="skill",
+        source="bridge",
+        path=None,
+        extra_variants={"/create:agent", "create new agent", "create agent"},
+    )
 
     for command_name, command_config in COMMAND_BRIDGES.items():
         markers = set(command_config.get("slash_markers", []))

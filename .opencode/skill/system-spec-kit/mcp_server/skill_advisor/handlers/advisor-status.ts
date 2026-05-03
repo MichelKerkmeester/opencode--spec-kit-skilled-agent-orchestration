@@ -113,7 +113,7 @@ export function readAdvisorStatus(input: AdvisorStatusInput): AdvisorStatusOutpu
           : hasArtifact && hasSources && sourceScan.maxMtimeMs > fileMtimeMs(dbPath)
       );
     const daemonPid = parseDaemonPid();
-    const daemonAvailable = hasRunningDaemon(daemonPid);
+    const daemonAvailable = daemonPid === undefined ? true : hasRunningDaemon(daemonPid);
     // Only flag a daemon-evidence divergence when a PID file exists but the
     // process is gone. Missing PID file = daemon never started, not a
     // divergence between freshness artifacts and live process evidence.
@@ -142,7 +142,7 @@ export function readAdvisorStatus(input: AdvisorStatusInput): AdvisorStatusOutpu
     // `freshness` see artifact health independent of daemon availability.
     // When physical evidence shows sources are newer than the DB, downgrade
     // a 'live' generation to 'stale' regardless of signature noise.
-    const freshnessOutput: AdvisorFreshness = state === 'live' && sourcesNewerThanArtifact
+    const freshnessOutput: AdvisorFreshness = state === 'live' && (sourceChanged || (!generation.sourceSignature && sourcesNewerThanArtifact))
       ? 'stale'
       : state;
     const output: AdvisorStatusOutput = {

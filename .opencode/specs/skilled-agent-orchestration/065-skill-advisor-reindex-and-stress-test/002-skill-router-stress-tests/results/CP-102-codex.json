@@ -1,0 +1,12 @@
+{
+  "cp_id": "CP-102",
+  "executor": "cli-codex",
+  "executor_model": "not-invoked-directly",
+  "captured_at": "2026-05-03T10:45:00Z",
+  "duration_ms": 1960,
+  "prompt": "tell me a joke about distributed systems",
+  "dispatch_mode": "python-fallback-threshold-0.0-current-session-copy",
+  "advisor_response": [],
+  "status": "success",
+  "error": null
+}

@@ -2,6 +2,9 @@
 // MODULE: Advisor Rebuild Tests
 // ───────────────────────────────────────────────────────────────────
 
+import { mkdtempSync } from 'node:fs';
+import { tmpdir } from 'node:os';
+import { join } from 'node:path';
 import { describe, expect, it, vi } from 'vitest';
 import { rebuildAdvisorIndex } from '../skill_advisor/handlers/advisor-rebuild.js';
 import type { AdvisorStatusOutput } from '../skill_advisor/schemas/advisor-tool-schemas.js';
@@ -96,6 +99,7 @@ describe('advisor_rebuild handler', () => {
   });
 
   it('uses workspaceRoot from the public rebuild input when provided', () => {
+    const alternateRoot = mkdtempSync(join(tmpdir(), 'advisor-rebuild-alternate-'));
     const readStatus = vi.fn()
       .mockReturnValueOnce(status('absent', 0))
       .mockReturnValueOnce(status('live', 1));
@@ -111,7 +115,7 @@ describe('advisor_rebuild handler', () => {
     }));
     const publishGeneration = vi.fn();
 
-    const result = rebuildAdvisorIndex({ workspaceRoot: '/workspace/alternate', force: true }, {
+    const result = rebuildAdvisorIndex({ workspaceRoot: alternateRoot, force: true }, {
       workspaceRoot: '/workspace/default',
       readStatus,
       indexSkills,
@@ -120,11 +124,11 @@ describe('advisor_rebuild handler', () => {
     });
 
     expect(result.rebuilt).toBe(true);
-    expect(readStatus).toHaveBeenNthCalledWith(1, { workspaceRoot: '/workspace/alternate' });
-    expect(indexSkills).toHaveBeenCalledWith('/workspace/alternate/.opencode/skill');
+    expect(readStatus).toHaveBeenNthCalledWith(1, { workspaceRoot: alternateRoot });
+    expect(indexSkills).toHaveBeenCalledWith(`${alternateRoot}/.opencode/skill`);
     expect(publishGeneration).toHaveBeenCalledWith(expect.objectContaining({
-      workspaceRoot: '/workspace/alternate',
-      changedPaths: ['/workspace/alternate/.opencode/skill'],
+      workspaceRoot: alternateRoot,
+      changedPaths: [`${alternateRoot}/.opencode/skill`],
     }));
   });
 });
