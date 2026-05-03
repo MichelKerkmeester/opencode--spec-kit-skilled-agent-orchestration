@@ -12,11 +12,11 @@
   "derived": {
     "trigger_phrases": ["065/005 ambiguous debug review", "ambiguous routing"],
     "key_topics": ["065", "005", "debug", "review", "routing"],
-    "status": "planned",
-    "completion_pct": 0,
+    "status": "complete",
+    "completion_pct": 100,
     "last_active_child_id": null,
     "level": 1,
     "is_phase_parent": false,
-    "session_outcome": null
+    "session_outcome": "complete_cp100_sk_code_review_top1_082"
   }
 }

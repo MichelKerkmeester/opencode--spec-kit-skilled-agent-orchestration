@@ -38,11 +38,11 @@
       "router",
       "calibration"
     ],
-    "status": "in_progress",
-    "completion_pct": 20,
-    "last_active_child_id": "skilled-agent-orchestration/065-skill-advisor-reindex-and-stress-test/002-memory-save-negative-trigger-calibration",
+    "status": "complete",
+    "completion_pct": 100,
+    "last_active_child_id": "skilled-agent-orchestration/065-skill-advisor-reindex-and-stress-test/005-ambiguous-debug-review-routing",
     "level": "phase-parent",
     "is_phase_parent": true,
-    "session_outcome": "reorganized_with_follow_on_phases"
+    "session_outcome": "complete_all_phases_cp100_105_replay_pass"
   }
 }

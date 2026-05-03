@@ -2,10 +2,12 @@
   "specFolder": "skilled-agent-orchestration/065-skill-advisor-reindex-and-stress-test/005-ambiguous-debug-review-routing",
   "description": "Improve ambiguous code/problem prompts so review or debug candidates outrank broad sk-code without overconfidence.",
   "keywords": ["065", "005", "ambiguous", "debug", "review", "routing", "CP-100"],
-  "lastUpdated": "2026-05-03T11:10:00Z",
+  "lastUpdated": "2026-05-03T12:09:00Z",
   "specId": "065/005",
   "folderSlug": "ambiguous-debug-review-routing",
   "parentChain": ["skilled-agent-orchestration", "065-skill-advisor-reindex-and-stress-test"],
   "memorySequence": 5,
-  "memoryNameHistory": []
+  "memoryNameHistory": [],
+  "completionPct": 100,
+  "lastOutcome": "CP-100 now routes to sk-code-review top-1 at confidence 0.82; clear implementation prompts still route to sk-code."
 }

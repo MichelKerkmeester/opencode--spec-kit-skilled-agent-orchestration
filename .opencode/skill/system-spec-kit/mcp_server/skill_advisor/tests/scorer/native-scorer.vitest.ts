@@ -12,6 +12,7 @@ import { scoreAdvisorPrompt } from '../../lib/scorer/fusion.js';
 import { scoreDerivedLane } from '../../lib/scorer/lanes/derived.js';
 import { scoreGraphCausalLane } from '../../lib/scorer/lanes/graph-causal.js';
 import { createFixtureProjection, loadAdvisorProjection } from '../../lib/scorer/projection.js';
+import { SKILL_ALIAS_GROUPS, canonicalSkillId, skillInAliasSet, skillMatchesAlias } from '../../lib/scorer/aliases.js';
 import {
   DEFAULT_SCORER_WEIGHTS,
   DERIVED_GENERATED_WEIGHT,
@@ -305,6 +306,84 @@ describe('027/003 native scorer units', () => {
     expect(memorySaveIndex).toBeGreaterThanOrEqual(0);
     expect(memorySaveIndex).toBeLessThan(3);
     expect(memorySave.confidence).toBeGreaterThanOrEqual(0.6);
+  });
+
+  it('065/003 routes testing-playbook creation to the dedicated command bridge', () => {
+    const projection = createFixtureProjection([
+      skill({ id: 'sk-doc', description: 'Documentation and manual testing playbook authoring.' }),
+      skill({ id: 'sk-deep-review', description: 'Deep review loop.' }),
+      skill({ id: 'sk-improve-agent', description: 'Improve agent quality.' }),
+      skill({
+        id: 'create:testing-playbook',
+        kind: 'command',
+        description: 'Create command bridge for /create:testing-playbook manual testing playbook scaffolding.',
+        keywords: ['/create:testing-playbook', 'create testing playbook', 'create test playbook', 'testing playbook'],
+        domains: ['create', 'testing', 'playbook', 'command'],
+        intentSignals: ['/create:testing-playbook', 'create testing playbook', 'create test playbook', 'testing playbook'],
+      }),
+      skill({
+        id: 'command-create-testing-playbook',
+        kind: 'command',
+        description: 'Create or update a testing playbook using /create:testing-playbook.',
+        keywords: ['/create:testing-playbook', 'create:testing-playbook'],
+        domains: ['create', 'testing', 'playbook', 'command'],
+        intentSignals: ['/create:testing-playbook', 'create:testing-playbook'],
+      }),
+    ]);
+
+    const result = scoreAdvisorPrompt('create a test playbook for stressing this skill', {
+      workspaceRoot: process.cwd(),
+      projection,
+      includeAllCandidates: true,
+    });
+    const top3 = result.recommendations.slice(0, 3);
+    const createTesting = top3.find((recommendation) => recommendation.skill === 'create:testing-playbook');
+
+    expect(createTesting?.confidence).toBeGreaterThanOrEqual(0.6);
+    expect(top3.some((recommendation) => ['sk-deep-review', 'sk-improve-agent'].includes(recommendation.skill))).toBe(false);
+  });
+
+  it('065/004 canonicalizes command ids and skill ids through narrow alias groups', () => {
+    expect(SKILL_ALIAS_GROUPS['sk-deep-review']).toEqual(expect.arrayContaining([
+      'spec_kit:deep-review',
+      'command-spec-kit-deep-review',
+    ]));
+    expect(canonicalSkillId('spec_kit:deep-review')).toBe('sk-deep-review');
+    expect(skillMatchesAlias('sk-deep-review', 'spec_kit:deep-review')).toBe(true);
+    expect(skillInAliasSet('sk-deep-review', ['spec_kit:deep-review'])).toBe(true);
+    expect(skillMatchesAlias('sk-code-review', 'spec_kit:deep-review')).toBe(false);
+  });
+
+  it('065/005 routes ambiguous code-problem prompts toward review without overconfidence', () => {
+    const projection = createFixtureProjection([
+      skill({ id: 'sk-code', description: 'Application code implementation and stack detection.' }),
+      skill({ id: 'sk-code-review', description: 'Code review, bug audit, findings, regressions.' }),
+      skill({ id: 'sk-deep-review', description: 'Deep review loop for complex audits.' }),
+    ]);
+
+    const result = scoreAdvisorPrompt("I need to figure out what's wrong with my code", {
+      workspaceRoot: process.cwd(),
+      projection,
+    });
+
+    expect(['sk-code-review', 'sk-deep-review']).toContain(result.topSkill);
+    expect(result.recommendations[0].confidence).toBeGreaterThanOrEqual(0.4);
+    expect(result.recommendations[0].confidence).toBeLessThanOrEqual(0.85);
+  });
+
+  it('065/005 keeps clear implementation prompts on sk-code', () => {
+    const projection = createFixtureProjection([
+      skill({ id: 'sk-code', description: 'Application code implementation and stack detection.' }),
+      skill({ id: 'sk-code-review', description: 'Code review, bug audit, findings, regressions.' }),
+      skill({ id: 'sk-deep-review', description: 'Deep review loop for complex audits.' }),
+    ]);
+
+    const result = scoreAdvisorPrompt('implement a responsive webflow animation module', {
+      workspaceRoot: process.cwd(),
+      projection,
+    });
+
+    expect(result.topSkill).toBe('sk-code');
   });
 
   it('projects derived triggers and keywords from distinct sources via filesystem fallback', () => {

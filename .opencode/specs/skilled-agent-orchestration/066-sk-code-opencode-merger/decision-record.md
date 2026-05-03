@@ -9,9 +9,9 @@ contextType: "decision"
 _memory:
   continuity:
     packet_pointer: "skilled-agent-orchestration/066-sk-code-opencode-merger"
-    last_updated_at: "2026-05-03T11:04:06Z"
-    last_updated_by: "codex"
-    recent_action: "Recorded proposed consolidation decision"
+    last_updated_at: "2026-05-03T15:00:00Z"
+    last_updated_by: "multi-ai-council"
+    recent_action: "ADR updated with final route name, two-axis detection, and artifact decisions"
     next_safe_action: "Confirm decision before implementation"
     blockers:
       - "Decision remains proposed until implementation approval"
@@ -22,11 +22,13 @@ _memory:
       fingerprint: "sha256:0660660660660660660660660660660660660660660660660660660660660664"
       session_id: "066-sk-code-opencode-merger-plan"
       parent_session_id: null
-    completion_pct: 30
-    open_questions:
-      - "Historical artifact handling remains undecided."
+    completion_pct: 50
+    open_questions: []
     answered_questions:
       - "One `sk-code` is the desired user-facing end state."
+      - "Route name resolved: opencode/OPENCODE."
+      - "Detection architecture: two-axis context-aware (Code Surface → Intent)."
+      - "Changelogs: DELETE; Telemetry: REGENERATE."
 ---
 <!-- SPECKIT_TEMPLATE_SOURCE: decision-record | v2.2 -->
 # Decision Record: sk-code-opencode-merger
@@ -43,7 +45,7 @@ _memory:
 
 | Field | Value |
 |-------|-------|
-| **Status** | Proposed |
+| **Status** | Proposed (deep-analysis complete, route name and detection architecture resolved) |
 | **Date** | 2026-05-03 |
 | **Deciders** | User, maintainer |
 
@@ -69,9 +71,15 @@ The existing sibling model leaks across the repository. Agents, commands, review
 <!-- ANCHOR:adr-001-decision -->
 ### Decision
 
-**We chose**: plan a route-based `sk-code` merger where OpenCode system-code standards move into `sk-code`, and `sk-code-opencode` stops being a live sibling skill.
+**We chose**: build a two-axis context-aware `sk-code` router. Code Surface detection (Webflow/OpenCode/Unknown) gates Intent Classification, which drives per-surface resource loading. OpenCode standards merge into `sk-code` as the `opencode` surface route with language sub-detection.
 
-**How it works**: `sk-code` should gain an OpenCode/system-code route with its own resource domains, language detection, checklists, verifier script, and verification guidance. Go and React/NextJS placeholder routes should be removed from `sk-code` at the same time so the skill advertises only maintained routes.
+**How it works**:
+1. **Code Surface Detection** (first gate): CWD + changed files determine Webflow (HTML/CSS/JS + vanilla animation libs) or OpenCode (files under `.opencode/`) or Unknown (fallback).
+2. **Intent Classification** (second gate): weighted keyword scoring selects Implementation/Debug/Verify/CodeQuality/etc.
+3. **Per-surface resource loading**: Webflow loads from `references/webflow/`, OpenCode loads from `references/opencode/` with language sub-detection (file extension → JS/TS/Python/Shell/Config standards).
+4. OpenCode gains the full 5-phase lifecycle (Research → Implementation → Code Quality Gate → Debugging → Verification) that it currently lacks.
+5. Go and NextJS placeholder surfaces are removed entirely.
+6. Historical changelogs (13 files) are deleted; telemetry JSONL is regenerated.
 <!-- /ANCHOR:adr-001-decision -->
 
 ---
@@ -135,11 +143,13 @@ The existing sibling model leaks across the repository. Agents, commands, review
 ### Implementation
 
 **What changes**:
-- `sk-code` gains OpenCode system-code resources and routing.
-- `sk-code-opencode` is removed, archived, or converted to historical documentation after references are rewritten.
+- `sk-code` gains two-axis detection and OpenCode surface resources (language standards, checklists, verifier scripts).
+- `sk-code-opencode` is deleted after all references are rewritten.
 - Go and React/NextJS placeholder resources are removed from `sk-code`.
+- Historical changelogs are deleted; telemetry JSONL is regenerated.
 - Agents, commands, review contracts, advisor tests, and docs stop using `sk-code-opencode` as a live skill.
+- `sk-code-review` overlay contract is rewritten to single-skill model: baseline + surface evidence.
 
-**How to roll back**: Revert the implementation patch, restore `sk-code-opencode`, restore Go/NextJS folders if removed in the same patch, regenerate skill graph metadata, and rerun exact reference checks.
+**How to roll back**: Revert the implementation patch, restore `sk-code-opencode` from git, restore Go/NextJS folders if removed in the same patch, regenerate skill graph metadata, and rerun exact reference checks.
 <!-- /ANCHOR:adr-001-impl -->
 <!-- /ANCHOR:adr-001 -->

@@ -209,7 +209,34 @@ SKILL_GRAPH_SQLITE_PATH = os.path.normpath(os.path.join(
 ))
 GRAPH_ADJACENCY_EDGE_TYPES = ("depends_on", "enhances", "siblings", "prerequisite_for")
 GRAPH_ONLY_SKILL_IDS = {"skill_advisor"}  # snake_case after commit 7dfd108 rename
-GRAPHLESS_INLINE_SKILL_IDS = {"create:agent", "memory:save"}
+GRAPHLESS_INLINE_SKILL_IDS = {"create:agent", "create:testing-playbook", "memory:save"}
+
+SKILL_ALIAS_GROUPS = {
+    "create:agent": {"command-create-agent", "/create:agent", "create:agent"},
+    "create:testing-playbook": {
+        "command-create-testing-playbook",
+        "/create:testing-playbook",
+        "create:testing-playbook",
+    },
+    "memory:save": {"command-memory-save", "/memory:save", "memory:save"},
+    "sk-deep-research": {
+        "command-spec-kit-deep-research",
+        "/spec_kit:deep-research",
+        "spec_kit:deep-research",
+        "sk-deep-research",
+    },
+    "sk-deep-review": {
+        "command-spec-kit-deep-review",
+        "/spec_kit:deep-review",
+        "spec_kit:deep-review",
+        "sk-deep-review",
+    },
+}
+SKILL_ALIAS_TO_CANONICAL = {
+    alias: canonical
+    for canonical, aliases in SKILL_ALIAS_GROUPS.items()
+    for alias in {canonical, *aliases}
+}
 STRICT_TOPOLOGY_HEADERS = (
     ("DEPENDENCY CYCLE ERRORS", "dependency cycles"),
     ("SYMMETRY WARNINGS", "asymmetric edges"),
@@ -1468,6 +1495,10 @@ PHRASE_INTENT_BOOSTERS = {
     "generate documentation": [("sk-doc", 1.2)],
     "create new agent": [("create:agent", 1.6), ("sk-doc", 0.45)],
     "create agent": [("create:agent", 1.6), ("sk-doc", 0.45)],
+    "create a test playbook": [("create:testing-playbook", 1.8), ("command-create-testing-playbook", 1.2), ("sk-doc", 0.2)],
+    "create a testing playbook": [("create:testing-playbook", 1.8), ("command-create-testing-playbook", 1.2), ("sk-doc", 0.2)],
+    "create test playbook": [("create:testing-playbook", 1.8), ("command-create-testing-playbook", 1.2), ("sk-doc", 0.2)],
+    "create testing playbook": [("create:testing-playbook", 1.8), ("command-create-testing-playbook", 1.2), ("sk-doc", 0.2)],
     "save context": [("memory:save", 1.6), ("command-memory-save", 1.0), ("system-spec-kit", 0.45)],
     "save memory": [("memory:save", 1.6), ("command-memory-save", 1.0), ("system-spec-kit", 0.45)],
     "save this context": [("memory:save", 1.6), ("command-memory-save", 1.0), ("system-spec-kit", 0.45)],
@@ -1763,6 +1794,7 @@ COMMAND_BRIDGES = {
     "command-create-testing-playbook": {
         "description": "Create or update a testing playbook using /create:testing-playbook.",
         "slash_markers": ["/create:testing-playbook", "create:testing-playbook"],
+        "owning_skill": "create:testing-playbook",
     },
     "command-create-folder-readme": {
         "description": "Create folder README documentation using /create:folder_readme.",
@@ -1773,6 +1805,7 @@ COMMAND_BRIDGES = {
 COMMAND_BRIDGE_OWNER_NORMALIZATION = {
     "command-memory-save": "memory:save",
     "command-create-agent": "create:agent",
+    "command-create-testing-playbook": "create:testing-playbook",
     "command-spec-kit-resume": "system-spec-kit",
     "command-spec-kit-deep-research": "sk-deep-research",
     "command-spec-kit-deep-review": "sk-deep-review",
@@ -2008,6 +2041,14 @@ def get_skills(force_refresh: bool = False) -> Dict[str, Dict[str, Any]]:
         source="bridge",
         path=None,
         extra_variants={"/create:agent", "create new agent", "create agent"},
+    )
+    skills["create:testing-playbook"] = _build_inline_record(
+        name="create:testing-playbook",
+        description="Create command bridge for /create:testing-playbook manual testing playbook scaffolding.",
+        kind="skill",
+        source="bridge",
+        path=None,
+        extra_variants={"/create:testing-playbook", "create testing playbook", "create test playbook"},
     )
 
     for command_name, command_config in COMMAND_BRIDGES.items():
@@ -2394,6 +2435,24 @@ def _is_plain_file_save_prompt(prompt_lower: str) -> bool:
             r"\b(memory|context|conversation|session|handover|checkpoint|resume|preserve|remember|capture|store)\b|/memory:save|memory:save",
             without_file_terms,
         )
+    )
+
+
+def canonical_skill_id(skill_id: str) -> str:
+    return SKILL_ALIAS_TO_CANONICAL.get(skill_id, skill_id)
+
+
+def skill_matches_alias(actual: str, expected: str) -> bool:
+    return canonical_skill_id(actual) == canonical_skill_id(expected)
+
+
+def _is_ambiguous_code_problem(prompt_lower: str) -> bool:
+    return bool(
+        re.search(
+            r"\b(figure out|find|diagnose|debug)\b.{0,40}\b(wrong|broken|failing|bug|issue)\b.{0,40}\bcode\b",
+            prompt_lower,
+        )
+        or re.search(r"\b(wrong|broken|failing)\b.{0,30}\bcode\b", prompt_lower)
     )
 
 
@@ -2852,6 +2911,15 @@ def analyze_request(
         ):
             skill_boosts[skill] = skill_boosts.get(skill, 0.0) + boost
             boost_reasons.setdefault(skill, []).append("!memory-preservation-session-intent")
+
+    if _is_ambiguous_code_problem(prompt_lower):
+        for skill, boost in (
+            ("sk-code-review", 1.3),
+            ("sk-deep-review", 0.55),
+            ("sk-code", -0.65),
+        ):
+            skill_boosts[skill] = skill_boosts.get(skill, 0.0) + boost
+            boost_reasons.setdefault(skill, []).append("!ambiguous-code-problem")
 
     _apply_signal_boosts(prompt_lower, skill_boosts, boost_reasons)
 

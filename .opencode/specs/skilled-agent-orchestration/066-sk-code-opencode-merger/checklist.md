@@ -9,9 +9,9 @@ contextType: "verification"
 _memory:
   continuity:
     packet_pointer: "skilled-agent-orchestration/066-sk-code-opencode-merger"
-    last_updated_at: "2026-05-03T11:04:06Z"
-    last_updated_by: "codex"
-    recent_action: "Created planning checklist"
+    last_updated_at: "2026-05-03T15:00:00Z"
+    last_updated_by: "multi-ai-council"
+    recent_action: "Deep-analysis session resolved all open questions"
     next_safe_action: "Run spec validation after docs are populated"
     blockers:
       - "Runtime implementation checks pending approval"
@@ -21,9 +21,11 @@ _memory:
       fingerprint: "sha256:0660660660660660660660660660660660660660660660660660660660660663"
       session_id: "066-sk-code-opencode-merger-plan"
       parent_session_id: null
-    completion_pct: 30
+    completion_pct: 50
     open_questions: []
-    answered_questions: []
+    answered_questions:
+      - "All 4 open questions resolved in deep-analysis session."
+      - "Changelogs: DELETE; Telemetry: REGENERATE; Route: opencode/OPENCODE."
 ---
 <!-- SPECKIT_TEMPLATE_SOURCE: checklist | v2.2 -->
 # Verification Checklist: sk-code-opencode-merger
@@ -52,7 +54,8 @@ _memory:
 - [x] CHK-003 [P1] Dependencies identified and available.
 - [x] CHK-004 [P0] Plan-only scope honored for this turn.
 - [x] CHK-005 [P0] Detailed resource map created.
-- [ ] CHK-006 [P0] User approves implementation before runtime file edits.
+- [x] CHK-006 [P0] User approves implementation before runtime file edits.
+- [x] CHK-006a [P0] Deep-analysis session resolved all 4 open questions (2026-05-03).
 <!-- /ANCHOR:pre-impl -->
 
 ---
@@ -60,7 +63,9 @@ _memory:
 <!-- ANCHOR:code-quality -->
 ## Code Quality
 
-- [ ] CHK-010 [P0] Future `sk-code` route merge passes markdown and metadata validation.
+- [ ] CHK-010 [P0] Future `sk-code` two-axis detection routes Webflow + OpenCode correctly.
+- [ ] CHK-010a [P0] CODE SURFACE detection: Webflow markers route to webflow surface; .opencode/ CWD routes to opencode surface.
+- [ ] CHK-010b [P0] Language sub-detection within OPENCODE correctly selects JS/TS/Python/Shell/Config from file extensions.
 - [ ] CHK-011 [P0] Moved verifier script passes its Python tests.
 - [ ] CHK-012 [P1] TypeScript advisor scorer changes pass targeted vitest suites.
 - [ ] CHK-013 [P1] Agent and command docs use one synchronized wording model.
@@ -71,7 +76,9 @@ _memory:
 <!-- ANCHOR:testing -->
 ## Testing
 
-- [ ] CHK-020 [P0] Exact live search for `sk-code-opencode` has only approved historical matches.
+- [ ] CHK-020 [P0] Exact live search for `sk-code-opencode` has only historical/archive matches (or none after deletion).
+- [ ] CHK-020a [P0] Historical changelogs (13 files) deleted.
+- [ ] CHK-020b [P0] Telemetry JSONL regenerated.
 - [ ] CHK-021 [P0] Exact live search for `sk-code-*` overlay language has only approved historical matches.
 - [ ] CHK-022 [P0] Exact `sk-code` search shows no live `GO` or `NEXTJS` support claims.
 - [ ] CHK-023 [P1] Skill advisor hook tests updated from old expected skill label.
@@ -128,7 +135,7 @@ _memory:
 
 | Category | Total | Verified |
 |----------|-------|----------|
-| P0 Items | 14 | 8/14 |
+| P0 Items | 17 | 10/17 |
 | P1 Items | 12 | 6/12 |
 | P2 Items | 1 | 0/1 |
 

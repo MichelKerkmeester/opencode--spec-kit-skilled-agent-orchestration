@@ -12,11 +12,11 @@
   "derived": {
     "trigger_phrases": ["065/002 memory save calibration", "memory save false positive"],
     "key_topics": ["065", "002", "memory-save", "calibration"],
-    "status": "planned",
-    "completion_pct": 0,
+    "status": "complete",
+    "completion_pct": 100,
     "last_active_child_id": null,
     "level": 1,
     "is_phase_parent": false,
-    "session_outcome": null
+    "session_outcome": "Completed memory-save negative trigger calibration. CP-101 drops memory:save to 0.49 on file-save prompts, CP-104 routes memory:save top-1 at 0.82, and save context remains top-1 at 0.9039."
   }
 }

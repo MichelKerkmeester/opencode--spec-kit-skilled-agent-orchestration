@@ -2,10 +2,13 @@
   "specFolder": "skilled-agent-orchestration/065-skill-advisor-reindex-and-stress-test/002-memory-save-negative-trigger-calibration",
   "description": "Reduce memory:save false positives for ordinary file-save prompts while preserving context-preservation routing.",
   "keywords": ["065", "002", "memory-save", "false-positive", "calibration"],
-  "lastUpdated": "2026-05-03T11:10:00Z",
+  "lastUpdated": "2026-05-03T11:17:00Z",
   "specId": "065/002",
   "folderSlug": "memory-save-negative-trigger-calibration",
   "parentChain": ["skilled-agent-orchestration", "065-skill-advisor-reindex-and-stress-test"],
   "memorySequence": 2,
-  "memoryNameHistory": []
+  "memoryNameHistory": [],
+  "status": "complete",
+  "completionPct": 100,
+  "lastOutcome": "CP-101 and CP-104 now pass without regressing save context."
 }

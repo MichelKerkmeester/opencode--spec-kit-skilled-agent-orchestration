@@ -10,10 +10,10 @@ contextType: "planning"
 _memory:
   continuity:
     packet_pointer: "skilled-agent-orchestration/066-sk-code-opencode-merger"
-    last_updated_at: "2026-05-03T11:04:06Z"
-    last_updated_by: "codex"
-    recent_action: "Drafted plan-only consolidation strategy"
-    next_safe_action: "Await approval before implementation"
+    last_updated_at: "2026-05-03T15:00:00Z"
+    last_updated_by: "multi-ai-council"
+    recent_action: "Deep-analysis session designed two-axis context-aware detection architecture"
+    next_safe_action: "Review updated plan, then approve or revise implementation scope"
     blockers:
       - "DO NOT IMPLEMENT"
     key_files:
@@ -22,11 +22,13 @@ _memory:
       fingerprint: "sha256:0660660660660660660660660660660660660660660660660660660660660661"
       session_id: "066-sk-code-opencode-merger-plan"
       parent_session_id: null
-    completion_pct: 30
-    open_questions:
-      - "Historical artifact handling remains undecided."
+    completion_pct: 50
+    open_questions: []
     answered_questions:
       - "Planning only for this turn."
+      - "Two-axis detection architecture designed (Code Surface → Intent Classification)."
+      - "Route name resolved: opencode/OPENCODE."
+      - "Changelogs: DELETE; Telemetry: REGENERATE."
 ---
 <!-- SPECKIT_TEMPLATE_SOURCE: plan-core | v2.2 -->
 # Implementation Plan: sk-code-opencode-merger
@@ -82,20 +84,51 @@ The implementation should merge `sk-code-opencode` into `sk-code` by adding a fi
 
 ### Pattern
 
-Single skill router with explicit route branches.
+Two-axis context-aware detection: Code Surface (first gate) → Intent Classification (second gate) → Per-surface resource loading with language sub-detection for OpenCode.
+
+### Detection Architecture
+
+```
+                ┌─────────────────────────────┐
+                │     CODE SURFACE DETECTION    │  ← AXIS 1: Where are you working?
+                │  (Webflow vs OpenCode vs ?)   │     CWD + changed files
+                └─────────────┬───────────────┘
+                              │
+                ┌─────────────▼───────────────┐
+                │     INTENT CLASSIFICATION     │  ← AXIS 2: What are you doing?
+                │  (Implement/Debug/Verify/…)   │     Weighted keyword scoring
+                └─────────────┬───────────────┘
+                              │
+        ┌─────────────────────┼─────────────────────┐
+        ▼                     ▼                     ▼
+   ┌─────────┐          ┌──────────┐          ┌──────────┐
+   │ WEBFLOW │          │ OPENCODE │          │ UNKNOWN  │
+   │ HTML/CSS│          │ JS/TS/Py │          │ fallback │
+   │ /JS +   │          │ /Sh/JSON │          │ surface  │
+   │ vanilla │          │ + lang   │          │          │
+   │ anim    │          │ sub-detect│         │          │
+   └─────────┘          └──────────┘          └──────────┘
+```
+
+**Detection order** (first match wins):
+1. **WEBFLOW** — `src/2_javascript/`, `*.webflow.js`, `wrangler.toml`, or vanilla animation imports (motion.dev/GSAP/Lenis/HLS/Swiper/FilePond)
+2. **OPENCODE** — CWD or changed files under `.opencode/` (skill/agent/command/specs/plugin code)
+3. **UNKNOWN** — neither matched → disambiguation surface
+
+Within OPENCODE, language sub-detection fires: file extensions + weighted keywords route to JS/TS/Python/Shell/Config standards.
 
 ### Key Components
 
-- **`sk-code` root router**: owns route detection, resource loading, phase lifecycle, and verification guidance.
-- **OpenCode system-code route**: absorbs JS, TS, Python, Shell, JSON/JSONC standards from `sk-code-opencode`.
-- **Webflow route**: remains the live application-code route already present in `sk-code`.
-- **Deleted placeholder routes**: `GO` and `NEXTJS` are removed until backed by real maintained content.
-- **Skill advisor integration**: maps OpenCode/system-code prompts to `sk-code`, not `sk-code-opencode`.
-- **Review contract**: `sk-code-review` remains the findings-first review baseline, with `sk-code` providing route-specific standards instead of a sibling overlay.
+- **`sk-code` root router**: owns two-axis detection (code surface + intent classification), resource loading, phase lifecycle, and verification guidance.
+- **Webflow surface**: remains the live application-code route already present in `sk-code` (HTML/CSS/JS, vanilla animation libs, CDN/Cloudflare deployment).
+- **OpenCode surface**: absorbs JS, TS, Python, Shell, JSON/JSONC standards from `sk-code-opencode` with language sub-detection, plus gains the full 5-phase lifecycle (Research → Implementation → Code Quality Gate → Debugging → Verification).
+- **Deleted placeholder surfaces**: `GO` and `NEXTJS` are removed until backed by real maintained content.
+- **Skill advisor integration**: maps code-work prompts to `sk-code`; the advisor no longer needs a separate `sk-code-opencode` entry — OpenCode routing is a surface route within `sk-code`.
+- **Review contract**: `sk-code-review` remains the findings-first review baseline; `sk-code` provides surface-specific standards evidence (Webflow patterns or OpenCode language standards) instead of a sibling overlay.
 
 ### Data Flow
 
-Prompts enter the runtime skill advisor, which should recommend `sk-code` for code work. `sk-code` then detects whether the target surface is Webflow/application code or OpenCode system code, loads the corresponding route resources, and returns verification guidance. Review agents load `sk-code-review` for findings format and `sk-code` for route-specific standards evidence.
+Prompts enter the runtime skill advisor, which recommends `sk-code` for code work. `sk-code` first detects the code surface (Webflow/OpenCode) from CWD + changed files, then classifies intent via weighted keyword scoring, then loads surface-specific resources. For OPENCODE, language sub-detection (file extension + keywords) selects JS/TS/Python/Shell/Config standards. Review agents load `sk-code-review` for findings format and `sk-code` for surface-specific standards evidence.
 <!-- /ANCHOR:architecture -->
 
 ---
@@ -129,24 +162,28 @@ Required inventories:
 
 - [ ] Confirm user approval to implement.
 - [ ] Re-run exact reference inventory from `resource-map.md`.
-- [ ] Decide historical handling for changelogs, telemetry, and old specs.
+- [ ] Delete historical changelogs (`sk-code-opencode/changelog/v1.*.md`, 13 files).
 - [ ] Create a temporary scratch inventory if needed.
 
 ### Phase 2: Merge OpenCode Route into `sk-code`
 
-- [ ] Add OpenCode route language to `.opencode/skill/sk-code/SKILL.md`.
-- [ ] Move or copy `sk-code-opencode/references/{shared,javascript,typescript,python,shell,config}` into a chosen `sk-code` route folder.
-- [ ] Move or copy `sk-code-opencode/assets/checklists/*` into `sk-code`.
-- [ ] Move `verify_alignment_drift.py` and `test_verify_alignment_drift.py` into `sk-code/scripts/` or an equivalent route-owned path.
+- [ ] Rewrite `sk-code/SKILL.md` with two-axis detection architecture (Code Surface → Intent Classification).
+- [ ] Rename `references/router/stack_detection.md` → `code_surface_detection.md`, add OPENCODE detection + language sub-detection.
+- [ ] Move `sk-code-opencode/references/{shared,javascript,typescript,python,shell,config}` into `sk-code/references/opencode/`.
+- [ ] Move `sk-code-opencode/assets/checklists/*` into `sk-code/assets/opencode/checklists/`.
+- [ ] Move `verify_alignment_drift.py` and `test_verify_alignment_drift.py` into `sk-code/scripts/`.
+- [ ] Add OPENCODE entries to `RESOURCE_MAPS` and `STACK_VERIFICATION_COMMANDS` (now `SURFACE_VERIFICATION_COMMANDS`).
+- [ ] Add language sub-detection route within OPENCODE surface (file extension + keyword weights → JS/TS/Python/Shell/Config).
+- [ ] Update `resource_loading.md`, `intent_classification.md`, and `phase_lifecycle.md`.
 - [ ] Update `sk-code/README.md`, `description.json`, and `graph-metadata.json`.
 
 ### Phase 3: Remove Go and React/NextJS Branches
 
-- [ ] Remove `sk-code/references/go` and `sk-code/assets/go`.
-- [ ] Remove `sk-code/references/nextjs` and `sk-code/assets/nextjs`.
-- [ ] Remove Go/NextJS route constants, resource maps, keyword triggers, and verification commands from `SKILL.md`.
-- [ ] Update `references/router/stack_detection.md`, `resource_loading.md`, `phase_lifecycle.md`, and `cross_stack_pairing.md`.
-- [ ] Reword `@code` supported-stack docs to stop citing `GO, NEXTJS`.
+- [ ] Remove `sk-code/references/go` and `sk-code/assets/go` (entire directories, ~16 files).
+- [ ] Remove `sk-code/references/nextjs` and `sk-code/assets/nextjs` (entire directories, ~21 files).
+- [ ] Remove `references/router/cross_stack_pairing.md`.
+- [ ] Remove Go/NextJS route constants, RESOURCE_MAPS entries, keyword triggers, and verification commands from `SKILL.md`.
+- [ ] Reword `@code` supported-stack docs: `WEBFLOW, OPENCODE` replaces `WEBFLOW, GO, NEXTJS`.
 
 ### Phase 4: Rewrite Downstream Contracts
 
@@ -158,17 +195,21 @@ Required inventories:
 
 ### Phase 5: Advisor and Generated Metadata
 
-- [ ] Update `skill_advisor` scorer lanes from `sk-code-opencode` to `sk-code` route-aware expectations.
-- [ ] Update fixtures and tests that expect advisor briefs containing `sk-code-opencode`.
-- [ ] Regenerate or patch `skill-graph.json`.
+- [ ] Update `skill_advisor` scorer lanes: `sk-code-opencode` entry removed; OpenCode code prompts route to `sk-code`.
+- [ ] Update fixtures and tests (28 files) that expect advisor briefs containing `sk-code-opencode`.
+- [ ] Regenerate `skill-graph.json`.
+- [ ] Regenerate telemetry JSONL (`compliance.jsonl`, `smart-router-measurement-results.jsonl`).
 - [ ] Refresh skill graph metadata and descriptions.
+- [ ] Delete `sk-code-opencode/` directory (final step, after all references clean).
 
 ### Phase 6: Verification
 
-- [ ] Run exact reference checks.
+- [ ] Run exact reference checks for `sk-code-opencode` (should return only historical/archive matches or none).
+- [ ] Run exact reference checks for `sk-code-*` overlay language.
+- [ ] Run exact `sk-code` route search for removed `GO` and `NEXTJS` support claims.
 - [ ] Run spec validation.
-- [ ] Run targeted advisor/hook tests.
-- [ ] Run moved verifier tests.
+- [ ] Run targeted advisor/hook vitest suites.
+- [ ] Run moved verifier tests (`test_verify_alignment_drift.py`).
 - [ ] Run skill packaging or metadata checks if available.
 <!-- /ANCHOR:phases -->
 

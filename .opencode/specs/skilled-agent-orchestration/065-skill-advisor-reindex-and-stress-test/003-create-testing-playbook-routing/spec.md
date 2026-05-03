@@ -7,13 +7,18 @@ contextType: "infrastructure-quality"
 _memory:
   continuity:
     packet_pointer: "skilled-agent-orchestration/065-skill-advisor-reindex-and-stress-test/003-create-testing-playbook-routing"
-    last_updated_at: "2026-05-03T11:10:00Z"
+    last_updated_at: "2026-05-03T12:05:00Z"
     last_updated_by: "codex-gpt-5"
-    recent_action: "Created follow-on phase from stress-test finding CP-105"
-    next_safe_action: "plan_and_execute_testing_playbook_routing"
+    recent_action: "Completed CP-105 testing-playbook route calibration"
+    next_safe_action: "include_in_root_final_validation"
     blockers: []
-    key_files: []
-    completion_pct: 0
+    key_files:
+      - ".opencode/skill/system-spec-kit/mcp_server/skill_advisor/lib/scorer/projection.ts"
+      - ".opencode/skill/system-spec-kit/mcp_server/skill_advisor/lib/scorer/lanes/explicit.ts"
+      - ".opencode/skill/system-spec-kit/mcp_server/skill_advisor/lib/scorer/fusion.ts"
+      - ".opencode/skill/system-spec-kit/mcp_server/skill_advisor/scripts/skill_advisor.py"
+      - ".opencode/skill/system-spec-kit/mcp_server/skill_advisor/tests/scorer/native-scorer.vitest.ts"
+    completion_pct: 100
     open_questions: []
     answered_questions: []
 ---
@@ -28,7 +33,7 @@ _memory:
 | Field | Value |
 |---|---|
 | Level | 1 |
-| Status | Planned |
+| Status | Complete |
 | Parent | 065 |
 | Source finding | CP-105 adversarial confusable |
 <!-- /ANCHOR:metadata -->
@@ -37,6 +42,8 @@ _memory:
 ## 2. PROBLEM & PURPOSE
 
 The prompt `create a test playbook for stressing this skill` routed to generic `sk-doc` at 0.866 and did not surface `create:testing-playbook`. This phase exists to make the dedicated testing-playbook creation route win for that intent.
+
+Result: the prompt now routes to `create:testing-playbook` as top-1 at confidence 0.8387. `sk-doc` remains present as a documentation-adjacent secondary candidate, but no longer wins CP-105.
 <!-- /ANCHOR:problem -->
 
 <!-- ANCHOR:scope -->
@@ -56,8 +63,9 @@ In scope: route metadata, command/skill trigger phrases, and regression coverage
 
 <!-- ANCHOR:success-criteria -->
 ## 5. SUCCESS CRITERIA
-- SC-001: CP-105 changes from FAIL to PASS.
-- SC-002: Existing create-agent and sk-doc gates remain green.
+- SC-001: CP-105 changed from FAIL to PASS.
+- SC-002: Existing create-agent and advisor regression gates remain green.
+- SC-003: Full advisor test suite, typecheck, and build pass after the route calibration.
 <!-- /ANCHOR:success-criteria -->
 
 <!-- ANCHOR:risks -->

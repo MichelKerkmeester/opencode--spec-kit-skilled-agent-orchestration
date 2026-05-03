@@ -7,13 +7,16 @@ contextType: "infrastructure-quality"
 _memory:
   continuity:
     packet_pointer: "skilled-agent-orchestration/065-skill-advisor-reindex-and-stress-test/004-skill-router-alias-canonicalization"
-    last_updated_at: "2026-05-03T11:10:00Z"
+    last_updated_at: "2026-05-03T12:07:00Z"
     last_updated_by: "codex-gpt-5"
-    recent_action: "Created follow-on phase from stress-test finding CP-103"
-    next_safe_action: "plan_and_execute_alias_canonicalization"
+    recent_action: "Completed command/skill alias canonicalization"
+    next_safe_action: "include_in_root_final_validation"
     blockers: []
-    key_files: []
-    completion_pct: 0
+    key_files:
+      - ".opencode/skill/system-spec-kit/mcp_server/skill_advisor/lib/scorer/aliases.ts"
+      - ".opencode/skill/system-spec-kit/mcp_server/skill_advisor/scripts/skill_advisor.py"
+      - ".opencode/skill/system-spec-kit/mcp_server/skill_advisor/tests/scorer/native-scorer.vitest.ts"
+    completion_pct: 100
     open_questions: []
     answered_questions: []
 ---
@@ -28,7 +31,7 @@ _memory:
 | Field | Value |
 |---|---|
 | Level | 1 |
-| Status | Planned |
+| Status | Complete |
 | Parent | 065 |
 | Source finding | CP-103 multi-skill workflow |
 <!-- /ANCHOR:metadata -->
@@ -37,6 +40,8 @@ _memory:
 ## 2. PROBLEM & PURPOSE
 
 CP-103 expected `spec_kit:deep-review`, while the advisor returned `sk-deep-review`. The underlying capability was present, but the campaign could only score it as WARN because accepted aliases are not formalized.
+
+Result: narrow alias groups now canonicalize command ids and skill ids for command-backed skills. CP-103 can treat `spec_kit:deep-review`, `/spec_kit:deep-review`, `command-spec-kit-deep-review`, and `sk-deep-review` as the same capability while leaving unrelated skills distinct.
 <!-- /ANCHOR:problem -->
 
 <!-- ANCHOR:scope -->
@@ -58,6 +63,7 @@ In scope: define canonical ids and accepted alias sets for command/skill bridge 
 ## 5. SUCCESS CRITERIA
 - SC-001: CP-103 changes from WARN to PASS under alias-aware scoring.
 - SC-002: Alias handling is documented and regression-tested.
+- SC-003: Alias groups remain narrow enough to avoid masking unrelated route misses.
 <!-- /ANCHOR:success-criteria -->
 
 <!-- ANCHOR:risks -->

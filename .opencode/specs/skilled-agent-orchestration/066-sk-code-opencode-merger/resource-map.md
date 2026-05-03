@@ -10,24 +10,28 @@ contextType: "resource-map"
 _memory:
   continuity:
     packet_pointer: "skilled-agent-orchestration/066-sk-code-opencode-merger"
-    last_updated_at: "2026-05-03T11:04:06Z"
-    last_updated_by: "codex"
-    recent_action: "Created merger resource map"
+    last_updated_at: "2026-05-03T15:00:00Z"
+    last_updated_by: "multi-ai-council"
+    recent_action: "Deep-analysis session resolved all open questions; deletion/regeneration decisions documented"
     next_safe_action: "Await implementation approval"
     blockers:
       - "Implementation not approved"
     key_files:
       - ".opencode/skill/sk-code/SKILL.md"
       - ".opencode/skill/sk-code-opencode/SKILL.md"
+      - ".opencode/barter/sk-code/SKILL.md"
     session_dedup:
       fingerprint: "sha256:0660660660660660660660660660660660660660660660660660660660660666"
       session_id: "066-sk-code-opencode-merger-plan"
       parent_session_id: null
-    completion_pct: 30
-    open_questions:
-      - "Historical artifact policy"
+    completion_pct: 50
+    open_questions: []
     answered_questions:
-      - "Resource map created"
+      - "Resource map created."
+      - "Historical changelogs: DELETE (13 files)."
+      - "Telemetry JSONL: REGENERATE."
+      - "Route name: opencode/OPENCODE."
+      - "Two-axis detection: Code Surface → Intent Classification."
 ---
 # Resource Map
 
@@ -313,9 +317,11 @@ Status vocabulary: `OK`, `MISSING`, `PLANNED`.
 
 ---
 
-## Historical Or Generated References To Classify Later
+## Historical Or Generated References
 
-These were found during broad exact search but are not active rewrite targets for this planning packet unless implementation policy decides to normalize historical artifacts:
+These were found during broad exact search. The deep-analysis session (2026-05-03) decided their handling:
+
+### DELETE (historical changelogs — the merger IS the changelog)
 
 - `.opencode/skill/sk-code-opencode/changelog/v1.0.0.0.md`
 - `.opencode/skill/sk-code-opencode/changelog/v1.0.1.0.md`
@@ -330,10 +336,32 @@ These were found during broad exact search but are not active rewrite targets fo
 - `.opencode/skill/sk-code-opencode/changelog/v1.1.0.0.md`
 - `.opencode/skill/sk-code-opencode/changelog/v1.1.1.0.md`
 - `.opencode/skill/sk-code-opencode/changelog/v1.1.2.0.md`
+
+### REGENERATE (generated data)
+
+- `.opencode/skill/.smart-router-telemetry/compliance.jsonl`
+- `.opencode/skill/system-spec-kit/scripts/observability/smart-router-measurement-results.jsonl`
+
+### ARCHIVED (historical spec packages, not active rewrite targets)
+### ARCHIVED (historical spec packages, not active rewrite targets)
+
 - `.opencode/specs/skilled-agent-orchestration/054-sk-code-merger/*`
 - `.opencode/specs/skilled-agent-orchestration/055-cli-skill-removal-sk-code-merger-deprecated/*`
 - `.opencode/specs/skilled-agent-orchestration/056-sk-code-fullstack-branch/*`
 - `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/000-release-cleanup/024-followup-quality-pass/001-sk-code-opencode-audit/*`
+
+### Architecture Updates (from deep-analysis session)
+
+| Change | Detail |
+|--------|--------|
+| Detection model | Two-axis: Code Surface (Webflow/OpenCode) → Intent Classification |
+| Route name | `opencode` (folder) / `OPENCODE` (identifier) |
+| Surface detection source | CWD + changed files (not git remote like Barter) |
+| Language sub-detection | File extension → JS/TS/Python/Shell/Config (absorbed from sk-code-opencode) |
+| OpenCode lifecycle | Full 5-phase (was standards-only) |
+| Changelog policy | DELETE (13 files) |
+| Telemetry policy | REGENERATE |
+| `stack_detection.md` | Renamed → `code_surface_detection.md` |
 
 ---
 

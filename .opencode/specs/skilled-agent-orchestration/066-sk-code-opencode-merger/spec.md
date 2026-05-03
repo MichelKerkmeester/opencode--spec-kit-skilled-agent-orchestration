@@ -11,10 +11,10 @@ contextType: "planning"
 _memory:
   continuity:
     packet_pointer: "skilled-agent-orchestration/066-sk-code-opencode-merger"
-    last_updated_at: "2026-05-03T11:04:06Z"
-    last_updated_by: "codex"
-    recent_action: "Created plan-only Level 3 spec from analysis of sk-code and sk-code-opencode"
-    next_safe_action: "Await implementation approval"
+    last_updated_at: "2026-05-03T15:00:00Z"
+    last_updated_by: "multi-ai-council"
+    recent_action: "Resolved open questions, designed two-axis detection architecture"
+    next_safe_action: "Review updated plan.md, then approve or revise implementation scope"
     blockers:
       - "User explicitly requested DO NOT IMPLEMENT during planning"
     key_files:
@@ -28,12 +28,14 @@ _memory:
       fingerprint: "sha256:0660660660660660660660660660660660660660660660660660660660660660"
       session_id: "066-sk-code-opencode-merger-plan"
       parent_session_id: null
-    completion_pct: 30
-    open_questions:
-      - "Should historical changelogs under sk-code-opencode be moved into sk-code, archived, or left as historical release artifacts?"
-      - "Should generated telemetry JSONL be rewritten or left as historical measurement evidence?"
+    completion_pct: 50
+    open_questions: []
     answered_questions:
       - "Implementation is out of scope for this turn."
+      - "Historical changelogs under sk-code-opencode: DELETE (13 files). The merger IS the changelog."
+      - "Generated telemetry JSONL: REWRITE/REGENERATE after skill-graph.json is updated."
+      - "Merged route name: 'opencode' (folder) / 'OPENCODE' (identifier), matching webflow/WEBFLOW convention."
+      - "New branch for OpenCode: NO — sk-code-opencode detection logic absorbed as second axis inside sk-code router."
 ---
 <!-- SPECKIT_TEMPLATE_SOURCE: spec-core + level2-verify + level3-arch | v2.2 -->
 # Feature Specification: sk-code-opencode-merger
@@ -46,7 +48,7 @@ _memory:
 
 This packet plans the consolidation of the current `sk-code-opencode` OpenCode-system-code standards skill into the single remaining `sk-code` skill. The intended end state is one multi-stack `sk-code` that demonstrates how end users can combine stack branches by merging a language/system-code branch into the umbrella router, while removing the existing Go and React/NextJS placeholder branches from `sk-code`.
 
-**Key Decisions**: do not implement during this packet, merge OpenCode standards into `sk-code` as a first-class route, remove Go and React/NextJS placeholder routes, rewrite downstream references away from the old overlay model.
+**Key Decisions**: do not implement during this packet; merge OpenCode standards into `sk-code` as a first-class route using two-axis context-aware detection (Code Surface → Intent Classification); remove Go and React/NextJS placeholder routes; rewrite downstream references away from the old overlay model; DELETE historical changelogs; REWRITE telemetry JSONL.
 
 **Critical Dependencies**: skill advisor routing data, runtime agent instructions, command YAMLs, `sk-code-review` overlay contract, README/install guide inventories, and verification tests that currently assert `sk-code-opencode`.
 
@@ -132,10 +134,12 @@ Create an implementation-ready plan that explains what must change, what must be
 | ID | Requirement | Acceptance Criteria |
 |----|-------------|---------------------|
 | REQ-006 | Preserve current OpenCode standards capability | Future `sk-code` route must still cover JS, TS, Python, Shell, and JSON/JSONC |
-| REQ-007 | Preserve alignment verifier behavior | Future verifier path and docs must remain runnable after relocation |
+| REQ-007 | Preserve alignment verifier behavior | Future verifier path (`sk-code/scripts/verify_alignment_drift.py`) must remain runnable after relocation |
 | REQ-008 | Rewrite the baseline/overlay contract | Agents and review skills stop requiring one `sk-code-*` overlay when only one `sk-code` remains |
 | REQ-009 | Update skill advisor routing | Advisor fixtures, scoring lanes, skill graph, and hook tests no longer emit `sk-code-opencode` as a live skill |
-| REQ-010 | Document end-user multi-stack pattern | `sk-code` docs explain that a multi-stack skill is made by adding a route/resource branch into `sk-code`, using this merger as the example |
+| REQ-010 | Document end-user multi-stack pattern | `sk-code` docs explain that a multi-stack skill is made by adding a surface route inside `sk-code`, using this merger as the example |
+| REQ-011 | Two-axis context-aware detection | Merged `sk-code` detects code surface (Webflow/OpenCode) from CWD and changed files, then classifies intent, then loads surface-specific resources |
+| REQ-012 | Language sub-detection for OpenCode | Within the OPENCODE surface, detect specific language(s) from file extensions (.ts→TypeScript, .py→Python, etc.) for standards loading |
 <!-- /ANCHOR:requirements -->
 
 ---
@@ -261,10 +265,14 @@ Create an implementation-ready plan that explains what must change, what must be
 
 ## 12. OPEN QUESTIONS
 
-- Should `sk-code-opencode/changelog/*` move into `sk-code/changelog/`, remain historical in a removed folder archive, or be summarized in one merger changelog?
-- Should telemetry JSONL files containing `sk-code-opencode` be rewritten, regenerated, or left immutable as measurement history?
-- Should the merged route be named `OPENCODE`, `SYSTEM_CODE`, or something more general like `TOOLING` inside `sk-code`?
-- Should generic Node.js system-code work route to the new OpenCode branch or stay UNKNOWN unless under `.opencode/`?
+All four open questions were resolved during deep-analysis session (2026-05-03):
+
+| # | Question | Decision | Rationale |
+|---|----------|----------|-----------|
+| 1 | Historical changelogs? | **DELETE** | 13 changelog files are release artifacts; the merger IS the changelog |
+| 2 | Telemetry JSONL? | **REWRITE/REGENERATE** | Generated data; regenerate after skill-graph.json update |
+| 3 | Route name? | **`opencode` (folder) / `OPENCODE` (identifier)** | Matches existing `webflow`/`WEBFLOW` convention |
+| 4 | Generic Node.js system-code routing? | **OPENCODE route only triggers when CWD or changed files are under `.opencode/`** | Prevents false-positive routing; generic Node.js outside `.opencode/` stays UNKNOWN |
 <!-- /ANCHOR:questions -->
 
 ---

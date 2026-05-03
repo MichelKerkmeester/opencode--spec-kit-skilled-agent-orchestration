@@ -7,13 +7,18 @@ contextType: "infrastructure-quality"
 _memory:
   continuity:
     packet_pointer: "skilled-agent-orchestration/065-skill-advisor-reindex-and-stress-test/003-create-testing-playbook-routing"
-    last_updated_at: "2026-05-03T11:10:00Z"
+    last_updated_at: "2026-05-03T12:05:00Z"
     last_updated_by: "codex-gpt-5"
-    recent_action: "Created task list"
-    next_safe_action: "start_T001"
+    recent_action: "Completed CP-105 testing-playbook routing tasks"
+    next_safe_action: "root_final_validation"
     blockers: []
-    key_files: []
-    completion_pct: 0
+    key_files:
+      - ".opencode/skill/system-spec-kit/mcp_server/skill_advisor/lib/scorer/projection.ts"
+      - ".opencode/skill/system-spec-kit/mcp_server/skill_advisor/lib/scorer/lanes/explicit.ts"
+      - ".opencode/skill/system-spec-kit/mcp_server/skill_advisor/lib/scorer/fusion.ts"
+      - ".opencode/skill/system-spec-kit/mcp_server/skill_advisor/scripts/skill_advisor.py"
+      - ".opencode/skill/system-spec-kit/mcp_server/skill_advisor/tests/scorer/native-scorer.vitest.ts"
+    completion_pct: 100
     open_questions: []
     answered_questions: []
 ---
@@ -30,25 +35,31 @@ _memory:
 
 <!-- ANCHOR:phase-1 -->
 ## 2. PHASE 1: SETUP
-### T-001: [ ] Reproduce CP-105
-### T-002: [ ] Locate testing-playbook route metadata
+### T-001: [x] Reproduce CP-105
+Evidence: baseline CP-105 routed to generic `sk-doc` at 0.866 and did not surface `create:testing-playbook`.
+### T-002: [x] Locate testing-playbook route metadata
+Evidence: route coverage was added through command bridge projection, explicit phrase boosts, fusion primary-intent handling, Python fallback parity, and inline graphless skill registration.
 <!-- /ANCHOR:phase-1 -->
 
 <!-- ANCHOR:phase-2 -->
 ## 3. PHASE 2: IMPLEMENTATION
-### T-003: [ ] Add regression coverage
-### T-004: [ ] Apply route calibration
+### T-003: [x] Add regression coverage
+Evidence: `native-scorer.vitest.ts` now contains the 065/003 testing-playbook route regression.
+### T-004: [x] Apply route calibration
+Evidence: CP-105 now returns `create:testing-playbook` as top-1 at confidence 0.8387.
 <!-- /ANCHOR:phase-2 -->
 
 <!-- ANCHOR:phase-3 -->
 ## 4. PHASE 3: VERIFICATION
-### T-005: [ ] Run advisor tests
-### T-006: [ ] Run typecheck, build, and strict validation
+### T-005: [x] Run advisor tests
+Evidence: `npx vitest run skill_advisor/tests` passed 40 files and 297 tests.
+### T-006: [x] Run typecheck, build, and strict validation
+Evidence: `npm run typecheck` and `npm run build` passed; strict validation is recorded at the root after all phases.
 <!-- /ANCHOR:phase-3 -->
 
 <!-- ANCHOR:completion -->
 ## 5. COMPLETION CRITERIA
-status=complete pct=100 when CP-105 passes without generic sk-doc regression.
+status=complete pct=100; CP-105 passes with the dedicated create route while advisor regression tests remain green.
 <!-- /ANCHOR:completion -->
 
 <!-- ANCHOR:cross-refs -->

@@ -264,6 +264,11 @@ function primaryIntentBonus(promptLower: string, recommendation: AdvisorScoredRe
     if (recommendation.skill === 'create:agent') return 0.55;
     if (recommendation.skill === 'sk-doc') return -0.18;
   }
+  if (/\bcreate (a )?(test|testing) playbook\b/.test(promptLower) || promptLower.includes('/create:testing-playbook')) {
+    if (recommendation.skill === 'create:testing-playbook' || recommendation.skill === 'command-create-testing-playbook') return 0.65;
+    if (recommendation.skill === 'sk-doc') return -0.3;
+    if (recommendation.skill === 'sk-deep-review' || recommendation.skill === 'sk-improve-agent') return -0.2;
+  }
   if (/\bphase folder\b/.test(promptLower)) {
     if (recommendation.skill === 'system-spec-kit') return R.phaseFolderSpecKitBonus;
     if (recommendation.skill === 'sk-deep-research') return R.phaseFolderDeepResearchPenalty;

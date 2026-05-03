@@ -9,10 +9,10 @@ contextType: "implementation-summary"
 _memory:
   continuity:
     packet_pointer: "skilled-agent-orchestration/066-sk-code-opencode-merger"
-    last_updated_at: "2026-05-03T11:04:06Z"
-    last_updated_by: "codex"
-    recent_action: "Created plan-only packet and resource map"
-    next_safe_action: "Review plan, answer open questions, then approve or revise implementation scope"
+    last_updated_at: "2026-05-03T15:00:00Z"
+    last_updated_by: "multi-ai-council"
+    recent_action: "Deep-analysis session resolved all open questions and designed two-axis detection architecture"
+    next_safe_action: "Review updated plan, then approve or revise implementation scope"
     blockers:
       - "Implementation not started by user instruction"
     key_files:
@@ -23,12 +23,16 @@ _memory:
       fingerprint: "sha256:0660660660660660660660660660660660660660660660660660660660660665"
       session_id: "066-sk-code-opencode-merger-plan"
       parent_session_id: null
-    completion_pct: 30
-    open_questions:
-      - "Historical artifact policy for changelogs and telemetry."
-      - "Merged route name inside sk-code."
+    completion_pct: 50
+    open_questions: []
     answered_questions:
       - "No runtime implementation was performed."
+      - "Historical changelogs: DELETE (13 files)."
+      - "Telemetry JSONL: REWRITE/REGENERATE."
+      - "Route name: 'opencode' (folder) / 'OPENCODE' (identifier)."
+      - "Two-axis detection: Code Surface (Webflow/OpenCode) → Intent Classification → Resource Loading."
+      - "Language sub-detection within OPENCODE surface."
+      - "Barter sk-code comparison: context-aware CWD detection replaces git-remote project routing."
 ---
 <!-- SPECKIT_TEMPLATE_SOURCE: impl-summary-core | v2.2 -->
 # Implementation Summary
@@ -53,15 +57,30 @@ _memory:
 <!-- ANCHOR:what-built -->
 ## What Was Built
 
-This turn built the planning packet only. It created the requested spec folder, analyzed the two target skill trees and active references, and documented the implementation path for merging `sk-code-opencode` into `sk-code` while removing Go and React/NextJS placeholder branches from `sk-code`.
+This turn built the planning packet only. It created the requested spec folder, analyzed the two target skill trees and the Barter sk-code reference implementation, designed a two-axis context-aware detection architecture for the merged `sk-code`, and resolved all four open questions. No runtime skill, agent, command, advisor, README, or install-guide files were changed.
 
 ### Planning Packet
 
-The packet now contains a Level 3 specification, implementation plan, task list, verification checklist, ADR, and resource map. No runtime skill, agent, command, advisor, README, or install-guide files were changed.
+The packet now contains a Level 3 specification with two-axis detection architecture, updated implementation plan, task list, verification checklist, ADR with resolved route name, and resource map.
 
-### Resource Map
+### Deep Analysis Session (2026-05-03)
 
-`resource-map.md` is the main handoff artifact. It lists the paths that future implementation must update, remove, regenerate, or classify as historical.
+A deep-analysis session using Sequential Thinking compared three models:
+1. **Current sk-code**: stack-detection-first (marker files → WEBFLOW/GO/NEXTJS → intent → resources)
+2. **Current sk-code-opencode**: language-detection-first (file extension → JS/TS/Python/Shell/Config → standards)
+3. **Barter sk-code**: two-step detection (git remote → project knowledge; marker files → verification commands only)
+
+The merged design uses **two-axis context-aware detection**: Code Surface (first gate, from CWD + changed files) → Intent Classification (second gate, weighted keyword scoring) → Per-surface resource loading with language sub-detection for OpenCode.
+
+### Key Architectural Decisions
+
+| Decision | Rationale |
+|----------|-----------|
+| Two-axis detection | Single axis can't distinguish Webflow frontend work from OpenCode system work in the same repo |
+| CWD + changed files for surface detection | Unlike Barter's git-remote approach, our repo contains both surfaces |
+| Language sub-detection within OpenCode | Preserves sk-code-opencode's file-extension routing inside the unified router |
+| Full 5-phase lifecycle for OpenCode | Currently OpenCode has only "apply standards"; deserves Implementation→Debug→Verify phases |
+| Folder name "opencode" / identifier "OPENCODE" | Matches existing "webflow"/"WEBFLOW" convention |
 <!-- /ANCHOR:what-built -->
 
 ---
@@ -81,8 +100,12 @@ I used the system-spec-kit Level 3 template flow, exact `rg` searches, direct fi
 |----------|-----|
 | Keep this packet plan-only | The user explicitly requested `DO NOT IMPLEMENT` |
 | Use Level 3 documentation | The future change spans skills, agents, commands, advisor code, tests, docs, and metadata |
-| Plan a route-based `sk-code` | This matches the requested single-skill multi-stack story |
-| Treat `sk-code-opencode` references as a full migration problem | Exact search shows references in live runtime surfaces and advisor tests, not only docs |
+| Design two-axis detection | Single-axis stack detection can't distinguish Webflow frontend from OpenCode system code in the same repository |
+| Route name `opencode` / `OPENCODE` | Matches existing `webflow` / `WEBFLOW` convention |
+| Language sub-detection within OpenCode | Preserves sk-code-opencode's extension-based routing; absorbed as second-level routing |
+| Delete historical changelogs | 13 release artifact files; the merger IS the changelog |
+| Regenerate telemetry JSONL | Generated data; regeneration is cleaner than manual patching |
+| Barter comparison | Barter uses git-remote for project routing; we use CWD+changed-files because same repo has both surfaces |
 <!-- /ANCHOR:decisions -->
 
 ---
@@ -106,5 +129,5 @@ I used the system-spec-kit Level 3 template flow, exact `rg` searches, direct fi
 
 1. **No implementation was performed.** This is intentional and follows the user instruction.
 2. **Code graph refresh did not complete.** The scan tool rejected `includeSkills`; exact search and file-tree inspection were used instead.
-3. **Historical artifact policy remains open.** Changelogs, telemetry, and archived specs can either preserve the old name or be explicitly archived during implementation.
+3. **All four open questions resolved** during the deep-analysis session (2026-05-03).
 <!-- /ANCHOR:limitations -->

@@ -7,13 +7,18 @@ contextType: "infrastructure-quality"
 _memory:
   continuity:
     packet_pointer: "skilled-agent-orchestration/065-skill-advisor-reindex-and-stress-test/003-create-testing-playbook-routing"
-    last_updated_at: "2026-05-03T11:20:00Z"
+    last_updated_at: "2026-05-03T12:05:00Z"
     last_updated_by: "codex-gpt-5"
-    recent_action: "Added resource map"
-    next_safe_action: "execute_phase"
+    recent_action: "Updated completed CP-105 resource map"
+    next_safe_action: "root_final_validation"
     blockers: []
-    key_files: []
-    completion_pct: 0
+    key_files:
+      - ".opencode/skill/system-spec-kit/mcp_server/skill_advisor/lib/scorer/projection.ts"
+      - ".opencode/skill/system-spec-kit/mcp_server/skill_advisor/lib/scorer/lanes/explicit.ts"
+      - ".opencode/skill/system-spec-kit/mcp_server/skill_advisor/lib/scorer/fusion.ts"
+      - ".opencode/skill/system-spec-kit/mcp_server/skill_advisor/scripts/skill_advisor.py"
+      - ".opencode/skill/system-spec-kit/mcp_server/skill_advisor/tests/scorer/native-scorer.vitest.ts"
+    completion_pct: 100
     open_questions: []
     answered_questions: []
 ---
@@ -25,11 +30,11 @@ _memory:
 <!-- ANCHOR:summary -->
 ## Summary
 
-- **Total references**: 9
-- **By category**: Specs=4, Skills=4, Tests=1
+- **Total references**: 14
+- **By category**: Specs=6, Skills=7, Tests=1
 - **Missing on disk**: 0
-- **Scope**: files likely affected or checked for CP-105 remediation
-- **Generated**: 2026-05-03T11:20:00Z
+- **Scope**: files affected or checked for CP-105 remediation
+- **Generated**: 2026-05-03T12:05:00Z
 <!-- /ANCHOR:summary -->
 
 <!-- ANCHOR:specs -->
@@ -39,8 +44,10 @@ _memory:
 |---|---|---|---|
 | `spec.md` | Updated | OK | CP-105 requirement |
 | `plan.md` | Updated | OK | Route calibration plan |
-| `tasks.md` | Updated | OK | Execution tasks |
-| `checklist.md` | Created | OK | Verification gates |
+| `tasks.md` | Updated | OK | Execution tasks and evidence |
+| `checklist.md` | Updated | OK | Verification gates and evidence |
+| `implementation-summary.md` | Updated | OK | Before/after CP-105 results |
+| `resource-map.md` | Updated | OK | Affected and checked surfaces |
 <!-- /ANCHOR:specs -->
 
 <!-- ANCHOR:skills -->
@@ -49,9 +56,12 @@ _memory:
 | Path | Action | Status | Note |
 |---|---|---|---|
 | `.opencode/skill/sk-doc/SKILL.md` | Checked | OK | Generic doc routing control |
-| `.opencode/skill/system-spec-kit/mcp_server/skill_advisor/scripts/skill_advisor.py` | Checked | OK | CP-105 probe |
-| `.opencode/skill/system-spec-kit/mcp_server/skill_advisor/lib/scorer/lanes/explicit.ts` | Planned | OK | Possible create route boost |
-| `.opencode/skill/system-spec-kit/**/graph-metadata.json` | Planned | OK | Possible create route metadata |
+| `.opencode/skill/system-spec-kit/mcp_server/skill_advisor/scripts/skill_advisor.py` | Updated | OK | Python fallback route parity |
+| `.opencode/skill/system-spec-kit/mcp_server/skill_advisor/lib/scorer/projection.ts` | Updated | OK | Command bridge for `create:testing-playbook` |
+| `.opencode/skill/system-spec-kit/mcp_server/skill_advisor/lib/scorer/lanes/explicit.ts` | Updated | OK | Testing-playbook creation phrase boosts |
+| `.opencode/skill/system-spec-kit/mcp_server/skill_advisor/lib/scorer/fusion.ts` | Updated | OK | Primary intent bonus and competitor dampening |
+| `.opencode/skill/system-spec-kit/mcp_server/skill_advisor/lib/scorer/aliases.ts` | Checked | OK | Canonical alias support used by related phase |
+| `.opencode/skill/system-spec-kit/**/graph-metadata.json` | Checked | OK | No route graph metadata edits required |
 <!-- /ANCHOR:skills -->
 
 <!-- ANCHOR:tests -->
@@ -59,5 +69,5 @@ _memory:
 
 | Path | Action | Status | Note |
 |---|---|---|---|
-| `.opencode/skill/system-spec-kit/mcp_server/skill_advisor/tests/scorer/native-scorer.vitest.ts` | Planned | OK | Add CP-105 regression |
+| `.opencode/skill/system-spec-kit/mcp_server/skill_advisor/tests/scorer/native-scorer.vitest.ts` | Updated | OK | Added CP-105 regression |
 <!-- /ANCHOR:tests -->

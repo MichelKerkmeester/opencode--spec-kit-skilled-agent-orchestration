@@ -100,6 +100,21 @@ const COMMAND_BRIDGES: readonly SkillProjection[] = [
     sourcePath: null,
     lifecycleStatus: 'active',
   },
+  {
+    id: 'create:testing-playbook',
+    kind: 'command',
+    family: 'system',
+    category: 'command',
+    name: 'create:testing-playbook',
+    description: 'Create command bridge for /create:testing-playbook manual testing playbook scaffolding.',
+    keywords: ['/create:testing-playbook', 'create testing playbook', 'create test playbook', 'testing playbook'],
+    domains: ['create', 'testing', 'playbook', 'command'],
+    intentSignals: ['/create:testing-playbook', 'create testing playbook', 'create test playbook', 'testing playbook'],
+    derivedTriggers: [],
+    derivedKeywords: [],
+    sourcePath: null,
+    lifecycleStatus: 'active',
+  },
 ];
 
 function jsonArray(value: string | null | undefined): string[] {

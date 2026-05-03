@@ -12,10 +12,10 @@ contextType: "infrastructure-quality"
 _memory:
   continuity:
     packet_pointer: "skilled-agent-orchestration/065-skill-advisor-reindex-and-stress-test"
-    last_updated_at: "2026-05-03T11:10:00Z"
+    last_updated_at: "2026-05-03T12:12:00Z"
     last_updated_by: "codex-gpt-5"
-    recent_action: "Reorganized completed 065 docs into baseline phase and added follow-on calibration phases"
-    next_safe_action: "execute_002_memory_save_negative_trigger_calibration"
+    recent_action: "Completed phases 002-005"
+    next_safe_action: "commit_or_resume_from_clean_validation_state"
     blockers: []
     key_files:
       - ".opencode/specs/skilled-agent-orchestration/065-skill-advisor-reindex-and-stress-test/001-baseline-reindex-and-stress-results/"
@@ -23,7 +23,7 @@ _memory:
       - ".opencode/specs/skilled-agent-orchestration/065-skill-advisor-reindex-and-stress-test/003-create-testing-playbook-routing/"
       - ".opencode/specs/skilled-agent-orchestration/065-skill-advisor-reindex-and-stress-test/004-skill-router-alias-canonicalization/"
       - ".opencode/specs/skilled-agent-orchestration/065-skill-advisor-reindex-and-stress-test/005-ambiguous-debug-review-routing/"
-    completion_pct: 20
+    completion_pct: 100
     open_questions: []
     answered_questions:
       - "Do not create follow-on specs 066-069; keep follow-on work as phases inside 065."
@@ -41,7 +41,7 @@ _memory:
 |---|---|
 | Level | Phase Parent |
 | Priority | P1 |
-| Status | In Progress |
+| Status | Complete |
 | Created | 2026-05-03 |
 | Branch | `main` |
 | Sub-phases | 5 |
@@ -55,6 +55,8 @@ This packet is now the container for the full skill-advisor routing quality prog
 Phase `001` preserves the completed baseline work: advisor reindex, live MCP replay, and six-scenario stress campaign. That baseline proved the advisor is live and deterministic, but also found four routing quality misses.
 
 Phases `002` through `005` are the follow-on fixes from that report. They stay inside 065 instead of becoming new top-level specs.
+
+Final replay result: CP-100, CP-103, CP-104, and CP-105 now hit their repaired routes; CP-101 no longer promotes `memory:save`; CP-102 remains below threshold with no recommendations.
 <!-- /ANCHOR:purpose -->
 
 <!-- ANCHOR:children -->
@@ -63,10 +65,10 @@ Phases `002` through `005` are the follow-on fixes from that report. They stay i
 | Order | Sub-phase | Purpose | Status |
 |---|---|---|---|
 | 1 | `001-baseline-reindex-and-stress-results` | Completed reindex + stress-test evidence, including nested original 001/002 execution phases | Complete |
-| 2 | `002-memory-save-negative-trigger-calibration` | Reduce `memory:save` false positives while preserving real context-save intent | Planned |
-| 3 | `003-create-testing-playbook-routing` | Route testing-playbook creation to `create:testing-playbook` instead of generic `sk-doc` | Planned |
-| 4 | `004-skill-router-alias-canonicalization` | Normalize accepted skill/command aliases such as `sk-deep-review` vs `spec_kit:deep-review` | Planned |
-| 5 | `005-ambiguous-debug-review-routing` | Improve ambiguous code/debug/review prompts so review/debug candidates outrank broad `sk-code` | Planned |
+| 2 | `002-memory-save-negative-trigger-calibration` | Reduce `memory:save` false positives while preserving real context-save intent | Complete |
+| 3 | `003-create-testing-playbook-routing` | Route testing-playbook creation to `create:testing-playbook` instead of generic `sk-doc` | Complete |
+| 4 | `004-skill-router-alias-canonicalization` | Normalize accepted skill/command aliases such as `sk-deep-review` vs `spec_kit:deep-review` | Complete |
+| 5 | `005-ambiguous-debug-review-routing` | Improve ambiguous code/debug/review prompts so review/debug candidates outrank broad `sk-code` | Complete |
 <!-- /ANCHOR:children -->
 
 <!-- ANCHOR:scope -->
@@ -76,14 +78,14 @@ Phases `002` through `005` are the follow-on fixes from that report. They stay i
 
 - Keep all follow-on router quality work inside this existing 065 packet.
 - Preserve completed baseline evidence without rewriting history.
-- Create phase-local docs for each follow-on remediation area.
-- Update graph metadata so resume and traversal point to the correct next phase.
+- Maintain phase-local docs for each follow-on remediation area.
+- Update graph metadata so resume and traversal reflect completed child phases.
 
 ### Out of scope
 
 - Creating new top-level specs 066-069.
-- Executing phases 002-005 in this restructuring step.
-- Changing router code before a phase plan is executed.
+- Creating new top-level specs for these remediations.
+- Changing router code outside the documented child phases.
 <!-- /ANCHOR:scope -->
 
 <!-- ANCHOR:success-criteria -->
@@ -93,6 +95,9 @@ Phases `002` through `005` are the follow-on fixes from that report. They stay i
 - SC-002: Follow-on phases 002-005 exist with Level 1 docs and metadata.
 - SC-003: Root graph metadata lists the new phase children in order.
 - SC-004: Strict recursive validation passes for the 065 packet.
+- SC-005: Phase 002 resolves CP-101 and CP-104 without regressing `save context`.
+- SC-006: Phases 003-005 resolve CP-105, CP-103, and CP-100 respectively.
+- SC-007: Full CP-100..CP-105 replay is documented at parent level.
 <!-- /ANCHOR:success-criteria -->
 
 <!-- ANCHOR:dependencies -->

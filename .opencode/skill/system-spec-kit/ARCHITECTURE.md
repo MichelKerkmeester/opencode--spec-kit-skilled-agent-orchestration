@@ -279,7 +279,7 @@ The current self-contained package produces the compact skill recommendation bri
 
 | Subfolder | Purpose |
 |---|---|
-| `lib/scorer/` | 5-lane fusion engine (see weights below) |
+| `lib/scorer/` | 5-lane fusion engine plus narrow command/skill alias canonicalization (see weights below) |
 | `lib/scorer/lanes/` | Per-lane scorers: `explicit.ts`, `lexical.ts`, `graph-causal.ts`, `derived.ts`, `semantic-shadow.ts` |
 | `lib/daemon/` | Long-running writer: `lease.ts`, `lifecycle.ts`, `watcher.ts` |
 | `lib/freshness/` | `trust-state.ts`, `cache-invalidation.ts`, `generation.ts`, `rebuild-from-source.ts` |
@@ -301,6 +301,8 @@ Defined in `mcp_server/skill_advisor/lib/scorer/weights-config.ts:8-19` and exer
 | `semantic_shadow` | `0.00` | Shadow-only channel; scored but inert |
 
 `semantic_shadow` is locked at `0.00` live weight (ADR-006). The semantic lane is scored shadow-only and inert until a future weight rebalance is justified by measured live-corpus evidence; no automated promotion subsystem is wired today.
+
+Alias canonicalization lives in `mcp_server/skill_advisor/lib/scorer/aliases.ts`. It is intentionally narrow: command-backed skills may list exact accepted ids such as `sk-deep-review`, `spec_kit:deep-review`, `/spec_kit:deep-review`, and `command-spec-kit-deep-review`, but unrelated ids never compare equal through fuzzy or prefix matching.
 
 ### Daemon + freshness + trust states
 

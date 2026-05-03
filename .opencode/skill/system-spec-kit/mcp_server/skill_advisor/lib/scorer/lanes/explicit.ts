@@ -139,6 +139,7 @@ const TOKEN_BOOSTS: Readonly<Record<string, readonly [string, number][]>> = {
 
 const PHRASE_BOOSTS: Readonly<Record<string, readonly [string, number][]>> = {
   '/create:agent': [['create:agent', 1.6], ['sk-doc', 0.45]],
+  '/create:testing-playbook': [['create:testing-playbook', 1.8], ['command-create-testing-playbook', 1.2], ['sk-doc', 0.2]],
   '/memory:save': [['memory:save', 1.6], ['command-memory-save', 1], ['system-spec-kit', 0.45]],
   '/spec_kit:deep-research': [['sk-deep-research', 1.6], ['command-spec-kit', 0.45]],
   '/spec_kit:deep-review': [['sk-deep-review', 1.6], ['command-spec-kit', 0.45]],
@@ -187,7 +188,11 @@ const PHRASE_BOOSTS: Readonly<Record<string, readonly [string, number][]>> = {
   'mobile browser': [['sk-code', 0.6]],
   'browser verification': [['sk-code', 0.7]],
   'create a new agent': [['create:agent', 1.6], ['sk-doc', 0.45]],
+  'create a test playbook': [['create:testing-playbook', 1.8], ['command-create-testing-playbook', 1.2], ['sk-doc', 0.2]],
+  'create a testing playbook': [['create:testing-playbook', 1.8], ['command-create-testing-playbook', 1.2], ['sk-doc', 0.2]],
   'create new agent': [['create:agent', 1.6], ['sk-doc', 0.45]],
+  'create test playbook': [['create:testing-playbook', 1.8], ['command-create-testing-playbook', 1.2], ['sk-doc', 0.2]],
+  'create testing playbook': [['create:testing-playbook', 1.8], ['command-create-testing-playbook', 1.2], ['sk-doc', 0.2]],
   'save context': [['memory:save', 1.6], ['command-memory-save', 1], ['system-spec-kit', 0.45]],
   'save memory': [['memory:save', 1.6], ['command-memory-save', 1], ['system-spec-kit', 0.45]],
   'semantic code search': [['mcp-coco-index', 1]],
@@ -306,6 +311,11 @@ export function scoreExplicitLane(prompt: string, projection: AdvisorProjection)
   }
   if (/\b(continue|resume|launch|start|convergence|iteration)\b/.test(lower) && /\breview\b/.test(lower)) {
     push(scores, 'sk-deep-review', 0.85, 'review-loop');
+  }
+  if (/\b(figure out|find|diagnose|debug)\b.{0,40}\b(wrong|broken|failing|bug|issue)\b.{0,40}\bcode\b|\b(wrong|broken|failing)\b.{0,30}\bcode\b/.test(lower)) {
+    push(scores, 'sk-code-review', 0.9, 'ambiguous-code-problem');
+    push(scores, 'sk-deep-review', 0.45, 'ambiguous-code-problem');
+    push(scores, 'sk-code', -0.45, 'ambiguous-code-problem');
   }
 
   for (const skill of projection.skills) {

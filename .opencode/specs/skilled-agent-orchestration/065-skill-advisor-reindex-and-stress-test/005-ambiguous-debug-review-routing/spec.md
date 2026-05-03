@@ -7,13 +7,16 @@ contextType: "infrastructure-quality"
 _memory:
   continuity:
     packet_pointer: "skilled-agent-orchestration/065-skill-advisor-reindex-and-stress-test/005-ambiguous-debug-review-routing"
-    last_updated_at: "2026-05-03T11:10:00Z"
+    last_updated_at: "2026-05-03T12:09:00Z"
     last_updated_by: "codex-gpt-5"
-    recent_action: "Created follow-on phase from stress-test finding CP-100"
-    next_safe_action: "plan_and_execute_ambiguous_debug_review_routing"
+    recent_action: "Completed ambiguous code-problem routing calibration"
+    next_safe_action: "include_in_root_final_validation"
     blockers: []
-    key_files: []
-    completion_pct: 0
+    key_files:
+      - ".opencode/skill/system-spec-kit/mcp_server/skill_advisor/lib/scorer/lanes/explicit.ts"
+      - ".opencode/skill/system-spec-kit/mcp_server/skill_advisor/scripts/skill_advisor.py"
+      - ".opencode/skill/system-spec-kit/mcp_server/skill_advisor/tests/scorer/native-scorer.vitest.ts"
+    completion_pct: 100
     open_questions: []
     answered_questions: []
 ---
@@ -28,7 +31,7 @@ _memory:
 | Field | Value |
 |---|---|
 | Level | 1 |
-| Status | Planned |
+| Status | Complete |
 | Parent | 065 |
 | Source finding | CP-100 ambiguous routing |
 <!-- /ANCHOR:metadata -->
@@ -37,6 +40,8 @@ _memory:
 ## 2. PROBLEM & PURPOSE
 
 The prompt `I need to figure out what's wrong with my code` routed to broad `sk-code` at moderate confidence. The desired behavior is a review/debug-oriented candidate such as `sk-code-review` or `sk-deep-review`, still with calibrated uncertainty.
+
+Result: the prompt now routes to `sk-code-review` top-1 at confidence 0.82. A clear implementation control still routes to `sk-code` top-1 at confidence 0.95.
 <!-- /ANCHOR:problem -->
 
 <!-- ANCHOR:scope -->
@@ -56,8 +61,9 @@ In scope: tune ambiguous code-problem routing so review/debug candidates outrank
 
 <!-- ANCHOR:success-criteria -->
 ## 5. SUCCESS CRITERIA
-- SC-001: CP-100 changes from FAIL to PASS.
-- SC-002: Confidence stays calibrated and does not jump to an overconfident 0.95.
+- SC-001: CP-100 changed from FAIL to PASS.
+- SC-002: Confidence stayed calibrated at 0.82 and did not jump to 0.95.
+- SC-003: Clear implementation prompts still route to `sk-code`.
 <!-- /ANCHOR:success-criteria -->
 
 <!-- ANCHOR:risks -->

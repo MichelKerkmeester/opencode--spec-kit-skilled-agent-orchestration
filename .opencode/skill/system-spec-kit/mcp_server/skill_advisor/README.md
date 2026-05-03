@@ -36,6 +36,7 @@ Current state:
 - Native MCP tools are the primary runtime surface.
 - Python scripts remain a compatibility path for callers that cannot use MCP tools directly.
 - Public responses stay prompt-safe and expose skill labels, scores, thresholds and trust metadata.
+- Command-backed skills use explicit alias groups where command ids and skill ids are legitimate names for the same capability.
 
 <!-- /ANCHOR:overview -->
 
@@ -107,7 +108,7 @@ skill_advisor/
 | `handlers/advisor-validate.ts` | Runs corpus, holdout, parity, safety and latency checks. |
 | `compat/index.ts` | Stable native compatibility entrypoint. |
 | `scripts/skill_advisor.py` | Python shim for runtimes that need CLI output. |
-| `lib/scorer/` | Five-lane scoring and ambiguity handling. |
+| `lib/scorer/` | Five-lane scoring, ambiguity handling and narrow alias canonicalization. |
 | `lib/freshness/` | Freshness, trust and cache state logic. |
 
 <!-- /ANCHOR:key-files -->
@@ -123,6 +124,7 @@ Boundaries:
 - It may read skill metadata, graph metadata and advisor cache state.
 - It must not own code graph indexing or memory retrieval behavior.
 - Runtime plugins should import `dist/skill_advisor/compat/index.js`, not private compiled handler files.
+- Alias handling is internal to scoring and validation; it maps only fixed command/skill id groups and does not rewrite public recommendation ids.
 
 Control flow:
 

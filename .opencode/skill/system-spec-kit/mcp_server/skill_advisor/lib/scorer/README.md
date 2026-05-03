@@ -1,6 +1,6 @@
 ---
 title: "Scorer Library: Skill Advisor Ranking"
-description: "Native advisor scorer modules for lane attribution, fusion, ambiguity handling, text scoring, weights and projection."
+description: "Native advisor scorer modules for lane attribution, fusion, ambiguity handling, alias canonicalization, text scoring, weights and projection."
 trigger_phrases:
   - "advisor scorer"
   - "skill advisor ranking"
@@ -23,12 +23,13 @@ trigger_phrases:
 
 ## 1. OVERVIEW
 
-`lib/scorer/` contains the native scoring modules used by the skill advisor to rank candidate skills. It combines lane-specific evidence, text matching, age policy, ambiguity handling, fusion and output projection into prompt-safe recommendation scores.
+`lib/scorer/` contains the native scoring modules used by the skill advisor to rank candidate skills. It combines lane-specific evidence, text matching, age policy, ambiguity handling, explicit alias canonicalization, fusion and output projection into prompt-safe recommendation scores.
 
 Current state:
 
 - Defines scorer types, constants and configurable weights.
 - Separates lane registration and lane implementations from fusion and projection.
+- Canonicalizes narrow command/skill alias groups before campaign scoring compares expected and actual routes.
 - Supports attribution and ablation helpers for advisor quality checks.
 
 ---
@@ -39,6 +40,7 @@ Current state:
 scorer/
 +-- ablation.ts              # Scorer ablation helpers
 +-- age-policy.ts            # Age-aware ranking policy
++-- aliases.ts               # Narrow command/skill alias canonicalization
 +-- ambiguity.ts             # Ambiguity detection and handling
 +-- attribution.ts           # Lane attribution assembly
 +-- fusion.ts                # Score fusion logic
@@ -60,6 +62,7 @@ scorer/
 |---|---|
 | `fusion.ts` | Combines lane scores into final advisor ranking signals. |
 | `lane-registry.ts` | Registers available scoring lanes. |
+| `aliases.ts` | Canonicalizes explicit command/skill alias groups for route comparisons. |
 | `attribution.ts` | Builds prompt-safe lane attribution details. |
 | `ambiguity.ts` | Detects close or unclear recommendation states. |
 | `projection.ts` | Projects scorer internals into caller-facing output. |
@@ -75,6 +78,7 @@ scorer/
 | Imports | May import derived metadata, corpus weighting and schema types needed for scoring. |
 | Exports | Export scorer functions and types, not handler response formatting. |
 | Ownership | Put scoring and attribution here. Put prompt-safe rendering in `../render.ts` and handler orchestration in `../../handlers/`. |
+| Aliases | Keep command/skill aliases fixed and explicit; do not use fuzzy or prefix matching. |
 
 Main flow:
 
@@ -82,6 +86,7 @@ Main flow:
 prompt and candidate skills
   -> lane scoring and text evidence
   -> score fusion and ambiguity checks
+  -> alias-aware route comparison when scenario expectations use command ids
   -> attribution and projection
   -> caller renders recommendation
 ```
@@ -93,6 +98,7 @@ prompt and candidate skills
 | Entrypoint | Type | Purpose |
 |---|---|---|
 | `fusion.ts` | TypeScript module | Score fusion logic. |
+| `aliases.ts` | TypeScript module | Canonical command/skill alias helpers. |
 | `lane-registry.ts` | TypeScript module | Lane registration. |
 | `projection.ts` | TypeScript module | Output projection. |
 | `types.ts` | TypeScript module | Scorer contracts. |

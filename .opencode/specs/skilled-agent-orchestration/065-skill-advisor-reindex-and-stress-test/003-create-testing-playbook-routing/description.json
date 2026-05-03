@@ -2,10 +2,12 @@
   "specFolder": "skilled-agent-orchestration/065-skill-advisor-reindex-and-stress-test/003-create-testing-playbook-routing",
   "description": "Route testing-playbook creation prompts to create:testing-playbook instead of generic documentation skills.",
   "keywords": ["065", "003", "create", "testing-playbook", "routing", "CP-105"],
-  "lastUpdated": "2026-05-03T11:10:00Z",
+  "lastUpdated": "2026-05-03T12:05:00Z",
   "specId": "065/003",
   "folderSlug": "create-testing-playbook-routing",
   "parentChain": ["skilled-agent-orchestration", "065-skill-advisor-reindex-and-stress-test"],
   "memorySequence": 3,
-  "memoryNameHistory": []
+  "memoryNameHistory": [],
+  "completionPct": 100,
+  "lastOutcome": "CP-105 now routes to create:testing-playbook top-1 at confidence 0.8387; advisor tests, typecheck, and build passed."
 }

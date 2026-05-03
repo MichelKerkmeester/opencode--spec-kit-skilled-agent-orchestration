@@ -7,13 +7,13 @@ contextType: "infrastructure-quality"
 _memory:
   continuity:
     packet_pointer: "skilled-agent-orchestration/065-skill-advisor-reindex-and-stress-test"
-    last_updated_at: "2026-05-03T11:20:00Z"
+    last_updated_at: "2026-05-03T12:12:00Z"
     last_updated_by: "codex-gpt-5"
-    recent_action: "Added root resource map"
-    next_safe_action: "execute_phase_002"
+    recent_action: "Updated root resource map after phases 002-005"
+    next_safe_action: "commit_or_resume_from_clean_validation_state"
     blockers: []
     key_files: []
-    completion_pct: 20
+    completion_pct: 100
     open_questions: []
     answered_questions: []
 ---
@@ -25,11 +25,11 @@ _memory:
 <!-- ANCHOR:summary -->
 ## Summary
 
-- **Total references**: 14
-- **By category**: Specs=8, Skills=5, Tests=1
+- **Total references**: 18
+- **By category**: Specs=9, Skills=8, Tests=1
 - **Missing on disk**: 0
-- **Scope**: parent-level map for the 065 program, including child phase docs and shared advisor surfaces to check
-- **Generated**: 2026-05-03T11:20:00Z
+- **Scope**: parent-level map for the completed 065 program, including child phase docs and shared advisor surfaces checked
+- **Generated**: 2026-05-03T12:12:00Z
 <!-- /ANCHOR:summary -->
 
 <!-- ANCHOR:specs -->
@@ -42,10 +42,11 @@ _memory:
 | `.opencode/specs/skilled-agent-orchestration/065-skill-advisor-reindex-and-stress-test/tasks.md` | Created | OK | Root task sequence |
 | `.opencode/specs/skilled-agent-orchestration/065-skill-advisor-reindex-and-stress-test/checklist.md` | Created | OK | Root verification ledger |
 | `.opencode/specs/skilled-agent-orchestration/065-skill-advisor-reindex-and-stress-test/001-baseline-reindex-and-stress-results/` | Moved | OK | Completed baseline evidence |
-| `.opencode/specs/skilled-agent-orchestration/065-skill-advisor-reindex-and-stress-test/002-memory-save-negative-trigger-calibration/` | Created | OK | Planned remediation phase |
-| `.opencode/specs/skilled-agent-orchestration/065-skill-advisor-reindex-and-stress-test/003-create-testing-playbook-routing/` | Created | OK | Planned remediation phase |
-| `.opencode/specs/skilled-agent-orchestration/065-skill-advisor-reindex-and-stress-test/004-skill-router-alias-canonicalization/` | Created | OK | Planned remediation phase |
-| `.opencode/specs/skilled-agent-orchestration/065-skill-advisor-reindex-and-stress-test/005-ambiguous-debug-review-routing/` | Created | OK | Planned remediation phase |
+| `.opencode/specs/skilled-agent-orchestration/065-skill-advisor-reindex-and-stress-test/resource-map.md` | Updated | OK | Root affected-surface ledger |
+| `.opencode/specs/skilled-agent-orchestration/065-skill-advisor-reindex-and-stress-test/002-memory-save-negative-trigger-calibration/` | Updated | OK | Completed memory-save remediation phase |
+| `.opencode/specs/skilled-agent-orchestration/065-skill-advisor-reindex-and-stress-test/003-create-testing-playbook-routing/` | Updated | OK | Completed testing-playbook remediation phase |
+| `.opencode/specs/skilled-agent-orchestration/065-skill-advisor-reindex-and-stress-test/004-skill-router-alias-canonicalization/` | Updated | OK | Completed alias remediation phase |
+| `.opencode/specs/skilled-agent-orchestration/065-skill-advisor-reindex-and-stress-test/005-ambiguous-debug-review-routing/` | Updated | OK | Completed ambiguous debug/review remediation phase |
 <!-- /ANCHOR:specs -->
 
 <!-- ANCHOR:skills -->
@@ -53,11 +54,14 @@ _memory:
 
 | Path | Action | Status | Note |
 |---|---|---|---|
-| `.opencode/skill/system-spec-kit/mcp_server/skill_advisor/scripts/skill_advisor.py` | Checked | OK | CLI fallback and deterministic probes |
-| `.opencode/skill/system-spec-kit/mcp_server/skill_advisor/lib/scorer/` | Planned | OK | Likely scorer calibration surface |
+| `.opencode/skill/system-spec-kit/mcp_server/skill_advisor/scripts/skill_advisor.py` | Updated | OK | CLI fallback, deterministic probes, and Python parity |
+| `.opencode/skill/system-spec-kit/mcp_server/skill_advisor/lib/scorer/aliases.ts` | Created | OK | Explicit command/skill alias groups |
+| `.opencode/skill/system-spec-kit/mcp_server/skill_advisor/lib/scorer/projection.ts` | Updated | OK | Testing-playbook command bridge |
+| `.opencode/skill/system-spec-kit/mcp_server/skill_advisor/lib/scorer/fusion.ts` | Updated | OK | Testing-playbook primary intent calibration |
+| `.opencode/skill/system-spec-kit/mcp_server/skill_advisor/lib/scorer/lanes/explicit.ts` | Updated | OK | Testing-playbook and ambiguous debug/review signals |
 | `.opencode/skill/system-spec-kit/mcp_server/skill_advisor/handlers/` | Checked | OK | Advisor status/recommend handler surface |
 | `.opencode/skill/system-spec-kit/mcp_server/context-server.ts` | Checked | OK | MCP tool registration and trust context |
-| `.opencode/skill/system-spec-kit/**/graph-metadata.json` | Planned | OK | Possible route metadata inputs |
+| `.opencode/skill/system-spec-kit/**/graph-metadata.json` | Checked | OK | No route metadata edits required |
 <!-- /ANCHOR:skills -->
 
 <!-- ANCHOR:tests -->
@@ -65,5 +69,5 @@ _memory:
 
 | Path | Action | Status | Note |
 |---|---|---|---|
-| `.opencode/skill/system-spec-kit/mcp_server/skill_advisor/tests/` | Planned | OK | Native scorer and handler regressions |
+| `.opencode/skill/system-spec-kit/mcp_server/skill_advisor/tests/` | Updated | OK | Native scorer, graph health, and full regression suite |
 <!-- /ANCHOR:tests -->
