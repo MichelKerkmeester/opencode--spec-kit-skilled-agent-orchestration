@@ -10,6 +10,7 @@ Inventory rule: if an agent file is not present in this directory, it is not a l
 
 Agents:
   code          — Application-code implementation (write-capable LEAF; sk-code stack delegation)
+  create-doc    — /create:* documentation executor (write-capable LEAF; sk-doc templates; caller-restricted)
   context       — Retrieval-first codebase exploration
   debug         — Fresh-perspective debugging
   deep-research — Autonomous research iterations

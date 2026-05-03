@@ -10,7 +10,7 @@ allowed-tools: Read, Write, Edit, Bash, Glob, Grep, TodoWrite, mcp__cocoindex_co
 > Do not split behavior across legacy or sidecar-doc playbook commands.
 >
 > Mandatory execution order:
-> 1. Run Phase 0 verification (`@general`)
+> 1. Run Phase 0 verification (`@create-doc`)
 > 2. Run unified setup (single consolidated prompt)
 > 3. Verify required phase outputs are present
 > 4. Route by mode (`:auto` or `:confirm`)
@@ -26,32 +26,32 @@ Do not infer missing command arguments from prior conversation context.
 
 ---
 
-# 🚨 PHASE 0: @WRITE AGENT VERIFICATION
+# 🚨 PHASE 0: @CREATE-DOC AGENT VERIFICATION
 
 **STATUS: ☐ BLOCKED**
 
 ```text
 EXECUTE THIS AUTOMATIC SELF-CHECK (NOT A USER QUESTION):
 
-SELF-CHECK: Are you operating as @general?
+SELF-CHECK: Are you operating as @create-doc?
 |
-|- Verify @general indicators:
-|  - Invoked with @general
+|- Verify @create-doc indicators:
+|  - Invoked with @create-doc
 |  - Template-first generation behavior available
 |  - sk-doc quality validation behavior available
 |- IF yes:
-|  - general_agent_verified = true
+|  - create_doc_agent_verified = true
 |  - phase_0_status = PASSED
 |- IF no/uncertain:
 |  - HARD BLOCK and stop
 
 HARD BLOCK MESSAGE:
-"This command requires @general for template-first generation and sk-doc validation.
-Restart with: /create:testing-playbook <skill-name> [create|update]"
+"This command requires @create-doc for template-first generation and sk-doc validation.
+Restart with: @create-doc /create:testing-playbook <skill-name> [create|update]"
 ```
 
 Phase outputs:
-- `general_agent_verified`
+- `create_doc_agent_verified`
 
 ---
 
@@ -155,7 +155,7 @@ Verify all required values are set before YAML execution:
 
 | Field | Required | Rule |
 | --- | --- | --- |
-| general_agent_verified | Yes | `true` |
+| create_doc_agent_verified | Yes | `true` |
 | skill_name | Yes | explicit, hyphen-case |
 | operation | Yes | `create` or `update` |
 | source_strategy | Yes | one of A/B/C normalized choices |
@@ -205,7 +205,7 @@ Accepted mode suffix values:
 
 | Step | Name | Purpose | Output |
 | --- | --- | --- | --- |
-| 1 | Phase 0 Verification | Ensure `@general` is active | `general_agent_verified` |
+| 1 | Phase 0 Verification | Ensure `@create-doc` is active | `create_doc_agent_verified` |
 | 2 | Unified Setup | Capture all required parameters once | normalized setup fields |
 | 3 | Phase Validation | Enforce required-field contract | phase pass/fail |
 | 4 | Mode Routing | Route to auto or confirm YAML | target YAML path |
@@ -215,7 +215,7 @@ Accepted mode suffix values:
 ## 5. INSTRUCTIONS
 
 ### Step 1: Run Phase 0
-- Execute `@general` verification.
+- Execute `@create-doc` verification.
 - Hard block on failure.
 
 ### Step 2: Run Unified Setup
@@ -338,7 +338,7 @@ The workflow is incomplete if it uses only the root template and ignores the per
 ## 11. VALIDATION AND QUALITY GATES
 
 Hard gates:
-- H0: `@general` verification
+- H0: `@create-doc` verification
 - H1: required setup fields captured
 - H2: create/update existence semantics
 - H3: root playbook and per-feature structure match the shipped contract

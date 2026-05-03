@@ -9,6 +9,7 @@ Mirrored to: .claude/agents/, .gemini/agents/, .codex/agents/
 
 Agents:
   code           — Application-code implementation (write-capable LEAF; sk-code stack delegation)
+  create-doc     — /create:* documentation executor (write-capable LEAF; sk-doc templates; caller-restricted)
   context        — Retrieval-first codebase exploration
   debug          — Fresh-perspective debugging
   deep-research  — Autonomous research iterations

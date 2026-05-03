@@ -10,7 +10,7 @@ allowed-tools: Read, Write, Edit, Bash, Glob, Grep, TodoWrite, mcp__cocoindex_co
 > Do not split behavior across legacy command definitions.
 >
 > Mandatory execution order:
-> 1. Run Phase 0 verification (`@general` or valid chained handoff)
+> 1. Run Phase 0 verification (`@create-doc` or valid chained handoff)
 > 2. Run unified setup (single consolidated prompt)
 > 3. Verify required phase outputs are present
 > 4. Route by mode (`:auto` or `:confirm`)
@@ -26,24 +26,24 @@ Do not infer missing command arguments from prior conversation context.
 
 ---
 
-# 🚨 PHASE 0: @WRITE AGENT VERIFICATION
+# 🚨 PHASE 0: @CREATE-DOC AGENT VERIFICATION
 
 **STATUS: ☐ BLOCKED**
 
 ```text
 EXECUTE THIS AUTOMATIC SELF-CHECK (NOT A USER QUESTION):
 
-SELF-CHECK: Are you operating as @general OR under a valid chained parent handoff?
+SELF-CHECK: Are you operating as @create-doc OR under a valid chained parent handoff?
 |
 |- CASE A: Valid chained handoff detected (--chained)
 |  |- Required parent fields present?
 |  |  - skill_name
 |  |  - operation
 |  |  - execution_mode
-|  |  - parent_write_verified=true
+|  |  - parent_create_doc_verified=true
 |  |  - type (required only for reference-only or asset-only)
 |  |- IF all present:
-|  |  - general_agent_verified = skipped-chained
+|  |  - create_doc_agent_verified = skipped-chained
 |  |  - chained_handoff_valid = true
 |  |  - phase_0_status = PASSED
 |  |- IF missing required parent fields:
@@ -51,23 +51,23 @@ SELF-CHECK: Are you operating as @general OR under a valid chained parent handof
 |     - fall through to CASE B
 |
 |- CASE B: Standalone invocation
-|  |- Verify @general indicators:
-|  |  - Invoked with @general
+|  |- Verify @create-doc indicators:
+|  |  - Invoked with @create-doc
 |  |  - Template-first generation behavior available
 |  |  - sk-doc quality validation behavior available
 |  |- IF yes:
-|  |  - general_agent_verified = true
+|  |  - create_doc_agent_verified = true
 |  |  - phase_0_status = PASSED
 |  |- IF no/uncertain:
 |     - HARD BLOCK and stop
 
 HARD BLOCK MESSAGE:
-"This command requires @general for template-first generation and sk-doc validation.
-Restart with: /create:sk-skill <skill-name> [operation] [type]"
+"This command requires @create-doc for template-first generation and sk-doc validation.
+Restart with: @create-doc /create:sk-skill <skill-name> [operation] [type]"
 ```
 
 Phase outputs:
-- `general_agent_verified`
+- `create_doc_agent_verified`
 - `chained_handoff_valid`
 
 ---
@@ -183,7 +183,7 @@ Verify all required values are set before YAML execution:
 
 | Field | Required | Rule |
 | --- | --- | --- |
-| general_agent_verified | Yes | `true` or `skipped-chained` |
+| create_doc_agent_verified | Yes | `true` or `skipped-chained` |
 | skill_name | Yes | explicit, hyphen-case |
 | operation | Yes | one of 4 operation values |
 | type | Conditional | required for reference-only and asset-only |
@@ -200,7 +200,7 @@ Proceed only when all required fields validate.
 
 Provide one canonical command entrypoint for skill lifecycle operations,
 eliminating split logic across deprecated command definitions while preserving
-strict @general + sk-doc + system-spec-kit behavior contracts.
+strict @create-doc + sk-doc + system-spec-kit behavior contracts.
 
 ## 2. CONTRACT
 
@@ -239,7 +239,7 @@ Accepted type values:
 
 | Step | Name | Purpose | Output |
 | --- | --- | --- | --- |
-| 1 | Phase 0 Verification | Ensure @general or valid chained handoff | `general_agent_verified` |
+| 1 | Phase 0 Verification | Ensure @create-doc or valid chained handoff | `create_doc_agent_verified` |
 | 2 | Unified Setup | Capture all required parameters once | normalized setup fields |
 | 3 | Phase Validation | Enforce required-field contract | phase pass/fail |
 | 4 | Mode Routing | Route to auto or confirm unified YAML | target YAML path |
@@ -249,7 +249,7 @@ Accepted type values:
 ## 5. INSTRUCTIONS
 
 ### Step 1: Run Phase 0
-- Execute @general/chained verification.
+- Execute @create-doc/chained verification.
 - Hard block on failure.
 
 ### Step 2: Run Unified Setup
@@ -334,7 +334,7 @@ Branch guarantees:
 ## 9. VALIDATION AND QUALITY GATES
 
 Hard gates:
-- H0: write verification / valid chained handoff
+- H0: create-doc verification / valid chained handoff
 - H1: required setup fields captured
 - H2: operation/type compatibility
 - H3: existence semantics (create vs update/doc-only)
