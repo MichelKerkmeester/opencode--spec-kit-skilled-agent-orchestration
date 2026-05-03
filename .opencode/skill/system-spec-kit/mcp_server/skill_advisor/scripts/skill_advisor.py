@@ -209,6 +209,7 @@ SKILL_GRAPH_SQLITE_PATH = os.path.normpath(os.path.join(
 ))
 GRAPH_ADJACENCY_EDGE_TYPES = ("depends_on", "enhances", "siblings", "prerequisite_for")
 GRAPH_ONLY_SKILL_IDS = {"skill_advisor"}  # snake_case after commit 7dfd108 rename
+GRAPHLESS_INLINE_SKILL_IDS = {"create:agent", "memory:save"}
 STRICT_TOPOLOGY_HEADERS = (
     ("DEPENDENCY CYCLE ERRORS", "dependency cycles"),
     ("SYMMETRY WARNINGS", "asymmetric edges"),
@@ -2364,6 +2365,50 @@ def apply_intent_normalization(
     return detected
 
 
+def _is_memory_preservation_session_intent(prompt_lower: str) -> bool:
+    """Detect context-preservation phrasing that avoids literal save/context words."""
+    return bool(
+        re.search(
+            r"\b(preserve|remember|capture|keep|store)\b.*\b(next|future|later)\s+session\b",
+            prompt_lower,
+        )
+        or re.search(
+            r"\b(next|future|later)\s+session\b.*\b(lose|lost|preserve|remember|capture|keep|store)\b",
+            prompt_lower,
+        )
+    )
+
+
+def _is_plain_file_save_prompt(prompt_lower: str) -> bool:
+    """Separate editor/file-save requests from memory/context preservation saves."""
+    file_save = bool(
+        re.search(r"\bsave\b.{0,48}\b(file|files|document|documents|buffer|tab|workspace)\b", prompt_lower)
+        or re.search(r"\b(file|files|document|documents|buffer|tab|workspace)\b.{0,48}\bsave\b", prompt_lower)
+    )
+    if not file_save:
+        return False
+
+    without_file_terms = re.sub(r"\b(file|files|document|documents|buffer|tab|workspace)\b", " ", prompt_lower)
+    return not bool(
+        re.search(
+            r"\b(memory|context|conversation|session|handover|checkpoint|resume|preserve|remember|capture|store)\b|/memory:save|memory:save",
+            without_file_terms,
+        )
+    )
+
+
+def _apply_memory_save_file_operation_cap(
+    recommendations: List[Dict[str, Any]],
+    prompt_lower: str,
+) -> None:
+    """Keep plain file-save prompts from passing as memory-save command intent."""
+    if not _is_plain_file_save_prompt(prompt_lower):
+        return
+    for recommendation in recommendations:
+        if recommendation.get("skill") in {"memory:save", "command-memory-save"}:
+            recommendation["confidence"] = min(float(recommendation.get("confidence", 0.0)), 0.49)
+
+
 # ───────────────────────────────────────────────────────────────
 # 3. SCORING
 # ───────────────────────────────────────────────────────────────
@@ -2799,6 +2844,15 @@ def analyze_request(
                     boost_reasons[skill] = []
                 boost_reasons[skill].append(f"!{phrase}(phrase)")
 
+    if _is_memory_preservation_session_intent(prompt_lower):
+        for skill, boost in (
+            ("memory:save", 1.2),
+            ("command-memory-save", 0.8),
+            ("system-spec-kit", 0.3),
+        ):
+            skill_boosts[skill] = skill_boosts.get(skill, 0.0) + boost
+            boost_reasons.setdefault(skill, []).append("!memory-preservation-session-intent")
+
     _apply_signal_boosts(prompt_lower, skill_boosts, boost_reasons)
 
     # Graph-derived boosts: transitive relationships and family affinity
@@ -2898,6 +2952,8 @@ def analyze_request(
             score=score,
             has_intent_boost=has_boost,
         )
+        if name in {"memory:save", "command-memory-save"} and _is_plain_file_save_prompt(prompt_lower):
+            confidence = min(confidence, 0.49)
 
         num_matches = len(matches)
         num_ambiguous = sum(1 for m in matches if '(multi)' in m)
@@ -2930,6 +2986,7 @@ def analyze_request(
 
     apply_confidence_calibration(recommendations)
     apply_graph_evidence_calibration(recommendations)
+    _apply_memory_save_file_operation_cap(recommendations, prompt_lower)
 
     # T-SAP-02 (R45-002): disambiguate deep-research vs code-review and
     # deep-review vs code-review before the iteration-loop tiebreaker so the
@@ -3027,14 +3084,19 @@ def _compare_inventories(
     graph_ids = _collect_graph_skill_ids(graph)
     parity = _runtime_module.compare_inventories(skill_names, graph_ids)
     missing_in_discovery = set(parity.get("missing_in_discovery", []))
+    missing_in_graph = set(parity.get("missing_in_graph", []))
     tolerated_graph_only = sorted(missing_in_discovery & GRAPH_ONLY_SKILL_IDS)
+    tolerated_graphless_inline = sorted(missing_in_graph & GRAPHLESS_INLINE_SKILL_IDS)
     blocking_missing = sorted(missing_in_discovery - GRAPH_ONLY_SKILL_IDS)
+    blocking_missing_in_graph = sorted(missing_in_graph - GRAPHLESS_INLINE_SKILL_IDS)
 
-    if tolerated_graph_only:
+    if tolerated_graph_only or tolerated_graphless_inline:
         parity = dict(parity)
         parity["missing_in_discovery"] = blocking_missing
+        parity["missing_in_graph"] = blocking_missing_in_graph
         parity["graph_only"] = tolerated_graph_only
-        parity["in_sync"] = not parity.get("missing_in_graph") and not blocking_missing
+        parity["graphless_inline"] = tolerated_graphless_inline
+        parity["in_sync"] = not blocking_missing_in_graph and not blocking_missing
 
     return parity
 

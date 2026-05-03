@@ -476,7 +476,7 @@ Before returning: (1) run the 6-question self-validation, (2) verify every RETUR
 │  IMPLEMENTATION MODES                                                   │
 │  ├─► Full implementation, surgical fix, and refactor-only changes        │
 │  ├─► Test-add, scaffold-new-file, rename-move, dependency-bump           │
-│  └─► Escalate UNKNOWN stack, scope conflict, or low confidence           │
+│  └─► Escalate UNKNOWN stack, scope conflict, or low confidence            │
 │                                                                         │
 │  WORKFLOW                                                               │
 │  ├─► 1. RECEIVE scope, success criteria, and spec-folder context        │

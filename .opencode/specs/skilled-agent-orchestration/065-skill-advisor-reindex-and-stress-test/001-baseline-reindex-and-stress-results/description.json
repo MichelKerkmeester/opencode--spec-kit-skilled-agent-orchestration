@@ -1,0 +1,11 @@
+{
+  "specFolder": "skilled-agent-orchestration/065-skill-advisor-reindex-and-stress-test/001-baseline-reindex-and-stress-results",
+  "description": "Completed baseline phase preserving original reindex and router stress-test evidence.",
+  "keywords": ["065", "001", "baseline", "reindex", "stress-test", "advisor"],
+  "lastUpdated": "2026-05-03T11:10:00Z",
+  "specId": "065/001",
+  "folderSlug": "baseline-reindex-and-stress-results",
+  "parentChain": ["skilled-agent-orchestration", "065-skill-advisor-reindex-and-stress-test"],
+  "memorySequence": 1,
+  "memoryNameHistory": []
+}

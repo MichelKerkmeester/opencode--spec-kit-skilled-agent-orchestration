@@ -48,15 +48,19 @@ describe('advisor graph health', () => {
       inventory_parity: {
         in_sync: boolean;
         missing_in_discovery: string[];
+        missing_in_graph: string[];
         graph_only?: string[];
+        graphless_inline?: string[];
       };
     };
 
     expect(payload.status).toBe('ok');
     expect(payload.inventory_parity.in_sync).toBe(true);
     expect(payload.inventory_parity.missing_in_discovery).toEqual([]);
+    expect(payload.inventory_parity.missing_in_graph).toEqual([]);
     // Folder + skill_id are both snake_case after commit 7dfd108. GRAPH_ONLY_SKILL_IDS
     // and the compiler's hardcoded injection were aligned to match in packet 047.
     expect(payload.inventory_parity.graph_only).toEqual(['skill_advisor']);
+    expect(payload.inventory_parity.graphless_inline).toEqual(['create:agent', 'memory:save']);
   });
 });

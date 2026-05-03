@@ -130,7 +130,7 @@ description: [One-line description - same as intro]
 
 [1-2 SHORT sentences only. Brief hook/summary. NO subsections, NO headers here.]
 
-## 1. OVERVIEW
+\## 1. OVERVIEW
 
 ### Purpose
 
@@ -142,7 +142,7 @@ description: [One-line description - same as intro]
 
 ---
 
-## 2. [Content Section]
+\## 2. [Content Section]
 
 [The actual template/checklist/snippet content]
 
@@ -164,7 +164,7 @@ description: [One-line description - same as intro]
 
 Copy-paste templates for creating well-structured commit messages.
 
-## 1. OVERVIEW
+\## 1. OVERVIEW
 
 ### Purpose
 
@@ -176,7 +176,7 @@ Copy the appropriate template based on commit type...
 
 ---
 
-## 2. COMMIT TEMPLATES
+\## 2. COMMIT TEMPLATES
 ...
 ```
 
@@ -219,7 +219,7 @@ Atomic commits with clear intent = maintainable history.
 
 Brief introduction (1-2 sentences) explaining what this asset provides and when to use it.
 
-## 1. OVERVIEW
+\## 1. OVERVIEW
 
 ### Purpose
 
@@ -231,7 +231,7 @@ Brief introduction (1-2 sentences) explaining what this asset provides and when 
 
 ---
 
-## 2. SECTION NAME
+\## 2. SECTION NAME
 
 **Key Points**:
 - Point 1
@@ -259,7 +259,7 @@ Brief introduction (1-2 sentences) explaining what this asset provides and when 
 
 ---
 
-## 3. SECTION NAME
+\## 3. SECTION NAME
 
 [Continue pattern...]
 
@@ -902,7 +902,7 @@ Integration:
 
 ---
 
-## 15. RELATED RESOURCES
+## 15. REFERENCES AND RELATED RESOURCES
 
 ### Templates
 - [frontmatter_templates.md](../documentation/frontmatter_templates.md) - Frontmatter by document type

@@ -71,9 +71,7 @@
       ".opencode/skill/sk-doc/assets/documentation/readme_template.md",
       ".opencode/skill/sk-doc/scripts/validate_document.py",
       ".opencode/skill/sk-doc/scripts/extract_structure.py",
-      ".opencode/skill/sk-doc/assets/template_rules.json",
-      ".opencode/agent/write.md",
-      ".claude/agents/write.md"
+      ".opencode/skill/sk-doc/assets/template_rules.json"
     ],
     "entities": [
       {
@@ -122,16 +120,6 @@
         "name": "template_rules",
         "kind": "config",
         "path": ".opencode/skill/sk-doc/assets/template_rules.json",
-        "source": "derived"
-      },
-      {
-        "kind": "agent",
-        "path": ".opencode/agent/write.md",
-        "source": "derived"
-      },
-      {
-        "kind": "agent",
-        "path": ".claude/agents/write.md",
         "source": "derived"
       }
     ],

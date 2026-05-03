@@ -388,12 +388,10 @@ Before research, recover context with `/spec_kit:resume` using `handover.md -> _
 
 ---
 
-## 8. RELATED RESOURCES
+## 8. REFERENCES AND RELATED RESOURCES
 
-### Worked Examples and Commands
+The router discovers reference, asset, and script docs dynamically. Start with `references/convergence.md`, `references/loop_protocol.md`, `references/quick_reference.md`, `references/state_format.md`, `references/capability_matrix.md`, `references/spec_check_protocol.md`, `assets/deep_research_dashboard.md`, then load task-specific resources from `references/`, templates from `assets/`, and automation from `scripts/` when present.
 
-Use `/spec_kit:deep-research:auto "<topic>"` for broad or narrow research; convergence may stop early when questions are answered or trigger stuck recovery when novelty stays low. Related commands are `/spec_kit:plan --intake-only`, `/spec_kit:deep-research`, and `/memory:save`; `@deep-research` remains a single-iteration LEAF executor.
+Scripts: `scripts/reduce-state.cjs`, `scripts/runtime-capabilities.cjs`.
 
-**For one-page cheat sheet**: See [quick_reference.md](./references/quick_reference.md)
-
-For code review capabilities, see `sk-deep-review`.
+Related skills: `sk-deep-review` for iterative audit loops and `system-spec-kit` for command-owned state, packet anchoring, and continuity saves.

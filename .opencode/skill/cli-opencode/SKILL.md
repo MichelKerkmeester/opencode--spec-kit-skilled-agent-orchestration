@@ -383,24 +383,10 @@ Key integrations:
 
 **Tool roles**: Bash dispatches the CLI; Read/Glob/Grep validate output and probe `~/.opencode/state/` for session locks.
 
-### Related Skills
-
-| Skill | Integration |
-|-------|-------------|
-| **cli-claude-code** | Sibling — dispatch raw Claude when full project runtime is not needed |
-| **cli-codex** | Sibling — dispatch Codex for code generation; cli-opencode is the bridge for spec-kit handback |
-| **cli-copilot** | Sibling — dispatch Copilot for cloud-agent style execution |
-| **cli-gemini** | Sibling — dispatch Gemini for Google Search grounding |
-| **system-spec-kit** | Cross-AI handback target — dispatched sessions load this skill for spec-folder workflows |
-| **sk-code** + `sk-code-*` overlay | Baseline+overlay code-quality contract for dispatched code review/generation; dispatched session selects overlay from stack signals (see Section 4 ALWAYS rule 12) |
-| **sk-deep-research** | LEAF agent dispatched as `--agent deep-research` for parallel research iterations |
-| **sk-deep-review** | LEAF agent dispatched as `--agent deep-review` for parallel review iterations |
-| **mcp-code-mode** | Code Mode tools available inside the dispatched session via the project's MCP wiring |
-
 ---
 
-## 8. RELATED RESOURCES
+## 8. REFERENCES AND RELATED RESOURCES
 
-See Section 5 REFERENCES for the canonical reference, asset, shared, and external link list.
+The router discovers reference, asset, and script docs dynamically. Start with `references/cli_reference.md`, `references/integration_patterns.md`, `assets/prompt_quality_card.md`, `assets/prompt_templates.md`, `references/agent_delegation.md`, `references/opencode_tools.md`, then load task-specific resources from `references/`, templates from `assets/`, and automation from `scripts/` when present.
 
----
+Related skills: `cli-claude-code`, `cli-codex`, `cli-copilot`, and `cli-gemini` for sibling cross-AI dispatch; `system-spec-kit` for handback; `sk-code` plus the selected overlay for generated code; `sk-deep-research` and `sk-deep-review` for loop execution; and `mcp-code-mode` for MCP-backed tools.

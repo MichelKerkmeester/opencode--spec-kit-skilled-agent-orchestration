@@ -1,12 +1,14 @@
 {
   "specFolder": "skilled-agent-orchestration/062-deep-loop-command-flow-stress-tests/004-deep-review-stress-runs",
-  "description": "R1\u2192R2\u2192R3 stress runs for @deep-review; target PASS 6/0/0",
+  "description": "Spec: deep-review Stress Runs (004)",
   "keywords": [
-    "004",
+    "spec",
     "deep-review",
-    "command-flow-stress"
+    "stress",
+    "runs",
+    "004"
   ],
-  "lastUpdated": "2026-05-02T19:30:00Z",
+  "lastUpdated": "2026-05-03T11:03:36.746Z",
   "specId": "004",
   "folderSlug": "deep-review-stress-runs",
   "parentChain": [

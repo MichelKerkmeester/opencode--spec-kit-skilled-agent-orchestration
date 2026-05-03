@@ -421,18 +421,16 @@ Key integrations:
 
 Use CocoIndex to find candidate files by concept, Grep to confirm exact patterns, and Read to verify implementation details.
 
-### Related Skills
-
-**mcp-code-mode**: For external tool integration via MCP
-- CocoIndex Code handles code search; Code Mode handles external APIs
-
-**system-spec-kit**: For context preservation
-- Search results and decisions can be saved as memory for future sessions
-
 Tool usage: Bash for `ccc`, Read for result verification, Grep for exact confirmation, and Glob for file names.
 
 ---
 
-## 8. RELATED RESOURCES
+## 8. REFERENCES AND RELATED RESOURCES
 
-Related guides: `INSTALL_GUIDE.md`, `README.md`, routed references, and `assets/config_templates.md`. Related skills: `mcp-code-mode` for external tools and `system-spec-kit` for continuity.
+The router discovers reference, asset, and script docs dynamically. Start with `references/search_patterns.md`, `references/tool_reference.md`, `references/cross_cli_playbook.md`, `references/downstream_adoption_checklist.md`, `references/settings_reference.md`, `assets/config_templates.md`, then load task-specific resources from `references/`, templates from `assets/`, and automation from `scripts/` when present.
+
+Scripts: `scripts/common.sh`, `scripts/doctor.sh`, `scripts/ensure_ready.sh`, `scripts/install.sh`, `scripts/update.sh`.
+
+Related skills: `mcp-code-mode` for external MCP integrations and `system-spec-kit` for saving search findings into packet continuity.
+
+Install guide: [INSTALL_GUIDE.md](INSTALL_GUIDE.md).

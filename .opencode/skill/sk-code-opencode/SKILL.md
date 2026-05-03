@@ -408,18 +408,9 @@ This skill operates within the behavioral framework defined in AGENTS.md.
 - Use this skill's references/checklists only for language-specific standards evidence.
 
 This skill covers OpenCode JS/TS/Python/Shell/config code. Use `sk-code` for app/frontend work and browser verification.
-
 ---
 
-## 8. REFERENCES AND RELATED RESOURCES
-
-The router discovers reference and checklist markdown dynamically. Start with `references/shared/universal_patterns.md`, then load language-specific style, quality, quick-reference, and checklist docs.
-
-Related skills: `sk-code-review` for formal review, `sk-code` for app/frontend work, `sk-doc` for markdown, `system-spec-kit` for packets and memory, and `sk-git` for git workflows.
-
----
-
-## 9. WHERE AM I? (Language Detection)
+## 7. WHERE AM I? (Language Detection)
 
 | Language   | You're here if...                                   | Load these resources          |
 | ---------- | --------------------------------------------------- | ----------------------------- |
@@ -432,7 +423,7 @@ Related skills: `sk-code-review` for formal review, `sk-code` for app/frontend w
 
 ---
 
-## 10. QUICK REFERENCE
+## 8. QUICK REFERENCE
 
 File header templates live in each language quick-reference. Keep headers, shebangs, strict-mode directives, and numbered sections aligned with the loaded language reference.
 
@@ -453,3 +444,13 @@ File header templates live in each language quick-reference. Keep headers, sheba
 | Private    | `_prefix`     | `_prefix`     | `_prefix`     | `_prefix`     | N/A         |
 
 Error handling and comment examples live in the language references. Keep comments purposeful and avoid narrative "what" comments.
+
+---
+
+## 9. REFERENCES AND RELATED RESOURCES
+
+The router discovers reference, asset, and script docs dynamically. Start with `references/shared/universal_patterns.md`, language-specific style, quality, quick-reference, and checklist docs, then load task-specific resources from `references/`, templates from `assets/`, and automation from `scripts/` when present.
+
+Scripts: `scripts/test_verify_alignment_drift.py`, `scripts/verify_alignment_drift.py`.
+
+Related skills: `sk-code-review` for formal review, `sk-code` for app/frontend work, `sk-doc` for markdown, `system-spec-kit` for packets and memory, and `sk-git` for git workflows.

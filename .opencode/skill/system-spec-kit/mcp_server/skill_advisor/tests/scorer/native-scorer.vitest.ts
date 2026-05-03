@@ -241,6 +241,72 @@ describe('027/003 native scorer units', () => {
     expect(scoreAdvisorPrompt('create new agent', { workspaceRoot: process.cwd(), projection }).topSkill).toBe('create:agent');
   });
 
+  it('065/002 keeps ordinary file-save prompts below memory-save routing confidence', () => {
+    const projection = createFixtureProjection([
+      skill({ id: 'system-spec-kit', description: 'Spec folders and memory workflow' }),
+      skill({
+        id: 'memory:save',
+        kind: 'command',
+        description: 'Memory save command bridge for /memory:save context preservation.',
+        keywords: ['/memory:save', 'save context', 'save memory', 'preserve session context'],
+        domains: ['memory', 'command'],
+        intentSignals: ['/memory:save', 'save context', 'save memory', 'preserve session context'],
+      }),
+      skill({
+        id: 'command-memory-save',
+        kind: 'command',
+        description: 'Memory save command bridge for /memory:save context preservation.',
+        keywords: ['/memory:save', 'save context', 'save memory'],
+        domains: ['memory', 'command'],
+        intentSignals: ['/memory:save', 'save context', 'save memory'],
+      }),
+    ]);
+
+    const result = scoreAdvisorPrompt("save the file I'm working on", {
+      workspaceRoot: process.cwd(),
+      projection,
+      includeAllCandidates: true,
+    });
+    const memorySave = result.recommendations.find((recommendation) => recommendation.skill === 'memory:save');
+
+    expect(memorySave?.confidence).toBeLessThan(0.5);
+    expect(result.topSkill).not.toBe('memory:save');
+  });
+
+  it('065/002 routes next-session preservation phrasing to memory-save', () => {
+    const projection = createFixtureProjection([
+      skill({ id: 'system-spec-kit', description: 'Spec folders and memory workflow' }),
+      skill({
+        id: 'memory:save',
+        kind: 'command',
+        description: 'Memory save command bridge for /memory:save context preservation.',
+        keywords: ['/memory:save', 'save context', 'save memory', 'preserve session context'],
+        domains: ['memory', 'command'],
+        intentSignals: ['/memory:save', 'save context', 'save memory', 'preserve session context'],
+      }),
+      skill({
+        id: 'command-memory-save',
+        kind: 'command',
+        description: 'Memory save command bridge for /memory:save context preservation.',
+        keywords: ['/memory:save', 'save context', 'save memory'],
+        domains: ['memory', 'command'],
+        intentSignals: ['/memory:save', 'save context', 'save memory'],
+      }),
+    ]);
+
+    const result = scoreAdvisorPrompt("preserve everything we figured out today so the next session doesn't lose it", {
+      workspaceRoot: process.cwd(),
+      projection,
+      includeAllCandidates: true,
+    });
+    const memorySaveIndex = result.recommendations.findIndex((recommendation) => recommendation.skill === 'memory:save');
+    const memorySave = result.recommendations[memorySaveIndex];
+
+    expect(memorySaveIndex).toBeGreaterThanOrEqual(0);
+    expect(memorySaveIndex).toBeLessThan(3);
+    expect(memorySave.confidence).toBeGreaterThanOrEqual(0.6);
+  });
+
   it('projects derived triggers and keywords from distinct sources via filesystem fallback', () => {
     // F-012-C2-02: derivedTriggers come from `derived.trigger_phrases` and
     // derivedKeywords come from `derived.key_topics + entities + key_files +

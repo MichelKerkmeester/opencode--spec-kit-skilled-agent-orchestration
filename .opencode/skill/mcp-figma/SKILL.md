@@ -359,10 +359,6 @@ Configure the Figma provider in `.utcp_config.json` with the `figma-developer-mc
 > ```
 > **NOT** `FIGMA_API_KEY=figd_...` (this will cause "Variable not found" errors)
 
-### Related Skills
-
-`mcp-code-mode` is required because Figma is accessed through Code Mode's `call_tool_chain()`.
-
 ### Cross-Tool Workflows
 
 Common Code Mode chains include Figma to ClickUp task creation and Figma image export to Webflow/CMS updates.
@@ -385,16 +381,10 @@ Regenerate invalid tokens, verify file keys from URLs, add delays for rate limit
 
 ---
 
-## 8. RELATED RESOURCES
+## 8. REFERENCES AND RELATED RESOURCES
 
-### references/ and assets/
+The router discovers reference, asset, and script docs dynamically. Start with `references/tool_reference.md`, `references/quick_start.md`, `assets/tool_categories.md`, then load task-specific resources from `references/`, templates from `assets/`, and automation from `scripts/` when present.
 
-Runtime discovery loads markdown from `references/` and `assets/`; keep reference details there rather than duplicating static inventories in this file.
+Related skills: `mcp-code-mode` is required for tool access; `sk-code` consumes Figma-derived implementation context when building frontend experiences.
 
-### External Resources
-
-Use the Figma API docs, official Figma MCP docs, and `figma-developer-mcp` package docs for provider-specific details.
-
-### Related Skills
-
-See `mcp-code-mode` for tool orchestration and `INSTALL_GUIDE.md` for setup.
+Install guide: [INSTALL_GUIDE.md](INSTALL_GUIDE.md).

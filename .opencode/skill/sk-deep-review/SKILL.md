@@ -462,6 +462,10 @@ Recover context via `/spec_kit:resume` in the order `handover.md -> _memory.cont
 
 ---
 
-## 8. RELATED RESOURCES
+## 8. REFERENCES AND RELATED RESOURCES
 
-Related skills: use `sk-deep-research` for investigation and `sk-code-review` for simple single-pass review. For a one-page cheat sheet, see [quick_reference.md](references/quick_reference.md).
+The router discovers reference, asset, and script docs dynamically. Start with `references/convergence.md`, `references/loop_protocol.md`, `references/quick_reference.md`, `references/state_format.md`, `assets/deep_review_dashboard.md`, `assets/deep_review_strategy.md`, then load task-specific resources from `references/`, templates from `assets/`, and automation from `scripts/` when present.
+
+Scripts: `scripts/reduce-state.cjs`, `scripts/runtime-capabilities.cjs`.
+
+Related skills: `sk-deep-research` for investigation loops, `sk-code-review` for single-pass review doctrine, and `system-spec-kit` for command-owned state and continuity saves.

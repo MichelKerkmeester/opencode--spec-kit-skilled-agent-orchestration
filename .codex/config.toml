@@ -78,6 +78,14 @@ sandbox_mode = "workspace-write"
 model_reasoning_effort = "high"
 
 # Agents for interactive multi-agent TUI (codex with multi_agent feature)
+[agents.code]
+description = "Application-code implementation specialist using sk-code for stack-aware execution."
+config_file = "agents/code.toml"
+
+[agents.create]
+description = "Dedicated /create:* documentation executor using sk-doc templates."
+config_file = "agents/create.toml"
+
 [agents.context]
 description = "Production context retrieval specialist (memory-first, read-only)."
 config_file = "agents/context.toml"
@@ -113,7 +121,3 @@ config_file = "agents/review.toml"
 [agents.multi-ai-council]
 description = "Multi-strategy planning architect for diverse reasoning and optimal plans."
 config_file = "agents/multi-ai-council.toml"
-
-[agents.write]
-description = "Documentation specialist for project-level docs and guides."
-config_file = "agents/write.toml"

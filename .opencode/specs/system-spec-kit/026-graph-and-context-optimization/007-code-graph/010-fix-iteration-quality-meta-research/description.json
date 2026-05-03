@@ -1,10 +1,5 @@
 {
-  "spec_id": "026/007/010",
   "title": "Fix-Iteration Quality Meta-Research — root causes of multi-round fix trajectories",
-  "level": 3,
-  "spec_kind": "research",
-  "status": "in-progress",
-  "topic": "Why iterative LEAF-agent fixes accumulate gaps despite individual-fix verification, and what changes to FIX prompt + sk-code-review + sk-deep-review would compress the cycle",
   "trigger_phrases": [
     "fix iteration quality",
     "class of bug vs finding",
@@ -15,7 +10,31 @@
     "fix completeness checklist",
     "multi-round fix cost"
   ],
+  "level": 3,
+  "spec_id": "026/007/010",
+  "spec_kind": "research",
+  "status": "in-progress",
+  "topic": "Why iterative LEAF-agent fixes accumulate gaps despite individual-fix verification, and what changes to FIX prompt + sk-code-review + sk-deep-review would compress the cycle",
   "importance_tier": "important",
   "created_at": "2026-05-02T15:35:00Z",
-  "last_updated_at": "2026-05-02T19:53:19Z"
+  "last_updated_at": "2026-05-02T19:53:19Z",
+  "specFolder": "system-spec-kit/026-graph-and-context-optimization/007-code-graph/010-fix-iteration-quality-meta-research",
+  "description": "Feature Specification: Fix-Iteration Quality Meta-Research",
+  "keywords": [
+    "feature",
+    "specification",
+    "fix-iteration",
+    "quality",
+    "meta-research"
+  ],
+  "lastUpdated": "2026-05-03T11:03:36.771Z",
+  "specId": "010",
+  "folderSlug": "fix-iteration-quality-meta-research",
+  "parentChain": [
+    "system-spec-kit",
+    "026-graph-and-context-optimization",
+    "007-code-graph"
+  ],
+  "memorySequence": 0,
+  "memoryNameHistory": []
 }

@@ -1,13 +1,13 @@
 {
   "specFolder": "skilled-agent-orchestration/061-agent-optimization/002-agent-debug",
-  "description": "Sub-phase: apply /improve:agent against @debug.",
+  "description": "Spec: @debug Agent Optimization",
   "keywords": [
-    "002",
+    "spec",
     "debug",
-    "agent-optimization",
-    "sk-improve-agent-application"
+    "agent",
+    "optimization"
   ],
-  "lastUpdated": "2026-05-02T17:30:00Z",
+  "lastUpdated": "2026-05-03T11:03:36.706Z",
   "specId": "002",
   "folderSlug": "agent-debug",
   "parentChain": [

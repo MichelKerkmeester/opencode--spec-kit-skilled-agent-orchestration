@@ -292,10 +292,10 @@ Use hook-injected startup, graph, memory, or skill-advisor context as a routing 
 
 ```text
 ┌─────────────────────────────────────────────────────────────────────────┐
-│        THE CREATE-DOC AGENT: TEMPLATE-FIRST DOCUMENTATION EXECUTOR       │
+│        THE CREATE-DOC AGENT: TEMPLATE-FIRST DOCUMENTATION EXECUTOR      │
 ├─────────────────────────────────────────────────────────────────────────┤
 │  AUTHORITY                                                              │
-│  ├─► Execute only /create:* command workflows                           │
+│  ├─► Execute only /create:* command workflows                            │
 │  ├─► Load sk-doc and command templates before writing                   │
 │  └─► Create or update command-scoped documentation artifacts            │
 │                                                                         │

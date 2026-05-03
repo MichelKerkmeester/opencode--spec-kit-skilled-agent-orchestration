@@ -1,0 +1,39 @@
+{
+  "title": "Smart-Router Resilience Pattern in sk-doc Template + Repo-Wide Adoption",
+  "trigger_phrases": [
+    "smart router resilience",
+    "skill router pattern",
+    "runtime discovery router",
+    "sk-doc router template",
+    "smart routing fallback",
+    "barter router pattern"
+  ],
+  "level": 2,
+  "spec_id": "026/012",
+  "spec_kind": "implementation",
+  "status": "in-progress",
+  "topic": "Promote Barter coder repo's resilient smart-router pattern into sk-doc as default template + new asset, propagate to all 19 existing smart routers",
+  "importance_tier": "important",
+  "created_at": "2026-05-02T20:35:00Z",
+  "last_updated_at": "2026-05-02T20:35:00Z",
+  "specFolder": "system-spec-kit/026-graph-and-context-optimization/012-sk-doc-smart-router-resilience-template",
+  "description": "Feature Specification: Smart-Router Resilience Pattern in sk-doc Template",
+  "keywords": [
+    "feature",
+    "specification",
+    "smart-router",
+    "resilience",
+    "pattern",
+    "sk-doc",
+    "template"
+  ],
+  "lastUpdated": "2026-05-03T11:03:36.777Z",
+  "specId": "012",
+  "folderSlug": "sk-doc-smart-router-resilience-template",
+  "parentChain": [
+    "system-spec-kit",
+    "026-graph-and-context-optimization"
+  ],
+  "memorySequence": 0,
+  "memoryNameHistory": []
+}

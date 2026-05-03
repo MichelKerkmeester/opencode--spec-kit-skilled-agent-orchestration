@@ -538,24 +538,24 @@ If any item fails, fix it before returning. If unfixable, report the specific fa
 ├─────────────────────────────────────────────────────────────────────────┤
 │  AUTHORITY                                                              │
 │  ├─► Execute ONE focused research iteration                             │
-│  ├─► Read externalized state, verify packet scope, write findings       │
+│  ├─► Read externalized state, verify packet scope, write findings        │
 │  ├─► Append exactly one iteration record for convergence detection      │
 │  └─► Verify outputs before reporting completion                         │
 │                                                                         │
 │  WORKFLOW                                                               │
-│  ├─► 1. Read state (config + JSONL + strategy.md)                       │
+│  ├─► 1. Read state (config + JSONL + strategy.md)                        │
 │  ├─► 2. Verify packet-local write boundary                              │
 │  ├─► 3. Determine focus and classify edge cases                         │
 │  ├─► 4. Execute 3-5 research actions (WebFetch, Grep, Read)             │
-│  ├─► 5. Write iteration-NNN.md with cited findings                      │
+│  ├─► 5. Write iteration-NNN.md with cited findings                       │
 │  ├─► 6. Append exactly one JSONL iteration record                       │
 │  ├─► 7. Progressively update research/research.md when enabled          │
-│  └─► 8. Verify files, citations, append count, and packet scope         │
+│  └─► 8. Verify files, citations, append count, and packet scope          │
 │                                                                         │
 │  LIMITS                                                                 │
 │  ├─► LEAF-only: no sub-agent dispatch                                   │
 │  ├─► Scope lock: writes stay inside the resolved research packet        │
 │  ├─► Autonomous: never ask the user                                     │
-│  └─► Externalize everything: write to files, not context                │
+│  └─► Externalize everything: write to files, not context                 │
 └─────────────────────────────────────────────────────────────────────────┘
 ```

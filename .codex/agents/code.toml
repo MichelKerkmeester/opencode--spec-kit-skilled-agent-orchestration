@@ -432,26 +432,26 @@ Before returning: (1) run the 6-question self-validation, (2) verify every RETUR
 ├─────────────────────────────────────────────────────────────────────────┤
 │  AUTHORITY                                                              │
 │  ├─► Stack-aware application-code implementation via sk-code            │
-│  ├─► Scope-locked edits from orchestrator packet and target files       │
-│  ├─► Structured RETURN with verification and escalation state           │
+│  ├─► Scope-locked edits from orchestrator packet and target files        │
+│  ├─► Structured RETURN with verification and escalation state            │
 │  └─► Orchestrator-only dispatch under D3 convention                     │
 │                                                                         │
 │  IMPLEMENTATION MODES                                                   │
-│  ├─► Full implementation, surgical fix, and refactor-only changes       │
-│  ├─► Test-add, scaffold-new-file, rename-move, dependency-bump          │
-│  └─► Escalate UNKNOWN stack, scope conflict, or low confidence          │
+│  ├─► Full implementation, surgical fix, and refactor-only changes        │
+│  ├─► Test-add, scaffold-new-file, rename-move, dependency-bump           │
+│  └─► Escalate UNKNOWN stack, scope conflict, or low confidence            │
 │                                                                         │
 │  WORKFLOW                                                               │
 │  ├─► 1. RECEIVE scope, success criteria, and spec-folder context        │
 │  ├─► 2. READ packet docs, invoke sk-code, and load routed guidance      │
-│  ├─► 3. IMPLEMENT with Builder → Critic → Verifier discipline           │
+│  ├─► 3. IMPLEMENT with Builder → Critic → Verifier discipline            │
 │  └─► 4. VERIFY fail-closed, then RETURN evidence to orchestrator        │
 │                                                                         │
 │  LIMITS                                                                 │
-│  ├─► No spec-folder doc writes; application-code files only             │
+│  ├─► No spec-folder doc writes; application-code files only              │
 │  ├─► LEAF-only: no sub-agent dispatch or nested task creation           │
-│  ├─► No Bash write bypass outside scope or verification discipline      │
-│  └─► No completion claim without stack-appropriate verification         │
+│  ├─► No Bash write bypass outside scope or verification discipline       │
+│  └─► No completion claim without stack-appropriate verification          │
 └─────────────────────────────────────────────────────────────────────────┘
 ```
 '''

@@ -563,19 +563,19 @@ PRE-DELIVERY VERIFICATION:
 │  ├─► User-invoked root-cause analysis after failed attempts             │
 │  ├─► 5-phase method: Observe, Analyze, Hypothesize, Validate, Fix       │
 │  ├─► Error categorization and dependency/path tracing                   │
-│  └─► Verified fix reporting with prevention guidance                    │
+│  └─► Verified fix reporting with prevention guidance                      │
 │                                                                         │
 │  WORKFLOW                                                               │
 │  ├─► 1. Observe exact error and affected scope                          │
-│  ├─► 2. Analyze call flow, data flow, and prior attempts                │
+│  ├─► 2. Analyze call flow, data flow, and prior attempts                  │
 │  ├─► 3. Form ranked hypotheses without editing source                   │
-│  ├─► 4. Challenge assumptions and re-rank before fixing                 │
-│  └─► 5. Apply minimal fix, verify, and report outcome                   │
+│  ├─► 4. Challenge assumptions and re-rank before fixing                  │
+│  └─► 5. Apply minimal fix, verify, and report outcome                    │
 │                                                                         │
 │  OUTPUT                                                                 │
 │  ├─► Success, blocked, and escalation response templates                │
-│  ├─► Root cause, changes, and verification evidence required            │
-│  └─► Escalate when issue persists or confidence is low                  │
+│  ├─► Root cause, changes, and verification evidence required             │
+│  └─► Escalate when issue persists or confidence is low                   │
 │                                                                         │
 │  LIMITS                                                                 │
 │  ├─► No nested delegation; execute directly with available tools        │

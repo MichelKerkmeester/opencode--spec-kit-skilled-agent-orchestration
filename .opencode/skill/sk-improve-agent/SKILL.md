@@ -447,9 +447,10 @@ Core references: `README.md`, `references/quick_reference.md`, `references/loop_
 
 ---
 
-## 8. RELATED RESOURCES
+## 8. REFERENCES AND RELATED RESOURCES
 
-- `references/quick_reference.md` for the shortest operator refresher
-- `references/benchmark_operator_guide.md` for repeatable benchmark execution
-- `references/target_onboarding.md` for adding future bounded targets safely
-- `references/rollback_runbook.md` for promotion and rollback proof
+The router discovers reference, asset, and script docs dynamically. Start with `references/loop_protocol.md`, `references/quick_reference.md`, `references/benchmark_operator_guide.md`, `references/evaluator_contract.md`, `references/integration_scanning.md`, `references/mirror_drift_policy.md`, `references/no_go_conditions.md`, then load task-specific resources from `references/`, templates from `assets/`, and automation from `scripts/` when present.
+
+Scripts: `scripts/benchmark-stability.cjs`, `scripts/candidate-lineage.cjs`, `scripts/check-mirror-drift.cjs`, `scripts/generate-profile.cjs`, `scripts/improvement-journal.cjs`, `scripts/materialize-benchmark-fixtures.cjs`, `scripts/mutation-coverage.cjs`, `scripts/promote-candidate.cjs`, `scripts/reduce-state.cjs`, `scripts/rollback-candidate.cjs`, `scripts/run-benchmark.cjs`, `scripts/scan-integration.cjs`, `scripts/score-candidate.cjs`, `scripts/trade-off-detector.cjs`.
+
+Related skills: `sk-doc` for package-shape and markdown validation, `system-spec-kit` for packet validation, and `sk-improve-prompt` when prompt surfaces need evaluator-backed rewriting.

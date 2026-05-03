@@ -1,13 +1,13 @@
 {
   "specFolder": "skilled-agent-orchestration/061-agent-optimization/001-agent-context",
-  "description": "Sub-phase: apply /improve:agent against @context.",
+  "description": "Spec: @context Agent Optimization",
   "keywords": [
-    "001",
+    "spec",
     "context",
-    "agent-optimization",
-    "sk-improve-agent-application"
+    "agent",
+    "optimization"
   ],
-  "lastUpdated": "2026-05-02T17:30:00Z",
+  "lastUpdated": "2026-05-03T11:03:36.702Z",
   "specId": "001",
   "folderSlug": "agent-context",
   "parentChain": [

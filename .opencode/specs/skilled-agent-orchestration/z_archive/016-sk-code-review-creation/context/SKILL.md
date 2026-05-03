@@ -5,11 +5,11 @@ description: "Expert code review of current git changes with a senior engineer l
 
 # Code Review Expert
 
-## Overview
+## 1. OVERVIEW
 
 Perform a structured review of the current git changes with focus on SOLID, architecture, removal candidates, and security risks. Default to review-only output unless the user asks to implement changes.
 
-## Severity Levels
+## 2. SEVERITY LEVELS
 
 | Level | Name | Description | Action |
 |-------|------|-------------|--------|
@@ -18,7 +18,7 @@ Perform a structured review of the current git changes with focus on SOLID, arch
 | **P2** | Medium | Code smell, maintainability concern, minor SOLID violation | Fix in this PR or create follow-up |
 | **P3** | Low | Style, naming, minor suggestion | Optional improvement |
 
-## Workflow
+## 3. WORKFLOW
 
 ### 1) Preflight context
 
@@ -144,13 +144,8 @@ Please choose an option or provide specific instructions.
 
 **Important**: Do NOT implement any changes until user explicitly confirms. This is a review-first workflow.
 
-## Resources
+## 4. REFERENCES AND RELATED RESOURCES
 
-### references/
+The router discovers reference and checklist docs dynamically. Start with `references/solid-checklist.md`, `references/security-checklist.md`, `references/code-quality-checklist.md`, and `references/removal-plan.md`, then load task-specific review guidance from `references/` when present.
 
-| File | Purpose |
-|------|---------|
-| `solid-checklist.md` | SOLID smell prompts and refactor heuristics |
-| `security-checklist.md` | Web/app security and runtime risk checklist |
-| `code-quality-checklist.md` | Error handling, performance, boundary conditions |
-| `removal-plan.md` | Template for deletion candidates and follow-up plan |
+Related skills: `sk-code-review` for the current review baseline, `sk-code-opencode` for OpenCode system-code standards, and `sk-doc` for markdown and skill authoring.

@@ -576,7 +576,7 @@ Fix verification gaps first
 │  ├─► Deliberate across independent, critique, and reconciliation rounds │
 │  ├─► Score results via 5-dimension rubric (100 points)                  │
 │  ├─► Synthesize consensus plan from best-supported elements             │
-│  └─► Output plan for user review (no file modifications)                │
+│  └─► Output plan for user review (no file modifications)                  │
 │                                                                         │
 │  WORKFLOW (8 Steps)                                                     │
 │  ├─► 1. RECEIVE     Parse task, classify type                           │
@@ -584,14 +584,14 @@ Fix verification gaps first
 │  ├─► 3. DIVERSIFY   Select strategy and AI-vantage mix                  │
 │  ├─► 4. DISPATCH    Launch seats (parallel or sequential)               │
 │  ├─► 5. DELIBERATE  Compare, critique, reconcile                        │
-│  ├─► 6. SYNTHESIZE  Score all, resolve conflicts                        │
-│  ├─► 7. COMPOSE     Merge best elements into unified plan               │
+│  ├─► 6. SYNTHESIZE  Score all, resolve conflicts                         │
+│  ├─► 7. COMPOSE     Merge best elements into unified plan                │
 │  └─► 8. DELIVER     Multi-AI Council Report (plan only)                 │
 │                                                                         │
 │  OUTPUT                                                                 │
 │  ├─► Multi-AI Council Report (composition + comparison table)           │
 │  ├─► Implementation steps for user review                               │
-│  └─► Plan confidence score with evidence basis                          │
+│  └─► Plan confidence score with evidence basis                           │
 │                                                                         │
 │  LIMITS                                                                 │
 │  ├─► Max 3 council seats per task                                       │

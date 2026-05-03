@@ -437,13 +437,6 @@ Key integrations:
 - **Tool Routing**: Per AGENTS.md Section 6 decision tree
 - **Memory**: Context preserved via Spec Kit Memory MCP
 
-### Related Skills
-
-| Skill | Integration |
-|-------|-------------|
-| **sk-doc** | Documentation outputs from prompt engineering may use sk-doc for formatting |
-| **sk-code** | Prompts for web development contexts may co-invoke with sk-code |
-
 ### Tool Usage Guidelines
 
 - **Read**: Load reference files from references/ directory
@@ -453,13 +446,8 @@ Key integrations:
 
 ---
 
-## 10. RELATED RESOURCES
+## 10. REFERENCES AND RELATED RESOURCES
 
-### Reference Files
-- [depth_framework.md](./references/depth_framework.md) - DEPTH thinking methodology
-- [patterns_evaluation.md](./references/patterns_evaluation.md) - Framework library and scoring
+The router discovers reference, asset, and script docs dynamically. Start with `references/depth_framework.md`, `references/patterns_evaluation.md`, `assets/cli_prompt_quality_card.md`, `assets/format_guide_json.md`, `assets/format_guide_markdown.md`, `assets/format_guide_yaml.md`, then load task-specific resources from `references/`, templates from `assets/`, and automation from `scripts/` when present.
 
-### Related Skills
-- `sk-doc` - Documentation quality and component creation
-
----
+Related skills: `sk-doc` for documentation outputs, `sk-code` for code-generation prompt context, and the `cli-*` skills that use the prompt quality card before dispatch.

@@ -1,13 +1,13 @@
 {
   "specFolder": "skilled-agent-orchestration/061-agent-optimization/007-agent-improve-prompt",
-  "description": "Sub-phase: apply /improve:agent against @improve-prompt.",
+  "description": "Spec: @improve-prompt Agent Optimization",
   "keywords": [
-    "007",
+    "spec",
     "improve-prompt",
-    "agent-optimization",
-    "sk-improve-agent-application"
+    "agent",
+    "optimization"
   ],
-  "lastUpdated": "2026-05-02T17:30:00Z",
+  "lastUpdated": "2026-05-03T11:03:36.722Z",
   "specId": "007",
   "folderSlug": "agent-improve-prompt",
   "parentChain": [

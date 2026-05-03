@@ -187,9 +187,8 @@ def _filter_paths(paths: list[str], keywords: list[str]) -> list[str]:
 
 ---
 
-## 6. RELATED RESOURCES
+## 6. REFERENCES AND RELATED RESOURCES
 
-- `skill_md_template.md` — canonical SKILL.md skeleton; embeds this pattern in the SMART ROUTING section
-- `skill_asset_template.md` — naming + structure rules for skill assets (this file follows them)
-- `skill_reference_template.md` — sibling format for reference files
-- Source pattern: `/Users/michelkerkmeester/MEGA/Development/Code_Environment/Public/barter/coder/.opencode/skill/sk-code/SKILL.md` §2 SMART ROUTING (the battle-tested implementation across 8 projects + 84 markdown files)
+The router discovers reference and asset docs dynamically. Start with `skill_md_template.md`, `skill_asset_template.md`, and `skill_reference_template.md`, then load task-specific examples or source patterns only when needed.
+
+Related skills: `sk-doc` owns this template set and package validation; `system-spec-kit` governs packet documentation when skill updates are part of implementation work.

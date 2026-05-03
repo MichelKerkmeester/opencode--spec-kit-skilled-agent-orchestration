@@ -241,8 +241,8 @@ await clickup.create_task({...});    // Error: Tool not found
 Many Code Mode tools require a `context` parameter (15-25 words) for analytics:
 
 ```typescript
-await webflow.webflow_sites_list({ 
-  context: "Listing sites to identify collection structure for CMS update" 
+await webflow.webflow_sites_list({
+  context: "Listing sites to identify collection structure for CMS update"
 });
 ```
 
@@ -467,16 +467,12 @@ Use `search_tools()`, `tool_info()`, `list_tools()`, and `call_tool_chain()` as 
 
 ---
 
-## 9. RELATED RESOURCES
+## 9. REFERENCES AND RELATED RESOURCES
 
-The router discovers reference and asset docs dynamically. Key entry points are `references/naming_convention.md`, `references/configuration.md`, `references/tool_catalog.md`, `references/workflows.md`, `references/architecture.md`, `assets/config_template.md`, and `assets/env_template.md`.
+The router discovers reference, asset, and script docs dynamically. Start with `references/naming_convention.md`, `references/configuration.md`, `references/tool_catalog.md`, `references/workflows.md`, `references/architecture.md`, `assets/config_template.md`, `assets/env_template.md`, then load task-specific resources from `references/`, templates from `assets/`, and automation from `scripts/` when present.
 
-Scripts: `scripts/update-code-mode.sh` and `scripts/validate_config.py`.
+Scripts: `scripts/install.sh`, `scripts/update.sh`, `scripts/validate_config.py`.
 
-### Related Skills
+Related skills: `mcp-figma` for Figma access through Code Mode and `mcp-chrome-devtools` for browser debugging routes that can fall back to Code Mode.
 
-- **[mcp-figma](../mcp-figma/SKILL.md)** - Figma design file access (via Code Mode)
-
-### Install Guide
-
-- [INSTALL_GUIDE.md](INSTALL_GUIDE.md) - Installation and configuration
+Install guide: [INSTALL_GUIDE.md](INSTALL_GUIDE.md).

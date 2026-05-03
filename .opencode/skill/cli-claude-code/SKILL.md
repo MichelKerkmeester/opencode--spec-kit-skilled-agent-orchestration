@@ -437,20 +437,10 @@ Key integrations:
 
 **Tool roles**: Bash dispatches the CLI; Read/Glob/Grep validate output.
 
-### Related Skills
-
-| Skill | Integration |
-|-------|-------------|
-| **cli-gemini** | Parallel cross-AI validation — Gemini for Google Search grounding, Claude Code for deep reasoning |
-| **cli-codex** | Parallel cross-AI validation — Codex for sandbox execution, Claude Code for extended thinking |
-| **sk-code** | Use Claude Code for code review during web development |
-| **sk-code** | Delegate architecture analysis or test generation to Claude Code |
-| **mcp-code-mode** | Claude Code CLI is independent; does not require Code Mode |
-
 ---
 
-## 8. RELATED RESOURCES
+## 8. REFERENCES AND RELATED RESOURCES
 
-See Section 5 REFERENCES for the canonical reference, asset, shared, and external link list.
+The router discovers reference, asset, and script docs dynamically. Start with `references/cli_reference.md`, `references/integration_patterns.md`, `assets/prompt_quality_card.md`, `assets/prompt_templates.md`, `references/agent_delegation.md`, `references/claude_tools.md`, then load task-specific resources from `references/`, templates from `assets/`, and automation from `scripts/` when present.
 
----
+Related skills: `cli-gemini` for Google Search grounding, `cli-codex` for sandboxed OpenAI perspective, `sk-code` for code-quality contracts, `mcp-code-mode` for external MCP work, and `system-spec-kit` for packet handback.

@@ -1,13 +1,13 @@
 {
   "specFolder": "skilled-agent-orchestration/061-agent-optimization/005-agent-orchestrate",
-  "description": "Sub-phase: apply /improve:agent against @orchestrate.",
+  "description": "Spec: @orchestrate Agent Optimization",
   "keywords": [
-    "005",
+    "spec",
     "orchestrate",
-    "agent-optimization",
-    "sk-improve-agent-application"
+    "agent",
+    "optimization"
   ],
-  "lastUpdated": "2026-05-02T17:30:00Z",
+  "lastUpdated": "2026-05-03T11:03:36.714Z",
   "specId": "005",
   "folderSlug": "agent-orchestrate",
   "parentChain": [

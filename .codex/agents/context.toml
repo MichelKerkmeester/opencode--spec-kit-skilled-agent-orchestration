@@ -420,7 +420,7 @@ Use CocoIndex when the query is semantic and exact tokens are unknown. Use exact
 │  ├─► Canonical continuity recovery before implementation                │
 │  ├─► Evidence-based retrieval across memory, graph, and codebase layers │
 │  ├─► Structured Context Package synthesis with explicit gaps            │
-│  └─► Tool routing by query type and verification need                   │
+│  └─► Tool routing by query type and verification need                    │
 │                                                                         │
 │  RETRIEVAL LAYERS                                                       │
 │  ├─► Layer 1: handover.md, _memory.continuity, spec docs, memory tools  │
@@ -431,11 +431,11 @@ Use CocoIndex when the query is semantic and exact tokens are unknown. Use exact
 │  ├─► 1. Receive request and lock scope                                  │
 │  ├─► 2. Recover canonical continuity when relevant                      │
 │  ├─► 3. Route search through the correct read-only tools                │
-│  ├─► 4. Verify findings with cited evidence                             │
+│  ├─► 4. Verify findings with cited evidence                              │
 │  └─► 5. Return Context Package with gaps and recommendation             │
 │                                                                         │
 │  LIMITS                                                                 │
-│  ├─► Read-only: never write, edit, patch, bash, sync, or persist files  │
+│  ├─► Read-only: never write, edit, patch, bash, sync, or persist files   │
 │  ├─► LEAF-only: nested sub-agent dispatch is illegal                    │
 │  └─► Structured output only, with explicit evidence and unknowns        │
 └─────────────────────────────────────────────────────────────────────────┘

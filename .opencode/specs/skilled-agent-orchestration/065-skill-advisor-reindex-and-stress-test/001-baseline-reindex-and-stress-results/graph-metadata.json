@@ -1,0 +1,25 @@
+{
+  "schema_version": 1,
+  "packet_id": "skilled-agent-orchestration/065-skill-advisor-reindex-and-stress-test/001-baseline-reindex-and-stress-results",
+  "spec_folder": "skilled-agent-orchestration/065-skill-advisor-reindex-and-stress-test/001-baseline-reindex-and-stress-results",
+  "parent_id": "skilled-agent-orchestration/065-skill-advisor-reindex-and-stress-test",
+  "children_ids": [
+    "skilled-agent-orchestration/065-skill-advisor-reindex-and-stress-test/001-baseline-reindex-and-stress-results/001-skill-reindex",
+    "skilled-agent-orchestration/065-skill-advisor-reindex-and-stress-test/001-baseline-reindex-and-stress-results/002-skill-router-stress-tests"
+  ],
+  "manual": {
+    "depends_on": [],
+    "supersedes": [],
+    "related_to": []
+  },
+  "derived": {
+    "trigger_phrases": ["065/001 baseline", "skill advisor baseline results"],
+    "key_topics": ["065", "001", "baseline", "reindex", "stress-test"],
+    "status": "complete",
+    "completion_pct": 100,
+    "last_active_child_id": null,
+    "level": "phase-parent",
+    "is_phase_parent": true,
+    "session_outcome": "baseline_preserved"
+  }
+}

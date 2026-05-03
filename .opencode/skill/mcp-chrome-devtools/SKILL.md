@@ -310,10 +310,6 @@ Key integrations:
 - **Tool Routing**: Per AGENTS.md Section 6 decision tree
 - **Memory**: Context preserved via Spec Kit Memory MCP
 
-### Related Skills
-
-Use `mcp-code-mode` for MCP fallback and `sk-code` for Phase 3 browser verification.
-
 ### Tool Usage Guidelines
 
 Use Bash for `bdg`, Read for references, Grep for logs/output, and Glob for screenshots/HAR exports. Chrome/Chromium is the runtime; set `CHROME_PATH` if auto-detection fails.
@@ -325,3 +321,15 @@ Use Bash for `bdg`, Read for references, Grep for logs/output, and Glob for scre
 ### Essential CLI Commands
 
 Use `bdg cdp --list`, `bdg cdp --describe <domain>`, `bdg cdp --search <term>`, `bdg <url>`, `bdg status`, `bdg stop`, `bdg dom screenshot <path>`, `bdg console --list`, `bdg dom query`, `bdg dom eval`, and `bdg network har <path>`. In shell scripts, install a trap so `bdg stop 2>&1` runs on exit.
+
+---
+
+## 8. REFERENCES AND RELATED RESOURCES
+
+The router discovers reference, asset, and script docs dynamically. Start with `references/cdp_patterns.md`, `references/session_management.md`, `references/troubleshooting.md`, then load task-specific resources from `references/`, templates from `assets/`, and automation from `scripts/` when present.
+
+Scripts: `scripts/install.sh`.
+
+Related skills: `mcp-code-mode` for MCP fallback and `sk-code` for browser verification in application-code workflows.
+
+Install guide: [INSTALL_GUIDE.md](INSTALL_GUIDE.md).

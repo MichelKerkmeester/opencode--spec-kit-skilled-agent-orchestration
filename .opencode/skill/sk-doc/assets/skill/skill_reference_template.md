@@ -61,7 +61,7 @@ description: [One-line description - same as intro]
 
 ---
 
-## 1. OVERVIEW
+\## 1. OVERVIEW
 [All detailed content goes here, NOT in the intro]
 
 ```
@@ -78,7 +78,7 @@ Step-by-step workflows for creating clean, atomic commits with proper filtering.
 
 ---
 
-## 1. OVERVIEW
+\## 1. OVERVIEW
 
 ### Purpose
 Provides systematic workflows for analyzing changes, filtering artifacts, and creating well-structured commits.
@@ -107,7 +107,7 @@ Atomic commits with clear intent + filtered artifacts = maintainable Git history
 
 ---
 
-## 1. OVERVIEW
+\## 1. OVERVIEW
 
 ### Purpose
 Provides systematic workflows...  ← Now this duplicates the intro!
@@ -219,7 +219,7 @@ Level 3: Reference files (this document)
 
 **Format**:
 ```markdown
-## 1. OVERVIEW
+\## 1. OVERVIEW
 
 ### Core Principle
 
@@ -376,7 +376,7 @@ Analyze situation
 
 ---
 
-## 1. OVERVIEW
+\## 1. OVERVIEW
 
 ### Prerequisites
 Follow [standard name] for all implementations:
@@ -996,7 +996,7 @@ def test_default_mode():
 
 ---
 
-## 9. RELATED RESOURCES
+## 9. REFERENCES AND RELATED RESOURCES
 
 ### Templates
 - [frontmatter_templates.md](../documentation/frontmatter_templates.md) - Frontmatter by document type

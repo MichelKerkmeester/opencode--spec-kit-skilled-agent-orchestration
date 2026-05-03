@@ -507,7 +507,7 @@ For non-`complete` statuses, replace the heading with `## Review Iteration [N] P
 ├──────────────────────────────────────────┤
 │ AUTHORITY                                │
 │  ├─► Review code quality (read-only)     │
-│  ├─► Produce P0/P1/P2 findings           │
+│  ├─► Produce P0/P1/P2 findings            │
 │  ├─► Disclose edge cases explicitly      │
 │  ├─► Name integration touchpoints        │
 │  ├─► Write iteration artifacts           │

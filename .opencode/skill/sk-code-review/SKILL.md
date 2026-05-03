@@ -400,10 +400,8 @@ After reporting findings, request explicit next action before any implementation
 
 ---
 
-## 8. RELATED RESOURCES
+## 8. REFERENCES AND RELATED RESOURCES
 
-- [sk-doc](../sk-doc/SKILL.md) - Skill authoring and packaging standards.
-- [sk-code-opencode](../sk-code-opencode/SKILL.md) - OpenCode system code overlay standards.
-- [sk-code](../sk-code/SKILL.md) - Web/frontend overlay standards.
-- [sk-code](../sk-code/SKILL.md) - Default multi-stack overlay standards.
-- [.opencode/agent/review.md](../../agent/review.md) - Runtime review agent contract.
+The router discovers reference, asset, and script docs dynamically. Start with `references/quick_reference.md`, `references/review_core.md`, `references/code_quality_checklist.md`, `references/fix-completeness-checklist.md`, `references/removal_plan.md`, `references/review_ux_single_pass.md`, `references/security_checklist.md`, then load task-specific resources from `references/`, templates from `assets/`, and automation from `scripts/` when present.
+
+Related skills: `sk-doc` for skill authoring and packaging standards, `sk-code-opencode` for OpenCode overlays, `sk-code` for app/frontend overlays, and `system-spec-kit` for packet-governed review workflows.

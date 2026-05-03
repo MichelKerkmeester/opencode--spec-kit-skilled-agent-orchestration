@@ -1,11 +1,22 @@
 {
   "specFolder": "skilled-agent-orchestration/060-sk-agent-improver-test-report-alignment/004-improve-agent-command-flow-stress-tests",
-  "description": "Restructure CP-040..045 to invoke /improve:agent command flow against 062 wiring",
-  "keywords": ["061", "command-flow", "stress-tests", "sk-improve-agent", "CP-040-045"],
-  "lastUpdated": "2026-05-02T15:00:00Z",
-  "specId": "061",
+  "description": "Feature Specification: 061 — sk-improve-agent Command-Flow Stress Tests",
+  "keywords": [
+    "feature",
+    "specification",
+    "061",
+    "sk-improve-agent",
+    "command-flow",
+    "stress",
+    "tests"
+  ],
+  "lastUpdated": "2026-05-03T11:03:36.686Z",
+  "specId": "004",
   "folderSlug": "improve-agent-command-flow-stress-tests",
-  "parentChain": ["skilled-agent-orchestration"],
+  "parentChain": [
+    "skilled-agent-orchestration",
+    "060-sk-agent-improver-test-report-alignment"
+  ],
   "memorySequence": 1,
   "memoryNameHistory": []
 }

@@ -424,15 +424,10 @@ This skill follows the [AGENTS.md](../../../AGENTS.md) orchestration protocol.
 
 **Tool roles**: Bash dispatches the CLI; Read/Glob/Grep validate output.
 
-### Related Skills
-- **cli-claude-code**: Delegate to Claude Code for surgical diff-based edits.
-- **cli-gemini**: Delegate to Gemini for Google Search grounded research.
-- **sk-git**: Use Copilot to generate commit messages or review diffs.
-
 ---
 
-## 8. RELATED RESOURCES
+## 8. REFERENCES AND RELATED RESOURCES
 
-See Section 5 REFERENCES for the canonical reference, asset, shared, and external link list.
+The router discovers reference, asset, and script docs dynamically. Start with `references/cli_reference.md`, `references/integration_patterns.md`, `assets/prompt_quality_card.md`, `assets/prompt_templates.md`, `references/agent_delegation.md`, `references/copilot_tools.md`, `assets/shell_wrapper.md`, then load task-specific resources from `references/`, templates from `assets/`, and automation from `scripts/` when present.
 
----
+Related skills: `cli-claude-code` for surgical edits, `cli-gemini` for grounded research, `cli-codex` for sandboxed OpenAI perspective, `sk-git` for commit and PR workflows, and `system-spec-kit` for continuity handback.

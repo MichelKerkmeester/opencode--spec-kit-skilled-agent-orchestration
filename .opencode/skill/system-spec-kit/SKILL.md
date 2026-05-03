@@ -454,12 +454,14 @@ P0 blocks, P1 requires completion or approved deferral, and P2 is optional. Code
 
 Canonical command lifecycle: `/spec_kit:plan --intake-only` establishes or repairs the packet when standalone intake is needed, `/spec_kit:deep-research` follows `../sk-deep-research/references/spec_check_protocol.md` when research needs bounded `spec.md` anchoring, and `/spec_kit:plan` or `/spec_kit:complete` continue from the same folder while reusing the shared intake contract (`.opencode/skill/system-spec-kit/references/intake-contract.md`) only when the local `folder_state` still needs repair. When intake runs, the returned `start_state` is the canonical downstream field.
 
----
-
-## 7. RELATED RESOURCES
-
-Related resources: contract templates, validation at `scripts/spec/validate.sh`, canonical save at `scripts/dist/memory/generate-context.js`, memory server at `mcp_server/context-server.ts`, and current-reality docs in `feature_catalog/` plus `manual_testing_playbook/`.
-
----
-
 **Remember**: This skill is the foundational documentation orchestrator. It enforces structure, template usage, context preservation, and workflow-required validation for all file modifications. Every conversation that modifies files MUST have a spec folder.
+
+---
+
+## 7. REFERENCES AND RELATED RESOURCES
+
+The router discovers reference, asset, and script docs dynamically. Start with `references/workflows/quick_reference.md`, `references/templates/template_guide.md`, `references/validation/validation_rules.md`, `references/memory/save_workflow.md`, then load task-specific resources from `references/`, templates from `assets/`, and automation from `scripts/` when present.
+
+Scripts: `scripts/spec/validate.sh`, `scripts/spec/create.sh`, `scripts/dist/memory/generate-context.js`, `scripts/spec/check-completion.sh`.
+
+Related skills: `sk-doc` for authored documentation quality, `sk-code-opencode` for OpenCode code changes, `sk-git` for git handoff, `sk-deep-research` for iterative research, and `sk-deep-review` for iterative audit workflows.

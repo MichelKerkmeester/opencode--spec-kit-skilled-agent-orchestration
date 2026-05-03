@@ -1,13 +1,13 @@
 {
   "specFolder": "skilled-agent-orchestration/061-agent-optimization/009-agent-deep-research",
-  "description": "Sub-phase: apply /improve:agent against @deep-research.",
+  "description": "Spec: @deep-research Agent Optimization",
   "keywords": [
-    "009",
+    "spec",
     "deep-research",
-    "agent-optimization",
-    "sk-improve-agent-application"
+    "agent",
+    "optimization"
   ],
-  "lastUpdated": "2026-05-02T17:30:00Z",
+  "lastUpdated": "2026-05-03T11:03:36.730Z",
   "specId": "009",
   "folderSlug": "agent-deep-research",
   "parentChain": [

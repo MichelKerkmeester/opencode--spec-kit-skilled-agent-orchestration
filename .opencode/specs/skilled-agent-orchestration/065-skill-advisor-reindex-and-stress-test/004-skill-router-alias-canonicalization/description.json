@@ -1,0 +1,11 @@
+{
+  "specFolder": "skilled-agent-orchestration/065-skill-advisor-reindex-and-stress-test/004-skill-router-alias-canonicalization",
+  "description": "Normalize accepted aliases between command ids and skill ids in router scenarios and advisor outputs.",
+  "keywords": ["065", "004", "alias", "canonicalization", "deep-review", "router"],
+  "lastUpdated": "2026-05-03T11:10:00Z",
+  "specId": "065/004",
+  "folderSlug": "skill-router-alias-canonicalization",
+  "parentChain": ["skilled-agent-orchestration", "065-skill-advisor-reindex-and-stress-test"],
+  "memorySequence": 4,
+  "memoryNameHistory": []
+}

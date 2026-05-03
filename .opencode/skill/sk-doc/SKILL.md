@@ -426,3 +426,13 @@ Need fast navigation? See [quick_reference.md](./references/global/quick_referen
 ---
 
 **Remember**: This skill operates in five modes: Document Quality, Skill Creation, Flowchart Creation, Install Guide Creation and Playbook Creation.
+
+---
+
+## 8. REFERENCES AND RELATED RESOURCES
+
+The router discovers reference, asset, and script docs dynamically. Start with `references/global/quick_reference.md`, routed references under references/global/ and references/specific/, templates under assets/documentation/, assets/skill/, assets/agents/, and assets/flowcharts/, then load task-specific resources from `references/`, templates from `assets/`, and automation from `scripts/` when present.
+
+Scripts: `scripts/validate_document.py`, `scripts/extract_structure.py`, `scripts/init_skill.py`, `scripts/package_skill.py`, `scripts/quick_validate.py`, `scripts/validate_flowchart.sh`.
+
+Related skills: `system-spec-kit` for packet documentation and memory continuity, and `sk-git` for commit, PR, and release text workflows.

@@ -1,14 +1,25 @@
 {
-  "specFolder": "009-end-user-scope-default",
-  "description": "end-user-scope-default",
+  "level": "3",
+  "specFolder": "system-spec-kit/026-graph-and-context-optimization/007-code-graph/009-end-user-scope-default",
+  "description": "Feature Specification: End-User Scope Default for Code Graph Indexing",
   "keywords": [
-    "end-user-scope-default"
+    "feature",
+    "specification",
+    "end-user",
+    "scope",
+    "default",
+    "code",
+    "graph",
+    "indexing"
   ],
-  "lastUpdated": "2026-05-02T11:04:14.636Z",
+  "lastUpdated": "2026-05-03T11:03:36.767Z",
   "specId": "009",
   "folderSlug": "end-user-scope-default",
-  "parentChain": [],
+  "parentChain": [
+    "system-spec-kit",
+    "026-graph-and-context-optimization",
+    "007-code-graph"
+  ],
   "memorySequence": 0,
-  "memoryNameHistory": [],
-  "level": "3"
+  "memoryNameHistory": []
 }

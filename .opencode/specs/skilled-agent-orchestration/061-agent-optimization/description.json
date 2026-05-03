@@ -1,15 +1,16 @@
 {
   "specFolder": "skilled-agent-orchestration/061-agent-optimization",
-  "description": "Phase parent applying validated sk-improve-agent v2 substrate (proven 060 \u2192 PASS 6/0/0) to remaining 9 agents in fleet. One sub-phase per agent. 006 also renames @ultra-think \u2192 @multi-ai-council.",
+  "description": "Phase Parent Spec: 061 — Agent Fleet Optimization",
   "keywords": [
+    "phase",
+    "parent",
+    "spec",
     "061",
-    "agent-optimization",
-    "sk-improve-agent",
-    "fleet-improvement",
-    "ultra-think",
-    "multi-ai-council"
+    "agent",
+    "fleet",
+    "optimization"
   ],
-  "lastUpdated": "2026-05-02T17:30:00Z",
+  "lastUpdated": "2026-05-03T11:03:36.698Z",
   "specId": "061",
   "folderSlug": "agent-optimization",
   "parentChain": [

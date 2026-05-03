@@ -1,6 +1,6 @@
 {
   "specFolder": "skilled-agent-orchestration/060-sk-agent-improver-test-report-alignment",
-  "description": "Phase Parent Spec: 060 — sk-improve-agent Test-Report Alignment (5-phase methodology campaign; final composite PASS 5 / PARTIAL 1 / FAIL 0)",
+  "description": "Phase Parent Spec: 060 — sk-improve-agent Test-Report Alignment",
   "keywords": [
     "phase",
     "parent",
@@ -8,12 +8,9 @@
     "060",
     "sk-improve-agent",
     "test-report",
-    "alignment",
-    "methodology-campaign",
-    "5-phase",
-    "test-layer-selection"
+    "alignment"
   ],
-  "lastUpdated": "2026-05-02T16:30:00Z",
+  "lastUpdated": "2026-05-03T11:03:36.653Z",
   "specId": "060",
   "folderSlug": "sk-agent-improver-test-report-alignment",
   "parentChain": [

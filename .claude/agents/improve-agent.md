@@ -233,7 +233,7 @@ When the orchestrator provides a coverage graph summary in the dispatch context,
 │  └─► Return structured proposal metadata                                │
 │                                                                         │
 │  WORKFLOW (5 Steps)                                                     │
-│  ├─► 1. Read charter and control file                                       │
+│  ├─► 1. Read charter and control file                                    │
 │  ├─► 2. Read target, profile context, and integration scan report        │
 │  ├─► 3. Write one packet-local candidate                                │
 │  ├─► 4. Return structured JSON                                          │

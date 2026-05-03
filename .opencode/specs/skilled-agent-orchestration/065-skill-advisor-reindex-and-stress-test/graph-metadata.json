@@ -4,8 +4,11 @@
   "spec_folder": "skilled-agent-orchestration/065-skill-advisor-reindex-and-stress-test",
   "parent_id": null,
   "children_ids": [
-    "skilled-agent-orchestration/065-skill-advisor-reindex-and-stress-test/001-skill-reindex",
-    "skilled-agent-orchestration/065-skill-advisor-reindex-and-stress-test/002-skill-router-stress-tests"
+    "skilled-agent-orchestration/065-skill-advisor-reindex-and-stress-test/001-baseline-reindex-and-stress-results",
+    "skilled-agent-orchestration/065-skill-advisor-reindex-and-stress-test/002-memory-save-negative-trigger-calibration",
+    "skilled-agent-orchestration/065-skill-advisor-reindex-and-stress-test/003-create-testing-playbook-routing",
+    "skilled-agent-orchestration/065-skill-advisor-reindex-and-stress-test/004-skill-router-alias-canonicalization",
+    "skilled-agent-orchestration/065-skill-advisor-reindex-and-stress-test/005-ambiguous-debug-review-routing"
   ],
   "manual": {
     "depends_on": [
@@ -22,20 +25,24 @@
     "trigger_phrases": [
       "065 skill advisor",
       "skill router stress test",
-      "skill reindex"
+      "skill reindex",
+      "memory save calibration",
+      "testing playbook routing",
+      "alias canonicalization",
+      "debug review routing"
     ],
     "key_topics": [
       "065",
       "skill",
       "advisor",
-      "reindex",
-      "stress-test"
+      "router",
+      "calibration"
     ],
-    "status": "complete",
-    "completion_pct": 100,
-    "last_active_child_id": null,
+    "status": "in_progress",
+    "completion_pct": 20,
+    "last_active_child_id": "skilled-agent-orchestration/065-skill-advisor-reindex-and-stress-test/002-memory-save-negative-trigger-calibration",
     "level": "phase-parent",
     "is_phase_parent": true,
-    "session_outcome": "completed"
+    "session_outcome": "reorganized_with_follow_on_phases"
   }
 }

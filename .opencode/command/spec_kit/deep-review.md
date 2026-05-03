@@ -373,7 +373,7 @@ Key references:
 
 ---
 
-## 16. OFFLINE OPTIMIZATION
+## 14. OFFLINE OPTIMIZATION
 
 Convergence thresholds and recovery settings used by this command are a governed maintenance surface managed by the offline loop optimizer (042.004). The optimizer tunes deterministic numeric thresholds offline against real run traces and emits advisory-only candidate patches.
 

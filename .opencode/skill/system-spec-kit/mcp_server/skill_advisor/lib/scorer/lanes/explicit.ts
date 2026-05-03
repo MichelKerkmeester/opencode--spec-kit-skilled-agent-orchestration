@@ -244,6 +244,7 @@ const PHRASE_BOOSTS: Readonly<Record<string, readonly [string, number][]>> = {
 };
 
 const WRITE_VERBS = /\b(add|build|change|configure|create|edit|fix|generate|implement|modify|patch|refactor|rename|replace|run|update|write)\b/;
+const MEMORY_PRESERVATION_SESSION_INTENT = /\b(preserve|remember|capture|keep|store)\b.*\b(next|future|later)\s+session\b|\b(next|future|later)\s+session\b.*\b(lose|lost|preserve|remember|capture|keep|store)\b/;
 
 function push(scores: Map<string, { score: number; evidence: string[] }>, skillId: string, amount: number, evidence: string): void {
   const current = scores.get(skillId) ?? { score: 0, evidence: [] };
@@ -278,6 +279,11 @@ export function scoreExplicitLane(prompt: string, projection: AdvisorProjection)
   }
   if (WRITE_VERBS.test(lower) && /\b(error classes|trigger gap|reporter|mismatches?|bucket|gate 3)\b/.test(lower)) {
     push(scores, 'sk-code-opencode', 0.6, 'write-routing-tool-surface');
+  }
+  if (MEMORY_PRESERVATION_SESSION_INTENT.test(lower)) {
+    push(scores, 'memory:save', 1.2, 'memory-preservation-session-intent');
+    push(scores, 'command-memory-save', 0.8, 'memory-preservation-session-intent');
+    push(scores, 'system-spec-kit', 0.3, 'memory-preservation-session-intent');
   }
   // F-013-C3-01: Review-plus-write disambiguation. When the prompt contains
   // the word `review` AND any explicit write/edit verb (`update|edit|fix|modify`),

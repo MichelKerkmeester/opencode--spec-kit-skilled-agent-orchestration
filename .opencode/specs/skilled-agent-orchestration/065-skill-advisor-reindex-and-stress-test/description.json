@@ -1,8 +1,8 @@
 {
   "specFolder": "skilled-agent-orchestration/065-skill-advisor-reindex-and-stress-test",
-  "description": "Phase parent: (1) reindex skills into advisor memory system; (2) stress-test SKILL.md content + skill router efficiency via manual playbook scenarios using external CLIs",
-  "keywords": ["065", "skill", "advisor", "reindex", "stress-test", "router", "playbook", "cli"],
-  "lastUpdated": "2026-05-03T10:35:00Z",
+  "description": "Phase parent for completed skill-advisor reindex/stress-test baseline plus follow-on router calibration phases discovered by that campaign.",
+  "keywords": ["065", "skill", "advisor", "router", "reindex", "stress-test", "memory-save", "testing-playbook", "alias", "debug-review"],
+  "lastUpdated": "2026-05-03T11:10:00Z",
   "specId": "065",
   "folderSlug": "skill-advisor-reindex-and-stress-test",
   "parentChain": ["skilled-agent-orchestration"],

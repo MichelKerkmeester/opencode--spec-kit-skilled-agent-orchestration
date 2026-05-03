@@ -43,6 +43,8 @@ const DEFAULT_CONFIDENCE_THRESHOLD = 0.8;
 const DEFAULT_UNCERTAINTY_THRESHOLD = 0.35;
 const TASK_INTENT = /\b(add|append|build|change|configure|create|edit|fix|generate|implement|modify|move|patch|refactor|rename|replace|run|start|sweep|update|write)\b/;
 const DEEP_RESEARCH_CYCLE = /\b(automated research cycle|looped investigation|continue iteration|resume iteration|overnight run|overnight research run|packet-local iteration|delta record|canonical jsonl|same lineage)\b/;
+const FILE_SAVE_OPERATION = /\bsave\b.{0,48}\b(file|files|document|documents|buffer|tab|workspace)\b|\b(file|files|document|documents|buffer|tab|workspace)\b.{0,48}\bsave\b/;
+const MEMORY_SAVE_CONTEXT_ANCHOR = /\b(memory|context|conversation|session|handover|checkpoint|resume|preserve|remember|capture|store)\b|\/memory:save|memory:save/;
 
 type MutableLaneScores = {
   -readonly [K in keyof LaneScores]: LaneMatch[];
@@ -221,6 +223,10 @@ function readOnlyRouteAllowed(promptLower: string, skillId: string): boolean {
   return false;
 }
 
+function isPlainFileSavePrompt(promptLower: string): boolean {
+  return FILE_SAVE_OPERATION.test(promptLower) && !MEMORY_SAVE_CONTEXT_ANCHOR.test(promptLower.replace(/\bfile(s)?\b/g, ''));
+}
+
 function primaryIntentBonus(promptLower: string, recommendation: AdvisorScoredRecommendation): number {
   const R = SCORING_CALIBRATION.routing;
   if (/\bsemantic (code )?search\b/.test(promptLower)) {
@@ -317,7 +323,7 @@ export function scoreAdvisorPrompt(prompt: string, options: AdvisorScoringOption
     const derivedDominant = isDerivedDominant(contributions);
     const explicitSignal = hasExplicitWorkflowSignal(contributions, skill.id);
     const liveNormalized = score / liveTotal;
-    const confidence = confidenceFor({
+    let confidence = confidenceFor({
       liveNormalized,
       directScore,
       readOnlyExplainer,
@@ -328,6 +334,9 @@ export function scoreAdvisorPrompt(prompt: string, options: AdvisorScoringOption
       derivedDominant,
       skillId: skill.id,
     });
+    if ((skill.id === 'memory:save' || skill.id === 'command-memory-save') && isPlainFileSavePrompt(promptLower)) {
+      confidence = Math.min(confidence, 0.49);
+    }
     recommendations.push({
       skill: skill.id,
       kind: skill.kind,

@@ -435,11 +435,25 @@ Implementation follows stack patterns, quality gate P0s pass, debugging document
 
 WEBFLOW performance targets: FCP <1.8s, LCP <2.5s, CLS <0.1, 60fps, console errors 0. NEXTJS target: type-check, lint, build, and browser smoke pass. GO target: tests, lint, and build pass.
 
-Related skills: `sk-code-review` for formal review, `sk-code-opencode` for `.opencode/` code, `sk-doc` for docs, `sk-git` for git, `system-spec-kit` for packets/memory, and `mcp-chrome-devtools` for browser inspection.
+---
+
+## 7. INTEGRATION POINTS
+
+### Framework Integration
+
+This skill operates inside the active runtime's root instructions and inherits Gate 2 skill routing, Gate 3 spec-folder handling, and completion verification rules.
+
+### Verification Integration
+
+Stack-specific verification commands are selected by the smart router. WEBFLOW work also requires browser evidence and CDN version updates after JavaScript changes.
+
+### Tool Usage Guidelines
+
+Use Read/Grep/Glob for code discovery, Bash for stack verification and build scripts, and browser tooling for WEBFLOW runtime checks.
 
 ---
 
-## 9. WHERE AM I? (Phase Detection)
+## 8. WHERE AM I? (Phase Detection)
 
 | Phase | You're here if... | Exit criteria |
 | --- | --- | --- |
@@ -453,6 +467,16 @@ Related skills: `sk-code-review` for formal review, `sk-code-opencode` for `.ope
 
 ---
 
-## 10. QUICK REFERENCE
+## 9. QUICK REFERENCE
 
 Quick check: stack detected, arbitrary waits avoided, inputs validated, WEBFLOW CDN versions updated when needed, P0 items pass, stack verification commands exit 0, and browser evidence is recorded where required. Routing detail lives in `references/router/`.
+
+---
+
+## 10. REFERENCES AND RELATED RESOURCES
+
+The router discovers reference, asset, and script docs dynamically. Start with universal standards, stack-specific implementation, debugging, verification, deployment, and standards resources, `references/router/`, then load task-specific resources from `references/`, templates from `assets/`, and automation from `scripts/` when present.
+
+Scripts: `scripts/minify-webflow.mjs`, `scripts/test-minified-runtime.mjs`, `scripts/verify-minification.mjs`.
+
+Related skills: `sk-code-review` for formal findings-first review, `sk-code-opencode` for OpenCode system code, `sk-doc` for markdown, `sk-git` for git workflow, `system-spec-kit` for packets and memory, and `mcp-chrome-devtools` for browser inspection.

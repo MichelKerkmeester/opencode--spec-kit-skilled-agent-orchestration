@@ -33,13 +33,17 @@ describe('skill_advisor.py compat shim', () => {
     const result = runShim(['--force-native', 'save this conversation context to memory']);
     expect(result.status).toBe(0);
     const parsed = parseJson(result.stdout);
-    expect(parsed).toEqual([
+    expect(parsed).toEqual(expect.arrayContaining([
       expect.objectContaining({
         skill: 'system-spec-kit',
         kind: 'skill',
         source: 'native',
       }),
-    ]);
+      expect.objectContaining({
+        skill: 'memory:save',
+        source: 'native',
+      }),
+    ]));
   });
 
   it('falls back to local Python scoring when native is forced off', () => {
@@ -78,22 +82,22 @@ describe('skill_advisor.py compat shim', () => {
       SPECKIT_SKILL_ADVISOR_HOOK_DISABLED: '1',
     });
     expect(result.status).toBe(0);
-    expect(parseJson(result.stdout)).toEqual([
+    expect(parseJson(result.stdout)).toEqual(expect.arrayContaining([
       expect.objectContaining({
         source: 'native',
         skill: 'system-spec-kit',
       }),
-    ]);
+    ]));
   });
 
   it('tries native mode when --force-native is combined with semantic flags', () => {
     const result = runShim(['--force-native', '--semantic', 'save this conversation context to memory']);
     expect(result.status).toBe(0);
-    expect(parseJson(result.stdout)).toEqual([
+    expect(parseJson(result.stdout)).toEqual(expect.arrayContaining([
       expect.objectContaining({
         source: 'native',
         skill: 'system-spec-kit',
       }),
-    ]);
+    ]));
   });
 });

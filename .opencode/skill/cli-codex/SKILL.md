@@ -445,18 +445,10 @@ Key integrations:
 
 **Tool roles**: Bash dispatches the CLI; Read/Glob/Grep validate output.
 
-### Related Skills
-
-| Skill | Integration |
-|-------|-------------|
-| **cli-gemini** | Parallel cross-AI validation — Gemini for Google Search grounding, Codex for OpenAI perspective |
-| **sk-code** + `sk-code-*` overlay | Baseline+overlay code-quality contract — apply when dispatching code review or generation; dispatched session selects overlay from stack signals (see Section 4 ALWAYS rule 11) |
-| **mcp-code-mode** | Codex CLI is independent; does not require Code Mode |
-
 ---
 
-## 8. RELATED RESOURCES
+## 8. REFERENCES AND RELATED RESOURCES
 
-See Section 5 REFERENCES for the canonical reference, asset, shared, and external link list.
+The router discovers reference, asset, and script docs dynamically. Start with `references/cli_reference.md`, `references/integration_patterns.md`, `assets/prompt_quality_card.md`, `assets/prompt_templates.md`, `references/agent_delegation.md`, `references/codex_tools.md`, `references/hook_contract.md`, then load task-specific resources from `references/`, templates from `assets/`, and automation from `scripts/` when present.
 
----
+Related skills: `cli-claude-code` for extended reasoning, `cli-gemini` for Google Search grounding, `sk-code` for code-quality contracts, `mcp-code-mode` for external MCP work, and `system-spec-kit` for packet handback.

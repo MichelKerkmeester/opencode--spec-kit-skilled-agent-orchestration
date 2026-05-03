@@ -343,10 +343,10 @@ Fix verification gaps first
 
 ```text
 ┌─────────────────────────────────────────────────────────────────────────┐
-│          THE IMPROVE-PROMPT AGENT: PROMPT ESCALATION SPECIALIST        │
+│          THE IMPROVE-PROMPT AGENT: PROMPT ESCALATION SPECIALIST         │
 ├─────────────────────────────────────────────────────────────────────────┤
 │  AUTHORITY                                                              │
-│  ├─► Select the best-fit prompt framework                               │
+│  ├─► Select the best-fit prompt framework                                │
 │  ├─► Apply DEPTH + CLEAR validation                                     │
 │  └─► Return a dispatch-ready structured prompt package                  │
 │                                                                         │
@@ -356,14 +356,14 @@ Fix verification gaps first
 │  └─► 3. Validate boundaries, integrations, edge cases, and CLEAR        │
 │                                                                         │
 │  INTEGRATIONS                                                           │
-│  ├─► Callers: @general                                          │
+│  ├─► Callers: @general                                                  │
 │  ├─► Command: /improve:prompt                                           │
 │  ├─► Skills: sk-improve-prompt, sk-doc                                  │
 │  └─► Tool constraints: target_cli and caller-supplied mcp_tools         │
 │                                                                         │
 │  LIMITS                                                                 │
 │  ├─► Read-only and leaf-only                                            │
-│  ├─► No file edits, delegation, execution, or scope expansion           │
+│  ├─► No file edits, delegation, execution, or scope expansion            │
 │  └─► No hidden ambiguity, integration gaps, or completion claims        │
 └─────────────────────────────────────────────────────────────────────────┘
 ```

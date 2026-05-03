@@ -1,0 +1,11 @@
+{
+  "specFolder": "skilled-agent-orchestration/065-skill-advisor-reindex-and-stress-test/001-baseline-reindex-and-stress-results/001-skill-reindex",
+  "description": "Refresh skill advisor memory system via /doctor:skill-advisor :auto with before/after snapshot diff",
+  "keywords": ["065", "001", "skill", "reindex", "advisor", "doctor"],
+  "lastUpdated": "2026-05-03T09:35:00Z",
+  "specId": "065/001",
+  "folderSlug": "skill-reindex",
+  "parentChain": ["skilled-agent-orchestration", "065-skill-advisor-reindex-and-stress-test"],
+  "memorySequence": 1,
+  "memoryNameHistory": []
+}

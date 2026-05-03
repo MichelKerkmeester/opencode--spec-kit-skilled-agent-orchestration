@@ -112,7 +112,7 @@ version: 1.0.0
 Packaging enforcement note:
 - `package_skill.py` fails if `REFERENCES` is missing and no approved combined `SMART ROUTING & REFERENCES` structure exists.
 
-**Recommended Sections**: SUCCESS CRITERIA, INTEGRATION POINTS, RELATED RESOURCES
+**Recommended Sections**: SUCCESS CRITERIA, INTEGRATION POINTS, REFERENCES AND RELATED RESOURCES
 
 ### Template
 
@@ -133,7 +133,7 @@ version: 1.0.0
      See skill_creation.md for authoring rules. -->
 <!-- Remove comment markers to activate:
 
-## 1. WHEN TO USE
+\## 1. WHEN TO USE
 
 <!-- CRITICAL: This section contains ONLY activation triggers and use cases.
      NO file references or navigation guides here - those go in Section 2. -->
@@ -168,7 +168,7 @@ version: 1.0.0
 
 ---
 
-## 2. SMART ROUTING
+\## 2. SMART ROUTING
 
 <!-- CRITICAL: Keep one authoritative Smart Router Pseudocode block in this section.
      Detection context may appear before pseudocode. Do NOT duplicate routing logic in separate lookup tables. -->
@@ -303,6 +303,10 @@ def route_[skill_name]_resources(user_request, task=None):
     primary, secondary, scores = classify_intents(user_request, task)
     intents = [primary] + ([secondary] if secondary else [])
     routing_key = get_routing_key(task, intents)
+    reference_prefix = f"references/{routing_key}/"
+    asset_prefix = f"assets/{routing_key}/"
+    keyed_refs = sorted(path for path in inventory if path.startswith(reference_prefix))
+    keyed_assets = sorted(path for path in inventory if path.startswith(asset_prefix))
     loaded = []
     seen = set()
 
@@ -314,6 +318,7 @@ def route_[skill_name]_resources(user_request, task=None):
             seen.add(guarded)
 
     load_if_available(DEFAULT_RESOURCE)
+    baseline_count = len(loaded)
     if max(scores.values() or [0]) < 0.5:
         return {
             "routing_key": routing_key,
@@ -329,15 +334,26 @@ def route_[skill_name]_resources(user_request, task=None):
         for relative_path in RESOURCE_MAP.get(intent, []):
             load_if_available(relative_path)
 
-    if not loaded:
-        load_if_available(DEFAULT_RESOURCE)
+    for relative_path in keyed_refs:
+        load_if_available(relative_path)
+    for relative_path in keyed_assets:
+        load_if_available(relative_path)
+
+    if routing_key == "unknown" or (len(loaded) == baseline_count and not keyed_refs):
+        return {
+            "routing_key": routing_key,
+            "intents": intents,
+            "intent_scores": scores,
+            "notice": f"No keyed knowledge base found for routing key '{routing_key}'",
+            "resources": loaded,
+        }
 
     return {"routing_key": routing_key, "intents": intents, "intent_scores": scores, "resources": loaded}
 ```
 
 ---
 
-## 3. HOW IT WORKS
+\## 3. HOW IT WORKS
 
 ### [Primary Workflow] Overview
 
@@ -395,7 +411,7 @@ See [workflow-details.md](./references/workflow-details.md) for complete step-by
      Use H3 by default; H4 is allowed when nested under phase headings.
      Do NOT add horizontal dividers (---) between RULES subsections. -->
 
-## 4. RULES
+\## 4. RULES
 
 <!-- REQUIRED SUBSECTIONS (package_skill.py validation): -->
 <!-- - ALWAYS -->
@@ -450,7 +466,7 @@ See [workflow-details.md](./references/workflow-details.md) for complete step-by
 
 ---
 
-## 5. REFERENCES
+\## 5. REFERENCES
 
 ### Core References
 
@@ -470,7 +486,7 @@ See [workflow-details.md](./references/workflow-details.md) for complete step-by
 
 ---
 
-## 6. SUCCESS CRITERIA
+\## 6. SUCCESS CRITERIA
 
 ### [Primary Workflow] Completion Checklist
 
@@ -497,7 +513,7 @@ See [workflow-details.md](./references/workflow-details.md) for complete step-by
 
 ---
 
-## 7. INTEGRATION POINTS
+\## 7. INTEGRATION POINTS
 
 ### [Integration System 1 - e.g., Validation Workflow]
 
@@ -507,9 +523,9 @@ See [workflow-details.md](./references/workflow-details.md) for complete step-by
 - Execution: [Performance characteristics]
 > **Note:** Run validation manually after file operations, or configure your environment for automatic execution.
 
-### [Integration System 2 - e.g., Related Skills]
+### [Integration System 2 - e.g., Cross-Workflow Contract]
 
-**[skill-name]**: [How they integrate]
+**[Contract Name]**: [When it applies and what the skill must hand off]
 
 ### Tool Usage Guidelines
 
@@ -536,19 +552,15 @@ See [workflow-details.md](./references/workflow-details.md) for complete step-by
 
 ---
 
-## 8. RELATED RESOURCES
+\## 8. REFERENCES AND RELATED RESOURCES
 
-### Reference Files
-- [reference-name.md](./references/reference-name.md) - Description of reference file
-- [guide-name.md](./references/guide-name.md) - Description of guide file
+The router discovers reference, asset, and script docs dynamically. Start with `references/[primary].md`, `assets/[template].md`, and any skill-specific automation under `scripts/`, then load task-specific resources according to Section 2.
 
-### Templates
-- [template-name.md](./assets/template-name.md) - Description of template
-- [example-name.md](./assets/example-name.md) - Description of example
+Scripts: `scripts/[primary-helper]` when the skill ships automation; omit this line when no scripts exist.
 
-### Related Skills
-- `skill-name` - How it relates to this skill
-- `other-skill-name` - How it relates to this skill
+Related skills: `[related-skill]` for [relationship], `[other-skill]` for [relationship], and `system-spec-kit` when packet documentation or memory continuity applies.
+
+Install guide: [INSTALL_GUIDE.md](INSTALL_GUIDE.md) when the skill has installation or configuration steps.
 
 **Word Count Targets**:
 - Section 1 (WHEN TO USE): 150-200 lines
@@ -558,7 +570,7 @@ See [workflow-details.md](./references/workflow-details.md) for complete step-by
 - Section 5 (REFERENCES): 40-120 lines
 - Section 6 (SUCCESS CRITERIA): 80-120 lines
 - Section 7 (INTEGRATION POINTS): 100-150 lines
-- Section 8 (RELATED RESOURCES): 60-120 lines
+- Section 8 (REFERENCES AND RELATED RESOURCES): 20-60 lines
 
 **Bundled Resources Structure (Monolithic)**:
 ```
@@ -668,12 +680,12 @@ Section 2 typically contains five subsections:
 - **Resource Domains** - merged domain mapping + concise domain-level paths
 - **Resource Loading Levels** - ALWAYS/CONDITIONAL/ON_DEMAND table aligned to in-code behavior
 - **Smart Router Pseudocode** - scoped guard + recursive discovery + weighted scoring + top-2 ambiguity handling
-- **Router parity checklist** - include `_guard_in_skill()`, `discover_markdown_resources()`, `score_intents()`, `select_intents()`, and explicit `ON_DEMAND` handling
+- **Router parity checklist** - include `_guard_in_skill()`, `discover_markdown_resources()`, `get_routing_key()`, `classify_intents()`, `load_if_available()`, and `UNKNOWN_FALLBACK_CHECKLIST`
 - **Unknown fallback behavior** - include `UNKNOWN_FALLBACK_CHECKLIST` for low-confidence intent routing where applicable
 
 **Structure**:
 
-## 2. SMART ROUTING
+\## 2. SMART ROUTING
 
 ### [Primary Detection Signal]
 
@@ -718,23 +730,23 @@ assets/[domain]/...
 ### Smart Router Pseudocode
 
 ```python
-# Authoritative router logic
+# Authoritative router logic. See skill_smart_router.md for the full resilience pattern.
 # 1) Scope guard resource paths to current skill root
 # 2) Discover markdown resources recursively
-# 3) Score intents with weighted signals
-# 4) Select top-2 intents when scores are close
-# 5) Apply load levels and resource map
+# 3) Derive a runtime routing key from task, stack, command, mode, or intent
+# 4) Score intents with weighted signals and keep top-2 when scores are close
+# 5) Load only guarded paths that exist, with UNKNOWN_FALLBACK on low confidence
 ```
 
 **Writing Tips**:
 - Start Section 2 with the strongest detection signal for this skill.
 - Keep resource domains and folder mapping in a single section.
 - Keep conditions measurable and tied to resource paths.
-- Keep `RESOURCE_MAP` and loading levels synchronized.
+- Keep `RESOURCE_MAP`, routing keys, and loading levels synchronized.
 - Keep one authoritative pseudocode block in Section 2.
 - Require scoped guards and recursive discovery in every router.
 - Use top-2 ambiguity handling when intent scores are close.
-- Avoid duplicate lookup tables and static file inventories.
+- Avoid duplicate lookup tables, static file inventories, and unguarded `load()` calls.
 
 **Word Budget**: 80-200 lines
 
@@ -972,11 +984,11 @@ mode_detection:
 
 ### Section 7: INTEGRATION POINTS
 
-**Purpose**: Document how skill integrates with systems, tools, and other skills
+**Purpose**: Document how skill integrates with systems, tools, and workflow contracts
 
 **Essential Content**:
 - Validation workflow integration
-- Related skills and complementary workflows
+- Required workflow contracts and handoff rules
 - Tool usage patterns
 - Knowledge base dependencies
 - External tool requirements
@@ -989,9 +1001,9 @@ mode_detection:
 - Triggers: [When to run]
 - Purpose: [What it validates]
 
-### Related Skills
+### Cross-Workflow Contracts
 
-**[skill-name]**: [How they integrate]
+**[Contract Name]**: [When it applies and what the skill must hand off]
 
 ### Tool Usage Guidelines
 
@@ -1112,7 +1124,7 @@ Quality:
 | **Description Voice** | Third-person               | ✅ "Use when..."  ❌ "You should..."                                                                 |
 | **H2 Format**         | Number + ALL CAPS          | ✅ `## 1. WHEN TO USE`                                                                            |
 | **TOC**               | Forbidden in SKILL.md      | ❌ No table of contents                                                                             |
-| **Sections**          | 5 required + 3 recommended | Required: WHEN TO USE, SMART ROUTING, HOW IT WORKS, RULES, REFERENCES (or combined `SMART ROUTING & REFERENCES`). Recommended: SUCCESS CRITERIA, INTEGRATION POINTS, RELATED RESOURCES |
+| **Sections**          | 5 required + 3 recommended | Required: WHEN TO USE, SMART ROUTING, HOW IT WORKS, RULES, REFERENCES (or combined `SMART ROUTING & REFERENCES`). Recommended: SUCCESS CRITERIA, INTEGRATION POINTS, REFERENCES AND RELATED RESOURCES |
 | **File Size**         | <5k words (<3k preferred)  | Move details to references/                                                                        |
 | **Rules Format**      | ALWAYS, NEVER, ESCALATE IF | All caps headers, specific rules                                                                   |
 | **Examples**          | Concrete and realistic     | Show actual use cases                                                                              |
@@ -1148,7 +1160,7 @@ python .opencode/skill/sk-doc/scripts/package_skill.py .opencode/skill/[skill-na
 
 ---
 
-## 7. RELATED RESOURCES
+## 7. REFERENCES AND RELATED RESOURCES
 
 ### Templates
 - [frontmatter_templates.md](../documentation/frontmatter_templates.md) - Frontmatter by document type

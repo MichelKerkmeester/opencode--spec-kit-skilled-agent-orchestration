@@ -433,33 +433,8 @@ memory_search({ query: "branch strategy decisions", includeContent: true })
 
 ---
 
-## 8. RELATED RESOURCES
+## 8. REFERENCES AND RELATED RESOURCES
 
-### Worked Examples
+The router discovers reference, asset, and script docs dynamically. Start with `references/quick_reference.md`, `references/worktree_workflows.md`, `references/commit_workflows.md`, `references/finish_workflows.md`, `references/github_mcp_integration.md`, `references/shared_patterns.md`, `assets/commit_message_template.md`, then load task-specific resources from `references/`, templates from `assets/`, and automation from `scripts/` when present.
 
-**New Authentication Feature**:
-1. git-worktrees → `.worktrees/auth-feature` with `temp/auth`
-2. Code OAuth2 flow → Run tests
-3. git-commit → `feat(auth): add OAuth2 login flow`
-4. git-finish → Merge to main → Cleanup worktree
-
-**Quick Hotfix**:
-1. Fix null reference bug on current branch
-2. git-commit → `fix(api): handle null user response`
-3. git-finish → Create PR → Link to issue #123
-
-**Parallel Features**:
-1. git-worktrees → `.worktrees/feature-a` and `.worktrees/feature-b`
-2. Code both features in separate terminals
-3. git-commit each → git-finish each sequentially
-
-### Git Workflow Principles
-
-```
-ISOLATION: Use worktrees for parallel work
-CLARITY:   Write conventional commits with clear descriptions
-QUALITY:   Run tests before integration (git-finish gate)
-CLEANUP:   Remove worktrees after completion
-```
-
-**For one-page cheat sheet**: See [quick_reference.md](./references/quick_reference.md)
+Related skills: `system-spec-kit` for packet recovery and continuity, and `sk-doc` for PR, release, and documentation quality.
