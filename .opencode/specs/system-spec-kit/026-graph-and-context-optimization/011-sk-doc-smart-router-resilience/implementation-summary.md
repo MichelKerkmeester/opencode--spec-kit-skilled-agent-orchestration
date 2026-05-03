@@ -122,3 +122,24 @@ The edit mirrored the already-linked sibling skills for path format, then patche
 1. **No commit created.** The user explicitly requested no git commits.
 2. **Existing unrelated worktree changes remain.** They were present before this finisher task and were left intact.
 <!-- /ANCHOR:limitations -->
+
+---
+
+<!-- ANCHOR:phase-2-stream-b-results -->
+## Phase 2 Stream B Results
+
+| File | Before LOC | After LOC | Marker count | Status |
+|------|-----------:|----------:|-------------:|--------|
+| `.opencode/skill/system-spec-kit/SKILL.md` | 999 | 465 | 17 | PASS |
+| `.opencode/skill/sk-doc/SKILL.md` | 884 | 428 | 18 | PASS |
+| `.opencode/skill/mcp-code-mode/SKILL.md` | 747 | 482 | 15 | PASS |
+| `.opencode/skill/sk-code-opencode/SKILL.md` | 731 | 455 | 11 | PASS |
+| `.opencode/skill/sk-deep-review/SKILL.md` | 720 | 467 | 17 | PASS |
+| `.opencode/skill/sk-code/SKILL.md` | 718 | 458 | 16 | PASS |
+| `.opencode/skill/mcp-coco-index/SKILL.md` | 643 | 438 | 15 | PASS |
+| `.opencode/skill/mcp-chrome-devtools/SKILL.md` | 602 | 327 | 15 | PASS |
+| `.opencode/skill/mcp-figma/SKILL.md` | 599 | 400 | 15 | PASS |
+| `.opencode/skill/sk-deep-research/SKILL.md` | 570 | 399 | 10 | PASS |
+| `.opencode/skill/cli-opencode/SKILL.md` | 518 | 406 | 9 | PASS |
+| `.opencode/skill/sk-improve-agent/SKILL.md` | 511 | 455 | 15 | PASS |
+<!-- /ANCHOR:phase-2-stream-b-results -->

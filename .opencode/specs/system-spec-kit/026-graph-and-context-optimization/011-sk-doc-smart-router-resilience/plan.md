@@ -215,3 +215,17 @@ Inspect pattern -> Apply skill edits -> Verify counts and test -> Validate spec 
 - **Has data migrations?** No.
 - **Reversal procedure**: Git diff review is sufficient because changes are markdown-only.
 <!-- /ANCHOR:enhanced-rollback -->
+
+---
+
+<!-- ANCHOR:phase-2-propagation-ladder -->
+## Phase 2 Ladder: 12-File Size and Router Alignment
+
+1. Read the canonical smart-router asset once and use it as the structural reference for all edited files.
+2. Process the 12 host `SKILL.md` files in four sequential batches of three, longest first.
+3. For each file, cut static file inventories, duplicate checklist boilerplate, oversized inline examples, or duplicate load-level prose while preserving skill-specific routing intent.
+4. Confirm every smart-router section retains Pattern 1 Runtime Discovery, Pattern 2 Existence-Check Before Load, Pattern 3 Extensible Routing Key, and Pattern 4 Multi-Tier Graceful Fallback.
+5. Run V1-V4 after each file: LOC cap/target, canonical marker grep, Pattern 1-4 grep, and file-scoped diff stat.
+6. After all 12 files pass, update packet docs once with scope, task, checklist, and result evidence.
+7. Run final aggregate verification for the 12 skill files, Stream A disjointness, and packet doc markers.
+<!-- /ANCHOR:phase-2-propagation-ladder -->

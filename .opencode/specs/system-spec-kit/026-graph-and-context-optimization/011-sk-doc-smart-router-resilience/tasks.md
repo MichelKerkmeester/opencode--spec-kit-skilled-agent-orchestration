@@ -102,3 +102,22 @@ _memory:
 - **Specification**: See `spec.md`
 - **Plan**: See `plan.md`
 <!-- /ANCHOR:cross-refs -->
+
+---
+
+<!-- ANCHOR:phase-2-stream-b-tasks -->
+## Phase 2: Stream B 12-Skill Propagation Tasks
+
+- [x] T-100 Reduce and align `.opencode/skill/system-spec-kit/SKILL.md`
+- [x] T-101 Reduce and align `.opencode/skill/sk-doc/SKILL.md`
+- [x] T-102 Reduce and align `.opencode/skill/mcp-code-mode/SKILL.md`
+- [x] T-103 Reduce and align `.opencode/skill/sk-code-opencode/SKILL.md`
+- [x] T-104 Reduce and align `.opencode/skill/sk-deep-review/SKILL.md`
+- [x] T-105 Reduce and align `.opencode/skill/sk-code/SKILL.md`
+- [x] T-106 Reduce and align `.opencode/skill/mcp-coco-index/SKILL.md`
+- [x] T-107 Reduce and align `.opencode/skill/mcp-chrome-devtools/SKILL.md`
+- [x] T-108 Reduce and align `.opencode/skill/mcp-figma/SKILL.md`
+- [x] T-109 Reduce and align `.opencode/skill/sk-deep-research/SKILL.md`
+- [x] T-110 Reduce and align `.opencode/skill/cli-opencode/SKILL.md`
+- [x] T-111 Reduce and align `.opencode/skill/sk-improve-agent/SKILL.md`
+<!-- /ANCHOR:phase-2-stream-b-tasks -->

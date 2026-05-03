@@ -133,3 +133,22 @@ _memory:
 
 **Verification Date**: 2026-05-03
 <!-- /ANCHOR:summary -->
+
+---
+
+<!-- ANCHOR:phase-2-stream-b-verification -->
+## Phase 2 Stream B Verification
+
+- [x] CHK-100 [P0] `.opencode/skill/system-spec-kit/SKILL.md` passes V1-V4. Evidence: LOC 465, markers 17, patterns 4, file diff stat reviewed.
+- [x] CHK-101 [P0] `.opencode/skill/sk-doc/SKILL.md` passes V1-V4. Evidence: LOC 428, markers 18, patterns 4, file diff stat reviewed.
+- [x] CHK-102 [P0] `.opencode/skill/mcp-code-mode/SKILL.md` passes V1-V4. Evidence: LOC 482, markers 15, patterns 4, file diff stat reviewed.
+- [x] CHK-103 [P0] `.opencode/skill/sk-code-opencode/SKILL.md` passes V1-V4. Evidence: LOC 455, markers 11, patterns 4, file diff stat reviewed.
+- [x] CHK-104 [P0] `.opencode/skill/sk-deep-review/SKILL.md` passes V1-V4. Evidence: LOC 467, markers 17, patterns 4, file diff stat reviewed.
+- [x] CHK-105 [P0] `.opencode/skill/sk-code/SKILL.md` passes V1-V4. Evidence: LOC 458, markers 16, patterns 4, file diff stat reviewed.
+- [x] CHK-106 [P0] `.opencode/skill/mcp-coco-index/SKILL.md` passes V1-V4. Evidence: LOC 438, markers 15, patterns 4, file diff stat reviewed.
+- [x] CHK-107 [P0] `.opencode/skill/mcp-chrome-devtools/SKILL.md` passes V1-V4. Evidence: LOC 327, markers 15, patterns 4, file diff stat reviewed.
+- [x] CHK-108 [P0] `.opencode/skill/mcp-figma/SKILL.md` passes V1-V4. Evidence: LOC 400, markers 15, patterns 4, file diff stat reviewed.
+- [x] CHK-109 [P0] `.opencode/skill/sk-deep-research/SKILL.md` passes V1-V4. Evidence: LOC 399, markers 10, patterns 4, file diff stat reviewed.
+- [x] CHK-110 [P0] `.opencode/skill/cli-opencode/SKILL.md` passes V1-V4. Evidence: LOC 406, markers 9, patterns 4, file diff stat reviewed.
+- [x] CHK-111 [P0] `.opencode/skill/sk-improve-agent/SKILL.md` passes V1-V4. Evidence: LOC 455, markers 15, patterns 4, file diff stat reviewed.
+<!-- /ANCHOR:phase-2-stream-b-verification -->

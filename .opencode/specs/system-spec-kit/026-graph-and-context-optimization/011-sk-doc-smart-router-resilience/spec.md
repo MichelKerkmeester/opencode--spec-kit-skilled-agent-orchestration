@@ -201,3 +201,18 @@ Finish the remaining IMPL-012 work so all 19 skill smart-router sections expose 
 
 - None.
 <!-- /ANCHOR:questions -->
+
+---
+
+<!-- ANCHOR:phase-2-19-skill-propagation -->
+## Phase 2 — 19-skill propagation
+
+Phase 2 extends the original scope from shipping the canonical smart-router asset at `sk-doc` to propagating structural conformance across all 19 skills. This Stream B pass focused on the 12 host `SKILL.md` files that needed size reduction or router-alignment edits while preserving the four canonical patterns:
+
+1. Runtime Discovery through recursive markdown discovery under `references/` and `assets/`.
+2. Existence-Check Before Load through guarded `load_if_available()` behavior with duplicate suppression.
+3. Extensible Routing Key through skill-local intent, stack, provider, or project signals.
+4. Multi-Tier Graceful Fallback through `UNKNOWN_FALLBACK` disambiguation and missing-resource notices.
+
+The 12 edited host files are `system-spec-kit`, `sk-doc`, `mcp-code-mode`, `sk-code-opencode`, `sk-deep-review`, `sk-code`, `mcp-coco-index`, `mcp-chrome-devtools`, `mcp-figma`, `sk-deep-research`, `cli-opencode`, and `sk-improve-agent`. The remaining seven skills were not touched because this task only required touching them if the canonical marker grep failed.
+<!-- /ANCHOR:phase-2-19-skill-propagation -->
