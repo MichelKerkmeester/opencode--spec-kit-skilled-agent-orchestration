@@ -3,22 +3,22 @@
 Complete guide for creating AI agent skills with native OpenCode discovery. Covers the full 6-step workflow from concept to deployment: understanding, planning, initializing, editing, packaging, and iterating. Includes SKILL.md template reference, bundled resources (scripts, references, assets), validation with DQI scoring, and troubleshooting for common discovery issues.
 
 > **Part of OpenCode Installation.** See the [Master Installation Guide](./README.md) for complete setup.
-> **Scope:** `.opencode/skill/` | **Agent Required:** `@write` | **Target DQI:** 75+ (Good), 90+ (Excellent)
+> **Scope:** `.opencode/skill/` | **Agent Required:** `@general` | **Target DQI:** 75+ (Good), 90+ (Excellent)
 
 ---
 
 ## 0. AI-FIRST SETUP GUIDE
 
-Copy and paste this prompt to your AI assistant (with `@write`) to get interactive skill creation help:
+Copy and paste this prompt to your AI assistant (with `@general`) to get interactive skill creation help:
 
 ```text
-@write I want to create a new skill for OpenCode. Please guide me through the process interactively by asking me questions one at a time.
+@general I want to create a new skill for OpenCode. Please guide me through the process interactively by asking me questions one at a time.
 
 **PREREQUISITE CHECK (you MUST verify before proceeding):**
-- [ ] You are operating as the @write agent (Mode 2: Skill Creation)
+- [ ] You are operating as the @general agent (Mode 2: Skill Creation)
 - [ ] sk-doc skill is accessible
 
-If you are NOT the @write agent: STOP immediately and instruct the user to restart with the "@write" prefix. Do NOT proceed with skill creation.
+If you are NOT the @general agent: STOP immediately and instruct the user to restart with the "@general" prefix. Do NOT proceed with skill creation.
 
 **Questions to ask me (one at a time, wait for my answer):**
 
@@ -67,11 +67,11 @@ The AI will:
 
 **Expected creation time:** 20-30 minutes
 
-### Hard Block: @write Agent Required
+### Hard Block: @general Agent Required
 
-> **CRITICAL:** Skill creation REQUIRES the `@write` agent to be active.
+> **CRITICAL:** Skill creation REQUIRES the `@general` agent to be active.
 
-**Why @write is mandatory:**
+**Why @general is mandatory:**
 - Loads `skill_md_template.md` BEFORE creating (template-first workflow)
 - Validates template alignment AFTER creating
 - Runs DQI scoring (target: 90+ Excellent)
@@ -79,12 +79,12 @@ The AI will:
 - Ensures proper use of `init_skill.py` and `package_skill.py`
 
 **Verification (MUST pass before proceeding):**
-- [ ] Write agent exists: `ls .opencode/agent/write.md`
-- [ ] Use `@write` prefix when invoking the prompt above
+- [ ] Write agent exists: `ls .opencode/agent/orchestrate.md`
+- [ ] Use `@general` prefix when invoking the prompt above
 
-**DO NOT** create skills without the @write agent. Manual creation bypasses quality gates and template alignment.
+**DO NOT** create skills without the @general agent. Manual creation bypasses quality gates and template alignment.
 
-**Reference:** `.opencode/agent/write.md` - Section 4 (Mode 2: Skill Creation)
+**Reference:** `.opencode/agent/orchestrate.md` (or any general agent) - Section 4 (Mode 2: Skill Creation)
 
 ---
 
@@ -115,7 +115,7 @@ Skills are specialized, on-demand capabilities loaded into an AI agent at runtim
 ### The 6-Step Workflow
 
 ```text
-[PREREQUISITE: Invoke with @write agent - see Section 0]
+[PREREQUISITE: Invoke with @general agent - see Section 0]
             |
 Step 1: UNDERSTANDING (~5 min)
     |-> Define purpose, use cases, trigger conditions
@@ -165,7 +165,7 @@ Skills appear as `skills_*` functions in available tools after each restart. The
 | Python | 3.10+ | `python3 --version` |
 | sk-doc skill | Latest | `ls .opencode/skill/sk-doc/` |
 | OpenCode | v1.0.190+ | Native skill discovery built-in |
-| **@write agent** | - | `ls .opencode/agent/write.md` |
+| **@general agent** | - | `ls .opencode/agent/orchestrate.md` |
 
 ### Required Files
 
@@ -182,15 +182,15 @@ Run these prerequisite checks before continuing:
 ```bash
 python3 --version && \
 ls .opencode/skill/sk-doc/scripts/init_skill.py && \
-ls .opencode/agent/write.md && \
-echo "Prerequisites OK (including @write agent)"
+ls .opencode/agent/orchestrate.md && \
+echo "Prerequisites OK (including @general agent)"
 ```
 
 **Checklist:**
 - [ ] Python 3.10+ installed?
 - [ ] sk-doc skill exists at `.opencode/skill/sk-doc/`?
 - [ ] `init_skill.py` and `package_skill.py` accessible?
-- [ ] @write agent exists at `.opencode/agent/write.md`?
+- [ ] @general agent exists at `.opencode/agent/orchestrate.md` (or any general agent)?
 
 ❌ **STOP if validation fails** - install all prerequisites before creating skills.
 
@@ -1119,7 +1119,7 @@ Common fixes based on diagnostic output:
 | `.opencode/skill/sk-doc/scripts/package_skill.py` | Validate and package |
 | `.opencode/skill/sk-doc/scripts/extract_structure.py` | DQI scoring |
 | `.opencode/skill/sk-doc/assets/opencode/skill_md_template.md` | SKILL.md template |
-| `.opencode/agent/write.md` | @write agent definition |
+| `.opencode/agent/orchestrate.md` (or any general agent) | general agent definition (orchestrate is a good baseline) |
 
 ### Scripts Reference
 
@@ -1147,7 +1147,7 @@ python .opencode/skill/sk-doc/scripts/extract_structure.py \
 | ----- | ------- |
 | [SET-UP - AGENTS.md](./SET-UP%20-%20AGENTS.md) | Add skills to agent config |
 | [Master Installation Guide](./README.md) | OpenCode setup overview |
-| [@write Agent](../../agent/write.md) | Write agent (Mode 2: Skill Creation) |
+| [@general Agent](../../agent/orchestrate.md) | General agent (Mode 2: Skill Creation) |
 
 ### External Resources
 
@@ -1160,7 +1160,7 @@ python .opencode/skill/sk-doc/scripts/extract_structure.py \
 
 | Checkpoint | Meaning |
 | ---------- | ------- |
-| `phase_1_complete` | Python 3.10+, sk-doc skill, and @write agent are all present |
+| `phase_1_complete` | Python 3.10+, sk-doc skill, and @general agent are all present |
 | `phase_2_complete` | Skill folder initialized with SKILL.md stub and subdirectories |
 | `phase_3_complete` | SKILL.md populated with valid frontmatter and all required sections |
 | `phase_4_complete` | `package_skill.py` passes and DQI score is 75 or higher |
